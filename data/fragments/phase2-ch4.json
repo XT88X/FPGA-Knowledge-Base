@@ -1,0 +1,43 @@
+{
+  "chapterId": "2.4",
+  "phase": 2,
+  "slug": "fsm",
+  "title": "有限状态机 FSM",
+  "summary": "Moore 与 Mealy 区别、三段式状态机标准写法（状态寄存器/次态/输出）、状态编码（二进制/独热）与优化；交通灯与售货机实例。",
+  "doc": "docs/phase2/ch4-fsm.md",
+  "code": [
+    {"file": "code/phase2/traffic_light.v", "type": "verilog", "role": "synthesizable", "title": "traffic_light.v — 交通灯（南北/东西，含黄灯，参数化时长）"},
+    {"file": "code/phase2/tb_traffic_light.v", "type": "verilog", "role": "testbench", "title": "tb_traffic_light.v — 周期与互锁自检"},
+    {"file": "code/phase2/vending_machine.v", "type": "verilog", "role": "synthesizable", "title": "vending_machine.v — 三段式售货机（0.5/1 元，1.5 出货找零）"},
+    {"file": "code/phase2/tb_vending_machine.v", "type": "verilog", "role": "testbench", "title": "tb_vending_machine.v — 投币/出货/找零/复位"}
+  ],
+  "diagrams": [
+    {"file": "assets/phase2/moore-vs-mealy.svg", "title": "Moore vs Mealy 对比", "caption": "Moore 输出只看状态；Mealy 输出看状态+当前输入。"},
+    {"file": "assets/phase2/traffic-fsm.svg", "title": "交通灯状态转移图", "caption": "南北绿黄→东西绿黄循环，双向互锁必有红灯。"},
+    {"file": "assets/phase2/vending-fsm.svg", "title": "售货机状态转移图", "caption": "金额状态 A0/A05/A10，投币触发出货与找零。"}
+  ],
+  "tools": [
+    {"name": "AMD Vivado ML Edition 下载", "url": "https://www.xilinx.com/support/download.html", "required": true, "note": "免费 ML Standard 版即可；访问日期 2026-10。"},
+    {"name": "通用引脚约束模板 fpga_common.xdc", "url": "../code/common/fpga_common.xdc", "required": true, "note": "相对本仓库；按开发板官方原理图替换 PACKAGE_PIN。"}
+  ],
+  "tasks": [
+    {"id": "task-2-4-1", "text": "用状态机实现交通信号灯控制器"},
+    {"id": "task-2-4-2", "text": "实现按键控制的自动售货机状态机"}
+  ],
+  "cards": [
+    {"q": "Moore 与 Mealy 的区别？", "a": "Moore 输出只由当前状态决定；Mealy 输出由当前状态+当前输入共同决定。", "tags": ["Moore", "Mealy"]},
+    {"q": "三段式状态机是哪三段？", "a": "①时序状态寄存器(state<=next)；②组合次态逻辑(case算next)；③组合/时序输出。", "tags": ["三段式", "写法"]},
+    {"q": "为什么 FPGA 常用独热编码？", "a": "FPGA 触发器充裕而 LUT 紧张，独热每个状态一位，译码逻辑简单、速度快、毛刺少。", "tags": ["独热", "编码"]},
+    {"q": "交通灯为什么是 Moore？", "a": "灯色只取决于当前相位状态，与输入无关，输出画在状态里。", "tags": ["Moore", "交通灯"]},
+    {"q": "售货机为什么是 Mealy？", "a": "出货/找零不仅取决于金额状态，还取决于刚投入哪种币，输出在转移边上。", "tags": ["Mealy", "售货机"]},
+    {"q": "状态参数为什么用 localparam？", "a": "避免裸数字、便于维护与综合；状态名一目了然。", "tags": ["localparam"]},
+    {"q": "交通灯的互锁指什么？", "a": "任一方向同一时刻只亮一种灯，且另一方向保持红灯，防止路口冲突。", "tags": ["互锁", "交通灯"]},
+    {"q": "状态机次态组合块的敏感表怎么写？", "a": "用 always @(*) 全覆盖，避免锁存；并写好 default 分支。", "tags": ["组合逻辑", "latch"]}
+  ],
+  "quiz": [
+    {"q": "Moore 状态机的输出取决于？", "options": ["仅当前状态", "当前输入", "时钟频率", "复位"], "answer": 0, "explain": "Moore 输出只由当前状态决定。"},
+    {"q": "三段式状态机第一段做什么？", "options": ["算 next", "state<=next 时序更新现态", "算输出", "产生时钟"], "answer": 1, "explain": "第一段是时序状态寄存器，时钟沿把 next 打入 state。"},
+    {"q": "FPGA 中状态编码常优先选？", "options": ["二进制", "独热 one-hot", "格雷码", "随意"], "answer": 1, "explain": "FPGA 触发器充裕，独热译码简单快速毛刺少。"},
+    {"q": "售货机在 A10 状态再投 1.0 元应？", "options": ["不出货", "出货且找零 0.5", "退回所有币", "进入错误态"], "answer": 1, "explain": "1.0+1.0=2.0，商品 1.5 元，出货并找零 0.5 元。"}
+  ]
+}

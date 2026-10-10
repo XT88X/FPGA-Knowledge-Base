@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 260" font-family="system-ui,sans-serif" font-size="12">
+  <rect x="0" y="0" width="760" height="260" fill="#0d1420"/>
+  <text x="380" y="22" fill="#7dd3fc" text-anchor="middle" font-size="15" font-weight="bold">自动售货机状态转移图（Mealy，商品 1.5 元）</text>
+
+  <ellipse cx="120" cy="130" rx="80" ry="45" fill="#16233a" stroke="#38bdf8" stroke-width="2"/>
+  <text x="120" y="126" fill="#7dd3fc" text-anchor="middle" font-weight="bold">A0</text>
+  <text x="120" y="144" fill="#94a3b8" text-anchor="middle" font-size="10">金额 0 元</text>
+
+  <ellipse cx="380" cy="130" rx="80" ry="45" fill="#16233a" stroke="#38bdf8" stroke-width="2"/>
+  <text x="380" y="126" fill="#7dd3fc" text-anchor="middle" font-weight="bold">A05</text>
+  <text x="380" y="144" fill="#94a3b8" text-anchor="middle" font-size="10">金额 0.5 元</text>
+
+  <ellipse cx="640" cy="130" rx="80" ry="45" fill="#16233a" stroke="#38bdf8" stroke-width="2"/>
+  <text x="640" y="126" fill="#7dd3fc" text-anchor="middle" font-weight="bold">A10</text>
+  <text x="640" y="144" fill="#94a3b8" text-anchor="middle" font-size="10">金额 1.0 元</text>
+
+  <line x1="200" y1="130" x2="300" y2="130" stroke="#34d399" stroke-width="2"/>
+  <text x="250" y="120" fill="#6ee7b7" text-anchor="middle" font-size="10">投0.5</text>
+  <line x1="460" y1="130" x2="560" y2="130" stroke="#34d399" stroke-width="2"/>
+  <text x="510" y="120" fill="#6ee7b7" text-anchor="middle" font-size="10">投0.5</text>
+
+  <path d="M640 85 Q40 40 120 85" fill="none" stroke="#f59e0b" stroke-width="2"/>
+  <text x="380" y="45" fill="#fcd34d" text-anchor="middle" font-size="10">A05+投1.0 / A10+投0.5 → 出货，回 A0</text>
+
+  <path d="M640 175 Q40 225 120 175" fill="none" stroke="#f87171" stroke-width="2"/>
+  <text x="380" y="220" fill="#fca5a5" text-anchor="middle" font-size="10">A10+投1.0=2.0 → 出货+找零0.5，回 A0</text>
+
+  <path d="M150 95 Q250 60 350 95" fill="none" stroke="#475569" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="250" y="70" fill="#94a3b8" text-anchor="middle" font-size="10">A0+投1.0 → A10</text>
+</svg>
