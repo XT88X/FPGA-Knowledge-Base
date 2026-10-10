@@ -1,0 +1,40 @@
+{
+  "chapterId": "1.3",
+  "phase": 1,
+  "slug": "simulation",
+  "title": "仿真验证入门",
+  "summary": "Testbench 结构、时钟激励生成、波形分析、行为仿真与时序仿真区别；为 led_blink 写完整 TB，进阶 PWM 呼吸灯。",
+  "doc": "docs/phase1/ch3-simulation.md",
+  "code": [
+    {"file": "code/phase1/tb_led_blink.v", "type": "verilog", "role": "testbench", "title": "tb_led_blink.v — LED 闪烁测试平台"},
+    {"file": "code/phase1/breathing_led.v", "type": "verilog", "role": "synthesizable", "title": "breathing_led.v — PWM 呼吸灯（可综合）"},
+    {"file": "code/phase1/tb_breathing_led.v", "type": "verilog", "role": "testbench", "title": "tb_breathing_led.v — 呼吸灯测试平台"}
+  ],
+  "diagrams": [
+    {"file": "assets/phase1/sim-types.svg", "title": "行为仿真 vs 时序仿真", "caption": "行为仿真门延迟为 0；时序仿真含真实门/线延迟。"}
+  ],
+  "tools": [
+    {"name": "Vivado 内置 Simulator", "url": "https://www.xilinx.com/support/download.html", "required": true, "note": "随 Vivado ML Standard 安装，无需额外下载。"}
+  ],
+  "tasks": [
+    {"id": "task-1-3-1", "text": "为 LED 闪烁编写 testbench"},
+    {"id": "task-1-3-2", "text": "跑行为仿真，观察计数器波形"},
+    {"id": "task-1-3-3", "text": "进阶：实现呼吸灯 PWM 调光"}
+  ],
+  "cards": [
+    {"q": "Testbench 是什么？它有端口吗？", "a": "Testbench 是激励被测设计的顶层模块，本身没有输入输出端口；负责例化 DUT、产生时钟/复位、导出波形、打印判断。", "tags": ["testbench"]},
+    {"q": "怎么在 testbench 里产生 50MHz 时钟？", "a": "always #10 clk = ~clk; —— 每 10ns 翻转，周期 20ns 即 50MHz。", "tags": ["时钟", "激励"]},
+    {"q": "$dumpvars 的作用是？", "a": "把内部信号导出成波形(VCD)，供仿真器画出时序图查看。", "tags": ["波形", "系统任务"]},
+    {"q": "为什么仿真时要把 BLINK_HZ 调大？", "a": "真实 1Hz 要等 25,000,000 个时钟才翻转一次，仿真太慢；调大 BLINK_HZ 让半周期缩短到几十个时钟，几微秒就能看到翻转。上板再改回 1。", "tags": ["仿真技巧"]},
+    {"q": "行为仿真和时序仿真的区别？", "a": "行为仿真不考虑门/线延迟，跑得快，验证功能；时序仿真加回真实延迟，最接近硬件，能发现建立/保持时间问题但慢。", "tags": ["行为", "时序"]},
+    {"q": "PWM 呼吸灯的原理是什么？", "a": "用高速计数器当载波，led=(pwm_cnt<duty)；让 duty 缓慢爬升再下降，LED 平均亮度随之渐变形成呼吸。", "tags": ["PWM", "呼吸灯"]},
+    {"q": "占空比和 LED 亮度什么关系？", "a": "占空比(高电平时间占比)越大，平均电压越高，LED 看起来越亮；duty 从 0 到最大再回落即呼吸。", "tags": ["PWM", "亮度"]},
+    {"q": "复位在 testbench 里怎么施加？", "a": "先把 rst_n=0 保持几十 ns 再拉高，模拟上电复位顺序，确保 DUT 从已知初值开始。", "tags": ["复位", "激励"]}
+  ],
+  "quiz": [
+    {"q": "产生 50MHz 时钟的写法是？", "options": ["always #20 clk=~clk", "always #10 clk=~clk", "always #1 clk=~clk", "assign clk=1"], "answer": 1, "explain": "周期 20ns => 每 10ns 翻转一次。"},
+    {"q": "关于行为仿真与时序仿真，正确的是？", "options": ["行为仿真含真实延迟", "时序仿真不考虑延迟", "行为仿真验证功能、时序仿真接近硬件真实行为", "两者完全一样"], "answer": 2, "explain": "行为仿真快而验功能；时序仿真含门/线延迟，最接近硬件。"},
+    {"q": "PWM 呼吸灯里控制亮度的关键信号是？", "options": ["clk", "duty(占空比)", "rst_n", "波特率"], "answer": 1, "explain": "led=(pwm_cnt<duty)，duty 缓慢升降即呼吸。"},
+    {"q": "$dumpvars 的作用是？", "options": ["结束仿真", "导出内部信号波形", "产生时钟", "复位设计"], "answer": 1, "explain": "生成 VCD 波形，用于在波形窗口观察信号。"}
+  ]
+}

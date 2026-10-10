@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 200" font-family="system-ui,sans-serif" font-size="12">
+  <rect x="0" y="0" width="760" height="200" fill="#0d1420"/>
+  <text x="380" y="20" fill="#7dd3fc" text-anchor="middle" font-size="14" font-weight="bold">行为仿真 vs 时序仿真</text>
+  <!-- behavioral -->
+  <text x="60" y="55" fill="#a5f3fc">行为仿真：门延迟为 0，输出紧跟输入</text>
+  <polyline points="60,80 200,80 200,60 360,60 360,80 520,80 520,60 680,60" fill="none" stroke="#22d3ee" stroke-width="2"/>
+  <text x="60" y="100" fill="#94a3b8">输出(out)</text>
+  <polyline points="60,110 200,110 200,95 360,95 360,110 520,110 520,95 680,95" fill="none" stroke="#34d399" stroke-width="2"/>
+  <!-- timing -->
+  <text x="60" y="145" fill="#fcd34d">时序仿真：含真实门/线延迟，输出晚几 ns（斜线处）</text>
+  <polyline points="60,175 200,175 210,155 360,155 370,175 520,175 530,155 680,155" fill="none" stroke="#f59e0b" stroke-width="2"/>
+  <line x1="200" y1="175" x2="210" y2="155" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="215" y="170" fill="#fca5a5" font-size="11">延迟</text>
+</svg>
