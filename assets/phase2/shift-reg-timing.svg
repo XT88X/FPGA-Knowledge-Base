@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 240" font-family="system-ui,sans-serif" font-size="12">
+  <rect x="0" y="0" width="760" height="240" fill="#0d1420"/>
+  <text x="380" y="22" fill="#7dd3fc" text-anchor="middle" font-size="15" font-weight="bold">移位寄存器：8 级触发器级联，每个时钟沿移一位</text>
+
+  <!-- 8 FFs -->
+  <g font-size="11" fill="#e2e8f0" text-anchor="middle">
+    <rect x="60"  y="70" width="60" height="44" fill="#16233a" stroke="#38bdf8"/>
+    <text x="90"  y="96">q0</text>
+    <rect x="150" y="70" width="60" height="44" fill="#16233a" stroke="#38bdf8"/>
+    <text x="180" y="96">q1</text>
+    <rect x="240" y="70" width="60" height="44" fill="#16233a" stroke="#38bdf8"/>
+    <text x="270" y="96">q2</text>
+    <text x="330" y="96" fill="#64748b">…</text>
+    <rect x="360" y="70" width="60" height="44" fill="#16233a" stroke="#38bdf8"/>
+    <text x="390" y="96">q6</text>
+    <rect x="450" y="70" width="60" height="44" fill="#16233a" stroke="#38bdf8"/>
+    <text x="480" y="96">q7</text>
+  </g>
+  <g stroke="#38bdf8" stroke-width="1.5" fill="none" marker-end="">
+    <line x1="120" y1="92" x2="150" y2="92"/>
+    <line x1="210" y1="92" x2="240" y2="92"/>
+    <line x1="420" y1="92" x2="450" y2="92"/>
+  </g>
+  <text x="40" y="96" fill="#22d3ee" text-anchor="end">sin→</text>
+  <text x="520" y="96" fill="#34d399">→sout</text>
+  <text x="280" y="135" fill="#94a3b8" text-anchor="middle">pout = {q7..q0} 并行读出（串入并出 SIPO）</text>
+
+  <!-- timing: bit walks -->
+  <text x="30" y="175" fill="#94a3b8">sin=1 移入过程</text>
+  <g font-size="11" fill="#fcd34d">
+    <text x="60"  y="200">clk1: 1→q0</text>
+    <text x="180" y="200">clk2: →q1</text>
+    <text x="290" y="200">clk3: →q2</text>
+    <text x="400" y="200">…</text>
+    <text x="470" y="200">clk8: 到达 q7=sout</text>
+  </g>
+  <text x="380" y="225" fill="#64748b" text-anchor="middle">每来一个上升沿，所有位向右挪一格，sin 进入 q0</text>
+</svg>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 260" font-family="system-ui,sans-serif" font-size="12">
+  <rect x="0" y="0" width="760" height="260" fill="#0d1420"/>
+  <text x="380" y="22" fill="#7dd3fc" text-anchor="middle" font-size="15" font-weight="bold">环形计数器 vs 扭环(约翰逊)计数器 波形对比（3 位）</text>
+
+  <!-- ring -->
+  <text x="30" y="60" fill="#7dd3fc" font-size="12" font-weight="bold">环形 ring：8 状态，1 个 1 循环右移</text>
+  <g font-size="10" fill="#94a3b8">
+    <text x="40"  y="90">q0</text><text x="40" y="110">q1</text><text x="40" y="130">q2</text>
+  </g>
+  <polyline points="80,86 160,86 160,74 240,74 240,86 700,86" fill="none" stroke="#22d3ee" stroke-width="1.5"/>
+  <polyline points="80,110 240,110 240,98 320,98 320,110 700,110" fill="none" stroke="#34d399" stroke-width="1.5"/>
+  <polyline points="80,130 320,130 320,118 400,118 400,130 700,130" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+
+  <!-- johnson -->
+  <text x="30" y="170" fill="#7dd3fc" font-size="12" font-weight="bold">扭环 johnson：把~q7 反馈回输入，6 状态（2n）</text>
+  <g font-size="10" fill="#94a3b8">
+    <text x="40"  y="200">q0</text><text x="40" y="220">q1</text><text x="40" y="240">q2</text>
+  </g>
+  <polyline points="80,196 200,196 200,184 440,184 440,196 700,196" fill="none" stroke="#22d3ee" stroke-width="1.5"/>
+  <polyline points="80,220 280,220 280,208 520,208 520,220 700,220" fill="none" stroke="#34d399" stroke-width="1.5"/>
+  <polyline points="80,240 360,240 360,228 600,228 600,240 700,240" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="380" y="155" fill="#64748b" font-size="10">环形：n 位→n 状态；扭环：n 位→2n 状态，译码更简单无毛刺</text>
+</svg>

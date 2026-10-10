@@ -1,0 +1,44 @@
+{
+  "chapterId": "2.2",
+  "phase": 2,
+  "slug": "seq-shift-reg",
+  "title": "时序逻辑与移位寄存器",
+  "summary": "D 触发器与非阻塞赋值、串入并出移位寄存器、8 位流水灯（节拍计数 50MHz×250ms=12.5M/24bit）、按键双向切换，以及环形/扭环计数器。",
+  "doc": "docs/phase2/ch2-seq-shift.md",
+  "code": [
+    {"file": "code/phase2/shift_reg8.v", "type": "verilog", "role": "synthesizable", "title": "shift_reg8.v — 8 位移位寄存器（SIPO）"},
+    {"file": "code/phase2/tb_shift_reg8.v", "type": "verilog", "role": "testbench", "title": "tb_shift_reg8.v — 串入并出自检"},
+    {"file": "code/phase2/water_led.v", "type": "verilog", "role": "synthesizable", "title": "water_led.v — 8 位流水灯"},
+    {"file": "code/phase2/water_led_dir.v", "type": "verilog", "role": "synthesizable", "title": "water_led_dir.v — 按键双向流水灯（内置同步+边沿检测）"},
+    {"file": "code/phase2/tb_water_led_dir.v", "type": "verilog", "role": "testbench", "title": "tb_water_led_dir.v — 方向切换自检"}
+  ],
+  "diagrams": [
+    {"file": "assets/phase2/dff-structure.svg", "title": "D 触发器结构与时序", "caption": "每个 clk 上升沿把 D 锁存到 Q。"},
+    {"file": "assets/phase2/shift-reg-timing.svg", "title": "移位寄存器时序", "caption": "8 级触发器级联，每个时钟沿整体右移一位。"},
+    {"file": "assets/phase2/ring-vs-johnson.svg", "title": "环形 vs 扭环计数波形", "caption": "环形 n 位→n 状态；扭环 n 位→2n 状态且相邻仅变一位。"}
+  ],
+  "tools": [
+    {"name": "AMD Vivado ML Edition 下载", "url": "https://www.xilinx.com/support/download.html", "required": true, "note": "免费 ML Standard 版即可；访问日期 2026-10。"},
+    {"name": "通用引脚约束模板 fpga_common.xdc", "url": "../code/common/fpga_common.xdc", "required": true, "note": "相对本仓库；按开发板官方原理图替换 PACKAGE_PIN。"}
+  ],
+  "tasks": [
+    {"id": "task-2-2-1", "text": "实现 8 位流水灯（跑马灯）效果"},
+    {"id": "task-2-2-2", "text": "实现双向流水灯，按键切换方向"}
+  ],
+  "cards": [
+    {"q": "D 触发器在 Verilog 里怎么写？", "a": "always @(posedge clk or negedge rst_n)，复位时赋初值，否则 q<=d；只在时钟上升沿更新。", "tags": ["D触发器", "时序"]},
+    {"q": "时序逻辑为什么用非阻塞赋值 <=？", "a": "<= 描述时钟沿到来时所有寄存器并行更新，避免顺序赋值带来的意外；组合逻辑才用 =。", "tags": ["非阻塞", "赋值"]},
+    {"q": "移位寄存器 q<={q[6:0],sin} 的效果？", "a": "每个时钟沿所有位右挪一格，sin 进入最低位；WIDTH 个时钟后串行位在并行口同时出现。", "tags": ["移位寄存器", "SIPO"]},
+    {"q": "50MHz、每步 250ms，节拍计数器数多少？", "a": "50,000,000×0.25=12,500,000 个时钟。", "tags": ["计算", "流水灯"]},
+    {"q": "数到 12,500,000 需要几位计数器？", "a": "2^23=8.4M 不够，2^24=16.7M 够，故 24 位 reg [23:0]。", "tags": ["位宽", "计算"]},
+    {"q": "循环左移一位怎么写？", "a": "led <= {led[6:0], led[7]}；把最高位接到最低位形成环。", "tags": ["移位", "流水灯"]},
+    {"q": "环形计数器和扭环(约翰逊)计数器的区别？", "a": "环形把最高位反馈回输入，n 位 n 状态；扭环把取反的最高位反馈，n 位 2n 状态，相邻仅变一位。", "tags": ["环形", "扭环"]},
+    {"q": "两级同步在这里起什么作用？", "a": "把异步按键经两个触发器同步到时钟域，减少跨域亚稳态概率；完整消抖见 2.3。", "tags": ["同步", "跨时钟域"]}
+  ],
+  "quiz": [
+    {"q": "D 触发器更新输出的时刻是？", "options": ["任何时刻", "clk 上升沿", "clk 下降沿", "复位时"], "answer": 1, "explain": "always @(posedge clk) 只在上升沿把 d 锁存到 q。"},
+    {"q": "移位寄存器 q<={q[6:0],sin} 经过 8 个时钟后？", "options": ["sin 到达最高位并行输出", "全部清零", "sin 还在最低位", "输出保持不变"], "answer": 0, "explain": "每沿右移一位，8 沿后最先移入的位到达最高位，可并行读出。"},
+    {"q": "50MHz、250ms 一拍，节拍计数器满分值？", "options": ["12,500,000", "50,000,000", "1,250,000", "25,000"], "answer": 0, "explain": "50e6×0.25=12,500,000。"},
+    {"q": "扭环(约翰逊)计数器 n 位产生多少状态？", "options": ["n", "2n", "2^n", "n/2"], "answer": 1, "explain": "取反反馈使状态数翻倍为 2n，且相邻状态仅一位翻转。"}
+  ]
+}
