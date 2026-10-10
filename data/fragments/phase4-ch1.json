@@ -1,0 +1,46 @@
+{
+  "chapterId": "4.1",
+  "phase": 4,
+  "slug": "ip-clock-mgmt",
+  "title": "IP 核调用与时钟管理",
+  "summary": "IP 核分类(软/硬/加密)、PLL/MMCM 内部原理(PFD/电荷泵/VCO/倍分频/移相)、时钟树与 BUFG、多时钟域与 CDC 概念引入；纯 RTL 分频模型 + Clocking Wizard IP 上板步骤。",
+  "doc": "docs/phase4/ch1-ip-clock-mgmt.md",
+  "code": [
+    {"file": "code/phase4/clk_divider.v", "type": "verilog", "role": "synthesizable", "title": "clk_divider.v — clk_div_even(偶数50%分频) + clk_div_tick(使能分频)"},
+    {"file": "code/phase4/tb_clk_divider.v", "type": "verilog", "role": "testbench", "title": "tb_clk_divider.v — 测量分频周期自检"},
+    {"file": "code/phase4/multi_tick_led_top.v", "type": "verilog", "role": "synthesizable", "title": "multi_tick_led_top.v — 三种节奏 tick 驱动三盏 LED"},
+    {"file": "code/phase4/tb_multi_tick_led_top.v", "type": "verilog", "role": "testbench", "title": "tb_multi_tick_led_top.v — 三灯翻转间隔自检"}
+  ],
+  "diagrams": [
+    {"file": "assets/phase4/pll_mmcm_internal.svg", "title": "PLL/MMCM 内部结构", "caption": "PFD→电荷泵→LPF→VCO→输出分频，反馈分频锁定；MMCM 多出相位微调。"},
+    {"file": "assets/phase4/clock_tree.svg", "title": "FPGA 时钟树", "caption": "晶振→IBUF→MMCM→BUFG→全局时钟树→触发器，保证低 skew。"},
+    {"file": "assets/phase4/multi_clock_domain.svg", "title": "多时钟域与 CDC 框图", "caption": "时钟域 A 与 B 之间经 CDC（两级同步/异步 FIFO）通信。"}
+  ],
+  "tools": [
+    {"name": "PG065 Clocking Wizard Product Guide (v6.0)", "url": "https://docs.amd.com/v/u/en-US/pg065-clocking-wizard", "required": true, "note": "访问日期 2026-10-10；MMCM/PLL IP 配置手册。"},
+    {"name": "Clocking Wizard 产品页", "url": "https://www.amd.com/en/products/adaptive-socs-and-fpgas/intellectual-property/clocking_wizard.html", "required": false, "note": "访问日期 2026-10-10。"},
+    {"name": "通用引脚约束模板 fpga_common.xdc", "url": "../code/common/fpga_common.xdc", "required": true, "note": "相对本仓库；create_clock 主时钟约束模板。"}
+  ],
+  "tasks": [
+    {"id": "task-4-1-1", "text": "调用 PLL/MMCM (Clocking Wizard) IP 生成多路不同频率时钟"},
+    {"id": "task-4-1-2", "text": "用不同频率时钟（或使能）驱动不同 LED 以不同频率闪烁"}
+  ],
+  "cards": [
+    {"q": "FPGA 的 IP 核分哪几类？", "a": "软核(用逻辑实现可综合，如 FIFO/FIR)、硬核(芯片固化硅电路如 Zynq ARM/SerDes)、加密核(只给网表保护算法)。", "tags": ["IP核"]},
+    {"q": "PLL 由哪几部分组成？", "a": "PFD 鉴频鉴相器、电荷泵 CP、环路滤波 LPF、压控振荡器 VCO，外加反馈分频 N；锁定后 f_vco/N = f_in。", "tags": ["PLL", "原理"]},
+    {"q": "MMCM 比 PLL 多了什么能力？", "a": "MMCM 在 PLL 倍/分频之外，还能对每路输出做相位调整(移相)和占空比校正，用于补偿布线延迟、对齐多路时钟。", "tags": ["MMCM", "移相"]},
+    {"q": "什么是抖动 jitter？", "a": "时钟沿位置的随机微小晃动。PLL 锁相输出抖动远小于计数器手动分频；用普通布线跑分频时钟抖动/skew 都大。", "tags": ["抖动"]},
+    {"q": "时钟为什么必须走 BUFG 全局时钟网络？", "a": "BUFG 专用时钟树到达各触发器延迟小、偏斜 skew 可控；用普通逻辑布线跑时钟会 skew 大、时序失败。", "tags": ["时钟树", "BUFG"]},
+    {"q": "单 bit 信号跨时钟域怎么处理？", "a": "用两级触发器同步器打两拍，避免采样到亚稳态；多 bit 数据总线不能各自同步，要用异步 FIFO/格雷码。", "tags": ["CDC", "亚稳态"]},
+    {"q": "慢节拍（LED 闪烁）推荐用真分频时钟还是使能？", "a": "单时钟域里推荐使能分频(clk_div_tick)+原时钟打拍，不产生新时钟，最省资源且无时序风险；真多路时钟才用 MMCM IP。", "tags": ["分频", "最佳实践"]},
+    {"q": "主时钟 XDC 约束怎么写？", "a": "create_clock -period 20.000 -name clk_in1 [get_ports clk_in1]，50MHz 对应周期 20ns；IP 输出时钟由 generated clock 自动生成。", "tags": ["XDC", "约束"]},
+    {"q": "Clocking Wizard 输出的 locked 信号有什么用？", "a": "locked 拉高表示 MMCM 已锁定、时钟稳定；下游应在 locked 前保持复位，通常 rst = ~locked | 外部复位。", "tags": ["ClockingWizard", "复位"]},
+    {"q": "为什么本仓库的纯 RTL 分频不能直接当多路时钟上板？", "a": "纯 RTL 计数器走普通布线、skew 大、累积抖动；MMCM 是 Xilinx 专用原语。上板生成多路时钟必须用 Clocking Wizard IP 并在真实 Vivado 综合验证。", "tags": ["RTL", "上板"]}
+  ],
+  "quiz": [
+    {"q": "PLL 锁定后，VCO 频率 f_vco 与输入 f_in 的关系？", "options": ["f_vco = f_in / N", "f_vco = N × f_in", "f_vco = f_in", "f_vco = 2×f_in"], "answer": 1, "explain": "反馈分频 N 使 PFD 比较 f_vco/N 与 f_in，锁定后相等，故 f_vco = N×f_in。"},
+    {"q": "MMCM 相对 PLL 的核心增强是？", "options": ["能省更多 LUT", "可对输出做相位/占空比调整", "不需要晶振", "只能分频不能倍频"], "answer": 1, "explain": "MMCM 在倍/分频外提供相位移动与占空比校正。"},
+    {"q": "时钟信号应走哪种网络？", "options": ["普通布线", "BUFG 全局时钟缓冲", "任意连线", "BRAM"], "answer": 1, "explain": "走 BUFG 专用时钟树才能把 skew 控到最小。"},
+    {"q": "50MHz 主时钟的 create_clock 周期是？", "options": ["5ns", "10ns", "20ns", "50ns"], "answer": 2, "explain": "周期 = 1/f = 1/50MHz = 20ns。"}
+  ]
+}

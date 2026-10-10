@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360" font-family="Consolas,Menlo,monospace">
+  <rect width="900" height="360" fill="#0d1420"/>
+  <text x="20" y="30" fill="#22d3ee" font-size="18" font-weight="bold">FPGA 时钟树：从晶振到触发器</text>
+
+  <!-- board osc -->
+  <rect x="30" y="150" width="110" height="60" rx="6" fill="#16233a" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="45" y="175" fill="#e2e8f0" font-size="12">板载晶振</text>
+  <text x="45" y="195" fill="#94a3b8" font-size="10">50MHz 接引脚</text>
+
+  <!-- IBUF -->
+  <rect x="190" y="150" width="90" height="60" rx="6" fill="#16233a" stroke="#22d3ee" stroke-width="1.5"/>
+  <text x="205" y="175" fill="#e2e8f0" font-size="12">IBUF</text>
+  <text x="200" y="195" fill="#94a3b8" font-size="10">输入缓冲</text>
+
+  <!-- MMCM -->
+  <rect x="330" y="140" width="130" height="80" rx="6" fill="#1a1430" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="350" y="170" fill="#e2e8f0" font-size="13">MMCM/PLL</text>
+  <text x="345" y="192" fill="#94a3b8" font-size="10">倍频/分频/移相</text>
+
+  <!-- BUFG -->
+  <rect x="510" y="150" width="90" height="60" rx="6" fill="#16233a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="525" y="175" fill="#e2e8f0" font-size="12">BUFG</text>
+  <text x="518" y="195" fill="#94a3b8" font-size="10">全局时钟缓冲</text>
+
+  <line x1="140" y1="180" x2="190" y2="180" stroke="#cbd5e1" stroke-width="1.5" marker-end="url(#b)"/>
+  <line x1="280" y1="180" x2="330" y2="180" stroke="#cbd5e1" stroke-width="1.5" marker-end="url(#b)"/>
+  <line x1="460" y1="180" x2="510" y2="180" stroke="#cbd5e1" stroke-width="1.5" marker-end="url(#b)"/>
+
+  <!-- clock routing to flops -->
+  <path d="M600 180 L660 180" stroke="#34d399" stroke-width="1.5"/>
+  <path d="M660 120 L660 260" stroke="#34d399" stroke-width="1.5"/>
+  <line x1="660" y1="120" x2="720" y2="120" stroke="#34d399" stroke-width="1.5" marker-end="url(#b)"/>
+  <line x1="660" y1="180" x2="720" y2="180" stroke="#34d399" stroke-width="1.5" marker-end="url(#b)"/>
+  <line x1="660" y1="260" x2="720" y2="260" stroke="#34d399" stroke-width="1.5" marker-end="url(#b)"/>
+
+  <rect x="720" y="100" width="90" height="40" rx="4" fill="#16233a" stroke="#475569"/>
+  <text x="735" y="125" fill="#e2e8f0" font-size="12">触发器</text>
+  <rect x="720" y="160" width="90" height="40" rx="4" fill="#16233a" stroke="#475569"/>
+  <text x="735" y="185" fill="#e2e8f0" font-size="12">触发器</text>
+  <rect x="720" y="240" width="90" height="40" rx="4" fill="#16233a" stroke="#475569"/>
+  <text x="735" y="265" fill="#e2e8f0" font-size="12">触发器</text>
+
+  <text x="30" y="320" fill="#94a3b8" font-size="12">关键点：时钟必须走专用全局时钟网络(BUFG)，到达每个触发器的延迟/偏斜(skew)才小且可控。</text>
+  <text x="30" y="342" fill="#94a3b8" font-size="12">用普通布线跑"分频出来的时钟"会 skew 大、易时序失败——这就是多路时钟要用 MMCM+BUFG 的原因。</text>
+
+  <defs>
+    <marker id="b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#cbd5e1"/>
+    </marker>
+  </defs>
+</svg>
