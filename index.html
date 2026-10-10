@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FPGA 知识系统 · 从点灯到造处理器</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b1220'/%3E%3Crect x='7' y='7' width='8' height='8' fill='%2322d3ee'/%3E%3Crect x='17' y='7' width='8' height='8' fill='%233b82f6'/%3E%3Crect x='7' y='17' width='8' height='8' fill='%233b82f6'/%3E%3Crect x='17' y='17' width='8' height='8' fill='%2322d3ee'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#0b1220; --card:#111a2e; --card2:#0e1730; --line:#1e2c4a;
+  --txt:#e6edf7; --muted:#93a4c0; --cyan:#22d3ee; --blue:#3b82f6;
+  --green:#34d399; --amber:#fbbf24; --red:#f87171;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:radial-gradient(1200px 600px at 50% -10%,#14224a 0%,var(--bg) 60%);
+  color:var(--txt);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",Roboto,system-ui,sans-serif;
+  line-height:1.65; min-height:100vh;
+}
+.wrap{max-width:1080px; margin:0 auto; padding:24px 16px 80px;}
+header.hero{text-align:center; padding:18px 0 8px;}
+header.hero h1{
+  font-size:30px; margin:0 0 6px; font-weight:800;
+  background:linear-gradient(90deg,#7dd3fc,#22d3ee 50%,#60a5fa);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+header.hero p{color:var(--muted); margin:0; font-size:14px;}
+.card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px; margin:16px 0;
+  box-shadow:0 6px 24px rgba(0,0,0,.25);}
+.row{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;}
+.bar{height:14px; background:#0a1122; border-radius:999px; overflow:hidden; border:1px solid var(--line);}
+.bar > i{display:block; height:100%; width:0; border-radius:999px;
+  background:linear-gradient(90deg,var(--blue),var(--cyan)); transition:width .4s;}
+.big{font-size:22px; font-weight:800; color:var(--cyan);}
+.badges{display:grid; grid-template-columns:repeat(5,1fr); gap:10px;}
+.badge{text-align:center; padding:10px 4px; border-radius:10px; background:var(--card2); border:1px solid var(--line);
+  filter:grayscale(1); opacity:.45; transition:all .3s;}
+.badge .emo{font-size:26px;}
+.badge .nm{font-size:12px; margin-top:2px;}
+.badge .ds{font-size:11px; color:var(--muted);}
+.badge.unlocked{filter:grayscale(0); opacity:1; box-shadow:0 0 16px rgba(34,211,238,.35); border-color:var(--cyan);}
+.controls{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin:10px 0;}
+button.btn{background:#16223e; color:var(--txt); border:1px solid var(--line); border-radius:9px;
+  padding:8px 14px; cursor:pointer; font-size:14px; transition:.15s;}
+button.btn:hover{background:#1d2c4d; border-color:var(--blue);}
+button.btn.danger:hover{background:#3a1722; border-color:var(--red); color:#fecaca;}
+button.btn.primary{background:linear-gradient(90deg,var(--blue),var(--cyan)); border:none; color:#06121f; font-weight:700;}
+/* phase */
+.phase{background:var(--card); border:1px solid var(--line); border-radius:14px; margin:14px 0; overflow:hidden;}
+.phase-head{display:flex; justify-content:space-between; align-items:center; padding:16px 18px; cursor:pointer; user-select:none;}
+.phase-head:hover{background:#13203c;}
+.phase-head .t{font-size:18px; font-weight:700;}
+.phase-head .d{font-size:12px; color:var(--muted);}
+.phase-head .arrow{color:var(--muted); transition:transform .3s;}
+.phase.open .phase-head .arrow{transform:rotate(180deg);}
+.phase-body{max-height:0; overflow:hidden; transition:max-height .45s ease;}
+.phase.open .phase-body{max-height:20000px;}
+.chapter{background:var(--card2); border:1px solid var(--line); border-radius:12px; margin:12px 14px; padding:16px;}
+.chapter h4{margin:0 0 4px; font-size:17px; color:#7dd3fc;}
+.chapter .sum{color:var(--muted); font-size:13px; margin:0 0 10px;}
+.doc p{margin:8px 0;} .doc pre{background:#081020; border:1px solid var(--line); border-radius:8px; padding:10px; overflow:auto;}
+.doc code{font-family:ui-monospace,"Cascadia Code",Consolas,monospace; font-size:13px;}
+.doc table{border-collapse:collapse; width:100%; font-size:13px; margin:8px 0;}
+.doc th,.doc td{border:1px solid var(--line); padding:6px 8px; text-align:left;}
+.doc a{color:#7dd3fc;}
+/* code tabs */
+.codeblock{margin:10px 0;}
+.tabs{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:-1px;}
+.tab{font-size:12px; padding:5px 10px; border:1px solid var(--line); border-bottom:none; border-radius:8px 8px 0 0;
+  background:#0c1630; color:var(--muted); cursor:pointer;}
+.tab.active{background:#081020; color:var(--cyan); border-color:var(--cyan);}
+pre.code{background:#081020; border:1px solid var(--cyan); border-radius:0 8px 8px 8px; padding:12px; overflow:auto;
+  font-family:ui-monospace,"Cascadia Code",Consolas,monospace; font-size:13px; line-height:1.5; margin:0;}
+.tok-k{color:#7dd3fc;} .tok-s{color:#fbbf24;} .tok-c{color:#5b6b8c; font-style:italic;} .tok-n{color:#f0abfc;}
+/* diagrams */
+.diagram{margin:10px 0; text-align:center;}
+.diagram svg{max-width:100%; height:auto; border:1px solid var(--line); border-radius:10px; background:#0d1420;}
+.diagram .cap{font-size:12px; color:var(--muted); margin-top:4px;}
+.tools{display:flex; flex-wrap:wrap; gap:8px; margin:10px 0;}
+.tools a{font-size:12px; background:#10203f; border:1px solid var(--line); color:#9fd8ff; text-decoration:none;
+  padding:5px 10px; border-radius:8px;}
+.tools a:hover{border-color:var(--cyan);}
+.tools .req{font-size:10px; color:var(--amber); margin-left:4px;}
+/* tasks */
+.task{display:flex; align-items:center; gap:10px; padding:6px 8px; border-radius:8px; cursor:pointer;}
+.task:hover{background:#152242;}
+.task input{width:18px; height:18px; accent-color:var(--cyan);}
+.task.done label{text-decoration:line-through; color:var(--green);}
+/* quiz */
+.quiz{border:1px dashed var(--line); border-radius:10px; padding:10px; margin:10px 0; background:#0b1530;}
+.quiz .q{font-weight:600; margin-bottom:8px;}
+.quiz .opt{display:block; padding:6px 10px; border:1px solid var(--line); border-radius:8px; margin:5px 0; cursor:pointer; font-size:14px;}
+.quiz .opt:hover{border-color:var(--blue);}
+.quiz .opt.right{background:rgba(52,211,153,.15); border-color:var(--green);}
+.quiz .opt.wrong{background:rgba(248,113,113,.15); border-color:var(--red);}
+.quiz .exp{font-size:13px; color:var(--amber); margin-top:6px; display:none;}
+.quid{font-size:11px; color:var(--muted);}
+/* AI assistant */
+#aiFab{position:fixed; right:20px; bottom:20px; width:58px; height:58px; border-radius:50%; border:none; cursor:pointer;
+  background:linear-gradient(135deg,var(--blue),var(--cyan)); color:#06121f; font-size:22px; box-shadow:0 8px 24px rgba(34,211,238,.4);}
+#aiPanel{position:fixed; right:20px; bottom:90px; width:min(380px,92vw); height:480px; max-height:70vh;
+  background:#0e1830; border:1px solid var(--line); border-radius:14px; display:none; flex-direction:column; overflow:hidden;
+  box-shadow:0 12px 40px rgba(0,0,0,.5); z-index:50;}
+#aiPanel.open{display:flex;}
+#aiPanel .ph{padding:10px 12px; background:#16223e; display:flex; justify-content:space-between; align-items:center;}
+#aiMsgs{flex:1; overflow-y:auto; padding:10px; font-size:13px;}
+.msg{margin:6px 0; padding:8px 10px; border-radius:10px; max-width:92%; white-space:pre-wrap;}
+.msg.ai{background:#132244;} .msg.me{background:#1d3358; margin-left:auto;}
+.msg .src{display:block; font-size:11px; color:var(--cyan); margin-top:4px;}
+#aiInputRow{display:flex; gap:6px; padding:8px; border-top:1px solid var(--line);}
+#aiInput{flex:1; background:#0a1226; border:1px solid var(--line); color:var(--txt); border-radius:8px; padding:8px;}
+#aiSettings{position:fixed; right:20px; bottom:90px; width:min(360px,92vw); background:#0e1830; border:1px solid var(--line);
+  border-radius:14px; padding:14px; display:none; z-index:60;}
+#aiSettings.open{display:block;}
+#aiSettings label{font-size:12px; color:var(--muted); display:block; margin:8px 0 3px;}
+#aiSettings input{width:100%; background:#0a1226; border:1px solid var(--line); color:var(--txt); border-radius:8px; padding:7px;}
+.presets{display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;}
+footer{text-align:center; color:var(--muted); font-size:12px; margin-top:30px;}
+@media (max-width:640px){
+  .badges{grid-template-columns:repeat(2,1fr);}
+  header.hero h1{font-size:23px;}
+  .wrap{padding:14px 10px 90px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <h1>FPGA 知识系统</h1>
+    <p>从点灯到造处理器 · Xilinx/AMD Vivado · 离线自包含 · 项目驱动</p>
+  </header>
+
+  <div class="card">
+    <div class="row">
+      <span style="font-weight:700;">总学习进度</span>
+      <span id="total-progress-text" class="big">0%</span>
+    </div>
+    <div class="bar" style="margin-top:8px;"><i id="total-progress-bar"></i></div>
+  </div>
+
+  <div class="card">
+    <div style="font-weight:700; margin-bottom:10px;">成就徽章</div>
+    <div class="badges" id="badges"></div>
+  </div>
+
+  <div class="controls">
+    <button class="btn primary" id="btnExpandAll">展开全部</button>
+    <button class="btn" id="btnCollapseAll">折叠全部</button>
+    <button class="btn danger" id="btnReset">重置进度</button>
+  </div>
+
+  <main id="app"></main>
+
+  <footer>
+    <p>FPGA 知识系统 · 双击 index.html 即可使用，无需服务器、无需联网</p>
+    <p>进度保存在浏览器本地（localStorage）· AI 助教默认离线检索，可在设置里填 API Key 在线增强</p>
+  </footer>
+</div>
+
+<button id="aiFab" title="AI 助教">🤖</button>
+<div id="aiPanel">
+  <div class="ph">
+    <strong>AI 助教</strong>
+    <span>
+      <button class="btn" id="btnQuiz" style="padding:4px 8px;font-size:12px;">抽一题</button>
+      <button class="btn" id="btnSetting" style="padding:4px 8px;font-size:12px;">设置</button>
+    </span>
+  </div>
+  <div id="aiMsgs"></div>
+  <div id="aiInputRow">
+    <input id="aiInput" placeholder="问我 FPGA 问题，如：计数器位宽怎么算？">
+    <button class="btn primary" id="aiSend">发送</button>
+  </div>
+</div>
+<div id="aiSettings">
+  <strong>在线增强设置（OpenAI 兼容）</strong>
+  <label>Base URL</label><input id="cfgBase" placeholder="https://api.deepseek.com">
+  <label>API Key（仅存本机浏览器）</label><input id="cfgKey" type="password" placeholder="sk-...">
+  <label>Model</label><input id="cfgModel" placeholder="deepseek-chat">
+  <div class="presets">
+    <button class="btn" data-base="https://api.deepseek.com" data-model="deepseek-chat">DeepSeek</button>
+    <button class="btn" data-base="https://ark.cn-beijing.volces.com/api/v3" data-model="doubao-pro">豆包(方舟)</button>
+    <button class="btn" data-base="https://api.openai.com/v1" data-model="gpt-4o-mini">OpenAI</button>
+  </div>
+  <div class="controls" style="margin:12px 0 0;">
+    <button class="btn primary" id="cfgSave">保存</button>
+    <button class="btn" id="cfgClose">关闭</button>
+  </div>
+</div>
+
+<script>
+const KB = {"meta": {"title": "FPGA 知识系统", "vendor": "Xilinx/AMD Vivado", "selfContained": true}, "chapters": [{"chapterId": "1.1", "phase": 1, "slug": "fpga-basics", "title": "FPGA 基础与环境搭建", "summary": "FPGA 本质（LUT/FF/BRAM/布线）、并行与串行的区别、开发 7 步流程、Vivado 安装与空工程、通用板卡介绍。", "doc": "docs/phase1/ch1-fpga-basics.md", "code": [], "diagrams": [{"file": "assets/phase1/fpga-vs-cpu.svg", "title": "CPU 串行 vs FPGA 并行", "caption": "同一时刻 CPU 只执行一条指令，FPGA 内部多块电路同时工作。", "svgRaw": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 760 300\" font-family=\"system-ui,sans-serif\" font-size=\"13\">\n  <rect x=\"0\" y=\"0\" width=\"760\" height=\"300\" fill=\"#0d1420\"/>\n  <text x=\"190\" y=\"26\" fill=\"#7dd3fc\" text-anchor=\"middle\" font-size=\"15\" font-weight=\"bold\">CPU：串行（一个大厨一口锅）<\/text>\n  <text x=\"570\" y=\"26\" fill=\"#7dd3fc\" text-anchor=\"middle\" font-size=\"15\" font-weight=\"bold\">FPGA：并行（多块电路同时通电）<\/text>\n  <!-- CPU side -->\n  <rect x=\"120\" y=\"50\" width=\"140\" height=\"40\" rx=\"6\" fill=\"#1e293b\" stroke=\"#475569\"/>\n  <text x=\"190\" y=\"75\" fill=\"#e2e8f0\" text-anchor=\"middle\">指令1<\/text>\n  <rect x=\"120\" y=\"100\" width=\"140\" height=\"40\" rx=\"6\" fill=\"#1e293b\" stroke=\"#334155\"/>\n  <text x=\"190\" y=\"125\" fill=\"#64748b\" text-anchor=\"middle\">指令2<\/text>\n  <rect x=\"120\" y=\"150\" width=\"140\" height=\"40\" rx=\"6\" fill=\"#1e293b\" stroke=\"#334155\"/>\n  <text x=\"190\" y=\"175\" fill=\"#64748b\" text-anchor=\"middle\">指令3<\/text>\n  <rect x=\"120\" y=\"200\" width=\"140\" height=\"40\" rx=\"6\" fill=\"#1e293b\" stroke=\"#334155\"/>\n  <text x=\"190\" y=\"225\" fill=\"#64748b\" text-anchor=\"middle\">指令4<\/text>\n  <line x1=\"190\" y1=\"90\" x2=\"190\" y2=\"100\" stroke=\"#f59e0b\" stroke-width=\"2\" marker-end=\"url(#ar)\"/>\n  <line x1=\"190\" y1=\"140\" x2=\"190\" y2=\"150\" stroke=\"#475569\" stroke-width=\"2\"/>\n  <line x1=\"190\" y1=\"190\" x2=\"190\" y2=\"200\" stroke=\"#475569\" stroke-width=\"2\"/>\n  <text x=\"190\" y=\"268\" fill=\"#94a3b8\" text-anchor=\"middle\">同一时刻只执行一条，靠频率堆吞吐<\/text>\n  <!-- FPGA side -->\n  <g>\n    <rect x=\"470\" y=\"55\" width=\"90\" height=\"55\" rx=\"6\" fill=\"#083344\" stroke=\"#22d3ee\"/>\n    <text x=\"515\" y=\"80\" fill=\"#a5f3fc\" text-anchor=\"middle\">LUT/FF<\/text>\n    <text x=\"515\" y=\"98\" fill=\"#67e8f9\" text-anchor=\"middle\" font-size=\"11\">模块A<\/text>\n    <rect x=\"590\" y=\"55\" width=\"90\" height=\"55\" rx=\"6\" fill=\"#083344\" stroke=\"#22d3ee\"/>\n    <text x=\"635\" y=\"80\" fill=\"#a5f3fc\" text-anchor=\"middle\">LUT/FF<\/text>\n    <text x=\"635\" y=\"98\" fill=\"#67e8f9\" text-anchor=\"middle\" font-size=\"11\">模块B<\/text>\n    <rect x=\"470\" y=\"150\" width=\"90\" height=\"55\" rx=\"6\" fill=\"#083344\" stroke=\"#22d3ee\"/>\n    <text x=\"515\" y=\"175\" fill=\"#a5f3fc\" text-anchor=\"middle\">LUT/FF<\/text>\n    <text x=\"515\" y=\"193\" fill=\"#67e8f9\" text-anchor=\"middle\" font-size=\"11\">模块C<\/text>\n    <rect x=\"590\" y=\"150\" width=\"90\" height=\"55\" rx=\"6\" fill=\"#083344\" stroke=\"#22d3ee\"/>\n    <text x=\"635\" y=\"175\" fill=\"#a5f3fc\" text-anchor=\"middle\">BRAM<\/text>\n    <text x=\"635\" y=\"193\" fill=\"#67e8f9\" text-anchor=\"middle\" font-size=\"11\">模块D<\/text>\n  <\/g>\n  <text x=\"570\" y=\"240\" fill=\"#94a3b8\" text-anchor=\"middle\">四块电路同时运行，互不等待<\/text>\n  <defs>\n    <marker id=\"ar\" markerWidth=\"8\" markerHeight=\"8\" refX=\"6\" refY=\"3\" orient=\"auto\">\n      <path d=\"M0,0 L6,3 L0,6 Z\" fill=\"#f59e0b\"/>\n    <\/marker>\n  <\/defs>\n<\/svg>\n"}, {"file": "assets/phase1/dev-flow.svg", "title": "FPGA 开发全流程 7 步", "caption": "从写 Verilog 到 JTAG 下载调试的完整链路。", "svgRaw": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 760 150\" font-family=\"system-ui,sans-serif\" font-size=\"12\">\n  <rect x=\"0\" y=\"0\" width=\"760\" height=\"150\" fill=\"#0d1420\"/>\n  <text x=\"380\" y=\"22\" fill=\"#7dd3fc\" text-anchor=\"middle\" font-size=\"14\" font-weight=\"bold\">FPGA 开发全流程（7 步）<\/text>\n  <g>\n    <rect x=\"15\" y=\"50\" width=\"90\" height=\"50\" rx=\"6\" fill=\"#083344\" stroke=\"#22d3ee\"/><text x=\"60\" y=\"72\" fill=\"#e0f2fe\" text-anchor=\"middle\">1 设计输入<\/text><text x=\"60\" y=\"90\" fill=\"#67e8f9\" text-anchor=\"middle\" font-size=\"10\">写Verilog<\/text>\n    <rect x=\"120\" y=\"50\" width=\"90\" height=\"50\" rx=\"6\" fill=\"#083344\" stroke=\"#22d3ee\"/><text x=\"165\" y=\"72\" fill=\"#e0f2fe\" text-anchor=\"middle\">2 功能仿真<\/text><text x=\"165\" y=\"90\" fill=\"#67e8f9\" text-anchor=\"middle\" font-size=\"10\">testbench<\/text>\n    <rect x=\"225\" y=\"50\" width=\"90\" height=\"50\" rx=\"6\" fill=\"#083344\" stroke=\"#22d3ee\"/><text x=\"270\" y=\"72\" fill=\"#e0f2fe\" text-anchor=\"middle\">3 综合<\/text><text x=\"270\" y=\"90\" fill=\"#67e8f9\" text-anchor=\"middle\" font-size=\"10\">门级网表<\/text>\n    <rect x=\"330\" y=\"50\" width=\"90\" height=\"50\" rx=\"6\" fill=\"#083344\" stroke=\"#22d3ee\"/><text x=\"375\" y=\"72\" fill=\"#e0f2fe\" text-anchor=\"middle\">4 实现<\/text><text x=\"375\" y=\"90\" fill=\"#67e8f9\" text-anchor=\"middle\" font-size=\"10\">布局布线<\/text>\n    <rect x=\"435\" y=\"50\" width=\"90\" height=\"50\" rx=\"6\" fill=\"#083344\" stroke=\"#22d3ee\"/><text x=\"480\" y=\"72\" fill=\"#e0f2fe\" text-anchor=\"middle\">5 时序约束<\/text><text x=\"480\" y=\"90\" fill=\"#67e8f9\" text-anchor=\"middle\" font-size=\"10\">建/保持裕量<\/text>\n    <rect x=\"540\" y=\"50\" width=\"90\" height=\"50\" rx=\"6\" fill=\"#083344\" stroke=\"#22d3ee\"/><text x=\"585\" y=\"72\" fill=\"#e0f2fe\" text-anchor=\"middle\">6 比特流<\/text><text x=\"585\" y=\"90\" fill=\"#67e8f9\" text-anchor=\"middle\" font-size=\"10\">.bit 文件<\/text>\n    <rect x=\"645\" y=\"50\" width=\"90\" height=\"50\" rx=\"6\" fill=\"#083344\" stroke=\"#f59e0b\"/><text x=\"690\" y=\"72\" fill=\"#fef3c7\" text-anchor=\"middle\">7 下载调试<\/text><text x=\"690\" y=\"90\" fill=\"#fcd34d\" text-anchor=\"middle\" font-size=\"10\">JTAG/ILA<\/text>\n  <\/g>\n  <g stroke=\"#475569\" stroke-width=\"2\">\n    <line x1=\"105\" y1=\"75\" x2=\"120\" y2=\"75\"/><line x1=\"210\" y1=\"75\" x2=\"225\" y2=\"75\"/>\n    <line x1=\"315\" y1=\"75\" x2=\"330\" y2=\"75\"/><line x1=\"420\" y1=\"75\" x2=\"435\" y2=\"75\"/>\n    <line x1=\"525\" y1=\"75\" x2=\"540\" y2=\"75\"/><line x1=\"630\" y1=\"75\" x2=\"645\" y2=\"75\"/>\n  <\/g>\n<\/svg>\n"}], "tools": [{"name": "AMD Vivado ML Edition 下载（2025.2）", "url": "https://www.xilinx.com/support/download.html", "required": true, "note": "免费 ML Standard 版即可，支持 Artix-7/Zynq。"}, {"name": "Vivado 授权说明（ML Standard 免 License）", "url": "https://www.amd.com/en/products/software/adaptive-socs-and-fpgas/licensing-faq.html", "required": true, "note": "2025.2 及更早 Standard 版无需 License。"}, {"name": "电缆/JTAG 驱动安装指南", "url": "https://digilent.com/reference/programmable-logic/guides/installing-vivado-and-vitis", "required": false, "note": "有开发板再装；纯仿真可略过。"}], "tasks": [{"id": "task-1-1-1", "text": "安装 Vivado（免费 ML Standard / WebPACK）"}, {"id": "task-1-1-2", "text": "创建第一个空工程，熟悉 Vivado 界面"}, {"id": "task-1-1-3", "text": "连接开发板并在 Hardware Manager 识别硬件"}], "cards": [{"q": "FPGA 内部主要由哪几类可编程资源构成？", "a": "LUT（查找表，实现组合逻辑）、FF（触发器，实现时序/记忆）、BRAM（块存储器）、可编程布线资源（开关矩阵互连）。", "tags": ["结构", "LUT", "FF"]}, {"q": "FPGA 与 CPU 执行方式的本质区别是什么？", "a": "CPU 串行执行指令，同一时刻只做一件事；FPGA 是硬件并行，例化的多个模块在硅片上同时独立运行，没有指令取指和串行流水线。", "tags": ["并行", "CPU"]}, {"q": "写 Verilog 为什么不是写顺序执行的程序？", "a": "Verilog 描述的是同时通电的电路，每个 always 块都是一块永远在工作的硬件；它描述结构与行为，不是按调用顺序运行的函数。", "tags": ["概念"]}, {"q": "FPGA 开发的 7 个步骤是什么？", "a": "设计输入→功能仿真→综合→实现(布局布线)→时序约束分析→生成比特流→JTAG 下载与调试。", "tags": ["流程"]}, {"q": "综合(Synthesis)和实现(Implementation)分别做什么？", "a": "综合把 Verilog 翻译成门级网表(LUT/FF)；实现再把网表映射到具体资源并做布局布线，决定每个逻辑放哪、用哪根线连。", "tags": ["综合", "实现"]}, {"q": "比特流(.bit)文件描述的是什么？", "a": "描述芯片内哪些可编程开关接通、每个 LUT 存什么真值表、触发器初值等；下载它等于把配置写进 FPGA。", "tags": ["比特流"]}, {"q": "Vivado 免费版叫什么？需要 License 吗？", "a": "Vivado ML Standard（原 WebPACK），对 Artix-7/Zynq 常用型号免费；2025.2 及更早版本无需 License。", "tags": ["Vivado", "License"]}, {"q": "没有开发板能不能学 FPGA？", "a": "可以。用 Vivado 内置 Simulator 跑 testbench 看波形即可完成前几阶段；引脚分配与下载等有硬件再做。", "tags": ["仿真", "入门"]}], "quiz": [{"q": "下面哪项最准确地描述了 FPGA 的并行特性？", "options": ["同一时钟下多个模块同时独立工作", "靠提高主频让指令跑更快", "只能串行处理一路数据", "必须装操作系统才能运行"], "answer": 0, "explain": "FPGA 例化的模块是真实并行电路，与 CPU 靠频率串行执行有本质区别。"}, {"q": "把 Verilog 变成门级网表的步骤叫？", "options": ["布局布线", "综合", "下载", "仿真"], "answer": 1, "explain": "综合(Synthesis)生成 LUT/FF 网表；布局布线属于后续的实现阶段。"}, {"q": "关于 Vivado 免费版，正确的是？", "options": ["必须购买 License 才能用", "ML Standard 对 Artix-7/Zynq 常用型号免费", "只能仿真不能下载", "只支持 Intel 器件"], "answer": 1, "explain": "ML Standard(原 WebPACK)免费，2025.2 及更早版本无需 License。"}, {"q": "LUT 在 FPGA 里主要用来？", "options": ["存储大量文件", "实现任意组合逻辑函数", "产生时钟", "驱动显示器"], "answer": 1, "explain": "LUT 本质是小 RAM，存真值表，输入一来直接查表得到组合逻辑输出。"}], "docHtml": "<h1>1.1 FPGA 基础与环境搭建<\/h1>\n<h2>什么是 FPGA<\/h2>\n<p>FPGA（Field Programmable Gate Array，现场可编程门阵列）是一种\"硬件可重构\"的数字集成电路。\n和你写的软件不同——软件是在一颗固定的 CPU 上<strong>一条一条串行执行指令<\/strong>；而 FPGA 是把你写的\n硬件描述（Verilog）直接\"烧\"成芯片内部真实存在的逻辑门、触发器和连线。你定义的每一块电路，\n在芯片里都是一块<strong>实实在在同时工作<\/strong>的物理电路。<\/p>\n<p>FPGA 内部主要由四类资源构成：<\/p>\n<ul>\n<li><strong>LUT（查找表）<\/strong>：实现组合逻辑。本质是一个小 RAM，把真值表存进去，输入一进来就直接查表得到输出，等价于任意组合逻辑函数。<\/li>\n<li><strong>FF（触发器/寄存器）<\/strong>：实现时序逻辑。在时钟沿保存一位状态，是\"记忆\"的基本单元。<\/li>\n<li><strong>BRAM（块存储器）<\/strong>：成块的高速存储，可当 FIFO、缓存、查表 ROM 用。<\/li>\n<li><strong>可编程布线资源<\/strong>：密密麻麻的开关矩阵，把 LUT、FF、BRAM 自由连起来，你写的模块之间的连线就落在这些布线上。<\/li>\n<\/ul>\n<h2>并行执行：FPGA 与 CPU 的本质区别<\/h2>\n<p>CPU 像一个\"只有一个大厨的餐厅\"：再忙也只能一口锅一口锅地炒菜，靠频率（GHz）硬堆吞吐。\nFPGA 像\"几百个厨师同时开火\"：你例化几个模块，它们就在硅片上<strong>各自独立、并行地运行<\/strong>，\n谁也不等谁。一个 50 MHz 的 FPGA 做并行数据搬运，延迟可以远低于 GHz 级 CPU，因为它没有指令取指、没有串行流水线、没有操作系统打扰。<\/p>\n<blockquote>\n<p>记住一句话：<strong>写 Verilog 不是在写\"按顺序执行的程序\"，而是在画\"同时通电的电路图\"。<\/strong>\n每个 <code>always<\/code> 块都是一块永远在通电工作的硬件，不是\"被调用才运行的函数\"。<\/p>\n<\/blockquote>\n<h2>FPGA 开发全流程（7 步）<\/h2>\n<ol>\n<li><strong>设计输入<\/strong>：用 Verilog 写 RTL（寄存器传输级）代码，描述你想要的电路。<\/li>\n<li><strong>功能仿真（可选但强烈建议）<\/strong>：写 testbench，在 Vivado Simulator 里先看波形，确认逻辑对。<\/li>\n<li><strong>综合（Synthesis）<\/strong>：Vivado 把你的 Verilog 翻译成门级电路（LUT/FF 网表）。<\/li>\n<li><strong>实现（Implementation）<\/strong>：先把网表映射到具体 LUT/FF（Translation/Mapping），再做布局布线（Place &amp; Route），决定每个逻辑放在芯片哪个位置、用哪根线连。<\/li>\n<li><strong>时序约束与分析<\/strong>：告诉工具时钟频率，工具算出能否跑稳；建立/保持时间裕量要为正。<\/li>\n<li><strong>生成比特流（Bitstream）<\/strong>：把布局布线结果打包成一个 <code>.bit<\/code> 文件，描述\"哪些开关接通、哪些 LUT 存什么真值表\"。<\/li>\n<li><strong>下载与调试<\/strong>：通过 JTAG 下载线把比特流灌进 FPGA，硬件随即按你的电路工作；用 ILA（在线逻辑分析仪）抓真实信号。<\/li>\n<\/ol>\n<h2>Vivado 安装与建空工程<\/h2>\n<ul>\n<li>下载 <strong>AMD Vivado ML Standard<\/strong>（免费、Artix-7/Zynq 无需 License），当前版本 2025.2。<\/li>\n<li>安装时勾选 Artix-7 / Zynq-7000 支持包与 <strong>Install Cable Drivers<\/strong>。<\/li>\n<li>新建工程：<code>Create Project -&gt; RTL Project -&gt; 选对芯片型号(如 XC7A10T fgg484) -&gt; 先不加任何代码<\/code>，得到一个空工程，熟悉 Flow Navigator（Project Manager / Synthesis / Implementation / Program）。<\/li>\n<\/ul>\n<h2>开发板与通用板卡说明<\/h2>\n<p>本系统不绑定具体板卡。通用 Artix-7/Zynq 板一般提供：板载晶振（多为 50 MHz）、复位/用户按键、若干 LED、USB-UART、数码管、VGA 等。\n具体引脚号以你板子的官方原理图/参考 XDC 为准，适配方法见 <code>docs/board-adaptation.md<\/code>，通用约束模板见 <code>code/common/fpga_common.xdc<\/code>。\n没有开发板也没关系：Vivado 内置仿真器可以先把后面所有实验用 testbench 跑通。<\/p>"}, {"chapterId": "1.2", "phase": 1, "slug": "hdl-blink", "title": "HDL 基础与第一个电路", "summary": "Verilog 模块结构、always 时钟触发、计数器与时钟分频计算（50MHz→1Hz 数到 25,000,000-1，25bit）、顶层与引脚分配。", "doc": "docs/phase1/ch2-hdl-blink.md", "code": [{"file": "code/phase1/led_blink.v", "type": "verilog", "role": "synthesizable", "title": "led_blink.v — 参数化 LED 闪烁（可综合）", "codeHtml": "//==============================================================================\n// led_blink.v  —  可综合：参数化 LED 闪烁\n// 目标器件：通用 Xilinx Artix-7 / Zynq（7 系列）\n//\n// 原理：用一个计数器对系统时钟 clk 计数，计满&quot;半周期&quot;就翻转一次 led。\n//   半周期时钟数 = CLK_FREQ_HZ / (2 * BLINK_HZ)\n//   例：50 MHz 时钟、1 Hz 翻转亮灭 =&gt; 半周期 = 25,000,000 个时钟\n//   计数器位宽 = ceil(log2(25,000,000)) = 25 bit（2^24=16.7M, 2^25=33.5M）\n// 复位：rst_n 低电平异步复位（开发板按键/上电常用低有效复位）。\n//==============================================================================\n`default_nettype none\n\nmodule led_blink #(\n    parameter integer CLK_FREQ_HZ = 50_000_000,  // 板载系统时钟频率(Hz)\n    parameter integer BLINK_HZ     = 1             // LED 亮灭翻转频率(Hz)\n)(\n    input  wire clk,        // 系统时钟\n    input  wire rst_n,     // 异步低电平复位\n    output reg  led        // 接板上 LED\n);\n\n    // 半个亮灭周期所需的时钟数\n    localparam integer HALF_COUNT = CLK_FREQ_HZ / (2*BLINK_HZ);\n    // 计数器位宽：保证能数到 HALF_COUNT-1（这里固定 25 bit 覆盖 50MHz-&gt;1Hz）\n    localparam integer CNT_W = 25;\n\n    reg [CNT_W-1:0] cnt;\n\n    always @(posedge clk or negedge rst_n) begin\n        if (!rst_n) begin\n            cnt &lt;= {CNT_W{1&#x27;b0}};\n            led &lt;= 1&#x27;b0;\n        end else if (cnt &gt;= HALF_COUNT - 1) begin\n            cnt &lt;= {CNT_W{1&#x27;b0}};   // 计满清零\n            led &lt;= ~led;            // 翻转 LED\n        end else begin\n            cnt &lt;= cnt + 1&#x27;b1;\n        end\n    end\n\nendmodule\n\n`default_nettype wire\n"}], "diagrams": [{"file": "assets/phase1/divider-timing.svg", "title": "计数器分频时序", "caption": "clk 上升沿 cnt 自增，计满 HALF_COUNT-1 翻转 led 并清零。", "svgRaw": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 760 220\" font-family=\"system-ui,sans-serif\" font-size=\"12\">\n  <rect x=\"0\" y=\"0\" width=\"760\" height=\"220\" fill=\"#0d1420\"/>\n  <text x=\"380\" y=\"20\" fill=\"#7dd3fc\" text-anchor=\"middle\" font-size=\"14\" font-weight=\"bold\">计数器分频时序（clk 上升沿 cnt+1，计满翻转 led）<\/text>\n  <!-- labels -->\n  <text x=\"40\" y=\"55\" fill=\"#94a3b8\">clk<\/text>\n  <text x=\"40\" y=\"115\" fill=\"#94a3b8\">cnt<\/text>\n  <text x=\"40\" y=\"185\" fill=\"#94a3b8\">led<\/text>\n  <!-- clk wave: 8 cycles -->\n  <polyline points=\"80,60 120,60 120,40 160,40 160,60 200,60 200,40 240,40 240,60 280,60 280,40 320,40 320,60 360,60 360,40 400,40 400,60 440,60 440,40 480,40 480,60 520,60 520,40 560,40 560,60 600,60 600,40 640,40 640,60 700,60\"\n    fill=\"none\" stroke=\"#22d3ee\" stroke-width=\"2\"/>\n  <!-- cnt staircase rising -->\n  <polyline points=\"80,150 120,150 120,140 160,140 160,130 200,130 200,120 240,120 240,110 280,110 280,100 320,100 320,90 360,90 360,80 400,80 400,150\"\n    fill=\"none\" stroke=\"#f59e0b\" stroke-width=\"2\"/>\n  <text x=\"410\" y=\"120\" fill=\"#fcd34d\" font-size=\"11\">cnt=HALF_COUNT-1 时清零<\/text>\n  <!-- led toggles -->\n  <polyline points=\"80,190 400,190 400,175 700,175\" fill=\"none\" stroke=\"#34d399\" stroke-width=\"2\"/>\n  <text x=\"520\" y=\"168\" fill=\"#6ee7b7\" font-size=\"11\">led 在 cnt 计满处翻转<\/text>\n  <!-- half period bracket -->\n  <line x1=\"80\" y1=\"205\" x2=\"400\" y2=\"205\" stroke=\"#64748b\" stroke-width=\"1\"/>\n  <text x=\"240\" y=\"218\" fill=\"#94a3b8\" text-anchor=\"middle\">半周期 = CLK_FREQ_HZ/(2*BLINK_HZ) = 25,000,000 个时钟<\/text>\n<\/svg>\n"}], "tools": [{"name": "通用引脚约束模板 fpga_common.xdc", "url": "../code/common/fpga_common.xdc", "required": true, "note": "相对本仓库；按开发板替换 PACKAGE_PIN。"}, {"name": "板级适配方法（board-adaptation.md）", "url": "../docs/board-adaptation.md", "required": true, "note": "如何找正点原子/野火板的参考引脚。"}], "tasks": [{"id": "task-1-2-1", "text": "编写 1 秒间隔的 LED 闪烁代码"}, {"id": "task-1-2-2", "text": "完成引脚分配并全编译工程"}, {"id": "task-1-2-3", "text": "下载到开发板，亲眼看到 LED 闪烁"}], "cards": [{"q": "Verilog 可综合模块的基本结构是？", "a": "module 名 + 端口列表(input/output) + 内部信号与 always/assign 描述，最后 endmodule。", "tags": ["语法", "模块"]}, {"q": "时序逻辑 always 块的标准敏感表怎么写？", "a": "always @(posedge clk or negedge rst_n)：时钟上升沿更新状态，异步低电平复位；这会被综合成触发器。", "tags": ["always", "时序"]}, {"q": "50MHz 时钟想让 LED 每秒翻转一次，计数器要数多少个时钟？", "a": "半周期计数 = 50,000,000 / (2*1) = 25,000,000；即数到 25,000,000-1 翻转一次。", "tags": ["分频", "计算"]}, {"q": "数到 25,000,000 需要多少位计数器？", "a": "2^24=16.7M 不够，2^25=33.5M 够，所以 25 位，即 reg [24:0]。", "tags": ["位宽", "计算"]}, {"q": "分频计数通用公式是什么？", "a": "半周期计数 = CLK_FREQ_HZ/(2*BLINK_HZ)；位宽 = ceil(log2(半周期计数))。", "tags": ["公式"]}, {"q": "output reg 里的 reg 一定是触发器吗？", "a": "不一定。reg 只是表示“在过程块(always)里被赋值”的变量；组合逻辑里的 reg 综合后是连线，时序逻辑里的才是触发器。", "tags": ["语法", "reg"]}, {"q": "引脚分配写在 Verilog 里吗？", "a": "不写在 Verilog 里，而写在 XDC 约束文件：create_clock 定时钟周期，PACKAGE_PIN 定引脚，IOSTANDARD 定电平。", "tags": ["XDC", "约束"]}, {"q": "异步复位在 always 块里怎么表达？", "a": "敏感表加 or negedge rst_n，块内先 if(!rst_n) 给寄存器赋初值，再写正常逻辑。", "tags": ["复位", "时序"]}], "quiz": [{"q": "50MHz 时钟、希望 LED 每 1 秒翻转一次，计数器满分值是？", "options": ["50,000,000", "25,000,000", "1,000,000", "50,000"], "answer": 1, "explain": "半周期 = 50MHz/(2*1Hz)=25,000,000 个时钟。"}, {"q": "为数到 25,000,000，计数器位宽至少是？", "options": ["24 位", "25 位", "26 位", "32 位"], "answer": 1, "explain": "2^24=16.7M<25M，2^25=33.5M>25M，故 25 位。"}, {"q": "下面哪个是正确的同步时序 always 块？", "options": ["always @(*) cnt=cnt+1", "always @(posedge clk or negedge rst_n)", "always cnt=cnt+1", "assign cnt=cnt+1"], "answer": 1, "explain": "时序逻辑要用时钟沿触发并带异步复位敏感表。"}, {"q": "引脚 PACKAGE_PIN 应写在？", "options": ["Verilog module 里", "XDC 约束文件", "C 代码里", "无需指定"], "answer": 1, "explain": "物理引脚与电平通过 XDC 约束指定，不写进 RTL。"}], "docHtml": "<h1>1.2 HDL 基础与第一个电路<\/h1>\n<h2>Verilog 模块结构<\/h2>\n<p>一个可综合的 Verilog 模块就像一颗芯片的外壳：有模块名、有对外端口（input/output）、内部是电路描述。基本骨架：<\/p>\n<pre><code class=\"language-verilog\">module 模块名 #(参数)(\n    input  wire clk,      // 输入\n    input  wire rst_n,    // 输入\n    output reg  led       // 输出\n);\n    // 内部信号与 always 块\nendmodule\n<\/code><\/pre>\n<ul>\n<li><code>input wire<\/code>：输入信号；<code>output reg<\/code>：在 <code>always<\/code> 块里赋值的输出要声明为 <code>reg<\/code>（注意：<code>reg<\/code> 不一定真是触发器，只是\"在过程块里被赋值的变量\"）。<\/li>\n<li>端口方向 <code>input/output/inout<\/code> 决定数据流向，综合后对应芯片引脚。<\/li>\n<\/ul>\n<h2>always 块与时钟触发<\/h2>\n<p>时序逻辑的标准写法是<strong>同步时序 always 块<\/strong>：<\/p>\n<pre><code class=\"language-verilog\">always @(posedge clk or negedge rst_n) begin\n    if (!rst_n)      cnt &lt;= 0;       // 异步复位\n    else if (...)    cnt &lt;= cnt + 1; // 时钟沿到来才更新\nend\n<\/code><\/pre>\n<p><code>@(posedge clk)<\/code> 表示\"只在 clk 上升沿动作\"——这会被综合成触发器，所有状态变化都发生在时钟沿，这就是时序电路的根基。<strong>组合逻辑<\/strong>用 <code>always @(*)<\/code> 或 <code>assign<\/code>；本阶段先把时序写对。<\/p>\n<h2>计数器与时钟分频原理<\/h2>\n<p>LED 以固定频率闪烁，本质是\"数够 N 个时钟就翻转一次 LED\"。<\/p>\n<ul>\n<li>板载时钟 50 MHz，即每秒 50,000,000 个时钟沿。<\/li>\n<li>想让 LED <strong>每秒翻转一次<\/strong>（亮 1 秒、灭 1 秒，周期 2 秒），那么两次翻转之间应隔\n  <code>50,000,000 / 2 = 25,000,000<\/code> 个时钟。<\/li>\n<li>所以计数器从 0 数到 <code>25,000,000 - 1<\/code>，计满就翻转 <code>led<\/code> 并清零。<\/li>\n<\/ul>\n<p><strong>计数器位宽推导<\/strong>：需要多少位才能数到 25,000,000？\n位宽 W 要满足 <code>2^W &gt;= 25,000,000<\/code>。\n<code>2^24 = 16,777,216<\/code>（不够），<code>2^25 = 33,554,432<\/code>（够），所以 <strong>W = 25 bit<\/strong>。\n代码里用 <code>reg [24:0] cnt<\/code>（共 25 位）。<\/p>\n<blockquote>\n<p>通用公式：半周期计数 = <code>CLK_FREQ_HZ / (2 * BLINK_HZ)<\/code>；位宽 = <code>ceil(log2(半周期计数))<\/code>。\n本仓库 <code>led_blink.v<\/code> 用参数 <code>CLK_FREQ_HZ / BLINK_HZ<\/code> 自动计算，换板子只需改参数。<\/p>\n<\/blockquote>\n<h2>顶层模块与引脚分配<\/h2>\n<p>写好的 <code>led_blink.v<\/code> 是一个可复用模块；真正上板要再写一个<strong>顶层模块<\/strong>把它的端口接到芯片引脚上。\n引脚分配不写在 Verilog 里，而写在 <strong>XDC 约束文件<\/strong>里：<code>create_clock<\/code> 定时钟周期，<code>PACKAGE_PIN<\/code> 定引脚号，<code>IOSTANDARD<\/code> 定电平（一般 <code>LVCMOS33<\/code>）。模板见 <code>code/common/fpga_common.xdc<\/code>，按你板子替换引脚号。<\/p>\n<h2>第一个实验：LED 闪烁<\/h2>\n<p>可综合代码 <code>led_blink.v<\/code>（参数化时钟与翻转间隔，带异步复位）。配合 1.3 的 testbench，先仿真看计数器波形，再做引脚分配、全编译、下载到板上看到 LED 每秒闪一次。<\/p>"}, {"chapterId": "1.3", "phase": 1, "slug": "simulation", "title": "仿真验证入门", "summary": "Testbench 结构、时钟激励生成、波形分析、行为仿真与时序仿真区别；为 led_blink 写完整 TB，进阶 PWM 呼吸灯。", "doc": "docs/phase1/ch3-simulation.md", "code": [{"file": "code/phase1/tb_led_blink.v", "type": "verilog", "role": "testbench", "title": "tb_led_blink.v — LED 闪烁测试平台", "codeHtml": "//==============================================================================\n// tb_led_blink.v  —  Testbench：led_blink 的行为仿真\n// 说明：\n//   * 产生 50 MHz 时钟（周期 20 ns）与上电复位脉冲。\n//   * 为了在仿真里&quot;几微秒&quot;就看到 LED 翻转，这里把 BLINK_HZ 调大到\n//     1,000,000（半周期=25 个时钟=500 ns）。上板时再用 BLINK_HZ=1。\n//   * $dumpvars 生成 VCD 波形；always@(led) 打印每次翻转时间，\n//     并在结束前判断是否至少发生 2 次翻转作为自检。\n//==============================================================================\n`timescale 1ns/1ps\n`default_nettype none\n\nmodule tb_led_blink;\n\n    // 50 MHz 时钟：周期 20 ns\n    localparam integer CLK_FREQ_HZ = 50_000_000;\n\n    reg  clk   = 1&#x27;b0;\n    reg  rst_n = 1&#x27;b0;\n    wire led;\n\n    // 时钟激励：每 10 ns 翻转 =&gt; 周期 20 ns\n    always #10 clk = ~clk;\n\n    // 例化被测模块 DUT（仿真提速：BLINK_HZ=1_000_000）\n    led_blink #(\n        .CLK_FREQ_HZ(CLK_FREQ_HZ),\n        .BLINK_HZ   (1_000_000)\n    ) u_dut (\n        .clk   (clk),\n        .rst_n (rst_n),\n        .led   (led)\n    );\n\n    // 统计翻转次数\n    integer toggle_cnt = 0;\n    always @(led) begin\n        toggle_cnt = toggle_cnt + 1;\n        $display(&quot;[%0t ns] led -&gt; %b (toggle #%0d)&quot;, $time, led, toggle_cnt);\n    end\n\n    initial begin\n        $dumpfile(&quot;tb_led_blink.vcd&quot;);\n        $dumpvars(0, tb_led_blink);\n\n        // 复位保持 55 ns 后释放\n        rst_n = 1&#x27;b0;\n        #55;\n        rst_n = 1&#x27;b1;\n\n        // 跑足够长时间观察若干次翻转（每次翻转间隔 500 ns）\n        #3000;\n\n        if (toggle_cnt &gt;= 2)\n            $display(&quot;[TB] PASS: LED 已发生 %0d 次翻转&quot;, toggle_cnt);\n        else\n            $display(&quot;[TB] FAIL: LED 翻转次数过少 toggle_cnt=%0d&quot;, toggle_cnt);\n\n        $finish;\n    end\n\nendmodule\n\n`default_nettype wire\n"}, {"file": "code/phase1/breathing_led.v", "type": "verilog", "role": "synthesizable", "title": "breathing_led.v — PWM 呼吸灯（可综合）", "codeHtml": "//==============================================================================\n// breathing_led.v  —  可综合：PWM 呼吸灯（占空比渐变）\n// 原理：\n//   1) pwm_cnt 自由计数（0 ~ 2^PWM_BITS-1），构成 PWM 载波周期。\n//   2) led = (pwm_cnt &lt; duty)：duty 越大，高电平占比越高 =&gt; 越亮。\n//   3) duty 由一个更慢的计数器缓慢&quot;爬升/下降&quot;，形成呼吸效果。\n// 例：PWM_BITS=8 =&gt; 占空比分辨率 1/256；SLOW_DIV=20 =&gt; 每 ~1M 个时钟改一次 duty。\n//==============================================================================\n`default_nettype none\n\nmodule breathing_led #(\n    parameter integer CLK_FREQ_HZ = 50_000_000,\n    parameter integer PWM_BITS    = 8,    // PWM 占空比分辨率位数\n    parameter integer SLOW_DIV    = 20    // 占空比慢变化分频位数\n)(\n    input  wire clk,\n    input  wire rst_n,\n    output reg  led\n);\n\n    localparam integer PERIOD = (1 &lt;&lt; PWM_BITS);  // PWM 周期 = 2^PWM_BITS\n\n    reg [PWM_BITS-1:0] pwm_cnt;\n    reg [PWM_BITS-1:0] duty;\n    reg [SLOW_DIV-1:0] slow_cnt;\n    reg                up;     // 1=占空比上升, 0=下降\n\n    // 1) PWM 载波计数器\n    always @(posedge clk or negedge rst_n) begin\n        if (!rst_n)\n            pwm_cnt &lt;= {PWM_BITS{1&#x27;b0}};\n        else\n            pwm_cnt &lt;= pwm_cnt + 1&#x27;b1;\n    end\n\n    // 2) 占空比缓慢升降（呼吸）\n    always @(posedge clk or negedge rst_n) begin\n        if (!rst_n) begin\n            duty     &lt;= {PWM_BITS{1&#x27;b0}};\n            slow_cnt &lt;= {SLOW_DIV{1&#x27;b0}};\n            up       &lt;= 1&#x27;b1;\n        end else begin\n            slow_cnt &lt;= slow_cnt + 1&#x27;b1;\n            if (slow_cnt == {SLOW_DIV{1&#x27;b1}}) begin\n                slow_cnt &lt;= {SLOW_DIV{1&#x27;b0}};\n                if (up) begin\n                    duty &lt;= duty + 1&#x27;b1;\n                    if (duty == PERIOD-1) up &lt;= 1&#x27;b0;   // 到顶转为下降\n                end else begin\n                    duty &lt;= duty - 1&#x27;b1;\n                    if (duty == {PWM_BITS{1&#x27;b0}}) up &lt;= 1&#x27;b1; // 到底转为上升\n                end\n            end\n        end\n    end\n\n    // 3) PWM 输出\n    always @(posedge clk or negedge rst_n) begin\n        if (!rst_n)\n            led &lt;= 1&#x27;b0;\n        else\n            led &lt;= (pwm_cnt &lt; duty);\n    end\n\nendmodule\n\n`default_nettype wire\n"}, {"file": "code/phase1/tb_breathing_led.v", "type": "verilog", "role": "testbench", "title": "tb_breathing_led.v — 呼吸灯测试平台", "codeHtml": "//==============================================================================\n// tb_breathing_led.v  —  Testbench：呼吸灯 PWM 仿真\n// 观察点：duty 是否在缓慢单调上升/下降，led 的高电平占比是否随之变化。\n// 仿真提速：把 SLOW_DIV 调小（=2），让 duty 在几微秒内就走完整轮呼吸。\n//==============================================================================\n`timescale 1ns/1ps\n`default_nettype none\n\nmodule tb_breathing_led;\n\n    reg  clk   = 1&#x27;b0;\n    reg  rst_n = 1&#x27;b0;\n    wire led;\n\n    always #10 clk = ~clk;   // 50 MHz\n\n    breathing_led #(\n        .PWM_BITS (8),\n        .SLOW_DIV (2)         // 仿真提速：每 4 个时钟就更新一次 duty\n    ) u_dut (\n        .clk   (clk),\n        .rst_n (rst_n),\n        .led   (led)\n    );\n\n    // 每隔 500 ns 打印一次内部状态（hierarchical 引用）\n    initial begin\n        $dumpfile(&quot;tb_breathing_led.vcd&quot;);\n        $dumpvars(0, tb_breathing_led);\n\n        rst_n = 1&#x27;b0;\n        #55;\n        rst_n = 1&#x27;b1;\n\n        forever begin\n            #500;\n            $display(&quot;[%0t ns] duty=0x%0h led=%b&quot;,\n                     $time, u_dut.duty, led);\n        end\n    end\n\n    // 总仿真时长 20 us 后结束\n    initial begin\n        #20000;\n        $display(&quot;[TB] breathing_led 仿真结束&quot;);\n        $finish;\n    end\n\nendmodule\n\n`default_nettype wire\n"}], "diagrams": [{"file": "assets/phase1/sim-types.svg", "title": "行为仿真 vs 时序仿真", "caption": "行为仿真门延迟为 0；时序仿真含真实门/线延迟。", "svgRaw": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 760 200\" font-family=\"system-ui,sans-serif\" font-size=\"12\">\n  <rect x=\"0\" y=\"0\" width=\"760\" height=\"200\" fill=\"#0d1420\"/>\n  <text x=\"380\" y=\"20\" fill=\"#7dd3fc\" text-anchor=\"middle\" font-size=\"14\" font-weight=\"bold\">行为仿真 vs 时序仿真<\/text>\n  <!-- behavioral -->\n  <text x=\"60\" y=\"55\" fill=\"#a5f3fc\">行为仿真：门延迟为 0，输出紧跟输入<\/text>\n  <polyline points=\"60,80 200,80 200,60 360,60 360,80 520,80 520,60 680,60\" fill=\"none\" stroke=\"#22d3ee\" stroke-width=\"2\"/>\n  <text x=\"60\" y=\"100\" fill=\"#94a3b8\">输出(out)<\/text>\n  <polyline points=\"60,110 200,110 200,95 360,95 360,110 520,110 520,95 680,95\" fill=\"none\" stroke=\"#34d399\" stroke-width=\"2\"/>\n  <!-- timing -->\n  <text x=\"60\" y=\"145\" fill=\"#fcd34d\">时序仿真：含真实门/线延迟，输出晚几 ns（斜线处）<\/text>\n  <polyline points=\"60,175 200,175 210,155 360,155 370,175 520,175 530,155 680,155\" fill=\"none\" stroke=\"#f59e0b\" stroke-width=\"2\"/>\n  <line x1=\"200\" y1=\"175\" x2=\"210\" y2=\"155\" stroke=\"#ef4444\" stroke-width=\"1.5\" stroke-dasharray=\"3,2\"/>\n  <text x=\"215\" y=\"170\" fill=\"#fca5a5\" font-size=\"11\">延迟<\/text>\n<\/svg>\n"}], "tools": [{"name": "Vivado 内置 Simulator", "url": "https://www.xilinx.com/support/download.html", "required": true, "note": "随 Vivado ML Standard 安装，无需额外下载。"}], "tasks": [{"id": "task-1-3-1", "text": "为 LED 闪烁编写 testbench"}, {"id": "task-1-3-2", "text": "跑行为仿真，观察计数器波形"}, {"id": "task-1-3-3", "text": "进阶：实现呼吸灯 PWM 调光"}], "cards": [{"q": "Testbench 是什么？它有端口吗？", "a": "Testbench 是激励被测设计的顶层模块，本身没有输入输出端口；负责例化 DUT、产生时钟/复位、导出波形、打印判断。", "tags": ["testbench"]}, {"q": "怎么在 testbench 里产生 50MHz 时钟？", "a": "always #10 clk = ~clk; —— 每 10ns 翻转，周期 20ns 即 50MHz。", "tags": ["时钟", "激励"]}, {"q": "$dumpvars 的作用是？", "a": "把内部信号导出成波形(VCD)，供仿真器画出时序图查看。", "tags": ["波形", "系统任务"]}, {"q": "为什么仿真时要把 BLINK_HZ 调大？", "a": "真实 1Hz 要等 25,000,000 个时钟才翻转一次，仿真太慢；调大 BLINK_HZ 让半周期缩短到几十个时钟，几微秒就能看到翻转。上板再改回 1。", "tags": ["仿真技巧"]}, {"q": "行为仿真和时序仿真的区别？", "a": "行为仿真不考虑门/线延迟，跑得快，验证功能；时序仿真加回真实延迟，最接近硬件，能发现建立/保持时间问题但慢。", "tags": ["行为", "时序"]}, {"q": "PWM 呼吸灯的原理是什么？", "a": "用高速计数器当载波，led=(pwm_cnt<duty)；让 duty 缓慢爬升再下降，LED 平均亮度随之渐变形成呼吸。", "tags": ["PWM", "呼吸灯"]}, {"q": "占空比和 LED 亮度什么关系？", "a": "占空比(高电平时间占比)越大，平均电压越高，LED 看起来越亮；duty 从 0 到最大再回落即呼吸。", "tags": ["PWM", "亮度"]}, {"q": "复位在 testbench 里怎么施加？", "a": "先把 rst_n=0 保持几十 ns 再拉高，模拟上电复位顺序，确保 DUT 从已知初值开始。", "tags": ["复位", "激励"]}], "quiz": [{"q": "产生 50MHz 时钟的写法是？", "options": ["always #20 clk=~clk", "always #10 clk=~clk", "always #1 clk=~clk", "assign clk=1"], "answer": 1, "explain": "周期 20ns => 每 10ns 翻转一次。"}, {"q": "关于行为仿真与时序仿真，正确的是？", "options": ["行为仿真含真实延迟", "时序仿真不考虑延迟", "行为仿真验证功能、时序仿真接近硬件真实行为", "两者完全一样"], "answer": 2, "explain": "行为仿真快而验功能；时序仿真含门/线延迟，最接近硬件。"}, {"q": "PWM 呼吸灯里控制亮度的关键信号是？", "options": ["clk", "duty(占空比)", "rst_n", "波特率"], "answer": 1, "explain": "led=(pwm_cnt<duty)，duty 缓慢升降即呼吸。"}, {"q": "$dumpvars 的作用是？", "options": ["结束仿真", "导出内部信号波形", "产生时钟", "复位设计"], "answer": 1, "explain": "生成 VCD 波形，用于在波形窗口观察信号。"}], "docHtml": "<h1>1.3 仿真验证入门<\/h1>\n<h2>为什么要仿真<\/h2>\n<p>上板下载一次要综合、实现、生成比特流，慢；而且硬件错了很难定位。\n<strong>仿真<\/strong>是在电脑里用软件\"模拟\"电路的行为，让你在几分钟内看到任意信号的波形、提前抓 bug。\n专业 FPGA 开发里，写 testbench 的时间往往不亚于写设计本身。<\/p>\n<h2>Testbench 结构<\/h2>\n<p>Testbench（测试平台）是一个<strong>没有输入输出端口<\/strong>的顶层模块，它负责：\n1. 例化被测设计（DUT, Design Under Test）；\n2. 产生激励：时钟、复位、输入信号；\n3. 把内部信号导出成波形（<code>$dumpvars<\/code>）；\n4. 用 <code>$display<\/code> / 断言判断结果对不对。<\/p>\n<pre><code class=\"language-verilog\">module tb_led_blink;\n    reg clk=0, rst_n=0; wire led;\n    always #10 clk = ~clk;              // 产生 50MHz 时钟(周期20ns)\n    led_blink u_dut(.clk(clk),.rst_n(rst_n),.led(led));  // 例化DUT\n    initial begin\n        $dumpvars;                      // 导出波形\n        #55 rst_n=1;  #3000; $finish;   // 复位后跑一段时间结束\n    end\nendmodule\n<\/code><\/pre>\n<h2>时钟激励与复位<\/h2>\n<ul>\n<li>时钟：<code>always #10 clk = ~clk;<\/code> —— 每 10 ns 翻转，周期 20 ns = 50 MHz。<\/li>\n<li>复位：先把 <code>rst_n=0<\/code> 保持几十 ns，再拉高，模拟真实上电复位顺序。<\/li>\n<li><strong>仿真提速技巧<\/strong>：真实 1 Hz 翻转要等 25,000,000 个时钟才动一下，仿真里直接等到天荒地老。\n  所以 testbench 例化时把 <code>BLINK_HZ<\/code> 调大（如 1,000,000），半周期只剩 25 个时钟，几微秒就能看到 LED 翻转。上板再改回 1。<\/li>\n<\/ul>\n<h2>波形查看与信号分析<\/h2>\n<p>Vivado Simulator 跑完会出波形窗口：把 <code>clk<\/code>、<code>rst_n<\/code>、<code>cnt<\/code>、<code>led<\/code> 加进去，\n你应能看到 <code>cnt<\/code> 从 0 一路数上去、计满后 <code>led<\/code> 翻转、<code>cnt<\/code> 清零——这就验证了 1.2 的分频逻辑。<\/p>\n<h2>行为仿真 vs 时序仿真<\/h2>\n<ul>\n<li><strong>行为仿真（Behavioral）<\/strong>：只按 Verilog 语义模拟，不考虑门延迟和布线延迟，跑得快，用于验证功能对错。<\/li>\n<li><strong>时序仿真（Timing/Post-Route）<\/strong>：把综合布局布线后的真实门延迟、线延迟加回去，最接近硬件真实行为，能发现建立/保持时间违例导致的亚稳态问题，但慢。<\/li>\n<\/ul>\n<p>初学者先把行为仿真做对；等阶段 4 学时序约束后再用时序仿真把关。<\/p>\n<h2>进阶：PWM 呼吸灯<\/h2>\n<p>在闪烁基础上做 <code>breathing_led.v<\/code>：用一个高速计数器当 PWM 载波，让 <code>duty<\/code>（占空比）缓慢爬升再下降，\nLED 平均亮度随之渐变，就是呼吸灯。配套 <code>tb_breathing_led.v<\/code> 观察 <code>duty<\/code> 与 <code>led<\/code> 高电平占比的关系。<\/p>"}], "tools": [{"name": "AMD Vivado ML Edition 下载（2025.2）", "url": "https://www.xilinx.com/support/download.html", "required": true, "note": "免费 ML Standard 版即可，支持 Artix-7/Zynq。"}, {"name": "Vivado 授权说明（ML Standard 免 License）", "url": "https://www.amd.com/en/products/software/adaptive-socs-and-fpgas/licensing-faq.html", "required": true, "note": "2025.2 及更早 Standard 版无需 License。"}, {"name": "电缆/JTAG 驱动安装指南", "url": "https://digilent.com/reference/programmable-logic/guides/installing-vivado-and-vitis", "required": false, "note": "有开发板再装；纯仿真可略过。"}, {"name": "通用引脚约束模板 fpga_common.xdc", "url": "../code/common/fpga_common.xdc", "required": true, "note": "相对本仓库；按开发板替换 PACKAGE_PIN。"}, {"name": "板级适配方法（board-adaptation.md）", "url": "../docs/board-adaptation.md", "required": true, "note": "如何找正点原子/野火板的参考引脚。"}]};
+
+/* ================= 常量与状态 ================= */
+var PHASES = [
+  {id:1, emo:"1️⃣", name:"启蒙入门", d:"预计1-3天 · 点亮第一盏灯，跑通全流程"},
+  {id:2, emo:"2️⃣", name:"基础逻辑设计", d:"预计1周 · 玩转数字逻辑，掌控电路"},
+  {id:3, emo:"3️⃣", name:"接口与通信", d:"预计2周 · 让 FPGA 和世界对话"},
+  {id:4, emo:"4️⃣", name:"系统级开发", d:"预计2-4周 · 搭建完整数字系统"},
+  {id:5, emo:"5️⃣", name:"高阶进阶", d:"长期 · 亲手打造一个处理器"}
+];
+var BADGES = [
+  {emo:"💡", nm:"点灯入门", ds:"完成阶段1"},
+  {emo:"⚡", nm:"逻辑大师", ds:"完成阶段2"},
+  {emo:"📡", nm:"通信达人", ds:"完成阶段3"},
+  {emo:"🖥️", nm:"系统架构师", ds:"完成阶段4"},
+  {emo:"🚀", nm:"FPGA大神", ds:"完成阶段5"}
+];
+var PROGRESS_KEY = "fpga-learning-progress";
+var CFG_KEY = "fpga-ai-config";
+
+/* ================= 工具 ================= */
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function uniq(a){return Array.prototype.filter.call(a,function(v,i){return a.indexOf(v)===i;});}
+
+/* 轻量 Verilog 高亮：codeHtml 已由 build.py 做过 HTML 转义，这里直接包注释/关键字/数字，不再 esc */
+function hlVerilog(code){
+  var e = code || '';
+  e = e.replace(/(\/\/[^\n]*)/g,'<span class="tok-c">$1</span>');
+  e = e.replace(/\b(module|endmodule|input|output|inout|wire|reg|logic|always|assign|begin|end|if|else|posedge|negedge|parameter|localparam|integer|genvar|default|nettype)\b/g,'<span class="tok-k">$1</span>');
+  e = e.replace(/\b(\d+'[bhd]?[0-9a-fA-F_]+|\d+)\b/g,'<span class="tok-n">$1</span>');
+  return e;
+}
+
+/* ================= 渲染徽章 ================= */
+function renderBadges(){
+  var box = document.getElementById('badges');
+  box.innerHTML = BADGES.map(function(b,i){
+    return '<div class="badge" id="badge-'+(i+1)+'"><div class="emo">'+b.emo+'</div><div class="nm">'+b.nm+'</div><div class="ds">'+b.ds+'</div></div>';
+  }).join('');
+}
+
+/* ================= 渲染章节 ================= */
+function chapterHtml(f){
+  var h = '';
+  h += '<div class="chapter" id="ch-'+esc(f.chapterId)+'">';
+  h += '<h4>'+esc(f.chapterId)+' '+esc(f.title)+'</h4>';
+  h += '<p class="sum">'+esc(f.summary)+'</p>';
+  if(f.docHtml){ h += '<div class="doc">'+f.docHtml+'</div>'; }
+
+  // code tabs
+  if(f.code && f.code.length){
+    h += '<div class="codeblock"><div class="tabs">';
+    f.code.forEach(function(c,i){
+      h += '<div class="tab'+(i===0?' active':'')+'" data-i="'+i+'">'+esc(c.title||c.file)+'</div>';
+    });
+    h += '</div>';
+    f.code.forEach(function(c,i){
+      h += '<pre class="code" data-i="'+i+'" style="display:'+(i===0?'block':'none')+'">'+hlVerilog(c.codeHtml||'')+'</pre>';
+    });
+    h += '</div>';
+  }
+
+  // diagrams (svg raw)
+  if(f.diagrams && f.diagrams.length){
+    f.diagrams.forEach(function(d){
+      h += '<div class="diagram">'+(d.svgRaw||'')+'<div class="cap">'+esc(d.title||'')+'：'+esc(d.caption||'')+'</div></div>';
+    });
+  }
+
+  // tools
+  if(f.tools && f.tools.length){
+    h += '<div class="tools">';
+    f.tools.forEach(function(t){
+      h += '<a href="'+esc(t.url)+'" target="_blank" rel="noopener">'+esc(t.name)+(t.required?'<span class="req">必装</span>':'<span class="req" style="color:#7d8aa5">可选</span>')+'</a>';
+    });
+    h += '</div>';
+  }
+
+  // tasks
+  if(f.tasks && f.tasks.length){
+    h += '<div style="margin-top:10px;"><div style="font-size:13px;color:var(--muted);">实践任务</div>';
+    f.tasks.forEach(function(t){
+      h += '<label class="task"><input type="checkbox" class="task-checkbox" id="'+esc(t.id)+'"><label for="'+esc(t.id)+'">'+esc(t.text)+'</label></label>';
+    });
+    h += '</div>';
+  }
+
+  // quiz
+  if(f.quiz && f.quiz.length){
+    h += '<div style="margin-top:12px;"><div style="font-size:13px;color:var(--muted);">章末小测</div>';
+    f.quiz.forEach(function(q,qi){
+      h += '<div class="quiz" data-ch="'+esc(f.chapterId)+'" data-qi="'+qi+'">';
+      h += '<div class="quid">'+esc(f.chapterId)+' 题'+(qi+1)+'</div>';
+      h += '<div class="q">'+esc(q.q)+'</div>';
+      q.options.forEach(function(o,oi){
+        h += '<div class="opt" data-oi="'+oi+'">'+String.fromCharCode(65+oi)+'. '+esc(o)+'</div>';
+      });
+      h += '<div class="exp">解析：'+esc(q.explain)+'</div>';
+      h += '</div>';
+    });
+    h += '</div>';
+  }
+  h += '</div>';
+  return h;
+}
+
+function renderApp(){
+  var app = document.getElementById('app');
+  var byPhase = {};
+  (KB.chapters||[]).forEach(function(c){ (byPhase[c.phase]=byPhase[c.phase]||[]).push(c); });
+  var html = '';
+  PHASES.forEach(function(p){
+    var chs = byPhase[p.id]||[];
+    html += '<div class="phase" id="phase-'+p.id+'">';
+    html += '<div class="phase-head" data-phase="'+p.id+'"><div><div class="t">'+p.emo+' 阶段'+p.id+'：'+p.name+'</div><div class="d">'+p.d+'</div></div><div class="arrow">▼</div></div>';
+    html += '<div class="phase-body">';
+    if(chs.length){ chs.forEach(function(c){ html += chapterHtml(c); }); }
+    else { html += '<div class="chapter"><p class="sum">本阶段内容撰写中…</p></div>'; }
+    html += '</div></div>';
+  });
+  app.innerHTML = html;
+
+  // bind phase toggle
+  document.querySelectorAll('.phase-head').forEach(function(h){
+    h.addEventListener('click',function(){
+      document.getElementById('phase-'+h.dataset.phase).classList.toggle('open');
+    });
+  });
+  // code tabs
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    cb.querySelectorAll('.tab').forEach(function(t){
+      t.addEventListener('click',function(){
+        cb.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active');});
+        t.classList.add('active');
+        var i=t.dataset.i;
+        cb.querySelectorAll('pre.code').forEach(function(pr){ pr.style.display = pr.dataset.i===i?'block':'none'; });
+      });
+    });
+  });
+  // quiz options
+  document.querySelectorAll('.quiz .opt').forEach(function(o){
+    o.addEventListener('click',function(){
+      var q=o.closest('.quiz'); if(q.dataset.done) return; q.dataset.done=1;
+      var qi=q.dataset.qi; var real=KB.chapters.find(function(c){return 'ch-'+c.chapterId===q.id||c.chapterId===q.dataset.ch;});
+      // find quiz object
+      var chap = KB.chapters.filter(function(c){return c.chapterId===q.dataset.ch;})[0];
+      var ans = chap.quiz[qi].answer;
+      var oi=+o.dataset.oi;
+      q.querySelectorAll('.opt').forEach(function(x,i){
+        if(i===ans) x.classList.add('right');
+        if(i===oi && oi!==ans) x.classList.add('wrong');
+      });
+      q.querySelector('.exp').style.display='block';
+    });
+  });
+}
+
+/* ================= 进度 / 徽章 ================= */
+function allCheckboxes(){return document.querySelectorAll('.task-checkbox');}
+function loadProgress(){
+  var saved=null; try{saved=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'null');}catch(e){}
+  allCheckboxes().forEach(function(cb){
+    if(saved && saved[cb.id]!==undefined) cb.checked=saved[cb.id];
+    cb.addEventListener('change',updateProgress);
+  });
+}
+function saveProgress(){
+  var p={}; allCheckboxes().forEach(function(cb){p[cb.id]=cb.checked;});
+  try{localStorage.setItem(PROGRESS_KEY,JSON.stringify(p));}catch(e){}
+}
+function updateProgress(){
+  var cbs=allCheckboxes(); var total=cbs.length, done=0;
+  cbs.forEach(function(cb){ if(cb.checked) done++; if(cb.closest('.task')) cb.closest('.task').classList.toggle('done',cb.checked); });
+  var pct = total? Math.round(done/total*100):0;
+  document.getElementById('total-progress-bar').style.width=pct+'%';
+  document.getElementById('total-progress-text').textContent=pct+'%';
+  saveProgress();
+  // badges
+  PHASES.forEach(function(p){
+    var list=document.querySelectorAll('.task-checkbox[id^="task-'+p.id+'-"]');
+    var all = list.length>0;
+    list.forEach(function(cb){ if(!cb.checked) all=false; });
+    document.getElementById('badge-'+p.id).classList.toggle('unlocked',all);
+  });
+}
+
+/* ================= AI 助教（离线检索 + 可选在线） ================= */
+function buildCorpus(){
+  var corpus=[];
+  (KB.chapters||[]).forEach(function(c){
+    var plain = (c.docHtml||'').replace(/<[^>]+>/g,' ');
+    (c.cards||[]).forEach(function(card){
+      corpus.push({ch:c.chapterId, title:c.title, kind:'card', q:card.q, a:card.a, tags:(card.tags||[]).join(' '), text:card.q+' '+card.a+' '+plain});
+    });
+    corpus.push({ch:c.chapterId, title:c.title, kind:'chapter', q:c.title, a:c.summary, text:c.title+' '+plain});
+  });
+  return corpus;
+}
+var CORPUS = [];
+function tokens(s){
+  s=String(s).toLowerCase();
+  var arr=s.split(/[^a-z0-9\u4e00-\u9fa5]+/).filter(Boolean);
+  // 中文 bigram
+  var zh=s.match(/[\u4e00-\u9fa5]{2,}/g)||[];
+  zh.forEach(function(w){ for(var i=0;i<w.length-1;i++) arr.push(w.substr(i,2)); });
+  return uniq(arr);
+}
+function searchKB(query){
+  var ts=tokens(query);
+  var best=null,bestScore=0;
+  CORPUS.forEach(function(item){
+    var text=item.text.toLowerCase(); var sc=0;
+    ts.forEach(function(t){ if(text.indexOf(t)>=0) sc+= (t.length>=2?2:1); });
+    if(sc>bestScore){bestScore=sc;best=item;}
+  });
+  return {item:best, score:bestScore};
+}
+function aiSay(role,text,src){
+  var box=document.getElementById('aiMsgs');
+  var d=document.createElement('div'); d.className='msg '+role;
+  d.textContent=text;
+  if(src){var s=document.createElement('span');s.className='src';s.textContent='来源：'+src;d.appendChild(s);}
+  box.appendChild(d); box.scrollTop=box.scrollHeight;
+}
+function offlineAnswer(q){
+  var r=searchKB(q);
+  if(!r.item || r.score<2){
+    aiSay('ai','知识库没有直接命中「'+q+'」。你可以换个问法，或点“抽一题”做练习。我只根据本知识库作答，不会编造。');
+    return;
+  }
+  var it=r.item;
+  if(it.kind==='card'){ aiSay('ai', it.q+'\n\n'+it.a, '阶段1 第'+it.ch+'章 · '+it.title); }
+  else { aiSay('ai','关于「'+it.q+'」：'+it.a+'（详见该章节讲解）', '第'+it.ch+'章 · '+it.title); }
+}
+function randomQuiz(){
+  var pool=[];
+  (KB.chapters||[]).forEach(function(c){ (c.quiz||[]).forEach(function(q){pool.push({ch:c.chapterId,title:c.title,q:q});}); });
+  if(!pool.length){aiSay('ai','暂无题库。');return;}
+  var pick=pool[Math.floor(Math.random()*pool.length)];
+  var opts=pick.q.options.map(function(o,i){return String.fromCharCode(65+i)+'. '+o;}).join('\n');
+  aiSay('ai','【'+pick.ch+' · '+pick.title+'】\n'+pick.q.q+'\n\n'+opts+'\n\n（答对与否请到对应章节小测里点选，这里只出题）\n答案：'+String.fromCharCode(65+pick.q.answer)+'。'+pick.q.explain);
+}
+function loadCfg(){ try{return JSON.parse(localStorage.getItem(CFG_KEY)||'{}');}catch(e){return{};} }
+async function onlineAnswer(q){
+  var cfg=loadCfg();
+  if(!cfg.key || !cfg.base){ offlineAnswer(q); return; }
+  var ctx=(KB.chapters||[]).map(function(c){return c.chapterId+' '+c.title+'：'+c.summary;}).join('\n');
+  try{
+    var base=cfg.base.replace(/\/$/,'');
+    var r=await fetch(base+'/chat/completions',{method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+cfg.key},
+      body:JSON.stringify({model:cfg.model||'deepseek-chat',
+        messages:[{role:'system',content:'你是 FPGA 学习助教，只依据以下知识库大纲作答，不知道就说不知道。\n'+ctx},
+                  {role:'user',content:q}], temperature:0.3})});
+    if(!r.ok) throw new Error('http '+r.status);
+    var j=await r.json();
+    aiSay('ai', j.choices[0].message.content.trim(), '在线模型:'+(cfg.model||''));
+  }catch(e){ offlineAnswer(q); }
+}
+
+/* ================= 启动 ================= */
+document.addEventListener('DOMContentLoaded',function(){
+  renderBadges();
+  renderApp();
+  CORPUS=buildCorpus();
+  loadProgress();
+  updateProgress();
+  document.getElementById('phase-1').classList.add('open');
+
+  document.getElementById('btnExpandAll').onclick=function(){document.querySelectorAll('.phase').forEach(function(p){p.classList.add('open');});};
+  document.getElementById('btnCollapseAll').onclick=function(){document.querySelectorAll('.phase').forEach(function(p){p.classList.remove('open');});};
+  document.getElementById('btnReset').onclick=function(){
+    if(confirm('确定要重置所有学习进度吗？此操作不可撤销！')){
+      localStorage.removeItem(PROGRESS_KEY);
+      allCheckboxes().forEach(function(cb){cb.checked=false;});
+      updateProgress();
+    }
+  };
+
+  // AI panel
+  var panel=document.getElementById('aiPanel');
+  document.getElementById('aiFab').onclick=function(){panel.classList.toggle('open');
+    if(panel.classList.contains('open') && !document.getElementById('aiMsgs').children.length)
+      aiSay('ai','你好，我是 FPGA 助教。默认离线检索本知识库作答；点“设置”可填 OpenAI 兼容 Key 在线增强。');};
+  document.getElementById('btnQuiz').onclick=randomQuiz;
+  document.getElementById('btnSetting').onclick=function(){document.getElementById('aiSettings').classList.add('open');
+    var c=loadCfg(); document.getElementById('cfgBase').value=c.base||''; document.getElementById('cfgKey').value=c.key||''; document.getElementById('cfgModel').value=c.model||'';};
+  document.getElementById('cfgClose').onclick=function(){document.getElementById('aiSettings').classList.remove('open');};
+  document.querySelectorAll('.presets .btn').forEach(function(b){
+    b.onclick=function(){document.getElementById('cfgBase').value=b.dataset.base; document.getElementById('cfgModel').value=b.dataset.model;};
+  });
+  document.getElementById('cfgSave').onclick=function(){
+    var c={base:document.getElementById('cfgBase').value.trim(), key:document.getElementById('cfgKey').value.trim(), model:document.getElementById('cfgModel').value.trim()};
+    try{localStorage.setItem(CFG_KEY,JSON.stringify(c));}catch(e){}
+    document.getElementById('aiSettings').classList.remove('open');
+    aiSay('ai','设置已保存到本机浏览器。');
+  };
+  function send(){var v=document.getElementById('aiInput').value.trim(); if(!v)return;
+    aiSay('me',v); document.getElementById('aiInput').value=''; onlineAnswer(v);}
+  document.getElementById('aiSend').onclick=send;
+  document.getElementById('aiInput').addEventListener('keydown',function(e){if(e.key==='Enter')send();});
+});
+</script>
+</body>
+</html>

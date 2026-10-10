@@ -56,3 +56,10 @@ Thumbs.db
 *.tmp
 *.local
 secrets.*
+
+# ===== 本仓库构建/校验中间产物 =====
+parser.out
+parsetab.py
+__pycache__/
+_shots/
+*.pyc

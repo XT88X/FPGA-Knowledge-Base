@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FPGA 知识系统 · 从点灯到造处理器</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b1220'/%3E%3Crect x='7' y='7' width='8' height='8' fill='%2322d3ee'/%3E%3Crect x='17' y='7' width='8' height='8' fill='%233b82f6'/%3E%3Crect x='7' y='17' width='8' height='8' fill='%233b82f6'/%3E%3Crect x='17' y='17' width='8' height='8' fill='%2322d3ee'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#0b1220; --card:#111a2e; --card2:#0e1730; --line:#1e2c4a;
+  --txt:#e6edf7; --muted:#93a4c0; --cyan:#22d3ee; --blue:#3b82f6;
+  --green:#34d399; --amber:#fbbf24; --red:#f87171;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:radial-gradient(1200px 600px at 50% -10%,#14224a 0%,var(--bg) 60%);
+  color:var(--txt);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",Roboto,system-ui,sans-serif;
+  line-height:1.65; min-height:100vh;
+}
+.wrap{max-width:1080px; margin:0 auto; padding:24px 16px 80px;}
+header.hero{text-align:center; padding:18px 0 8px;}
+header.hero h1{
+  font-size:30px; margin:0 0 6px; font-weight:800;
+  background:linear-gradient(90deg,#7dd3fc,#22d3ee 50%,#60a5fa);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+header.hero p{color:var(--muted); margin:0; font-size:14px;}
+.card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px; margin:16px 0;
+  box-shadow:0 6px 24px rgba(0,0,0,.25);}
+.row{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;}
+.bar{height:14px; background:#0a1122; border-radius:999px; overflow:hidden; border:1px solid var(--line);}
+.bar > i{display:block; height:100%; width:0; border-radius:999px;
+  background:linear-gradient(90deg,var(--blue),var(--cyan)); transition:width .4s;}
+.big{font-size:22px; font-weight:800; color:var(--cyan);}
+.badges{display:grid; grid-template-columns:repeat(5,1fr); gap:10px;}
+.badge{text-align:center; padding:10px 4px; border-radius:10px; background:var(--card2); border:1px solid var(--line);
+  filter:grayscale(1); opacity:.45; transition:all .3s;}
+.badge .emo{font-size:26px;}
+.badge .nm{font-size:12px; margin-top:2px;}
+.badge .ds{font-size:11px; color:var(--muted);}
+.badge.unlocked{filter:grayscale(0); opacity:1; box-shadow:0 0 16px rgba(34,211,238,.35); border-color:var(--cyan);}
+.controls{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin:10px 0;}
+button.btn{background:#16223e; color:var(--txt); border:1px solid var(--line); border-radius:9px;
+  padding:8px 14px; cursor:pointer; font-size:14px; transition:.15s;}
+button.btn:hover{background:#1d2c4d; border-color:var(--blue);}
+button.btn.danger:hover{background:#3a1722; border-color:var(--red); color:#fecaca;}
+button.btn.primary{background:linear-gradient(90deg,var(--blue),var(--cyan)); border:none; color:#06121f; font-weight:700;}
+/* phase */
+.phase{background:var(--card); border:1px solid var(--line); border-radius:14px; margin:14px 0; overflow:hidden;}
+.phase-head{display:flex; justify-content:space-between; align-items:center; padding:16px 18px; cursor:pointer; user-select:none;}
+.phase-head:hover{background:#13203c;}
+.phase-head .t{font-size:18px; font-weight:700;}
+.phase-head .d{font-size:12px; color:var(--muted);}
+.phase-head .arrow{color:var(--muted); transition:transform .3s;}
+.phase.open .phase-head .arrow{transform:rotate(180deg);}
+.phase-body{max-height:0; overflow:hidden; transition:max-height .45s ease;}
+.phase.open .phase-body{max-height:20000px;}
+.chapter{background:var(--card2); border:1px solid var(--line); border-radius:12px; margin:12px 14px; padding:16px;}
+.chapter h4{margin:0 0 4px; font-size:17px; color:#7dd3fc;}
+.chapter .sum{color:var(--muted); font-size:13px; margin:0 0 10px;}
+.doc p{margin:8px 0;} .doc pre{background:#081020; border:1px solid var(--line); border-radius:8px; padding:10px; overflow:auto;}
+.doc code{font-family:ui-monospace,"Cascadia Code",Consolas,monospace; font-size:13px;}
+.doc table{border-collapse:collapse; width:100%; font-size:13px; margin:8px 0;}
+.doc th,.doc td{border:1px solid var(--line); padding:6px 8px; text-align:left;}
+.doc a{color:#7dd3fc;}
+/* code tabs */
+.codeblock{margin:10px 0;}
+.tabs{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:-1px;}
+.tab{font-size:12px; padding:5px 10px; border:1px solid var(--line); border-bottom:none; border-radius:8px 8px 0 0;
+  background:#0c1630; color:var(--muted); cursor:pointer;}
+.tab.active{background:#081020; color:var(--cyan); border-color:var(--cyan);}
+pre.code{background:#081020; border:1px solid var(--cyan); border-radius:0 8px 8px 8px; padding:12px; overflow:auto;
+  font-family:ui-monospace,"Cascadia Code",Consolas,monospace; font-size:13px; line-height:1.5; margin:0;}
+.tok-k{color:#7dd3fc;} .tok-s{color:#fbbf24;} .tok-c{color:#5b6b8c; font-style:italic;} .tok-n{color:#f0abfc;}
+/* diagrams */
+.diagram{margin:10px 0; text-align:center;}
+.diagram svg{max-width:100%; height:auto; border:1px solid var(--line); border-radius:10px; background:#0d1420;}
+.diagram .cap{font-size:12px; color:var(--muted); margin-top:4px;}
+.tools{display:flex; flex-wrap:wrap; gap:8px; margin:10px 0;}
+.tools a{font-size:12px; background:#10203f; border:1px solid var(--line); color:#9fd8ff; text-decoration:none;
+  padding:5px 10px; border-radius:8px;}
+.tools a:hover{border-color:var(--cyan);}
+.tools .req{font-size:10px; color:var(--amber); margin-left:4px;}
+/* tasks */
+.task{display:flex; align-items:center; gap:10px; padding:6px 8px; border-radius:8px; cursor:pointer;}
+.task:hover{background:#152242;}
+.task input{width:18px; height:18px; accent-color:var(--cyan);}
+.task.done label{text-decoration:line-through; color:var(--green);}
+/* quiz */
+.quiz{border:1px dashed var(--line); border-radius:10px; padding:10px; margin:10px 0; background:#0b1530;}
+.quiz .q{font-weight:600; margin-bottom:8px;}
+.quiz .opt{display:block; padding:6px 10px; border:1px solid var(--line); border-radius:8px; margin:5px 0; cursor:pointer; font-size:14px;}
+.quiz .opt:hover{border-color:var(--blue);}
+.quiz .opt.right{background:rgba(52,211,153,.15); border-color:var(--green);}
+.quiz .opt.wrong{background:rgba(248,113,113,.15); border-color:var(--red);}
+.quiz .exp{font-size:13px; color:var(--amber); margin-top:6px; display:none;}
+.quid{font-size:11px; color:var(--muted);}
+/* AI assistant */
+#aiFab{position:fixed; right:20px; bottom:20px; width:58px; height:58px; border-radius:50%; border:none; cursor:pointer;
+  background:linear-gradient(135deg,var(--blue),var(--cyan)); color:#06121f; font-size:22px; box-shadow:0 8px 24px rgba(34,211,238,.4);}
+#aiPanel{position:fixed; right:20px; bottom:90px; width:min(380px,92vw); height:480px; max-height:70vh;
+  background:#0e1830; border:1px solid var(--line); border-radius:14px; display:none; flex-direction:column; overflow:hidden;
+  box-shadow:0 12px 40px rgba(0,0,0,.5); z-index:50;}
+#aiPanel.open{display:flex;}
+#aiPanel .ph{padding:10px 12px; background:#16223e; display:flex; justify-content:space-between; align-items:center;}
+#aiMsgs{flex:1; overflow-y:auto; padding:10px; font-size:13px;}
+.msg{margin:6px 0; padding:8px 10px; border-radius:10px; max-width:92%; white-space:pre-wrap;}
+.msg.ai{background:#132244;} .msg.me{background:#1d3358; margin-left:auto;}
+.msg .src{display:block; font-size:11px; color:var(--cyan); margin-top:4px;}
+#aiInputRow{display:flex; gap:6px; padding:8px; border-top:1px solid var(--line);}
+#aiInput{flex:1; background:#0a1226; border:1px solid var(--line); color:var(--txt); border-radius:8px; padding:8px;}
+#aiSettings{position:fixed; right:20px; bottom:90px; width:min(360px,92vw); background:#0e1830; border:1px solid var(--line);
+  border-radius:14px; padding:14px; display:none; z-index:60;}
+#aiSettings.open{display:block;}
+#aiSettings label{font-size:12px; color:var(--muted); display:block; margin:8px 0 3px;}
+#aiSettings input{width:100%; background:#0a1226; border:1px solid var(--line); color:var(--txt); border-radius:8px; padding:7px;}
+.presets{display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;}
+footer{text-align:center; color:var(--muted); font-size:12px; margin-top:30px;}
+@media (max-width:640px){
+  .badges{grid-template-columns:repeat(2,1fr);}
+  header.hero h1{font-size:23px;}
+  .wrap{padding:14px 10px 90px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <h1>FPGA 知识系统</h1>
+    <p>从点灯到造处理器 · Xilinx/AMD Vivado · 离线自包含 · 项目驱动</p>
+  </header>
+
+  <div class="card">
+    <div class="row">
+      <span style="font-weight:700;">总学习进度</span>
+      <span id="total-progress-text" class="big">0%</span>
+    </div>
+    <div class="bar" style="margin-top:8px;"><i id="total-progress-bar"></i></div>
+  </div>
+
+  <div class="card">
+    <div style="font-weight:700; margin-bottom:10px;">成就徽章</div>
+    <div class="badges" id="badges"></div>
+  </div>
+
+  <div class="controls">
+    <button class="btn primary" id="btnExpandAll">展开全部</button>
+    <button class="btn" id="btnCollapseAll">折叠全部</button>
+    <button class="btn danger" id="btnReset">重置进度</button>
+  </div>
+
+  <main id="app"></main>
+
+  <footer>
+    <p>FPGA 知识系统 · 双击 index.html 即可使用，无需服务器、无需联网</p>
+    <p>进度保存在浏览器本地（localStorage）· AI 助教默认离线检索，可在设置里填 API Key 在线增强</p>
+  </footer>
+</div>
+
+<button id="aiFab" title="AI 助教">🤖</button>
+<div id="aiPanel">
+  <div class="ph">
+    <strong>AI 助教</strong>
+    <span>
+      <button class="btn" id="btnQuiz" style="padding:4px 8px;font-size:12px;">抽一题</button>
+      <button class="btn" id="btnSetting" style="padding:4px 8px;font-size:12px;">设置</button>
+    </span>
+  </div>
+  <div id="aiMsgs"></div>
+  <div id="aiInputRow">
+    <input id="aiInput" placeholder="问我 FPGA 问题，如：计数器位宽怎么算？">
+    <button class="btn primary" id="aiSend">发送</button>
+  </div>
+</div>
+<div id="aiSettings">
+  <strong>在线增强设置（OpenAI 兼容）</strong>
+  <label>Base URL</label><input id="cfgBase" placeholder="https://api.deepseek.com">
+  <label>API Key（仅存本机浏览器）</label><input id="cfgKey" type="password" placeholder="sk-...">
+  <label>Model</label><input id="cfgModel" placeholder="deepseek-chat">
+  <div class="presets">
+    <button class="btn" data-base="https://api.deepseek.com" data-model="deepseek-chat">DeepSeek</button>
+    <button class="btn" data-base="https://ark.cn-beijing.volces.com/api/v3" data-model="doubao-pro">豆包(方舟)</button>
+    <button class="btn" data-base="https://api.openai.com/v1" data-model="gpt-4o-mini">OpenAI</button>
+  </div>
+  <div class="controls" style="margin:12px 0 0;">
+    <button class="btn primary" id="cfgSave">保存</button>
+    <button class="btn" id="cfgClose">关闭</button>
+  </div>
+</div>
+
+<script>
+/*__KB_DATA__*/
+
+/* ================= 常量与状态 ================= */
+var PHASES = [
+  {id:1, emo:"1️⃣", name:"启蒙入门", d:"预计1-3天 · 点亮第一盏灯，跑通全流程"},
+  {id:2, emo:"2️⃣", name:"基础逻辑设计", d:"预计1周 · 玩转数字逻辑，掌控电路"},
+  {id:3, emo:"3️⃣", name:"接口与通信", d:"预计2周 · 让 FPGA 和世界对话"},
+  {id:4, emo:"4️⃣", name:"系统级开发", d:"预计2-4周 · 搭建完整数字系统"},
+  {id:5, emo:"5️⃣", name:"高阶进阶", d:"长期 · 亲手打造一个处理器"}
+];
+var BADGES = [
+  {emo:"💡", nm:"点灯入门", ds:"完成阶段1"},
+  {emo:"⚡", nm:"逻辑大师", ds:"完成阶段2"},
+  {emo:"📡", nm:"通信达人", ds:"完成阶段3"},
+  {emo:"🖥️", nm:"系统架构师", ds:"完成阶段4"},
+  {emo:"🚀", nm:"FPGA大神", ds:"完成阶段5"}
+];
+var PROGRESS_KEY = "fpga-learning-progress";
+var CFG_KEY = "fpga-ai-config";
+
+/* ================= 工具 ================= */
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function uniq(a){return Array.prototype.filter.call(a,function(v,i){return a.indexOf(v)===i;});}
+
+/* 轻量 Verilog 高亮：codeHtml 已由 build.py 做过 HTML 转义，这里直接包注释/关键字/数字，不再 esc */
+function hlVerilog(code){
+  var e = code || '';
+  e = e.replace(/(\/\/[^\n]*)/g,'<span class="tok-c">$1</span>');
+  e = e.replace(/\b(module|endmodule|input|output|inout|wire|reg|logic|always|assign|begin|end|if|else|posedge|negedge|parameter|localparam|integer|genvar|default|nettype)\b/g,'<span class="tok-k">$1</span>');
+  e = e.replace(/\b(\d+'[bhd]?[0-9a-fA-F_]+|\d+)\b/g,'<span class="tok-n">$1</span>');
+  return e;
+}
+
+/* ================= 渲染徽章 ================= */
+function renderBadges(){
+  var box = document.getElementById('badges');
+  box.innerHTML = BADGES.map(function(b,i){
+    return '<div class="badge" id="badge-'+(i+1)+'"><div class="emo">'+b.emo+'</div><div class="nm">'+b.nm+'</div><div class="ds">'+b.ds+'</div></div>';
+  }).join('');
+}
+
+/* ================= 渲染章节 ================= */
+function chapterHtml(f){
+  var h = '';
+  h += '<div class="chapter" id="ch-'+esc(f.chapterId)+'">';
+  h += '<h4>'+esc(f.chapterId)+' '+esc(f.title)+'</h4>';
+  h += '<p class="sum">'+esc(f.summary)+'</p>';
+  if(f.docHtml){ h += '<div class="doc">'+f.docHtml+'</div>'; }
+
+  // code tabs
+  if(f.code && f.code.length){
+    h += '<div class="codeblock"><div class="tabs">';
+    f.code.forEach(function(c,i){
+      h += '<div class="tab'+(i===0?' active':'')+'" data-i="'+i+'">'+esc(c.title||c.file)+'</div>';
+    });
+    h += '</div>';
+    f.code.forEach(function(c,i){
+      h += '<pre class="code" data-i="'+i+'" style="display:'+(i===0?'block':'none')+'">'+hlVerilog(c.codeHtml||'')+'</pre>';
+    });
+    h += '</div>';
+  }
+
+  // diagrams (svg raw)
+  if(f.diagrams && f.diagrams.length){
+    f.diagrams.forEach(function(d){
+      h += '<div class="diagram">'+(d.svgRaw||'')+'<div class="cap">'+esc(d.title||'')+'：'+esc(d.caption||'')+'</div></div>';
+    });
+  }
+
+  // tools
+  if(f.tools && f.tools.length){
+    h += '<div class="tools">';
+    f.tools.forEach(function(t){
+      h += '<a href="'+esc(t.url)+'" target="_blank" rel="noopener">'+esc(t.name)+(t.required?'<span class="req">必装</span>':'<span class="req" style="color:#7d8aa5">可选</span>')+'</a>';
+    });
+    h += '</div>';
+  }
+
+  // tasks
+  if(f.tasks && f.tasks.length){
+    h += '<div style="margin-top:10px;"><div style="font-size:13px;color:var(--muted);">实践任务</div>';
+    f.tasks.forEach(function(t){
+      h += '<label class="task"><input type="checkbox" class="task-checkbox" id="'+esc(t.id)+'"><label for="'+esc(t.id)+'">'+esc(t.text)+'</label></label>';
+    });
+    h += '</div>';
+  }
+
+  // quiz
+  if(f.quiz && f.quiz.length){
+    h += '<div style="margin-top:12px;"><div style="font-size:13px;color:var(--muted);">章末小测</div>';
+    f.quiz.forEach(function(q,qi){
+      h += '<div class="quiz" data-ch="'+esc(f.chapterId)+'" data-qi="'+qi+'">';
+      h += '<div class="quid">'+esc(f.chapterId)+' 题'+(qi+1)+'</div>';
+      h += '<div class="q">'+esc(q.q)+'</div>';
+      q.options.forEach(function(o,oi){
+        h += '<div class="opt" data-oi="'+oi+'">'+String.fromCharCode(65+oi)+'. '+esc(o)+'</div>';
+      });
+      h += '<div class="exp">解析：'+esc(q.explain)+'</div>';
+      h += '</div>';
+    });
+    h += '</div>';
+  }
+  h += '</div>';
+  return h;
+}
+
+function renderApp(){
+  var app = document.getElementById('app');
+  var byPhase = {};
+  (KB.chapters||[]).forEach(function(c){ (byPhase[c.phase]=byPhase[c.phase]||[]).push(c); });
+  var html = '';
+  PHASES.forEach(function(p){
+    var chs = byPhase[p.id]||[];
+    html += '<div class="phase" id="phase-'+p.id+'">';
+    html += '<div class="phase-head" data-phase="'+p.id+'"><div><div class="t">'+p.emo+' 阶段'+p.id+'：'+p.name+'</div><div class="d">'+p.d+'</div></div><div class="arrow">▼</div></div>';
+    html += '<div class="phase-body">';
+    if(chs.length){ chs.forEach(function(c){ html += chapterHtml(c); }); }
+    else { html += '<div class="chapter"><p class="sum">本阶段内容撰写中…</p></div>'; }
+    html += '</div></div>';
+  });
+  app.innerHTML = html;
+
+  // bind phase toggle
+  document.querySelectorAll('.phase-head').forEach(function(h){
+    h.addEventListener('click',function(){
+      document.getElementById('phase-'+h.dataset.phase).classList.toggle('open');
+    });
+  });
+  // code tabs
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    cb.querySelectorAll('.tab').forEach(function(t){
+      t.addEventListener('click',function(){
+        cb.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active');});
+        t.classList.add('active');
+        var i=t.dataset.i;
+        cb.querySelectorAll('pre.code').forEach(function(pr){ pr.style.display = pr.dataset.i===i?'block':'none'; });
+      });
+    });
+  });
+  // quiz options
+  document.querySelectorAll('.quiz .opt').forEach(function(o){
+    o.addEventListener('click',function(){
+      var q=o.closest('.quiz'); if(q.dataset.done) return; q.dataset.done=1;
+      var qi=q.dataset.qi; var real=KB.chapters.find(function(c){return 'ch-'+c.chapterId===q.id||c.chapterId===q.dataset.ch;});
+      // find quiz object
+      var chap = KB.chapters.filter(function(c){return c.chapterId===q.dataset.ch;})[0];
+      var ans = chap.quiz[qi].answer;
+      var oi=+o.dataset.oi;
+      q.querySelectorAll('.opt').forEach(function(x,i){
+        if(i===ans) x.classList.add('right');
+        if(i===oi && oi!==ans) x.classList.add('wrong');
+      });
+      q.querySelector('.exp').style.display='block';
+    });
+  });
+}
+
+/* ================= 进度 / 徽章 ================= */
+function allCheckboxes(){return document.querySelectorAll('.task-checkbox');}
+function loadProgress(){
+  var saved=null; try{saved=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'null');}catch(e){}
+  allCheckboxes().forEach(function(cb){
+    if(saved && saved[cb.id]!==undefined) cb.checked=saved[cb.id];
+    cb.addEventListener('change',updateProgress);
+  });
+}
+function saveProgress(){
+  var p={}; allCheckboxes().forEach(function(cb){p[cb.id]=cb.checked;});
+  try{localStorage.setItem(PROGRESS_KEY,JSON.stringify(p));}catch(e){}
+}
+function updateProgress(){
+  var cbs=allCheckboxes(); var total=cbs.length, done=0;
+  cbs.forEach(function(cb){ if(cb.checked) done++; if(cb.closest('.task')) cb.closest('.task').classList.toggle('done',cb.checked); });
+  var pct = total? Math.round(done/total*100):0;
+  document.getElementById('total-progress-bar').style.width=pct+'%';
+  document.getElementById('total-progress-text').textContent=pct+'%';
+  saveProgress();
+  // badges
+  PHASES.forEach(function(p){
+    var list=document.querySelectorAll('.task-checkbox[id^="task-'+p.id+'-"]');
+    var all = list.length>0;
+    list.forEach(function(cb){ if(!cb.checked) all=false; });
+    document.getElementById('badge-'+p.id).classList.toggle('unlocked',all);
+  });
+}
+
+/* ================= AI 助教（离线检索 + 可选在线） ================= */
+function buildCorpus(){
+  var corpus=[];
+  (KB.chapters||[]).forEach(function(c){
+    var plain = (c.docHtml||'').replace(/<[^>]+>/g,' ');
+    (c.cards||[]).forEach(function(card){
+      corpus.push({ch:c.chapterId, title:c.title, kind:'card', q:card.q, a:card.a, tags:(card.tags||[]).join(' '), text:card.q+' '+card.a+' '+plain});
+    });
+    corpus.push({ch:c.chapterId, title:c.title, kind:'chapter', q:c.title, a:c.summary, text:c.title+' '+plain});
+  });
+  return corpus;
+}
+var CORPUS = [];
+function tokens(s){
+  s=String(s).toLowerCase();
+  var arr=s.split(/[^a-z0-9\u4e00-\u9fa5]+/).filter(Boolean);
+  // 中文 bigram
+  var zh=s.match(/[\u4e00-\u9fa5]{2,}/g)||[];
+  zh.forEach(function(w){ for(var i=0;i<w.length-1;i++) arr.push(w.substr(i,2)); });
+  return uniq(arr);
+}
+function searchKB(query){
+  var ts=tokens(query);
+  var best=null,bestScore=0;
+  CORPUS.forEach(function(item){
+    var text=item.text.toLowerCase(); var sc=0;
+    ts.forEach(function(t){ if(text.indexOf(t)>=0) sc+= (t.length>=2?2:1); });
+    if(sc>bestScore){bestScore=sc;best=item;}
+  });
+  return {item:best, score:bestScore};
+}
+function aiSay(role,text,src){
+  var box=document.getElementById('aiMsgs');
+  var d=document.createElement('div'); d.className='msg '+role;
+  d.textContent=text;
+  if(src){var s=document.createElement('span');s.className='src';s.textContent='来源：'+src;d.appendChild(s);}
+  box.appendChild(d); box.scrollTop=box.scrollHeight;
+}
+function offlineAnswer(q){
+  var r=searchKB(q);
+  if(!r.item || r.score<2){
+    aiSay('ai','知识库没有直接命中「'+q+'」。你可以换个问法，或点“抽一题”做练习。我只根据本知识库作答，不会编造。');
+    return;
+  }
+  var it=r.item;
+  if(it.kind==='card'){ aiSay('ai', it.q+'\n\n'+it.a, '阶段1 第'+it.ch+'章 · '+it.title); }
+  else { aiSay('ai','关于「'+it.q+'」：'+it.a+'（详见该章节讲解）', '第'+it.ch+'章 · '+it.title); }
+}
+function randomQuiz(){
+  var pool=[];
+  (KB.chapters||[]).forEach(function(c){ (c.quiz||[]).forEach(function(q){pool.push({ch:c.chapterId,title:c.title,q:q});}); });
+  if(!pool.length){aiSay('ai','暂无题库。');return;}
+  var pick=pool[Math.floor(Math.random()*pool.length)];
+  var opts=pick.q.options.map(function(o,i){return String.fromCharCode(65+i)+'. '+o;}).join('\n');
+  aiSay('ai','【'+pick.ch+' · '+pick.title+'】\n'+pick.q.q+'\n\n'+opts+'\n\n（答对与否请到对应章节小测里点选，这里只出题）\n答案：'+String.fromCharCode(65+pick.q.answer)+'。'+pick.q.explain);
+}
+function loadCfg(){ try{return JSON.parse(localStorage.getItem(CFG_KEY)||'{}');}catch(e){return{};} }
+async function onlineAnswer(q){
+  var cfg=loadCfg();
+  if(!cfg.key || !cfg.base){ offlineAnswer(q); return; }
+  var ctx=(KB.chapters||[]).map(function(c){return c.chapterId+' '+c.title+'：'+c.summary;}).join('\n');
+  try{
+    var base=cfg.base.replace(/\/$/,'');
+    var r=await fetch(base+'/chat/completions',{method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+cfg.key},
+      body:JSON.stringify({model:cfg.model||'deepseek-chat',
+        messages:[{role:'system',content:'你是 FPGA 学习助教，只依据以下知识库大纲作答，不知道就说不知道。\n'+ctx},
+                  {role:'user',content:q}], temperature:0.3})});
+    if(!r.ok) throw new Error('http '+r.status);
+    var j=await r.json();
+    aiSay('ai', j.choices[0].message.content.trim(), '在线模型:'+(cfg.model||''));
+  }catch(e){ offlineAnswer(q); }
+}
+
+/* ================= 启动 ================= */
+document.addEventListener('DOMContentLoaded',function(){
+  renderBadges();
+  renderApp();
+  CORPUS=buildCorpus();
+  loadProgress();
+  updateProgress();
+  document.getElementById('phase-1').classList.add('open');
+
+  document.getElementById('btnExpandAll').onclick=function(){document.querySelectorAll('.phase').forEach(function(p){p.classList.add('open');});};
+  document.getElementById('btnCollapseAll').onclick=function(){document.querySelectorAll('.phase').forEach(function(p){p.classList.remove('open');});};
+  document.getElementById('btnReset').onclick=function(){
+    if(confirm('确定要重置所有学习进度吗？此操作不可撤销！')){
+      localStorage.removeItem(PROGRESS_KEY);
+      allCheckboxes().forEach(function(cb){cb.checked=false;});
+      updateProgress();
+    }
+  };
+
+  // AI panel
+  var panel=document.getElementById('aiPanel');
+  document.getElementById('aiFab').onclick=function(){panel.classList.toggle('open');
+    if(panel.classList.contains('open') && !document.getElementById('aiMsgs').children.length)
+      aiSay('ai','你好，我是 FPGA 助教。默认离线检索本知识库作答；点“设置”可填 OpenAI 兼容 Key 在线增强。');};
+  document.getElementById('btnQuiz').onclick=randomQuiz;
+  document.getElementById('btnSetting').onclick=function(){document.getElementById('aiSettings').classList.add('open');
+    var c=loadCfg(); document.getElementById('cfgBase').value=c.base||''; document.getElementById('cfgKey').value=c.key||''; document.getElementById('cfgModel').value=c.model||'';};
+  document.getElementById('cfgClose').onclick=function(){document.getElementById('aiSettings').classList.remove('open');};
+  document.querySelectorAll('.presets .btn').forEach(function(b){
+    b.onclick=function(){document.getElementById('cfgBase').value=b.dataset.base; document.getElementById('cfgModel').value=b.dataset.model;};
+  });
+  document.getElementById('cfgSave').onclick=function(){
+    var c={base:document.getElementById('cfgBase').value.trim(), key:document.getElementById('cfgKey').value.trim(), model:document.getElementById('cfgModel').value.trim()};
+    try{localStorage.setItem(CFG_KEY,JSON.stringify(c));}catch(e){}
+    document.getElementById('aiSettings').classList.remove('open');
+    aiSay('ai','设置已保存到本机浏览器。');
+  };
+  function send(){var v=document.getElementById('aiInput').value.trim(); if(!v)return;
+    aiSay('me',v); document.getElementById('aiInput').value=''; onlineAnswer(v);}
+  document.getElementById('aiSend').onclick=send;
+  document.getElementById('aiInput').addEventListener('keydown',function(e){if(e.key==='Enter')send();});
+});
+</script>
+</body>
+</html>

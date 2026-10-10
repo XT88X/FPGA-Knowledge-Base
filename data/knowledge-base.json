@@ -1,0 +1,530 @@
+{
+  "chapters": [
+    {
+      "chapterId": "1.1",
+      "phase": 1,
+      "slug": "fpga-basics",
+      "title": "FPGA 基础与环境搭建",
+      "summary": "FPGA 本质（LUT/FF/BRAM/布线）、并行与串行的区别、开发 7 步流程、Vivado 安装与空工程、通用板卡介绍。",
+      "doc": "docs/phase1/ch1-fpga-basics.md",
+      "code": [],
+      "diagrams": [
+        {
+          "file": "assets/phase1/fpga-vs-cpu.svg",
+          "title": "CPU 串行 vs FPGA 并行",
+          "caption": "同一时刻 CPU 只执行一条指令，FPGA 内部多块电路同时工作。"
+        },
+        {
+          "file": "assets/phase1/dev-flow.svg",
+          "title": "FPGA 开发全流程 7 步",
+          "caption": "从写 Verilog 到 JTAG 下载调试的完整链路。"
+        }
+      ],
+      "tools": [
+        {
+          "name": "AMD Vivado ML Edition 下载（2025.2）",
+          "url": "https://www.xilinx.com/support/download.html",
+          "required": true,
+          "note": "免费 ML Standard 版即可，支持 Artix-7/Zynq。"
+        },
+        {
+          "name": "Vivado 授权说明（ML Standard 免 License）",
+          "url": "https://www.amd.com/en/products/software/adaptive-socs-and-fpgas/licensing-faq.html",
+          "required": true,
+          "note": "2025.2 及更早 Standard 版无需 License。"
+        },
+        {
+          "name": "电缆/JTAG 驱动安装指南",
+          "url": "https://digilent.com/reference/programmable-logic/guides/installing-vivado-and-vitis",
+          "required": false,
+          "note": "有开发板再装；纯仿真可略过。"
+        }
+      ],
+      "tasks": [
+        {
+          "id": "task-1-1-1",
+          "text": "安装 Vivado（免费 ML Standard / WebPACK）"
+        },
+        {
+          "id": "task-1-1-2",
+          "text": "创建第一个空工程，熟悉 Vivado 界面"
+        },
+        {
+          "id": "task-1-1-3",
+          "text": "连接开发板并在 Hardware Manager 识别硬件"
+        }
+      ],
+      "cards": [
+        {
+          "q": "FPGA 内部主要由哪几类可编程资源构成？",
+          "a": "LUT（查找表，实现组合逻辑）、FF（触发器，实现时序/记忆）、BRAM（块存储器）、可编程布线资源（开关矩阵互连）。",
+          "tags": [
+            "结构",
+            "LUT",
+            "FF"
+          ]
+        },
+        {
+          "q": "FPGA 与 CPU 执行方式的本质区别是什么？",
+          "a": "CPU 串行执行指令，同一时刻只做一件事；FPGA 是硬件并行，例化的多个模块在硅片上同时独立运行，没有指令取指和串行流水线。",
+          "tags": [
+            "并行",
+            "CPU"
+          ]
+        },
+        {
+          "q": "写 Verilog 为什么不是写顺序执行的程序？",
+          "a": "Verilog 描述的是同时通电的电路，每个 always 块都是一块永远在工作的硬件；它描述结构与行为，不是按调用顺序运行的函数。",
+          "tags": [
+            "概念"
+          ]
+        },
+        {
+          "q": "FPGA 开发的 7 个步骤是什么？",
+          "a": "设计输入→功能仿真→综合→实现(布局布线)→时序约束分析→生成比特流→JTAG 下载与调试。",
+          "tags": [
+            "流程"
+          ]
+        },
+        {
+          "q": "综合(Synthesis)和实现(Implementation)分别做什么？",
+          "a": "综合把 Verilog 翻译成门级网表(LUT/FF)；实现再把网表映射到具体资源并做布局布线，决定每个逻辑放哪、用哪根线连。",
+          "tags": [
+            "综合",
+            "实现"
+          ]
+        },
+        {
+          "q": "比特流(.bit)文件描述的是什么？",
+          "a": "描述芯片内哪些可编程开关接通、每个 LUT 存什么真值表、触发器初值等；下载它等于把配置写进 FPGA。",
+          "tags": [
+            "比特流"
+          ]
+        },
+        {
+          "q": "Vivado 免费版叫什么？需要 License 吗？",
+          "a": "Vivado ML Standard（原 WebPACK），对 Artix-7/Zynq 常用型号免费；2025.2 及更早版本无需 License。",
+          "tags": [
+            "Vivado",
+            "License"
+          ]
+        },
+        {
+          "q": "没有开发板能不能学 FPGA？",
+          "a": "可以。用 Vivado 内置 Simulator 跑 testbench 看波形即可完成前几阶段；引脚分配与下载等有硬件再做。",
+          "tags": [
+            "仿真",
+            "入门"
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "下面哪项最准确地描述了 FPGA 的并行特性？",
+          "options": [
+            "同一时钟下多个模块同时独立工作",
+            "靠提高主频让指令跑更快",
+            "只能串行处理一路数据",
+            "必须装操作系统才能运行"
+          ],
+          "answer": 0,
+          "explain": "FPGA 例化的模块是真实并行电路，与 CPU 靠频率串行执行有本质区别。"
+        },
+        {
+          "q": "把 Verilog 变成门级网表的步骤叫？",
+          "options": [
+            "布局布线",
+            "综合",
+            "下载",
+            "仿真"
+          ],
+          "answer": 1,
+          "explain": "综合(Synthesis)生成 LUT/FF 网表；布局布线属于后续的实现阶段。"
+        },
+        {
+          "q": "关于 Vivado 免费版，正确的是？",
+          "options": [
+            "必须购买 License 才能用",
+            "ML Standard 对 Artix-7/Zynq 常用型号免费",
+            "只能仿真不能下载",
+            "只支持 Intel 器件"
+          ],
+          "answer": 1,
+          "explain": "ML Standard(原 WebPACK)免费，2025.2 及更早版本无需 License。"
+        },
+        {
+          "q": "LUT 在 FPGA 里主要用来？",
+          "options": [
+            "存储大量文件",
+            "实现任意组合逻辑函数",
+            "产生时钟",
+            "驱动显示器"
+          ],
+          "answer": 1,
+          "explain": "LUT 本质是小 RAM，存真值表，输入一来直接查表得到组合逻辑输出。"
+        }
+      ]
+    },
+    {
+      "chapterId": "1.2",
+      "phase": 1,
+      "slug": "hdl-blink",
+      "title": "HDL 基础与第一个电路",
+      "summary": "Verilog 模块结构、always 时钟触发、计数器与时钟分频计算（50MHz→1Hz 数到 25,000,000-1，25bit）、顶层与引脚分配。",
+      "doc": "docs/phase1/ch2-hdl-blink.md",
+      "code": [
+        {
+          "file": "code/phase1/led_blink.v",
+          "type": "verilog",
+          "role": "synthesizable",
+          "title": "led_blink.v — 参数化 LED 闪烁（可综合）"
+        }
+      ],
+      "diagrams": [
+        {
+          "file": "assets/phase1/divider-timing.svg",
+          "title": "计数器分频时序",
+          "caption": "clk 上升沿 cnt 自增，计满 HALF_COUNT-1 翻转 led 并清零。"
+        }
+      ],
+      "tools": [
+        {
+          "name": "通用引脚约束模板 fpga_common.xdc",
+          "url": "../code/common/fpga_common.xdc",
+          "required": true,
+          "note": "相对本仓库；按开发板替换 PACKAGE_PIN。"
+        },
+        {
+          "name": "板级适配方法（board-adaptation.md）",
+          "url": "../docs/board-adaptation.md",
+          "required": true,
+          "note": "如何找正点原子/野火板的参考引脚。"
+        }
+      ],
+      "tasks": [
+        {
+          "id": "task-1-2-1",
+          "text": "编写 1 秒间隔的 LED 闪烁代码"
+        },
+        {
+          "id": "task-1-2-2",
+          "text": "完成引脚分配并全编译工程"
+        },
+        {
+          "id": "task-1-2-3",
+          "text": "下载到开发板，亲眼看到 LED 闪烁"
+        }
+      ],
+      "cards": [
+        {
+          "q": "Verilog 可综合模块的基本结构是？",
+          "a": "module 名 + 端口列表(input/output) + 内部信号与 always/assign 描述，最后 endmodule。",
+          "tags": [
+            "语法",
+            "模块"
+          ]
+        },
+        {
+          "q": "时序逻辑 always 块的标准敏感表怎么写？",
+          "a": "always @(posedge clk or negedge rst_n)：时钟上升沿更新状态，异步低电平复位；这会被综合成触发器。",
+          "tags": [
+            "always",
+            "时序"
+          ]
+        },
+        {
+          "q": "50MHz 时钟想让 LED 每秒翻转一次，计数器要数多少个时钟？",
+          "a": "半周期计数 = 50,000,000 / (2*1) = 25,000,000；即数到 25,000,000-1 翻转一次。",
+          "tags": [
+            "分频",
+            "计算"
+          ]
+        },
+        {
+          "q": "数到 25,000,000 需要多少位计数器？",
+          "a": "2^24=16.7M 不够，2^25=33.5M 够，所以 25 位，即 reg [24:0]。",
+          "tags": [
+            "位宽",
+            "计算"
+          ]
+        },
+        {
+          "q": "分频计数通用公式是什么？",
+          "a": "半周期计数 = CLK_FREQ_HZ/(2*BLINK_HZ)；位宽 = ceil(log2(半周期计数))。",
+          "tags": [
+            "公式"
+          ]
+        },
+        {
+          "q": "output reg 里的 reg 一定是触发器吗？",
+          "a": "不一定。reg 只是表示“在过程块(always)里被赋值”的变量；组合逻辑里的 reg 综合后是连线，时序逻辑里的才是触发器。",
+          "tags": [
+            "语法",
+            "reg"
+          ]
+        },
+        {
+          "q": "引脚分配写在 Verilog 里吗？",
+          "a": "不写在 Verilog 里，而写在 XDC 约束文件：create_clock 定时钟周期，PACKAGE_PIN 定引脚，IOSTANDARD 定电平。",
+          "tags": [
+            "XDC",
+            "约束"
+          ]
+        },
+        {
+          "q": "异步复位在 always 块里怎么表达？",
+          "a": "敏感表加 or negedge rst_n，块内先 if(!rst_n) 给寄存器赋初值，再写正常逻辑。",
+          "tags": [
+            "复位",
+            "时序"
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "50MHz 时钟、希望 LED 每 1 秒翻转一次，计数器满分值是？",
+          "options": [
+            "50,000,000",
+            "25,000,000",
+            "1,000,000",
+            "50,000"
+          ],
+          "answer": 1,
+          "explain": "半周期 = 50MHz/(2*1Hz)=25,000,000 个时钟。"
+        },
+        {
+          "q": "为数到 25,000,000，计数器位宽至少是？",
+          "options": [
+            "24 位",
+            "25 位",
+            "26 位",
+            "32 位"
+          ],
+          "answer": 1,
+          "explain": "2^24=16.7M<25M，2^25=33.5M>25M，故 25 位。"
+        },
+        {
+          "q": "下面哪个是正确的同步时序 always 块？",
+          "options": [
+            "always @(*) cnt=cnt+1",
+            "always @(posedge clk or negedge rst_n)",
+            "always cnt=cnt+1",
+            "assign cnt=cnt+1"
+          ],
+          "answer": 1,
+          "explain": "时序逻辑要用时钟沿触发并带异步复位敏感表。"
+        },
+        {
+          "q": "引脚 PACKAGE_PIN 应写在？",
+          "options": [
+            "Verilog module 里",
+            "XDC 约束文件",
+            "C 代码里",
+            "无需指定"
+          ],
+          "answer": 1,
+          "explain": "物理引脚与电平通过 XDC 约束指定，不写进 RTL。"
+        }
+      ]
+    },
+    {
+      "chapterId": "1.3",
+      "phase": 1,
+      "slug": "simulation",
+      "title": "仿真验证入门",
+      "summary": "Testbench 结构、时钟激励生成、波形分析、行为仿真与时序仿真区别；为 led_blink 写完整 TB，进阶 PWM 呼吸灯。",
+      "doc": "docs/phase1/ch3-simulation.md",
+      "code": [
+        {
+          "file": "code/phase1/tb_led_blink.v",
+          "type": "verilog",
+          "role": "testbench",
+          "title": "tb_led_blink.v — LED 闪烁测试平台"
+        },
+        {
+          "file": "code/phase1/breathing_led.v",
+          "type": "verilog",
+          "role": "synthesizable",
+          "title": "breathing_led.v — PWM 呼吸灯（可综合）"
+        },
+        {
+          "file": "code/phase1/tb_breathing_led.v",
+          "type": "verilog",
+          "role": "testbench",
+          "title": "tb_breathing_led.v — 呼吸灯测试平台"
+        }
+      ],
+      "diagrams": [
+        {
+          "file": "assets/phase1/sim-types.svg",
+          "title": "行为仿真 vs 时序仿真",
+          "caption": "行为仿真门延迟为 0；时序仿真含真实门/线延迟。"
+        }
+      ],
+      "tools": [
+        {
+          "name": "Vivado 内置 Simulator",
+          "url": "https://www.xilinx.com/support/download.html",
+          "required": true,
+          "note": "随 Vivado ML Standard 安装，无需额外下载。"
+        }
+      ],
+      "tasks": [
+        {
+          "id": "task-1-3-1",
+          "text": "为 LED 闪烁编写 testbench"
+        },
+        {
+          "id": "task-1-3-2",
+          "text": "跑行为仿真，观察计数器波形"
+        },
+        {
+          "id": "task-1-3-3",
+          "text": "进阶：实现呼吸灯 PWM 调光"
+        }
+      ],
+      "cards": [
+        {
+          "q": "Testbench 是什么？它有端口吗？",
+          "a": "Testbench 是激励被测设计的顶层模块，本身没有输入输出端口；负责例化 DUT、产生时钟/复位、导出波形、打印判断。",
+          "tags": [
+            "testbench"
+          ]
+        },
+        {
+          "q": "怎么在 testbench 里产生 50MHz 时钟？",
+          "a": "always #10 clk = ~clk; —— 每 10ns 翻转，周期 20ns 即 50MHz。",
+          "tags": [
+            "时钟",
+            "激励"
+          ]
+        },
+        {
+          "q": "$dumpvars 的作用是？",
+          "a": "把内部信号导出成波形(VCD)，供仿真器画出时序图查看。",
+          "tags": [
+            "波形",
+            "系统任务"
+          ]
+        },
+        {
+          "q": "为什么仿真时要把 BLINK_HZ 调大？",
+          "a": "真实 1Hz 要等 25,000,000 个时钟才翻转一次，仿真太慢；调大 BLINK_HZ 让半周期缩短到几十个时钟，几微秒就能看到翻转。上板再改回 1。",
+          "tags": [
+            "仿真技巧"
+          ]
+        },
+        {
+          "q": "行为仿真和时序仿真的区别？",
+          "a": "行为仿真不考虑门/线延迟，跑得快，验证功能；时序仿真加回真实延迟，最接近硬件，能发现建立/保持时间问题但慢。",
+          "tags": [
+            "行为",
+            "时序"
+          ]
+        },
+        {
+          "q": "PWM 呼吸灯的原理是什么？",
+          "a": "用高速计数器当载波，led=(pwm_cnt<duty)；让 duty 缓慢爬升再下降，LED 平均亮度随之渐变形成呼吸。",
+          "tags": [
+            "PWM",
+            "呼吸灯"
+          ]
+        },
+        {
+          "q": "占空比和 LED 亮度什么关系？",
+          "a": "占空比(高电平时间占比)越大，平均电压越高，LED 看起来越亮；duty 从 0 到最大再回落即呼吸。",
+          "tags": [
+            "PWM",
+            "亮度"
+          ]
+        },
+        {
+          "q": "复位在 testbench 里怎么施加？",
+          "a": "先把 rst_n=0 保持几十 ns 再拉高，模拟上电复位顺序，确保 DUT 从已知初值开始。",
+          "tags": [
+            "复位",
+            "激励"
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "产生 50MHz 时钟的写法是？",
+          "options": [
+            "always #20 clk=~clk",
+            "always #10 clk=~clk",
+            "always #1 clk=~clk",
+            "assign clk=1"
+          ],
+          "answer": 1,
+          "explain": "周期 20ns => 每 10ns 翻转一次。"
+        },
+        {
+          "q": "关于行为仿真与时序仿真，正确的是？",
+          "options": [
+            "行为仿真含真实延迟",
+            "时序仿真不考虑延迟",
+            "行为仿真验证功能、时序仿真接近硬件真实行为",
+            "两者完全一样"
+          ],
+          "answer": 2,
+          "explain": "行为仿真快而验功能；时序仿真含门/线延迟，最接近硬件。"
+        },
+        {
+          "q": "PWM 呼吸灯里控制亮度的关键信号是？",
+          "options": [
+            "clk",
+            "duty(占空比)",
+            "rst_n",
+            "波特率"
+          ],
+          "answer": 1,
+          "explain": "led=(pwm_cnt<duty)，duty 缓慢升降即呼吸。"
+        },
+        {
+          "q": "$dumpvars 的作用是？",
+          "options": [
+            "结束仿真",
+            "导出内部信号波形",
+            "产生时钟",
+            "复位设计"
+          ],
+          "answer": 1,
+          "explain": "生成 VCD 波形，用于在波形窗口观察信号。"
+        }
+      ]
+    }
+  ],
+  "tools": [
+    {
+      "name": "AMD Vivado ML Edition 下载（2025.2）",
+      "url": "https://www.xilinx.com/support/download.html",
+      "required": true,
+      "note": "免费 ML Standard 版即可，支持 Artix-7/Zynq。"
+    },
+    {
+      "name": "Vivado 授权说明（ML Standard 免 License）",
+      "url": "https://www.amd.com/en/products/software/adaptive-socs-and-fpgas/licensing-faq.html",
+      "required": true,
+      "note": "2025.2 及更早 Standard 版无需 License。"
+    },
+    {
+      "name": "电缆/JTAG 驱动安装指南",
+      "url": "https://digilent.com/reference/programmable-logic/guides/installing-vivado-and-vitis",
+      "required": false,
+      "note": "有开发板再装；纯仿真可略过。"
+    },
+    {
+      "name": "通用引脚约束模板 fpga_common.xdc",
+      "url": "../code/common/fpga_common.xdc",
+      "required": true,
+      "note": "相对本仓库；按开发板替换 PACKAGE_PIN。"
+    },
+    {
+      "name": "板级适配方法（board-adaptation.md）",
+      "url": "../docs/board-adaptation.md",
+      "required": true,
+      "note": "如何找正点原子/野火板的参考引脚。"
+    }
+  ]
+}
