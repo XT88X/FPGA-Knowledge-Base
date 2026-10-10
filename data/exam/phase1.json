@@ -1,0 +1,41 @@
+{
+  "phase": 1,
+  "passScore": 85,
+  "questions": [
+    {"id":"p1-101","ch":"1.1","type":"single","pts":5,"q":"FPGA 内部实现任意组合逻辑函数的基本资源是？","options":["LUT（查找表）","BRAM（块存储器）","UART 串口","PLL 锁相环"],"answer":0,"explain":"LUT 本质是小 RAM，存真值表，输入一来直接查表得到组合逻辑输出。"},
+    {"id":"p1-102","ch":"1.1","type":"single","pts":5,"q":"在 FPGA 里保存一位状态、实现时序逻辑与“记忆”的基本单元是？","options":["LUT","FF（触发器）","布线开关","IO 电平"],"answer":1,"explain":"FF 在时钟沿保存一位状态，是时序逻辑的记忆单元。"},
+    {"id":"p1-103","ch":"1.1","type":"judge","pts":5,"q":"FPGA 和 CPU 一样，是靠提高主频串行执行一条条指令来工作的。","answer":false,"explain":"错。FPGA 是硬件并行，例化的多块电路同时独立运行，没有指令取指与串行流水线。"},
+    {"id":"p1-104","ch":"1.1","type":"single","pts":5,"q":"把 Verilog 代码翻译成门级网表（LUT/FF）这一步叫？","options":["布局布线","综合","下载","仿真"],"answer":1,"explain":"综合(Synthesis)生成网表；布局布线属于后续实现阶段。"},
+    {"id":"p1-105","ch":"1.1","type":"single","pts":5,"q":"对 Artix-7/Zynq 常用型号免费、无需 License 的 Vivado 版本是？","options":["Vivado ML Standard","Vivado Enterprise","Vitis HLS","Quartus Pro"],"answer":0,"explain":"ML Standard（原 WebPACK）2025.2 及更早版本免费、无需 License。"},
+    {"id":"p1-106","ch":"1.1","type":"multi","pts":5,"q":"下列哪些属于 FPGA 内部的可编程资源？（多选）","options":["LUT 查找表","FF 触发器","BRAM 块存储器","可编程布线开关矩阵"],"answer":[0,1,2,3],"explain":"四类资源：LUT、FF、BRAM、可编程布线。"},
+    {"id":"p1-107","ch":"1.1","type":"single","pts":5,"q":"描述芯片内部开关接通、LUT 存什么真值表，供下载用的配置文件扩展名是？","options":[".v",".xdc",".bit",".md"],"answer":2,"explain":"比特流 .bit 描述芯片配置；.v 是源码，.xdc 是引脚约束。"},
+    {"id":"p1-108","ch":"1.1","type":"judge","pts":5,"q":"Vivado ML Standard（2025.2 及更早版本）对 Artix-7/Zynq 常用型号需要购买 License。","answer":false,"explain":"错。ML Standard 版无需 License 即可综合/实现/下载。"},
+    {"id":"p1-109","ch":"1.1","type":"multi","pts":5,"q":"下列哪些属于 FPGA 开发流程的环节？（多选）","options":["写 Verilog 设计输入","综合与实现(布局布线)","生成比特流","JTAG 下载调试"],"answer":[0,1,2,3],"explain":"7 步流程覆盖设计输入→仿真→综合→实现→约束→比特流→下载。"},
+    {"id":"p1-110","ch":"1.1","type":"fill","pts":5,"q":"FPGA 的中文全称是什么？","answer":["现场可编程门阵列"],"explain":"Field Programmable Gate Array，现场可编程门阵列。"},
+    {"id":"p1-111","ch":"1.1","type":"single","pts":5,"q":"下面哪项最准确地描述了 FPGA 的并行特性？","options":["同一时刻多个模块同时独立工作","靠提高主频让指令跑更快","只能串行处理一路数据","必须装操作系统"],"answer":0,"explain":"FPGA 例化的模块是真实并行电路，与 CPU 串行执行有本质区别。"},
+
+    {"id":"p1-201","ch":"1.2","type":"single","pts":5,"q":"50MHz 时钟、希望 LED 每秒翻转一次，计数器实际计到的满分值是？","options":["25,000,000","24,999,999","50,000,000","1,000,000"],"answer":1,"explain":"半周期=50,000,000/2=25,000,000 个时钟；计数器从 0 数到 HALF_COUNT-1=24,999,999 后翻转并清零。"},
+    {"id":"p1-202","ch":"1.2","type":"single","pts":5,"q":"为了数到 25,000,000，计数器位宽至少需要多少位？","options":["24 位","25 位","26 位","32 位"],"answer":1,"explain":"2^24=16.7M<25M，2^25=33.5M>25M，故 25 位（reg [24:0]）。"},
+    {"id":"p1-203","ch":"1.2","type":"single","pts":5,"q":"下面哪个是正确的同步时序 always 块敏感表？","options":["always @(*)","always @(posedge clk or negedge rst_n)","always @(clk)","assign always"],"answer":1,"explain":"时序逻辑在时钟沿触发，并带异步低电平复位。"},
+    {"id":"p1-204","ch":"1.2","type":"judge","pts":5,"q":"端口声明为 output reg，综合后一定是一个触发器。","answer":false,"explain":"错。reg 只是“在过程块里被赋值”的变量；组合逻辑里的 reg 综合后是连线，时序逻辑里的才是触发器。"},
+    {"id":"p1-205","ch":"1.2","type":"fill","pts":5,"q":"半周期计数的通用公式是：半周期 = ____（用 CLK_FREQ_HZ 与 BLINK_HZ 表示）。","answer":["CLK_FREQ_HZ/(2*BLINK_HZ)","CLK_FREQ_HZ / (2*BLINK_HZ)","CLK_FREQ_HZ/2/BLINK_HZ"],"explain":"半周期计数 = 时钟频率 / (2 × 翻转频率)。"},
+    {"id":"p1-206","ch":"1.2","type":"single","pts":5,"q":"引脚号 PACKAGE_PIN 与电平 IOSTANDARD 应写在哪里？","options":["Verilog module 里","XDC 约束文件","C 代码里","无需指定"],"answer":1,"explain":"物理引脚与电平通过 XDC 约束指定，不写进 RTL。"},
+    {"id":"p1-207","ch":"1.2","type":"multi","pts":5,"q":"关于 50MHz→1Hz LED 闪烁的计数器设计，正确的有？（多选）","options":["半周期需数 25,000,000 个时钟","计数器位宽取 25 位","计满后翻转 LED 并清零计数","时钟上升沿才更新计数器"],"answer":[0,1,2,3],"explain":"全部正确：半周期、位宽、翻转清零、时钟沿更新。"},
+    {"id":"p1-208","ch":"1.2","type":"judge","pts":5,"q":"异步低电平复位，在 always 敏感表里要写成 or negedge rst_n。","answer":true,"explain":"对。敏感表加 or negedge rst_n，块内先 if(!rst_n) 赋初值。"},
+    {"id":"p1-209","ch":"1.2","type":"fill","pts":5,"q":"50MHz 系统时钟的周期是多少 ns？","answer":["20","20ns","20 ns"],"explain":"周期=1/50MHz=20ns。"},
+    {"id":"p1-210","ch":"1.2","type":"single","pts":5,"q":"50MHz 时钟，每秒钟有多少个上升沿？","options":["50,000,000","5,000,000","500,000","1,000,000"],"answer":0,"explain":"50MHz 即每秒 50,000,000 个时钟沿。"},
+    {"id":"p1-211","ch":"1.2","type":"multi","pts":5,"q":"一个规范的可综合计数器模块，通常包含下列哪些要素？（多选）","options":["时钟沿触发的 always 块","异步复位","计满阈值判断","计满后清零并翻转输出"],"answer":[0,1,2,3],"explain":"四要素齐全才是可综合且行为正确的计数器。"},
+
+    {"id":"p1-301","ch":"1.3","type":"single","pts":5,"q":"在 testbench 里产生 50MHz 时钟，正确写法是？","options":["always #20 clk = ~clk;","always #10 clk = ~clk;","always #1 clk = ~clk;","assign clk = 1;"],"answer":1,"explain":"50MHz 周期 20ns，每 10ns 翻转一次。"},
+    {"id":"p1-302","ch":"1.3","type":"judge","pts":5,"q":"Testbench 是一个有对外输入输出端口的顶层模块。","answer":false,"explain":"错。testbench 本身没有端口，它负责例化 DUT 并产生激励。"},
+    {"id":"p1-303","ch":"1.3","type":"single","pts":5,"q":"testbench 中 $dumpvars 的作用是？","options":["结束仿真","导出内部信号波形(VCD)","产生时钟","复位设计"],"answer":1,"explain":"$dumpvars 导出 VCD 波形，供波形窗口查看。"},
+    {"id":"p1-304","ch":"1.3","type":"multi","pts":5,"q":"关于行为仿真与时序仿真，正确的有？（多选）","options":["行为仿真不考虑门/线延迟，跑得快","行为仿真主要验证功能对错","时序仿真加回真实延迟，最接近硬件","时序仿真能发现建立/保持时间类问题"],"answer":[0,1,2,3],"explain":"行为验功能快，时序加延迟接近硬件并能发现时序违例。"},
+    {"id":"p1-305","ch":"1.3","type":"single","pts":5,"q":"PWM 呼吸灯中控制 LED 平均亮度的关键信号是？","options":["clk","duty（占空比）","rst_n","波特率"],"answer":1,"explain":"led=(pwm_cnt<duty)，duty 占空比越大平均越亮。"},
+    {"id":"p1-306","ch":"1.3","type":"judge","pts":5,"q":"仿真时把 BLINK_HZ 调大，是为了让 LED 翻转在仿真里更快出现、便于观察。","answer":true,"explain":"对。真实 1Hz 等太久，调大 BLINK_HZ 让半周期缩短到几十个时钟。"},
+    {"id":"p1-307","ch":"1.3","type":"fill","pts":5,"q":"50MHz 时钟周期 20ns，testbench 里用 always #N clk=~clk 翻转，N 应为多少 ns？","answer":["10","10ns","10 ns"],"explain":"翻转间隔=周期一半=10ns。"},
+    {"id":"p1-308","ch":"1.3","type":"single","pts":5,"q":"在 testbench 里施加复位，正确做法是？","options":["一直保持 rst_n=1","先把 rst_n=0 保持几十 ns 再拉高","复位不需要","rst_n 随机跳变"],"answer":1,"explain":"先低电平复位再释放，模拟上电复位顺序。"},
+    {"id":"p1-309","ch":"1.3","type":"multi","pts":5,"q":"一个完整 testbench 通常包含下列哪些职责？（多选）","options":["例化被测设计 DUT","产生时钟与复位激励","$dumpvars 导出波形","用 $display/断言判断结果"],"answer":[0,1,2,3],"explain":"四项都是 testbench 的职责。"},
+    {"id":"p1-310","ch":"1.3","type":"judge","pts":5,"q":"行为仿真因为加了真实门延迟，所以最接近硬件真实行为。","answer":false,"explain":"错。行为仿真门延迟为 0；时序仿真才加回真实延迟。"},
+    {"id":"p1-311","ch":"1.3","type":"fill","pts":5,"q":"PWM_BITS=8 时，PWM 占空比的分辨率是多少分之一？","answer":["256","1/256","256分之一"],"explain":"PWM 周期=2^8=256，占空比步进为 1/256。"}
+  ]
+}
