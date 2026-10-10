@@ -5,323 +5,337 @@
     {
       "id": "dig-c001",
       "sub": "shuzhi",
-      "title": "二进制与十六进制",
-      "body": "① 每4位二进制对应1位十六进制（0000~1111 = 0~F）。\n② 八进制每3位一组；十进制逢10进1。\n③ FPGA内部只用高低电平，天然是二进制世界。",
-      "src": "AMD UG199"
+      "title": "二/八/十/十六进制互转",
+      "body": "① 每4位二进制=1位十六进制；每3位=1位八进制。\n② 十进制转二/八/十六用'除基取余'。\n③ FPGA内部只有二进制。",
+      "src": ""
     },
     {
       "id": "dig-c002",
       "sub": "shuzhi",
-      "title": "位宽与能表示的数值",
-      "body": "① n位无符号范围 0 ~ 2^n-1。\n② n位有符号(补码)范围 -2^(n-1) ~ 2^(n-1)-1。\n③ 例：8位无符号 0~255；8位有符号 -128~127。",
+      "title": "位宽范围",
+      "body": "① n位无符号 0~2^n-1；n位补码 -2^(n-1)~2^(n-1)-1。\n② 8位无符号0~255；8位补码-128~127。",
       "src": ""
     },
     {
       "id": "dig-c003",
       "sub": "shuzhi",
       "title": "BCD码",
-      "body": "① BCD用4位二进制表示1位十进制(0000~1001)。\n② 12 的 BCD = 0001 0010。\n③ 常用于数码管/时钟显示，不是纯二进制。",
+      "body": "① 4位二进制表1位十进制(0000~1001)。\n② 12 的 BCD=0001 0010。用于数码管。",
       "src": ""
     },
     {
       "id": "dig-c004",
       "sub": "shuzhi",
-      "title": "格雷码(Gray)",
-      "body": "① 相邻两个码只差1位，消除翻码冒险。\n② 常用于同步 FIFO 跨时钟域指针、旋转编码器。\n③ 二进制转格雷：g=b xor (b>>1)。",
+      "title": "格雷码",
+      "body": "① 相邻码只差1位，消除翻码冒险。\n② 用于跨时钟指针、旋转编码器。\n③ g=b xor (b>>1)。",
       "src": ""
     },
     {
       "id": "dig-c005",
       "sub": "shuzhi",
-      "title": "原码/反码/补码",
-      "body": "① 正数三者相同。\n② 负数反码=按位取反；补码=反码+1。\n③ FPGA有符号运算一律用补码，减法变加法。",
+      "title": "原反补码",
+      "body": "① 正数三码相同。\n② 负数反码=取反，补码=反码+1。\n③ FPGA有符号运算用补码，减法变加法。",
       "src": ""
     },
     {
       "id": "dig-c006",
       "sub": "shuzhi",
-      "title": "有符号数拓展",
-      "body": "① 符号拓展：把最高位(符号位)向左复制。\n② 4位 -1(1111) 拓展到8位 = 11111111。\n③ 零拓展用于无符号数左边补0。",
+      "title": "符号拓展",
+      "body": "① 有符号数拓展=符号位向左复制。\n② 无符号数拓展=左边补0。\n③ 4位-1(1111)扩到8位=11111111。",
       "src": ""
     },
     {
       "id": "dig-c007",
       "sub": "shuzhi",
       "title": "常见幂次",
-      "body": "① 2^10=1,024(K)；2^20=1,048,576(M)；2^30=1,073,741,824(G)。\n② 50MHz 半周期到1Hz = 25,000,000。",
+      "body": "① 2^10=1024，2^20=1,048,576。\n② 50MHz→1Hz半周期=25,000,000。",
       "src": ""
     },
     {
       "id": "dig-c008",
       "sub": "shuzhi",
-      "title": "ASCII/编码",
-      "body": "① 数字'0'=0x30，'A'=0x41，'a'=0x61。\n② UART/串口按字节(8bit)传ASCII。",
+      "title": "ASCII",
+      "body": "① '0'=0x30，'A'=0x41，'a'=0x61。\n② 串口按字节传ASCII。",
       "src": ""
     },
     {
       "id": "dig-c009",
       "sub": "men",
       "title": "基本逻辑门",
-      "body": "① AND与：全1出1；OR或：有1出1。\n② NOT非：取反；NAND与非、NOR或非。\n③ XOR异或：相同出0、不同出1；XNOR同或相反。",
+      "body": "① AND全1出1；OR有1出1。\n② NOT取反；NAND/NOR。\n③ XOR不同出1，XNOR相反。",
       "src": ""
     },
     {
       "id": "dig-c010",
       "sub": "men",
-      "title": "布尔代数定律",
-      "body": "① 交换律/结合律/分配律同普通代数。\n② A+0=A, A+1=1, A·0=0, A·1=A。\n③ A+A=A, A·A=A, A+A'=1, A·A'=0。",
+      "title": "布尔定律",
+      "body": "① A+0=A,A+1=1,A·0=0,A·1=A。\n② A+A=A,A·A=A,A+A'=1,A·A'=0。",
       "src": ""
     },
     {
       "id": "dig-c011",
       "sub": "men",
-      "title": "德摩根定律",
-      "body": "① (A·B)' = A' + B'；(A+B)' = A'·B'。\n② 与非可凑出任意门；FPGA LUT基于此实现。",
+      "title": "德摩根",
+      "body": "① (A·B)'=A'+B'；(A+B)'=A'·B'。\n② 与非门可凑出任意门。",
       "src": ""
     },
     {
       "id": "dig-c012",
       "sub": "men",
-      "title": "XOR的用途",
-      "body": "① 异或可做比较器：A^B=0 表示相等。\n② 可做可控反相器：B=1则输出~A，B=0则A。\n③ 奇偶校验。",
+      "title": "XOR用途",
+      "body": "① A^B=0表示相等。\n② 可控反相器：B=1则~A。\n③ 奇偶校验。",
       "src": ""
     },
     {
       "id": "dig-c013",
       "sub": "men",
-      "title": "最小项/最大项",
-      "body": "① 最小项m：所有变量以原/反码出现且 AND。\n② 最大项M：所有变量 OR。\n③ 真值表→最小项之和(SOP)。",
-      "src": ""
+      "title": "LUT实现",
+      "body": "① n输入LUT=2^n深小RAM。\n② 写真值表，输入即地址。\n③ Artix-7基本6输入LUT。",
+      "src": "AMD UG474"
     },
     {
       "id": "dig-c014",
       "sub": "men",
-      "title": "LUT如何实现函数",
-      "body": "① 一个n输入LUT是2^n深的小RAM。\n② 把真值表写进去，输入即地址。\n③ Artix-7基本是6输入LUT。",
-      "src": "AMD UG474"
+      "title": "最小项/最大项",
+      "body": "① 最小项=所有变量与；最大项=或。\n② 真值表→最小项之和SOP。",
+      "src": ""
     },
     {
       "id": "dig-c015",
-      "sub": "zuhe",
-      "title": "组合逻辑定义",
-      "body": "① 输出只由当前输入决定，无记忆、无时钟。\n② 表达式里用 assign 或 always @(*)。\n③ 不写 always 时钟沿。",
+      "sub": "men",
+      "title": "反相器链",
+      "body": "① 反相器可凑出NOT。\n② 两输入短接NAND即反相器。",
       "src": ""
     },
     {
       "id": "dig-c016",
-      "sub": "zuhe",
-      "title": "真值表到电路",
-      "body": "① 列出输入所有组合与输出。\n② 把输出为1的最小项写成SOP。\n③ 或化简后映射到LUT。",
+      "sub": "men",
+      "title": "卡诺图化简",
+      "body": "① 圈越大项越少越快。\n② 圈1得SOP。",
       "src": ""
     },
     {
       "id": "dig-c017",
       "sub": "zuhe",
-      "title": "卡诺图",
-      "body": "① 方格相邻只差1位(格雷序)。\n② 圈1得SOP、圈0得POS。\n③ 圈越大项越少，速度越快。",
+      "title": "组合逻辑定义",
+      "body": "① 输出只由当前输入决定，无记忆无时钟。\n② assign 或 always @(*)。",
       "src": ""
     },
     {
       "id": "dig-c018",
       "sub": "zuhe",
-      "title": "竞争与冒险",
-      "body": "① 同一信号经不同路径延迟不同到达。\n② 输出出现毛刺(glitch)。\n③ 同步采样/加同步器/卡诺消项可消除。",
+      "title": "真值表到电路",
+      "body": "① 输出为1的最小项写成SOP。\n② 化简后映射到LUT。",
       "src": ""
     },
     {
       "id": "dig-c019",
       "sub": "zuhe",
-      "title": "组合逻辑必须完整赋值",
-      "body": "① always @(*) 里 if/else 要覆盖全情况。\n② 否则综合出 latch(锁存器)，不希望。\n③ 用 default 或先给默认值。",
-      "src": "AMD UG901"
+      "title": "卡诺图",
+      "body": "① 相邻格只差1位(格雷序)。\n② 圈1得SOP。",
+      "src": ""
     },
     {
       "id": "dig-c020",
-      "sub": "zhongzu",
-      "title": "译码器",
-      "body": "① n输入→2^n输出，每次仅1路有效(one-hot)。\n② 3-8译码器常用于地址译码。",
+      "sub": "zuhe",
+      "title": "竞争冒险",
+      "body": "① 路径延迟不同导致毛刺。\n② 同步采样/卡诺消项消除。",
       "src": ""
     },
     {
       "id": "dig-c021",
-      "sub": "zhongzu",
-      "title": "编码器",
-      "body": "① 与译码相反：多输入→二进制编号。\n② 优先编码器(优先编码器)常用。",
-      "src": ""
+      "sub": "zuhe",
+      "title": "避免锁存器",
+      "body": "① always @(*)分支要写全。\n② 先给默认值。\n③ 否则综合出latch。",
+      "src": "AMD UG901"
     },
     {
       "id": "dig-c022",
-      "sub": "zhongzu",
-      "title": "多路选择器MUX",
-      "body": "① sel选一路输入送到输出。\n② 可用assign case或三元嵌套。\n③ 数据通路核心。",
+      "sub": "zuhe",
+      "title": "case vs if-else",
+      "body": "① case并行无优先级。\n② if-else有优先级。",
       "src": ""
     },
     {
       "id": "dig-c023",
-      "sub": "zhongzu",
-      "title": "加法器",
-      "body": "① 半加器：sum=a^b, cout=a&b。\n② 全加器再加进位cin。\n③ 多级级联成RCA，更快用CLA。",
+      "sub": "zuhe",
+      "title": "时序违例",
+      "body": "① 建立时间不够→跑不上频率。\n② 加寄存器/改约束。",
       "src": ""
     },
     {
       "id": "dig-c024",
-      "sub": "zhongzu",
-      "title": "比较器",
-      "body": "① 比较两个数大小，输出 gt/eq/lt。\n② LUT 直接实现。",
+      "sub": "zuhe",
+      "title": "毛刺消除",
+      "body": "① 输出打一拍同步。\n② 关键路径加同步器。",
       "src": ""
     },
     {
       "id": "dig-c025",
       "sub": "zhongzu",
-      "title": "三态缓冲/使能",
-      "body": "① 输出由 en 控制：en=0 时高阻 Z。\n② 现代FPGA少用片内三态，多用MUX。",
+      "title": "译码器",
+      "body": "① n输入→2^n输出one-hot。\n② 3-8译码器常用地址译码。",
       "src": ""
     },
     {
       "id": "dig-c026",
-      "sub": "shixu",
-      "title": "时序逻辑本质",
-      "body": "① 输出=当前输入+历史状态。\n② 由时钟沿驱动，触发器保存状态。\n③ always @(posedge clk ...)。",
+      "sub": "zhongzu",
+      "title": "编码器",
+      "body": "① 多输入→二进制编号。\n② 优先编码器常用。",
       "src": ""
     },
     {
       "id": "dig-c027",
-      "sub": "shixu",
-      "title": "锁存器 vs 触发器",
-      "body": "① 锁存器电平敏感(透明)。\n② 触发器边沿敏感(采样)。\n③ FPGA推荐用触发器，避免意外锁存器。",
+      "sub": "zhongzu",
+      "title": "MUX",
+      "body": "① sel选一路输入到输出。\n② assign case/三元嵌套。",
       "src": ""
     },
     {
       "id": "dig-c028",
-      "sub": "shixu",
-      "title": "寄存器/流水线",
-      "body": "① 触发器打一拍=寄存。\n② 流水线拆分长路径提频率。\n③ 每打一拍多1拍延迟。",
+      "sub": "zhongzu",
+      "title": "加法器",
+      "body": "① 半加器sum=a^b,cout=a&b。\n② 全加器加cin；RCA/CLA。",
       "src": ""
     },
     {
       "id": "dig-c029",
-      "sub": "shixu",
-      "title": "建立时间/保持时间",
-      "body": "① 建立tSU：数据须在时钟沿前稳定。\n② 保持tH：时钟沿后须再稳定一段时间。\n③ 不满足→亚稳态/采样错。",
-      "src": "AMD UG474"
+      "sub": "zhongzu",
+      "title": "比较器",
+      "body": "① 输出gt/eq/lt。\n② LUT直接实现。",
+      "src": ""
     },
     {
       "id": "dig-c030",
-      "sub": "shixu",
-      "title": "计数器",
-      "body": "① 时序状态机：在时钟沿更新计数值。\n② 位宽由最大值决定：2^N>最大值。",
+      "sub": "zhongzu",
+      "title": "三态缓冲",
+      "body": "① en=0高阻Z。\n② 片内多用MUX。",
       "src": ""
     },
     {
       "id": "dig-c031",
-      "sub": "shixu",
-      "title": "亚稳态与同步",
-      "body": "① 异步信号直接采可能亚稳。\n② 用两级触发器同步器打两拍。\n③ 跨时钟域必做同步。",
+      "sub": "zhongzu",
+      "title": "使能计数器",
+      "body": "① en才计数；load预置。\n② 分频/脉冲。",
       "src": ""
     },
     {
       "id": "dig-c032",
-      "sub": "dianping",
-      "title": "LVCMOS电平",
-      "body": "① LVCMOS3.3：高≈3.3V，低≈0V。\n② LVCMOS1.8：高≈1.8V。\n③ XDC里 IOSTANDARD=LVCMOS33。",
+      "sub": "zhongzu",
+      "title": "优先编码器",
+      "body": "① 多请求按优先级响应。\n② 中断/DMA常用。",
       "src": ""
     },
     {
       "id": "dig-c033",
-      "sub": "dianping",
-      "title": "TTL电平",
-      "body": "① TTL高≈2.0~5V，低≤0.8V。\n② 3.3V LVCMOS 与5V TTL常可互通(注意耐压)。",
+      "sub": "shixu",
+      "title": "时序逻辑本质",
+      "body": "① 输出=输入+历史状态。\n② 时钟沿驱动，触发器存状态。",
       "src": ""
     },
     {
       "id": "dig-c034",
-      "sub": "dianping",
-      "title": "LVDS",
-      "body": "① 低压差分信号，两线互补。\n② 抗干扰强、速率高，用于高速传输/显示。\n③ 摆幅约±350mV。",
+      "sub": "shixu",
+      "title": "锁存器vs触发器",
+      "body": "① 锁存电平敏感透明。\n② 触发器边沿采样。",
       "src": ""
     },
     {
       "id": "dig-c035",
-      "sub": "dianping",
-      "title": "推挽 vs 开漏",
-      "body": "① 推挽：上下管主动驱动，可输出高低。\n② 开漏：只能拉低，需外部上拉电阻。\n③ I2C用开漏+上拉实现线与。",
+      "sub": "shixu",
+      "title": "寄存器/流水线",
+      "body": "① 打一拍=寄存。\n② 流水线提频，多1拍延迟。",
       "src": ""
     },
     {
       "id": "dig-c036",
-      "sub": "dianping",
-      "title": "上拉/下拉电阻",
-      "body": "① 上拉：默认高电平。\n② 下拉：默认低电平。\n③ 按键输入常用上拉，按下接地为低。",
-      "src": ""
+      "sub": "shixu",
+      "title": "建立/保持时间",
+      "body": "① tSU数据须在沿前稳定。\n② tH沿后再稳定。",
+      "src": "AMD UG474"
     },
     {
       "id": "dig-c037",
-      "sub": "dianping",
-      "title": "扇出/灌拉电流",
-      "body": "① 一个输出能驱动的输入个数叫扇出。\n② 灌电流<拉电流(看器件)。\n③ 大电流需缓冲/电平转换芯片。",
+      "sub": "shixu",
+      "title": "计数器",
+      "body": "① 时钟沿更新计数值。\n② 位宽2^N>最大值。",
       "src": ""
     },
     {
       "id": "dig-c038",
-      "sub": "dianping",
-      "title": "XDC电平声明",
-      "body": "① set_property PACKAGE_PIN F16 [get_ports clk]。\n② set_property IOSTANDARD LVCMOS33 [get_ports {*}]。",
+      "sub": "shixu",
+      "title": "亚稳态/同步",
+      "body": "① 异步信号打两拍同步。\n② 跨时钟域必做。",
       "src": ""
     },
     {
       "id": "dig-c039",
       "sub": "shixu",
-      "title": "状态机FSM",
-      "body": "① 时序设计常用FSM：现态+输入→次态。\n② 一段式/两段式/三段式写法。\n③ FPGA里FSM用触发器寄存状态。",
+      "title": "FSM",
+      "body": "① 现态+输入→次态。\n② 三段式常用。",
       "src": ""
     },
     {
       "id": "dig-c040",
       "sub": "shixu",
       "title": "异步复位同步释放",
-      "body": "① 复位异步生效(快)。\n② 释放时与时钟同步(避免亚稳)。\n③ 工业标准做法。",
+      "body": "① 复位异步生效。\n② 释放时与时钟同步。",
       "src": ""
     },
     {
       "id": "dig-c041",
-      "sub": "zuhe",
-      "title": "case与if-else",
-      "body": "① case是并行MUX，无优先级。\n② if-else有优先级(priority encoder)。\n③ 时序要求选合适写法。",
+      "sub": "dianping",
+      "title": "LVCMOS",
+      "body": "① LVCMOS3.3高≈3.3V；LVCMOS1.8≈1.8V。\n② XDC里IOSTANDARD=LVCMOS33。",
       "src": ""
     },
     {
       "id": "dig-c042",
-      "sub": "zhongzu",
-      "title": "计数器使能/加载",
-      "body": "① 带en才计数；带load可预置初值。\n② 可做分频/脉冲生成。",
+      "sub": "dianping",
+      "title": "TTL",
+      "body": "① TTL高≈2V以上，低≤0.8V。\n② 与3.3V LVCMOS常互通。",
       "src": ""
     },
     {
       "id": "dig-c043",
       "sub": "dianping",
-      "title": "电平转换",
-      "body": "① 不同电压域之间需电平转换芯片。\n② 直接相连可能损坏IO或读错。",
+      "title": "LVDS",
+      "body": "① 低压差分，两线互补。\n② 抗干扰高速，摆幅约±350mV。",
       "src": ""
     },
     {
       "id": "dig-c044",
-      "sub": "shuzhi",
-      "title": "位拼接与选择",
-      "body": "① {a,b}拼接；a[i:j]选位。\n② Verilog里最常用的位操作。",
+      "sub": "dianping",
+      "title": "推挽vs开漏",
+      "body": "① 推挽主动出高低。\n② 开漏只能拉低需上拉。\n③ I2C开漏+上拉线与。",
       "src": ""
     },
     {
       "id": "dig-c045",
-      "sub": "men",
-      "title": "缓冲/延迟链",
-      "body": "① 反相器链可做粗略延迟。\n② 关键路径延迟由布线+LUT决定。",
+      "sub": "dianping",
+      "title": "上拉/下拉",
+      "body": "① 上拉默认高，下拉默认低。\n② 按键常用上拉按下为低。",
       "src": ""
     },
     {
       "id": "dig-c046",
-      "sub": "zuhe",
-      "title": "时序违例",
-      "body": "① 建立时间不够→跑不上目标频率。\n② 改约束/加寄存器/缩短路径。",
+      "sub": "dianping",
+      "title": "扇出/灌拉电流",
+      "body": "① 输出能驱动的输入数=扇出。\n② 大电流需缓冲/电平转换。",
+      "src": ""
+    },
+    {
+      "id": "dig-c047",
+      "sub": "dianping",
+      "title": "XDC电平声明",
+      "body": "① PACKAGE_PIN定义管脚。\n② IOSTANDARD定义电平。",
+      "src": ""
+    },
+    {
+      "id": "dig-c048",
+      "sub": "dianping",
+      "title": "电平转换",
+      "body": "① 不同电压域间需转换芯片。\n② 直连可能损IO或读错。",
       "src": ""
     }
   ],
@@ -331,558 +345,517 @@
       "cat": "digital",
       "sub": "shuzhi",
       "type": "single",
-      "q": "8位无符号二进制能表示的最大值是？",
+      "q": "8位无符号二进制最大值是？",
+      "answer": 2,
+      "explain": "n位无符号最大2^n-1=255。",
+      "src": "",
       "options": [
         "127",
         "128",
         "255",
         "256"
-      ],
-      "answer": 2,
-      "explain": "n位无符号最大值=2^n-1=255。",
-      "src": ""
+      ]
     },
     {
       "id": "dig-002",
       "cat": "digital",
       "sub": "shuzhi",
       "type": "single",
-      "q": "8位有符号(补码)的范围是？",
+      "q": "8位补码(有符号)的范围是？",
+      "answer": 1,
+      "explain": "补码n位 -2^(n-1)~2^(n-1)-1。",
+      "src": "",
       "options": [
         "-127~127",
         "-128~127",
         "0~255",
         "-256~255"
-      ],
-      "answer": 1,
-      "explain": "补码n位范围 -2^(n-1)~2^(n-1)-1。",
-      "src": ""
+      ]
     },
     {
       "id": "dig-003",
       "cat": "digital",
       "sub": "shuzhi",
       "type": "single",
-      "q": "十六进制数 0x1F 等于十进制？",
+      "q": "0x1F 等于十进制？",
+      "answer": 1,
+      "explain": "1*16+15=31。",
+      "src": "",
       "options": [
         "29",
         "31",
         "30",
         "17"
-      ],
-      "answer": 1,
-      "explain": "0x1F=1*16+15=31。",
-      "src": ""
+      ]
     },
     {
       "id": "dig-004",
       "cat": "digital",
       "sub": "shuzhi",
       "type": "single",
-      "q": "十进制 255 的十六进制写法是？",
+      "q": "十进制255的十六进制是？",
+      "answer": 0,
+      "explain": "255=0xFF。",
+      "src": "",
       "options": [
         "0xFF",
         "0x100",
         "0xFE",
         "0x0F"
-      ],
-      "answer": 0,
-      "explain": "255=15*16+15=0xFF。",
-      "src": ""
+      ]
     },
     {
       "id": "dig-005",
       "cat": "digital",
       "sub": "shuzhi",
       "type": "single",
-      "q": "4位二进制 1011 等于十进制？",
+      "q": "二进制1011等于十进制？",
+      "answer": 0,
+      "explain": "8+2+1=11。",
+      "src": "",
       "options": [
         "11",
         "13",
         "10",
         "12"
-      ],
-      "answer": 0,
-      "explain": "8+2+1=11。",
-      "src": ""
+      ]
     },
     {
       "id": "dig-006",
       "cat": "digital",
       "sub": "shuzhi",
       "type": "single",
-      "q": "BCD 码 0001 0010 表示的十进制数是？",
+      "q": "BCD 0001 0010 表示？",
+      "answer": 0,
+      "explain": "4位一组：1和2→12。",
+      "src": "",
       "options": [
         "12",
         "18",
         "2",
         "110"
-      ],
-      "answer": 0,
-      "explain": "4位一组：0001=1, 0010=2 → 12。",
-      "src": ""
+      ]
     },
     {
       "id": "dig-007",
       "cat": "digital",
       "sub": "shuzhi",
-      "type": "judge",
-      "q": "格雷码相邻两个码字之间只有1位发生变化。",
-      "answer": true,
-      "explain": "格雷码特意如此，用于消除多位同时翻转的冒险。",
-      "src": ""
+      "type": "single",
+      "q": "十进制256的十六进制是？",
+      "answer": 0,
+      "explain": "256=0x100。",
+      "src": "",
+      "options": [
+        "0x100",
+        "0xFF",
+        "0x80",
+        "0x16"
+      ]
     },
     {
       "id": "dig-008",
       "cat": "digital",
       "sub": "shuzhi",
-      "type": "judge",
-      "q": "在FPGA中，减法运算可以用补码的加法来实现。",
-      "answer": true,
-      "explain": "补码把减法统一成加法，硬件只需加法器。",
-      "src": ""
+      "type": "single",
+      "q": "4位补码能表示的最小负数是？",
+      "answer": 2,
+      "explain": "4位补码 -8~7。",
+      "src": "",
+      "options": [
+        "-4",
+        "-7",
+        "-8",
+        "-15"
+      ]
     },
     {
       "id": "dig-009",
       "cat": "digital",
       "sub": "shuzhi",
-      "type": "fill",
-      "q": "2的10次方约等于多少（十进制整数）？",
-      "answer": [
-        "1024",
-        "1,024"
-      ],
-      "explain": "2^10=1024(K)。",
-      "src": ""
+      "type": "single",
+      "q": "字符'A'的ASCII十进制是？",
+      "answer": 1,
+      "explain": "A=0x41=65。",
+      "src": "",
+      "options": [
+        "64",
+        "65",
+        "66",
+        "97"
+      ]
     },
     {
       "id": "dig-010",
       "cat": "digital",
       "sub": "shuzhi",
-      "type": "fill",
-      "q": "字符'A'的ASCII十六进制值是多少？",
-      "answer": [
-        "0x41",
-        "41",
-        "65"
-      ],
-      "explain": "A=0x41=65。",
-      "src": ""
+      "type": "single",
+      "q": "2^10 约等于？",
+      "answer": 1,
+      "explain": "2^10=1024(K)。",
+      "src": "",
+      "options": [
+        "1000",
+        "1024",
+        "2048",
+        "512"
+      ]
     },
     {
       "id": "dig-011",
       "cat": "digital",
       "sub": "shuzhi",
       "type": "multi",
-      "q": "下列关于有符号数的说法正确的有？",
-      "options": [
-        "负数在FPGA中用补码表示",
-        "符号拓展是把最高位向左复制",
-        "正数的原码反码补码相同",
-        "补码中 -128 与 +127 都可表示"
-      ],
+      "q": "下列关于补码的说法正确的有？",
       "answer": [
         0,
         1,
         2,
         3
       ],
-      "explain": "全部正确：补码表示、符号拓展、正数三码相同、8位范围-128~127。",
-      "src": ""
+      "explain": "全部正确。",
+      "src": "",
+      "options": [
+        "负数在FPGA中用补码表示",
+        "有符号数拓展是复制符号位",
+        "正数原反补码相同",
+        "补码可把减法变加法"
+      ]
     },
     {
       "id": "dig-012",
       "cat": "digital",
       "sub": "shuzhi",
       "type": "multi",
-      "q": "下列属于'编码'应用的有？",
-      "options": [
-        "BCD码用于数码管",
-        "格雷码用于跨时钟指针",
-        "ASCII用于串口字符",
-        "二进制直接表示真值"
-      ],
+      "q": "下列属于编码的有？",
       "answer": [
         0,
         1,
         2
       ],
-      "explain": "前三种都是编码；二进制是直接计数不算编码。",
-      "src": ""
+      "explain": "前三者是编码；二进制是直接计数。",
+      "src": "",
+      "options": [
+        "BCD码用于数码管",
+        "格雷码用于跨时钟指针",
+        "ASCII用于串口字符",
+        "二进制真值表"
+      ]
     },
     {
       "id": "dig-013",
       "cat": "digital",
-      "sub": "men",
-      "type": "single",
-      "q": "与门(AND)的输出何时为1？",
-      "options": [
-        "任一输入为1",
-        "所有输入都为1",
-        "输入全为0",
-        "奇数个1"
+      "sub": "shuzhi",
+      "type": "multi",
+      "q": "下列进制换算正确的有？",
+      "answer": [
+        0,
+        1,
+        2
       ],
-      "answer": 1,
-      "explain": "与门全1出1。",
-      "src": ""
+      "explain": "0xF0=240，不是15。",
+      "src": "",
+      "options": [
+        "0xFF=255",
+        "二进制1111=15",
+        "0x10=16",
+        "0xF0=15"
+      ]
     },
     {
       "id": "dig-014",
       "cat": "digital",
-      "sub": "men",
-      "type": "single",
-      "q": "异或门 XOR 的逻辑是？",
-      "options": [
-        "输入相同出1",
-        "输入不同出1",
-        "全1出1",
-        "全0出1"
+      "sub": "shuzhi",
+      "type": "multi",
+      "q": "下列关于位宽说法正确的有？",
+      "answer": [
+        0,
+        1
       ],
-      "answer": 1,
-      "explain": "异或：不同出1，相同出0。",
-      "src": ""
+      "explain": "2^n-1=127；n位无符号最大2^n-1。",
+      "src": "",
+      "options": [
+        "7位无符号最大127",
+        "n位无符号范围0~2^n-1",
+        "8位补码范围0~255",
+        "位宽越大速度越快"
+      ]
     },
     {
       "id": "dig-015",
       "cat": "digital",
-      "sub": "men",
-      "type": "single",
-      "q": "德摩根定律 (A·B)' 等于？",
-      "options": [
-        "A'·B'",
-        "A'+B'",
-        "A+B",
-        "A'·B"
-      ],
-      "answer": 1,
-      "explain": "与非=各取反后相或。",
+      "sub": "shuzhi",
+      "type": "judge",
+      "q": "格雷码相邻两个码字之间只有1位变化。",
+      "answer": true,
+      "explain": "特意如此消除多位同时翻转冒险。",
       "src": ""
     },
     {
       "id": "dig-016",
       "cat": "digital",
-      "sub": "men",
-      "type": "single",
-      "q": "布尔恒等式 A + A' 等于？",
-      "options": [
-        "0",
-        "1",
-        "A",
-        "不确定"
-      ],
-      "answer": 1,
-      "explain": "互补律：A+A'=1。",
+      "sub": "shuzhi",
+      "type": "judge",
+      "q": "FPGA中有符号减法可用补码加法实现。",
+      "answer": true,
+      "explain": "补码把减法统一成加法。",
       "src": ""
     },
     {
       "id": "dig-017",
       "cat": "digital",
-      "sub": "men",
-      "type": "single",
-      "q": "一个6输入LUT能存多少条真值表条目？",
-      "options": [
-        "6",
-        "36",
-        "64",
-        "256"
-      ],
-      "answer": 2,
-      "explain": "2^6=64。",
+      "sub": "shuzhi",
+      "type": "judge",
+      "q": "BCD码0001 0010 在二进制上等于十进制18。",
+      "answer": false,
+      "explain": "BCD按4位分组=12，不是18。",
       "src": ""
     },
     {
       "id": "dig-018",
       "cat": "digital",
-      "sub": "men",
+      "sub": "shuzhi",
       "type": "judge",
-      "q": "异或门可以用来判断两个信号是否相等。",
+      "q": "无符号数做位宽拓展时应在高位补0。",
       "answer": true,
-      "explain": "A^B=0 ⇔ A=B。",
+      "explain": "无符号拓展补0；有符号复制符号位。",
       "src": ""
     },
     {
       "id": "dig-019",
       "cat": "digital",
-      "sub": "men",
-      "type": "judge",
-      "q": "在FPGA里所有组合逻辑最终都由LUT查真值表实现。",
-      "answer": true,
-      "explain": "LUT是小RAM，写入真值表即得任意组合函数。",
+      "sub": "shuzhi",
+      "type": "fill",
+      "q": "2的10次方是多少（十进制整数）？",
+      "answer": [
+        "1024",
+        "1,024"
+      ],
+      "explain": "2^10=1024。",
       "src": ""
     },
     {
       "id": "dig-020",
       "cat": "digital",
-      "sub": "men",
+      "sub": "shuzhi",
       "type": "fill",
-      "q": "逻辑表达式 A · 1 = ?",
+      "q": "字符'A'的ASCII十六进制是？",
       "answer": [
-        "A",
-        "a"
+        "0x41",
+        "41"
       ],
-      "explain": "1与任何量相与仍是该量。",
+      "explain": "A=0x41=65。",
       "src": ""
     },
     {
       "id": "dig-021",
       "cat": "digital",
-      "sub": "men",
+      "sub": "shuzhi",
       "type": "fill",
-      "q": "逻辑表达式 A + 1 = ?",
+      "q": "十进制4用4位二进制怎么写？",
       "answer": [
-        "1"
+        "0100"
       ],
-      "explain": "1或任何量都是1。",
+      "explain": "4=0100。",
       "src": ""
     },
     {
       "id": "dig-022",
       "cat": "digital",
-      "sub": "men",
-      "type": "multi",
-      "q": "下列门电路输出为1的情形，正确的有？",
-      "options": [
-        "AND：全输入1",
-        "OR：至少一个输入1",
-        "XOR：输入电平不同",
-        "NOR：至少一个输入1"
-      ],
+      "sub": "shuzhi",
+      "type": "fill",
+      "q": "补码中，把负数按位取反后再加几得到原码？",
       "answer": [
-        0,
-        1,
-        2
+        "1"
       ],
-      "explain": "NOR是或非，输入有1输出为0。",
+      "explain": "补码→反码→原码差+1。",
       "src": ""
     },
     {
       "id": "dig-023",
       "cat": "digital",
       "sub": "men",
-      "type": "multi",
-      "q": "下列是德摩根定律正确形式的有？",
+      "type": "single",
+      "q": "与门输出为1的条件？",
+      "answer": 1,
+      "explain": "全1出1。",
+      "src": "",
       "options": [
-        "(A·B)'=A'+B'",
-        "(A+B)'=A'·B'",
-        "取反时·变+、+变·",
-        "(A')'=A"
-      ],
-      "answer": [
-        0,
-        1,
-        2,
-        3
-      ],
-      "explain": "全部正确。",
-      "src": ""
+        "任一输入1",
+        "所有输入1",
+        "全0",
+        "奇数个1"
+      ]
     },
     {
       "id": "dig-024",
       "cat": "digital",
-      "sub": "zuhe",
+      "sub": "men",
       "type": "single",
-      "q": "组合逻辑的输出取决于？",
+      "q": "XOR输出为1的条件？",
+      "answer": 1,
+      "explain": "不同出1。",
+      "src": "",
       "options": [
-        "仅当前输入",
-        "时钟沿",
-        "历史状态",
-        "复位"
-      ],
-      "answer": 0,
-      "explain": "组合逻辑无记忆。",
-      "src": ""
+        "输入相同",
+        "输入不同",
+        "全1",
+        "全0"
+      ]
     },
     {
       "id": "dig-025",
       "cat": "digital",
-      "sub": "zuhe",
+      "sub": "men",
       "type": "single",
-      "q": "消除组合逻辑生成锁存器(latch)的正确做法是？",
-      "options": [
-        "if/else 不写全",
-        "always @(*) 内对输出赋默认值并覆盖全分支",
-        "不用default",
-        "随便写"
-      ],
+      "q": "(A·B)' 等于？",
       "answer": 1,
-      "explain": "完整赋值避免锁存器。",
-      "src": ""
+      "explain": "与非=取反相或。",
+      "src": "",
+      "options": [
+        "A'·B'",
+        "A'+B'",
+        "A+B",
+        "A'·B"
+      ]
     },
     {
       "id": "dig-026",
       "cat": "digital",
-      "sub": "zuhe",
+      "sub": "men",
       "type": "single",
-      "q": "卡诺图化简的目标是？",
+      "q": "A + A' 等于？",
+      "answer": 1,
+      "explain": "互补律。",
+      "src": "",
       "options": [
-        "让表达式项数/文字最少",
-        "让真值表更长",
-        "增加LUT数",
-        "引入毛刺"
-      ],
-      "answer": 0,
-      "explain": "化简后更快更省资源。",
-      "src": ""
+        "0",
+        "1",
+        "A",
+        "不定"
+      ]
     },
     {
       "id": "dig-027",
       "cat": "digital",
-      "sub": "zuhe",
-      "type": "judge",
-      "q": "组合逻辑电路中可以没有时钟输入。",
-      "answer": true,
-      "explain": "组合逻辑本身无记忆无时钟。",
-      "src": ""
+      "sub": "men",
+      "type": "single",
+      "q": "6输入LUT有多少条真值表？",
+      "answer": 2,
+      "explain": "2^6=64。",
+      "src": "",
+      "options": [
+        "6",
+        "36",
+        "64",
+        "256"
+      ]
     },
     {
       "id": "dig-028",
       "cat": "digital",
-      "sub": "zuhe",
-      "type": "judge",
-      "q": "竞争冒险会在组合逻辑输出端产生短暂毛刺。",
-      "answer": true,
-      "explain": "路径延迟不同导致瞬时毛刺。",
-      "src": ""
+      "sub": "men",
+      "type": "single",
+      "q": "XNOR在两输入相同时输出？",
+      "answer": 1,
+      "explain": "同或。",
+      "src": "",
+      "options": [
+        "0",
+        "1",
+        "高阻",
+        "不定"
+      ]
     },
     {
       "id": "dig-029",
       "cat": "digital",
-      "sub": "zuhe",
-      "type": "fill",
-      "q": "组合逻辑在Verilog中常用哪种赋值？",
-      "answer": [
-        "assign",
-        "连续赋值",
-        "always @(*)"
-      ],
-      "explain": "assign 或 always @(*) 均可。",
-      "src": ""
+      "sub": "men",
+      "type": "single",
+      "q": "布尔式 A · 1 等于？",
+      "answer": 0,
+      "explain": "1与任何量仍是该量。",
+      "src": "",
+      "options": [
+        "A",
+        "0",
+        "1",
+        "A'"
+      ]
     },
     {
       "id": "dig-030",
       "cat": "digital",
-      "sub": "zuhe",
-      "type": "multi",
-      "q": "下列哪些属于组合逻辑？",
+      "sub": "men",
+      "type": "single",
+      "q": "布尔式 A + 1 等于？",
+      "answer": 1,
+      "explain": "1或任何量都是1。",
+      "src": "",
       "options": [
-        "译码器",
-        "数据选择器MUX",
-        "加法器",
-        "上升沿触发的寄存器"
-      ],
-      "answer": [
-        0,
-        1,
-        2
-      ],
-      "explain": "寄存器是时序逻辑。",
-      "src": ""
+        "A",
+        "1",
+        "0",
+        "A'"
+      ]
     },
     {
       "id": "dig-031",
       "cat": "digital",
-      "sub": "zuhe",
-      "type": "multi",
-      "q": "消除/避免毛刺(glitch)的常见做法有？",
+      "sub": "men",
+      "type": "single",
+      "q": "用两输入短接的NAND实现？",
+      "answer": 1,
+      "explain": "短接成A·A再取反=~A。",
+      "src": "",
       "options": [
-        "输出后打一拍(同步)",
-        "卡诺图消项",
-        "关键路径加同步器",
-        "故意让路径延迟不同"
-      ],
+        "缓冲器",
+        "反相器",
+        "与门",
+        "或门"
+      ]
+    },
+    {
+      "id": "dig-032",
+      "cat": "digital",
+      "sub": "men",
+      "type": "single",
+      "q": "判断两信号相等可用？",
+      "answer": 0,
+      "explain": "A^B=0即相等。",
+      "src": "",
+      "options": [
+        "异或",
+        "与门",
+        "或门",
+        "三态"
+      ]
+    },
+    {
+      "id": "dig-033",
+      "cat": "digital",
+      "sub": "men",
+      "type": "multi",
+      "q": "下列门输出为1的情形正确的有？",
       "answer": [
         0,
         1,
         2
       ],
-      "explain": "故意延迟不同反而制造毛刺。",
-      "src": ""
-    },
-    {
-      "id": "dig-032",
-      "cat": "digital",
-      "sub": "zhongzu",
-      "type": "single",
-      "q": "3-8译码器的有效输出特征是？",
+      "explain": "NOR有1出0。",
+      "src": "",
       "options": [
-        "8路同时有效",
-        "任意时刻仅1路有效",
-        "输出二进制编号",
-        "输出格雷码"
-      ],
-      "answer": 1,
-      "explain": "one-hot：仅1路有效。",
-      "src": ""
-    },
-    {
-      "id": "dig-033",
-      "cat": "digital",
-      "sub": "zhongzu",
-      "type": "single",
-      "q": "多路选择器(MUX)的核心作用是？",
-      "options": [
-        "把多路输入选一路输出",
-        "把一路信号分到多路",
-        "做加法",
-        "存储数据"
-      ],
-      "answer": 0,
-      "explain": "MUX按sel选通一路。",
-      "src": ""
+        "AND全输入1",
+        "OR至少一个1",
+        "XOR输入不同",
+        "NOR至少一个1"
+      ]
     },
     {
       "id": "dig-034",
       "cat": "digital",
-      "sub": "zhongzu",
-      "type": "single",
-      "q": "半加器的和 sum 等于？",
-      "options": [
-        "a&b",
-        "a|b",
-        "a^b",
-        "~a"
-      ],
-      "answer": 2,
-      "explain": "sum=a xor b。",
-      "src": ""
-    },
-    {
-      "id": "dig-035",
-      "cat": "digital",
-      "sub": "zhongzu",
-      "type": "judge",
-      "q": "优先编码器会根据优先级只响应优先级最高的有效输入。",
-      "answer": true,
-      "explain": "优先级编码常用在中断/DMA请求。",
-      "src": ""
-    },
-    {
-      "id": "dig-036",
-      "cat": "digital",
-      "sub": "zhongzu",
-      "type": "fill",
-      "q": "2选1 MUX 当 sel=0 时输出哪一路输入？",
-      "answer": [
-        "0路",
-        "a",
-        "i0",
-        "输入0"
-      ],
-      "explain": "按命名 i0/a 路。",
-      "src": ""
-    },
-    {
-      "id": "dig-037",
-      "cat": "digital",
-      "sub": "zhongzu",
+      "sub": "men",
       "type": "multi",
-      "q": "下列关于加法器说法正确的有？",
-      "options": [
-        "半加器不处理进位输入",
-        "全加器有cin输入",
-        "RCA是逐位进位",
-        "CLA比RCA更快"
-      ],
+      "q": "下列德摩根定律正确的有？",
       "answer": [
         0,
         1,
@@ -890,1238 +863,96 @@
         3
       ],
       "explain": "全部正确。",
+      "src": "",
+      "options": [
+        "(A·B)'=A'+B'",
+        "(A+B)'=A'·B'",
+        "取反时·与+互换",
+        "(A')'=A"
+      ]
+    },
+    {
+      "id": "dig-035",
+      "cat": "digital",
+      "sub": "men",
+      "type": "multi",
+      "q": "下列关于LUT说法正确的有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "LUT不改变延迟。",
+      "src": "",
+      "options": [
+        "n输入LUT是2^n深小RAM",
+        "写入真值表即得组合函数",
+        "任意组合逻辑可由LUT实现",
+        "LUT靠流水线存储"
+      ]
+    },
+    {
+      "id": "dig-036",
+      "cat": "digital",
+      "sub": "men",
+      "type": "multi",
+      "q": "下列是布尔恒等式的有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "A·0=0不是A。",
+      "src": "",
+      "options": [
+        "A+0=A",
+        "A·1=A",
+        "A+A=A",
+        "A·0=A"
+      ]
+    },
+    {
+      "id": "dig-037",
+      "cat": "digital",
+      "sub": "men",
+      "type": "judge",
+      "q": "异或可用来判断两信号是否相等。",
+      "answer": true,
+      "explain": "A^B=0⇔A=B。",
       "src": ""
     },
     {
       "id": "dig-038",
       "cat": "digital",
-      "sub": "zhongzu",
-      "type": "multi",
-      "q": "比较器的常见输出标志有？",
-      "options": [
-        "大于 gt",
-        "等于 eq",
-        "小于 lt",
-        "时钟 clk"
-      ],
-      "answer": [
-        0,
-        1,
-        2
-      ],
-      "explain": "比较器无时钟。",
+      "sub": "men",
+      "type": "judge",
+      "q": "任意组合函数都能用LUT真值表实现。",
+      "answer": true,
+      "explain": "LUT本质就是真值表RAM。",
       "src": ""
     },
     {
       "id": "dig-039",
       "cat": "digital",
-      "sub": "shixu",
-      "type": "single",
-      "q": "时序逻辑在Verilog中正确的敏感表是？",
-      "options": [
-        "always @(*)",
-        "always @(posedge clk)",
-        "assign always",
-        "always @(a or b)"
-      ],
-      "answer": 1,
-      "explain": "时钟沿触发。",
+      "sub": "men",
+      "type": "judge",
+      "q": "XNOR与XOR逻辑相同。",
+      "answer": false,
+      "explain": "同或相反。",
       "src": ""
     },
     {
       "id": "dig-040",
       "cat": "digital",
-      "sub": "shixu",
-      "type": "single",
-      "q": "为了避免意外锁存器，时序逻辑应使用？",
-      "options": [
-        "电平敏感锁存",
-        "时钟沿触发的always块",
-        "组合assign",
-        "三态门"
-      ],
-      "answer": 1,
-      "explain": "时钟沿触发即触发器。",
+      "sub": "men",
+      "type": "judge",
+      "q": "卡诺图圈越大，表达式项数越少。",
+      "answer": true,
+      "explain": "圈大=公共项少=更快。",
       "src": ""
     },
     {
       "id": "dig-041",
-      "cat": "digital",
-      "sub": "shixu",
-      "type": "single",
-      "q": "建立时间 tSU 是指？",
-      "options": [
-        "时钟沿后数据须保持的时间",
-        "时钟沿前数据须提前稳定的时间",
-        "门延迟",
-        "复位时间"
-      ],
-      "answer": 1,
-      "explain": "数据须在时钟沿前稳定。",
-      "src": ""
-    },
-    {
-      "id": "dig-042",
-      "cat": "digital",
-      "sub": "shixu",
-      "type": "single",
-      "q": "处理异步跨时钟域信号最常用的电路是？",
-      "options": [
-        "一级寄存器",
-        "两级触发器同步器",
-        "组合MUX",
-        "锁存器"
-      ],
-      "answer": 1,
-      "explain": "双触发器同步链降低亚稳态概率。",
-      "src": ""
-    },
-    {
-      "id": "dig-043",
-      "cat": "digital",
-      "sub": "shixu",
-      "type": "judge",
-      "q": "在时钟沿打一拍相当于把信号寄存(延迟一个周期)。",
-      "answer": true,
-      "explain": "流水线寄存器=延迟一拍。",
-      "src": ""
-    },
-    {
-      "id": "dig-044",
-      "cat": "digital",
-      "sub": "shixu",
-      "type": "judge",
-      "q": "保持时间是指时钟沿到来之后数据还需要稳定多久。",
-      "answer": true,
-      "explain": "保持tH。",
-      "src": ""
-    },
-    {
-      "id": "dig-045",
-      "cat": "digital",
-      "sub": "shixu",
-      "type": "fill",
-      "q": "计数器要数到 999，至少需要多少位(2^10=1024)？",
-      "answer": [
-        "10",
-        "10位"
-      ],
-      "explain": "2^9=512<999，2^10=1024>999。",
-      "src": ""
-    },
-    {
-      "id": "dig-046",
-      "cat": "digital",
-      "sub": "shixu",
-      "type": "multi",
-      "q": "下列关于时序逻辑说法正确的有？",
-      "options": [
-        "输出依赖历史状态",
-        "由触发器保存状态",
-        "时钟沿更新",
-        "可没有时钟"
-      ],
-      "answer": [
-        0,
-        1,
-        2
-      ],
-      "explain": "时序逻辑必须有时钟。",
-      "src": ""
-    },
-    {
-      "id": "dig-047",
-      "cat": "digital",
-      "sub": "shixu",
-      "type": "multi",
-      "q": "亚稳态可能由下列哪些情况引起？",
-      "options": [
-        "异步信号直接打一拍",
-        "跨时钟域未同步",
-        "建立/保持时间不满足",
-        "同步信号打一拍"
-      ],
-      "answer": [
-        0,
-        1,
-        2
-      ],
-      "explain": "同步信号打一拍不会亚稳。",
-      "src": ""
-    },
-    {
-      "id": "dig-048",
-      "cat": "digital",
-      "sub": "dianping",
-      "type": "single",
-      "q": "3.3V LVCMOS 的高电平约为？",
-      "options": [
-        "1.8V",
-        "3.3V",
-        "5V",
-        "0V"
-      ],
-      "answer": 1,
-      "explain": "高电平≈电源电压3.3V。",
-      "src": ""
-    },
-    {
-      "id": "dig-049",
-      "cat": "digital",
-      "sub": "dianping",
-      "type": "single",
-      "q": "I2C 总线通常使用哪种输出结构？",
-      "options": [
-        "推挽",
-        "开漏+外部上拉",
-        "三态",
-        "差分"
-      ],
-      "answer": 1,
-      "explain": "开漏+上拉实现线与。",
-      "src": ""
-    },
-    {
-      "id": "dig-050",
-      "cat": "digital",
-      "sub": "dianping",
-      "type": "single",
-      "q": "LVDS 属于哪种信号？",
-      "options": [
-        "单端5V",
-        "低压差分",
-        "开漏",
-        "电平敏感"
-      ],
-      "answer": 1,
-      "explain": "差分对，抗干扰高速。",
-      "src": ""
-    },
-    {
-      "id": "dig-051",
-      "cat": "digital",
-      "sub": "dianping",
-      "type": "judge",
-      "q": "按键输入常用外部上拉电阻，按下时读到低电平。",
-      "answer": true,
-      "explain": "上拉默认高，按下接地变低。",
-      "src": ""
-    },
-    {
-      "id": "dig-052",
-      "cat": "digital",
-      "sub": "dianping",
-      "type": "judge",
-      "q": "推挽输出可以主动输出高电平和低电平。",
-      "answer": true,
-      "explain": "上管出高、下管出低。",
-      "src": ""
-    },
-    {
-      "id": "dig-053",
-      "cat": "digital",
-      "sub": "dianping",
-      "type": "fill",
-      "q": "XDC 中声明3.3V电平的 IOSTANDARD 关键字是？",
-      "answer": [
-        "LVCMOS33",
-        "LVCMOS3.3"
-      ],
-      "explain": "写 LVCMOS33。",
-      "src": ""
-    },
-    {
-      "id": "dig-054",
-      "cat": "digital",
-      "sub": "dianping",
-      "type": "multi",
-      "q": "下列关于电平与IO的说法正确的有？",
-      "options": [
-        "LVCMOS33高电平约3.3V",
-        "LVDS是差分信号抗干扰强",
-        "开漏输出必须外接上拉",
-        "推挽只能输出低电平"
-      ],
-      "answer": [
-        0,
-        1,
-        2
-      ],
-      "explain": "推挽可出高低。",
-      "src": ""
-    },
-    {
-      "id": "dig-055",
-      "cat": "digital",
-      "sub": "dianping",
-      "type": "multi",
-      "q": "下列哪些是常见的FPGA IO电平标准？",
-      "options": [
-        "LVCMOS33",
-        "LVCMOS18",
-        "LVDS",
-        "TTL"
-      ],
-      "answer": [
-        0,
-        1,
-        2,
-        3
-      ],
-      "explain": "均为常见电平。",
-      "src": ""
-    },
-    {
-      "id": "dig-056",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 2 对应的十六进制是？",
-      "options": [
-        "0x3",
-        "0x2",
-        "0x1",
-        "0x4"
-      ],
-      "answer": 1,
-      "explain": "十进制2 = 0x2。",
-      "src": ""
-    },
-    {
-      "id": "dig-057",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 2 用二进制表示是？",
-      "options": [
-        "11",
-        "10",
-        "1",
-        "100"
-      ],
-      "answer": 1,
-      "explain": "除2取余：2 = 10。",
-      "src": ""
-    },
-    {
-      "id": "dig-058",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 3 对应的十六进制是？",
-      "options": [
-        "0x4",
-        "0x3",
-        "0x2",
-        "0x6"
-      ],
-      "answer": 1,
-      "explain": "十进制3 = 0x3。",
-      "src": ""
-    },
-    {
-      "id": "dig-059",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 3 用二进制表示是？",
-      "options": [
-        "100",
-        "11",
-        "10",
-        "110"
-      ],
-      "answer": 1,
-      "explain": "除2取余：3 = 11。",
-      "src": ""
-    },
-    {
-      "id": "dig-060",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 5 对应的十六进制是？",
-      "options": [
-        "0x6",
-        "0x5",
-        "0x4",
-        "0xA"
-      ],
-      "answer": 1,
-      "explain": "十进制5 = 0x5。",
-      "src": ""
-    },
-    {
-      "id": "dig-061",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 5 用二进制表示是？",
-      "options": [
-        "110",
-        "101",
-        "100",
-        "1010"
-      ],
-      "answer": 1,
-      "explain": "除2取余：5 = 101。",
-      "src": ""
-    },
-    {
-      "id": "dig-062",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 6 对应的十六进制是？",
-      "options": [
-        "0x7",
-        "0x6",
-        "0x5",
-        "0xC"
-      ],
-      "answer": 1,
-      "explain": "十进制6 = 0x6。",
-      "src": ""
-    },
-    {
-      "id": "dig-063",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 6 用二进制表示是？",
-      "options": [
-        "111",
-        "110",
-        "101",
-        "1100"
-      ],
-      "answer": 1,
-      "explain": "除2取余：6 = 110。",
-      "src": ""
-    },
-    {
-      "id": "dig-064",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 7 对应的十六进制是？",
-      "options": [
-        "0x8",
-        "0x7",
-        "0x6",
-        "0xE"
-      ],
-      "answer": 1,
-      "explain": "十进制7 = 0x7。",
-      "src": ""
-    },
-    {
-      "id": "dig-065",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 7 用二进制表示是？",
-      "options": [
-        "1000",
-        "111",
-        "110",
-        "1110"
-      ],
-      "answer": 1,
-      "explain": "除2取余：7 = 111。",
-      "src": ""
-    },
-    {
-      "id": "dig-066",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 9 对应的十六进制是？",
-      "options": [
-        "0xA",
-        "0x9",
-        "0x8",
-        "0x12"
-      ],
-      "answer": 1,
-      "explain": "十进制9 = 0x9。",
-      "src": ""
-    },
-    {
-      "id": "dig-067",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 9 用二进制表示是？",
-      "options": [
-        "1010",
-        "1001",
-        "1000",
-        "10010"
-      ],
-      "answer": 1,
-      "explain": "除2取余：9 = 1001。",
-      "src": ""
-    },
-    {
-      "id": "dig-068",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 10 对应的十六进制是？",
-      "options": [
-        "0xB",
-        "0xA",
-        "0x9",
-        "0x14"
-      ],
-      "answer": 1,
-      "explain": "十进制10 = 0xA。",
-      "src": ""
-    },
-    {
-      "id": "dig-069",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 10 用二进制表示是？",
-      "options": [
-        "1011",
-        "1010",
-        "1001",
-        "10100"
-      ],
-      "answer": 1,
-      "explain": "除2取余：10 = 1010。",
-      "src": ""
-    },
-    {
-      "id": "dig-070",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 12 对应的十六进制是？",
-      "options": [
-        "0xD",
-        "0xC",
-        "0xB",
-        "0x18"
-      ],
-      "answer": 1,
-      "explain": "十进制12 = 0xC。",
-      "src": ""
-    },
-    {
-      "id": "dig-071",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 12 用二进制表示是？",
-      "options": [
-        "1101",
-        "1100",
-        "1011",
-        "11000"
-      ],
-      "answer": 1,
-      "explain": "除2取余：12 = 1100。",
-      "src": ""
-    },
-    {
-      "id": "dig-072",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 14 对应的十六进制是？",
-      "options": [
-        "0xF",
-        "0xE",
-        "0xD",
-        "0x1C"
-      ],
-      "answer": 1,
-      "explain": "十进制14 = 0xE。",
-      "src": ""
-    },
-    {
-      "id": "dig-073",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 14 用二进制表示是？",
-      "options": [
-        "1111",
-        "1110",
-        "1101",
-        "11100"
-      ],
-      "answer": 1,
-      "explain": "除2取余：14 = 1110。",
-      "src": ""
-    },
-    {
-      "id": "dig-074",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 15 对应的十六进制是？",
-      "options": [
-        "0x10",
-        "0xF",
-        "0xE",
-        "0x1E"
-      ],
-      "answer": 1,
-      "explain": "十进制15 = 0xF。",
-      "src": ""
-    },
-    {
-      "id": "dig-075",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 15 用二进制表示是？",
-      "options": [
-        "10000",
-        "1111",
-        "1110",
-        "11110"
-      ],
-      "answer": 1,
-      "explain": "除2取余：15 = 1111。",
-      "src": ""
-    },
-    {
-      "id": "dig-076",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 16 对应的十六进制是？",
-      "options": [
-        "0x11",
-        "0x10",
-        "0xF",
-        "0x20"
-      ],
-      "answer": 1,
-      "explain": "十进制16 = 0x10。",
-      "src": ""
-    },
-    {
-      "id": "dig-077",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 16 用二进制表示是？",
-      "options": [
-        "10001",
-        "10000",
-        "1111",
-        "100000"
-      ],
-      "answer": 1,
-      "explain": "除2取余：16 = 10000。",
-      "src": ""
-    },
-    {
-      "id": "dig-078",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 17 对应的十六进制是？",
-      "options": [
-        "0x12",
-        "0x11",
-        "0x10",
-        "0x22"
-      ],
-      "answer": 1,
-      "explain": "十进制17 = 0x11。",
-      "src": ""
-    },
-    {
-      "id": "dig-079",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 17 用二进制表示是？",
-      "options": [
-        "10010",
-        "10001",
-        "10000",
-        "100010"
-      ],
-      "answer": 1,
-      "explain": "除2取余：17 = 10001。",
-      "src": ""
-    },
-    {
-      "id": "dig-080",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 32 对应的十六进制是？",
-      "options": [
-        "0x21",
-        "0x20",
-        "0x1F",
-        "0x40"
-      ],
-      "answer": 1,
-      "explain": "十进制32 = 0x20。",
-      "src": ""
-    },
-    {
-      "id": "dig-081",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 32 用二进制表示是？",
-      "options": [
-        "100001",
-        "100000",
-        "11111",
-        "1000000"
-      ],
-      "answer": 1,
-      "explain": "除2取余：32 = 100000。",
-      "src": ""
-    },
-    {
-      "id": "dig-082",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 64 对应的十六进制是？",
-      "options": [
-        "0x41",
-        "0x40",
-        "0x3F",
-        "0x80"
-      ],
-      "answer": 1,
-      "explain": "十进制64 = 0x40。",
-      "src": ""
-    },
-    {
-      "id": "dig-083",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 64 用二进制表示是？",
-      "options": [
-        "1000001",
-        "1000000",
-        "111111",
-        "10000000"
-      ],
-      "answer": 1,
-      "explain": "除2取余：64 = 1000000。",
-      "src": ""
-    },
-    {
-      "id": "dig-084",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 100 对应的十六进制是？",
-      "options": [
-        "0x65",
-        "0x64",
-        "0x63",
-        "0xC8"
-      ],
-      "answer": 1,
-      "explain": "十进制100 = 0x64。",
-      "src": ""
-    },
-    {
-      "id": "dig-085",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 100 用二进制表示是？",
-      "options": [
-        "1100101",
-        "1100100",
-        "1100011",
-        "11001000"
-      ],
-      "answer": 1,
-      "explain": "除2取余：100 = 1100100。",
-      "src": ""
-    },
-    {
-      "id": "dig-086",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 128 对应的十六进制是？",
-      "options": [
-        "0x81",
-        "0x80",
-        "0x7F",
-        "0x100"
-      ],
-      "answer": 1,
-      "explain": "十进制128 = 0x80。",
-      "src": ""
-    },
-    {
-      "id": "dig-087",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 128 用二进制表示是？",
-      "options": [
-        "10000001",
-        "10000000",
-        "1111111",
-        "100000000"
-      ],
-      "answer": 1,
-      "explain": "除2取余：128 = 10000000。",
-      "src": ""
-    },
-    {
-      "id": "dig-088",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 200 对应的十六进制是？",
-      "options": [
-        "0xC9",
-        "0xC8",
-        "0xC7",
-        "0x190"
-      ],
-      "answer": 1,
-      "explain": "十进制200 = 0xC8。",
-      "src": ""
-    },
-    {
-      "id": "dig-089",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 200 用二进制表示是？",
-      "options": [
-        "11001001",
-        "11001000",
-        "11000111",
-        "110010000"
-      ],
-      "answer": 1,
-      "explain": "除2取余：200 = 11001000。",
-      "src": ""
-    },
-    {
-      "id": "dig-090",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 254 对应的十六进制是？",
-      "options": [
-        "0xFF",
-        "0xFE",
-        "0xFD",
-        "0x1FC"
-      ],
-      "answer": 1,
-      "explain": "十进制254 = 0xFE。",
-      "src": ""
-    },
-    {
-      "id": "dig-091",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 254 用二进制表示是？",
-      "options": [
-        "11111111",
-        "11111110",
-        "11111101",
-        "111111100"
-      ],
-      "answer": 1,
-      "explain": "除2取余：254 = 11111110。",
-      "src": ""
-    },
-    {
-      "id": "dig-092",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 256 对应的十六进制是？",
-      "options": [
-        "0x101",
-        "0x100",
-        "0xFF",
-        "0x200"
-      ],
-      "answer": 1,
-      "explain": "十进制256 = 0x100。",
-      "src": ""
-    },
-    {
-      "id": "dig-093",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 256 用二进制表示是？",
-      "options": [
-        "100000001",
-        "100000000",
-        "11111111",
-        "1000000000"
-      ],
-      "answer": 1,
-      "explain": "除2取余：256 = 100000000。",
-      "src": ""
-    },
-    {
-      "id": "dig-094",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 512 对应的十六进制是？",
-      "options": [
-        "0x201",
-        "0x200",
-        "0x1FF",
-        "0x400"
-      ],
-      "answer": 1,
-      "explain": "十进制512 = 0x200。",
-      "src": ""
-    },
-    {
-      "id": "dig-095",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "single",
-      "q": "十进制 512 用二进制表示是？",
-      "options": [
-        "1000000001",
-        "1000000000",
-        "111111111",
-        "10000000000"
-      ],
-      "answer": 1,
-      "explain": "除2取余：512 = 1000000000。",
-      "src": ""
-    },
-    {
-      "id": "dig-096",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "fill",
-      "q": "二进制 1010 等于十进制多少？",
-      "answer": [
-        "10",
-        "10"
-      ],
-      "explain": "按权展开 = 10。",
-      "src": ""
-    },
-    {
-      "id": "dig-097",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "fill",
-      "q": "二进制 1011 等于十进制多少？",
-      "answer": [
-        "11",
-        "11"
-      ],
-      "explain": "按权展开 = 11。",
-      "src": ""
-    },
-    {
-      "id": "dig-098",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "fill",
-      "q": "二进制 1100 等于十进制多少？",
-      "answer": [
-        "12",
-        "12"
-      ],
-      "explain": "按权展开 = 12。",
-      "src": ""
-    },
-    {
-      "id": "dig-099",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "fill",
-      "q": "二进制 1101 等于十进制多少？",
-      "answer": [
-        "13",
-        "13"
-      ],
-      "explain": "按权展开 = 13。",
-      "src": ""
-    },
-    {
-      "id": "dig-100",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "fill",
-      "q": "二进制 1110 等于十进制多少？",
-      "answer": [
-        "14",
-        "14"
-      ],
-      "explain": "按权展开 = 14。",
-      "src": ""
-    },
-    {
-      "id": "dig-101",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "fill",
-      "q": "二进制 1111 等于十进制多少？",
-      "answer": [
-        "15",
-        "15"
-      ],
-      "explain": "按权展开 = 15。",
-      "src": ""
-    },
-    {
-      "id": "dig-102",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "fill",
-      "q": "二进制 10000 等于十进制多少？",
-      "answer": [
-        "16",
-        "16"
-      ],
-      "explain": "按权展开 = 16。",
-      "src": ""
-    },
-    {
-      "id": "dig-103",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "fill",
-      "q": "二进制 10001 等于十进制多少？",
-      "answer": [
-        "17",
-        "17"
-      ],
-      "explain": "按权展开 = 17。",
-      "src": ""
-    },
-    {
-      "id": "dig-104",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "fill",
-      "q": "二进制 10010 等于十进制多少？",
-      "answer": [
-        "18",
-        "18"
-      ],
-      "explain": "按权展开 = 18。",
-      "src": ""
-    },
-    {
-      "id": "dig-105",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "fill",
-      "q": "二进制 10011 等于十进制多少？",
-      "answer": [
-        "19",
-        "19"
-      ],
-      "explain": "按权展开 = 19。",
-      "src": ""
-    },
-    {
-      "id": "dig-106",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "fill",
-      "q": "十六进制 0xA 等于十进制多少？",
-      "answer": [
-        "10",
-        "10"
-      ],
-      "explain": "0xA = 10。",
-      "src": ""
-    },
-    {
-      "id": "dig-107",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "fill",
-      "q": "十六进制 0xB 等于十进制多少？",
-      "answer": [
-        "11",
-        "11"
-      ],
-      "explain": "0xB = 11。",
-      "src": ""
-    },
-    {
-      "id": "dig-108",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "fill",
-      "q": "十六进制 0xC 等于十进制多少？",
-      "answer": [
-        "12",
-        "12"
-      ],
-      "explain": "0xC = 12。",
-      "src": ""
-    },
-    {
-      "id": "dig-109",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "fill",
-      "q": "十六进制 0xD 等于十进制多少？",
-      "answer": [
-        "13",
-        "13"
-      ],
-      "explain": "0xD = 13。",
-      "src": ""
-    },
-    {
-      "id": "dig-110",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "fill",
-      "q": "十六进制 0xE 等于十进制多少？",
-      "answer": [
-        "14",
-        "14"
-      ],
-      "explain": "0xE = 14。",
-      "src": ""
-    },
-    {
-      "id": "dig-111",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "fill",
-      "q": "十六进制 0xF 等于十进制多少？",
-      "answer": [
-        "15",
-        "15"
-      ],
-      "explain": "0xF = 15。",
-      "src": ""
-    },
-    {
-      "id": "dig-112",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "fill",
-      "q": "十六进制 0x10 等于十进制多少？",
-      "answer": [
-        "16",
-        "16"
-      ],
-      "explain": "0x10 = 16。",
-      "src": ""
-    },
-    {
-      "id": "dig-113",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "fill",
-      "q": "十六进制 0x20 等于十进制多少？",
-      "answer": [
-        "32",
-        "32"
-      ],
-      "explain": "0x20 = 32。",
-      "src": ""
-    },
-    {
-      "id": "dig-114",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "fill",
-      "q": "十六进制 0x7F 等于十进制多少？",
-      "answer": [
-        "127",
-        "127"
-      ],
-      "explain": "0x7F = 127。",
-      "src": ""
-    },
-    {
-      "id": "dig-115",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "fill",
-      "q": "十六进制 0xFF 等于十进制多少？",
-      "answer": [
-        "255",
-        "255"
-      ],
-      "explain": "0xFF = 255。",
-      "src": ""
-    },
-    {
-      "id": "dig-116",
-      "cat": "digital",
-      "sub": "shuzhi",
-      "type": "fill",
-      "q": "十六进制 0x80 等于十进制多少？",
-      "answer": [
-        "128",
-        "128"
-      ],
-      "explain": "0x80 = 128。",
-      "src": ""
-    },
-    {
-      "id": "dig-117",
-      "cat": "digital",
-      "sub": "men",
-      "type": "judge",
-      "q": "异或门输出为1当且仅当两个输入不同。",
-      "answer": true,
-      "explain": "XOR: 不同出1。",
-      "src": ""
-    },
-    {
-      "id": "dig-118",
-      "cat": "digital",
-      "sub": "men",
-      "type": "judge",
-      "q": "与非门(NAND)可以当作反相器使用(把两输入短接)。",
-      "answer": true,
-      "explain": "两输入短接成 A·A 再取反 = ~A。",
-      "src": ""
-    },
-    {
-      "id": "dig-119",
-      "cat": "digital",
-      "sub": "men",
-      "type": "single",
-      "q": "XNOR(同或)在两输入相同时输出？",
-      "options": [
-        "0",
-        "1",
-        "高阻",
-        "不确定"
-      ],
-      "answer": 1,
-      "explain": "同或：相同出1。",
-      "src": ""
-    },
-    {
-      "id": "dig-120",
       "cat": "digital",
       "sub": "men",
       "type": "fill",
@@ -2133,172 +964,1376 @@
       "src": ""
     },
     {
-      "id": "dig-121",
+      "id": "dig-042",
       "cat": "digital",
       "sub": "men",
       "type": "fill",
-      "q": "布尔式 A + A = ?",
+      "q": "布尔式 A · 0 = ?",
       "answer": [
-        "A"
+        "0"
       ],
-      "explain": "重叠律。",
+      "explain": "0与任何量都是0。",
       "src": ""
     },
     {
-      "id": "dig-122",
+      "id": "dig-043",
       "cat": "digital",
       "sub": "men",
+      "type": "fill",
+      "q": "卡诺图化简的目标是让逻辑表达式的什么最少？",
+      "answer": [
+        "项数",
+        "文字数",
+        "项数和文字数"
+      ],
+      "explain": "项数/文字数越少越快。",
+      "src": ""
+    },
+    {
+      "id": "dig-044",
+      "cat": "digital",
+      "sub": "men",
+      "type": "fill",
+      "q": "Artix-7 基本LUT是几位输入？",
+      "answer": [
+        "6",
+        "6位"
+      ],
+      "explain": "6输入LUT。",
+      "src": ""
+    },
+    {
+      "id": "dig-045",
+      "cat": "digital",
+      "sub": "zuhe",
+      "type": "single",
+      "q": "组合逻辑输出取决于？",
+      "answer": 0,
+      "explain": "无记忆。",
+      "src": "",
+      "options": [
+        "仅当前输入",
+        "时钟沿",
+        "历史状态",
+        "复位"
+      ]
+    },
+    {
+      "id": "dig-046",
+      "cat": "digital",
+      "sub": "zuhe",
+      "type": "single",
+      "q": "避免组合逻辑锁存器的正确做法？",
+      "answer": 1,
+      "explain": "完整赋值。",
+      "src": "",
+      "options": [
+        "if/else不写全",
+        "always@(*)内赋默认值并覆盖全分支",
+        "不用default",
+        "随意写"
+      ]
+    },
+    {
+      "id": "dig-047",
+      "cat": "digital",
+      "sub": "zuhe",
+      "type": "single",
+      "q": "卡诺图化简目标？",
+      "answer": 0,
+      "explain": "项少快。",
+      "src": "",
+      "options": [
+        "项数/文字最少",
+        "真值表更长",
+        "增加LUT",
+        "引入毛刺"
+      ]
+    },
+    {
+      "id": "dig-048",
+      "cat": "digital",
+      "sub": "zuhe",
+      "type": "single",
+      "q": "always @(*) 内 if 不写全会综合出？",
+      "answer": 2,
+      "explain": "缺省分支保持=锁存器。",
+      "src": "",
+      "options": [
+        "触发器",
+        "MUX",
+        "锁存器",
+        "寄存器"
+      ]
+    },
+    {
+      "id": "dig-049",
+      "cat": "digital",
+      "sub": "zuhe",
+      "type": "single",
+      "q": "case 与 if-else 相比？",
+      "answer": 0,
+      "explain": "case并行。",
+      "src": "",
+      "options": [
+        "case并行无优先级",
+        "if-else无优先级",
+        "二者相同",
+        "case一定更慢"
+      ]
+    },
+    {
+      "id": "dig-050",
+      "cat": "digital",
+      "sub": "zuhe",
+      "type": "single",
+      "q": "组合逻辑毛刺(glitch)来自？",
+      "answer": 1,
+      "explain": "路径延迟不同。",
+      "src": "",
+      "options": [
+        "时钟太快",
+        "信号经不同路径延迟不同",
+        "电源电压",
+        "复位"
+      ]
+    },
+    {
+      "id": "dig-051",
+      "cat": "digital",
+      "sub": "zuhe",
+      "type": "single",
+      "q": "下列哪个是组合逻辑？",
+      "answer": 0,
+      "explain": "译码器。",
+      "src": "",
+      "options": [
+        "译码器",
+        "上升沿寄存器",
+        "计数器",
+        "触发器"
+      ]
+    },
+    {
+      "id": "dig-052",
+      "cat": "digital",
+      "sub": "zuhe",
+      "type": "single",
+      "q": "消除输出毛刺最简单常用？",
+      "answer": 1,
+      "explain": "打一拍。",
+      "src": "",
+      "options": [
+        "加快时钟",
+        "输出后打一拍",
+        "去掉复位",
+        "加高电平"
+      ]
+    },
+    {
+      "id": "dig-053",
+      "cat": "digital",
+      "sub": "zuhe",
+      "type": "single",
+      "q": "组合逻辑在Verilog中常用？",
+      "answer": 0,
+      "explain": "assign。",
+      "src": "",
+      "options": [
+        "assign或always@(*)",
+        "always@(posedge clk)",
+        "initial",
+        "fork"
+      ]
+    },
+    {
+      "id": "dig-054",
+      "cat": "digital",
+      "sub": "zuhe",
+      "type": "single",
+      "q": "建立时间不满足会导致？",
+      "answer": 0,
+      "explain": "时序违例。",
+      "src": "",
+      "options": [
+        "跑不上目标频率",
+        "输出固定0",
+        "触发器消失",
+        "无影响"
+      ]
+    },
+    {
+      "id": "dig-055",
+      "cat": "digital",
+      "sub": "zuhe",
+      "type": "multi",
+      "q": "下列属于组合逻辑的有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "寄存器是时序。",
+      "src": "",
+      "options": [
+        "译码器",
+        "MUX",
+        "加法器",
+        "上升沿触发器"
+      ]
+    },
+    {
+      "id": "dig-056",
+      "cat": "digital",
+      "sub": "zuhe",
+      "type": "multi",
+      "q": "消除/避免毛刺的做法？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "故意不同延迟反而制造毛刺。",
+      "src": "",
+      "options": [
+        "输出打一拍同步",
+        "卡诺图消项",
+        "关键路径加同步器",
+        "故意让路径延迟不同"
+      ]
+    },
+    {
+      "id": "dig-057",
+      "cat": "digital",
+      "sub": "zuhe",
+      "type": "multi",
+      "q": "下列关于锁存器说法正确的有？",
+      "answer": [
+        0,
+        1,
+        3
+      ],
+      "explain": "锁存器是电平敏感。",
+      "src": "",
+      "options": [
+        "always@(*)分支不全可能生成",
+        "希望综合出锁存器",
+        "锁存器电平敏感",
+        "FPGA推荐多用锁存器"
+      ]
+    },
+    {
+      "id": "dig-058",
+      "cat": "digital",
+      "sub": "zuhe",
+      "type": "multi",
+      "q": "下列哪些会引起建立/保持时间违例？",
+      "answer": [
+        0,
+        1
+      ],
+      "explain": "时钟太快/路径太长。",
+      "src": "",
+      "options": [
+        "时钟频率过高",
+        "组合路径太长",
+        "同步寄存器打一拍",
+        "同步输入"
+      ]
+    },
+    {
+      "id": "dig-059",
+      "cat": "digital",
+      "sub": "zuhe",
       "type": "judge",
-      "q": "任意组合逻辑函数都能用LUT的真值表实现。",
+      "q": "组合逻辑可以没有时钟输入。",
       "answer": true,
-      "explain": "LUT本质就是真值表RAM。",
+      "explain": "本身无记忆。",
       "src": ""
     },
     {
-      "id": "dig-123",
+      "id": "dig-060",
       "cat": "digital",
-      "sub": "shixu",
+      "sub": "zuhe",
+      "type": "judge",
+      "q": "竞争冒险在组合输出端产生短暂毛刺。",
+      "answer": true,
+      "explain": "路径延迟不同。",
+      "src": ""
+    },
+    {
+      "id": "dig-061",
+      "cat": "digital",
+      "sub": "zuhe",
+      "type": "judge",
+      "q": "always @(*) 中对所有输出赋默认值可避免锁存器。",
+      "answer": true,
+      "explain": "默认值+全分支覆盖。",
+      "src": ""
+    },
+    {
+      "id": "dig-062",
+      "cat": "digital",
+      "sub": "zuhe",
+      "type": "judge",
+      "q": "if-else 综合时一般带有优先级。",
+      "answer": true,
+      "explain": "优先级编码器。",
+      "src": ""
+    },
+    {
+      "id": "dig-063",
+      "cat": "digital",
+      "sub": "zuhe",
       "type": "fill",
-      "q": "计数器要数到 10，至少需要多少位(2^4=16)？",
+      "q": "组合逻辑在Verilog中用哪种赋值最直接？",
       "answer": [
-        "4",
-        "4位"
+        "assign",
+        "连续赋值"
       ],
-      "explain": "2^4=16 > 10，2^3=8 < 10。",
+      "explain": "assign。",
       "src": ""
     },
     {
-      "id": "dig-124",
+      "id": "dig-064",
       "cat": "digital",
-      "sub": "shixu",
+      "sub": "zuhe",
       "type": "fill",
-      "q": "计数器要数到 100，至少需要多少位(2^7=128)？",
+      "q": "组合逻辑输出出现的短暂错误脉冲叫？",
       "answer": [
-        "7",
-        "7位"
+        "毛刺",
+        "glitch",
+        "冒险"
       ],
-      "explain": "2^7=128 > 100，2^6=64 < 100。",
+      "explain": "glitch。",
       "src": ""
     },
     {
-      "id": "dig-125",
+      "id": "dig-065",
+      "cat": "digital",
+      "sub": "zuhe",
+      "type": "fill",
+      "q": "把组合输出打一拍是为了消除什么？",
+      "answer": [
+        "毛刺",
+        "冒险"
+      ],
+      "explain": "同步消除毛刺。",
+      "src": ""
+    },
+    {
+      "id": "dig-066",
+      "cat": "digital",
+      "sub": "zuhe",
+      "type": "fill",
+      "q": "建立时间不满足时，应降低什么来跑稳？",
+      "answer": [
+        "时钟频率",
+        "频率"
+      ],
+      "explain": "降频。",
+      "src": ""
+    },
+    {
+      "id": "dig-067",
+      "cat": "digital",
+      "sub": "zhongzu",
+      "type": "single",
+      "q": "3-8译码器有效输出特征？",
+      "answer": 1,
+      "explain": "one-hot仅1路。",
+      "src": "",
+      "options": [
+        "8路同时",
+        "任意时刻仅1路",
+        "输出二进制",
+        "格雷码"
+      ]
+    },
+    {
+      "id": "dig-068",
+      "cat": "digital",
+      "sub": "zhongzu",
+      "type": "single",
+      "q": "MUX核心作用？",
+      "answer": 0,
+      "explain": "选通一路。",
+      "src": "",
+      "options": [
+        "多路选一输出",
+        "一路分多路",
+        "加法",
+        "存储"
+      ]
+    },
+    {
+      "id": "dig-069",
+      "cat": "digital",
+      "sub": "zhongzu",
+      "type": "single",
+      "q": "半加器sum等于？",
+      "answer": 2,
+      "explain": "a xor b。",
+      "src": "",
+      "options": [
+        "a&b",
+        "a|b",
+        "a^b",
+        "~a"
+      ]
+    },
+    {
+      "id": "dig-070",
+      "cat": "digital",
+      "sub": "zhongzu",
+      "type": "single",
+      "q": "半加器进位cout等于？",
+      "answer": 0,
+      "explain": "a&b。",
+      "src": "",
+      "options": [
+        "a&b",
+        "a|b",
+        "a^b",
+        "~a"
+      ]
+    },
+    {
+      "id": "dig-071",
+      "cat": "digital",
+      "sub": "zhongzu",
+      "type": "single",
+      "q": "优先编码器的特点？",
+      "answer": 1,
+      "explain": "按优先级。",
+      "src": "",
+      "options": [
+        "同时响应全部",
+        "只响应最高优先级",
+        "输出0",
+        "无使能"
+      ]
+    },
+    {
+      "id": "dig-072",
+      "cat": "digital",
+      "sub": "zhongzu",
+      "type": "single",
+      "q": "2选1 MUX sel=0输出？",
+      "answer": 0,
+      "explain": "i0/a路。",
+      "src": "",
+      "options": [
+        "0路(i0)",
+        "1路(i1)",
+        "高阻",
+        "不定"
+      ]
+    },
+    {
+      "id": "dig-073",
+      "cat": "digital",
+      "sub": "zhongzu",
+      "type": "single",
+      "q": "比较器输出标志不包括？",
+      "answer": 3,
+      "explain": "clk不是比较器输出。",
+      "src": "",
+      "options": [
+        "gt(大于)",
+        "eq(等于)",
+        "lt(小于)",
+        "clk"
+      ]
+    },
+    {
+      "id": "dig-074",
+      "cat": "digital",
+      "sub": "zhongzu",
+      "type": "single",
+      "q": "全加器比半加器多了哪个输入？",
+      "answer": 1,
+      "explain": "进位cin。",
+      "src": "",
+      "options": [
+        "clk",
+        "cin进位",
+        "en",
+        "rst"
+      ]
+    },
+    {
+      "id": "dig-075",
+      "cat": "digital",
+      "sub": "zhongzu",
+      "type": "single",
+      "q": "RCA(逐位进位)相比CLA？",
+      "answer": 0,
+      "explain": "RCA更慢。",
+      "src": "",
+      "options": [
+        "RCA更慢",
+        "RCA更快",
+        "相同",
+        "RCA无进位"
+      ]
+    },
+    {
+      "id": "dig-076",
+      "cat": "digital",
+      "sub": "zhongzu",
+      "type": "single",
+      "q": "三态缓冲 en=0 时输出？",
+      "answer": 1,
+      "explain": "高阻Z。",
+      "src": "",
+      "options": [
+        "0",
+        "高阻Z",
+        "1",
+        "上拉"
+      ]
+    },
+    {
+      "id": "dig-077",
+      "cat": "digital",
+      "sub": "zhongzu",
+      "type": "multi",
+      "q": "下列关于加法器正确的有？",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explain": "全部正确。",
+      "src": "",
+      "options": [
+        "半加器无cin",
+        "全加器有cin",
+        "RCA逐位进位",
+        "CLA比RCA快"
+      ]
+    },
+    {
+      "id": "dig-078",
+      "cat": "digital",
+      "sub": "zhongzu",
+      "type": "multi",
+      "q": "比较器常见输出标志？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "无时钟。",
+      "src": "",
+      "options": [
+        "大于gt",
+        "等于eq",
+        "小于lt",
+        "时钟clk"
+      ]
+    },
+    {
+      "id": "dig-079",
+      "cat": "digital",
+      "sub": "zhongzu",
+      "type": "multi",
+      "q": "下列关于译码器/MUX正确的有？",
+      "answer": [
+        0,
+        1,
+        3
+      ],
+      "explain": "MUX是选通不是译码。",
+      "src": "",
+      "options": [
+        "3-8译码器one-hot",
+        "译码器n输入出2^n",
+        "MUX按sel选一路",
+        "MUX把一路分到多路"
+      ]
+    },
+    {
+      "id": "dig-080",
+      "cat": "digital",
+      "sub": "zhongzu",
+      "type": "multi",
+      "q": "下列关于编码器说法正确的有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "编码器需优先级。",
+      "src": "",
+      "options": [
+        "编码器把多输入编成编号",
+        "优先编码器响应最高优先级",
+        "编码器n输入出2^n",
+        "编码器无输出"
+      ]
+    },
+    {
+      "id": "dig-081",
+      "cat": "digital",
+      "sub": "zhongzu",
+      "type": "judge",
+      "q": "3-8译码器同一时刻只有一路输出有效。",
+      "answer": true,
+      "explain": "one-hot。",
+      "src": ""
+    },
+    {
+      "id": "dig-082",
+      "cat": "digital",
+      "sub": "zhongzu",
+      "type": "judge",
+      "q": "优先编码器可用于中断请求仲裁。",
+      "answer": true,
+      "explain": "按优先级。",
+      "src": ""
+    },
+    {
+      "id": "dig-083",
+      "cat": "digital",
+      "sub": "zhongzu",
+      "type": "judge",
+      "q": "现代FPGA片内推荐大量使用三态总线。",
+      "answer": false,
+      "explain": "片内多用MUX。",
+      "src": ""
+    },
+    {
+      "id": "dig-084",
+      "cat": "digital",
+      "sub": "zhongzu",
+      "type": "judge",
+      "q": "MUX 可用 case 语句实现。",
+      "answer": true,
+      "explain": "case即并行MUX。",
+      "src": ""
+    },
+    {
+      "id": "dig-085",
+      "cat": "digital",
+      "sub": "zhongzu",
+      "type": "fill",
+      "q": "半加器的和 sum 等于 a 和 b 的什么运算？",
+      "answer": [
+        "异或",
+        "xor",
+        "^"
+      ],
+      "explain": "sum=a^b。",
+      "src": ""
+    },
+    {
+      "id": "dig-086",
+      "cat": "digital",
+      "sub": "zhongzu",
+      "type": "fill",
+      "q": "n-2^n 译码器，3输入对应几路输出？",
+      "answer": [
+        "8",
+        "8路"
+      ],
+      "explain": "2^3=8。",
+      "src": ""
+    },
+    {
+      "id": "dig-087",
+      "cat": "digital",
+      "sub": "zhongzu",
+      "type": "fill",
+      "q": "数据选择器的英文缩写是？",
+      "answer": [
+        "MUX",
+        "mux"
+      ],
+      "explain": "MUX。",
+      "src": ""
+    },
+    {
+      "id": "dig-088",
+      "cat": "digital",
+      "sub": "zhongzu",
+      "type": "fill",
+      "q": "全加器相比半加器多了哪个输入？",
+      "answer": [
+        "cin",
+        "进位输入",
+        "进位"
+      ],
+      "explain": "cin。",
+      "src": ""
+    },
+    {
+      "id": "dig-089",
+      "cat": "digital",
+      "sub": "shixu",
+      "type": "single",
+      "q": "时序逻辑正确敏感表？",
+      "answer": 1,
+      "explain": "posedge clk。",
+      "src": "",
+      "options": [
+        "always@(*)",
+        "always@(posedge clk)",
+        "assign",
+        "always@(a or b)"
+      ]
+    },
+    {
+      "id": "dig-090",
+      "cat": "digital",
+      "sub": "shixu",
+      "type": "single",
+      "q": "避免意外锁存器应使用？",
+      "answer": 1,
+      "explain": "时钟沿触发。",
+      "src": "",
+      "options": [
+        "电平锁存",
+        "时钟沿always块",
+        "assign",
+        "三态"
+      ]
+    },
+    {
+      "id": "dig-091",
+      "cat": "digital",
+      "sub": "shixu",
+      "type": "single",
+      "q": "建立时间tSU是？",
+      "answer": 1,
+      "explain": "沿前稳定。",
+      "src": "",
+      "options": [
+        "沿后保持",
+        "沿前数据须稳定",
+        "门延迟",
+        "复位"
+      ]
+    },
+    {
+      "id": "dig-092",
+      "cat": "digital",
+      "sub": "shixu",
+      "type": "single",
+      "q": "跨时钟域异步信号常用？",
+      "answer": 1,
+      "explain": "两拍同步器。",
+      "src": "",
+      "options": [
+        "一级寄存器",
+        "两级触发器同步器",
+        "MUX",
+        "锁存器"
+      ]
+    },
+    {
+      "id": "dig-093",
+      "cat": "digital",
+      "sub": "shixu",
+      "type": "single",
+      "q": "计数器数到999至少几位？",
+      "answer": 1,
+      "explain": "2^10=1024。",
+      "src": "",
+      "options": [
+        "9位",
+        "10位",
+        "11位",
+        "32位"
+      ]
+    },
+    {
+      "id": "dig-094",
+      "cat": "digital",
+      "sub": "shixu",
+      "type": "single",
+      "q": "打一拍相当于？",
+      "answer": 0,
+      "explain": "延迟一个周期。",
+      "src": "",
+      "options": [
+        "延迟1个时钟周期",
+        "立即",
+        "清除信号",
+        "反相"
+      ]
+    },
+    {
+      "id": "dig-095",
+      "cat": "digital",
+      "sub": "shixu",
+      "type": "single",
+      "q": "下列哪个是时序电路必备？",
+      "answer": 0,
+      "explain": "时钟。",
+      "src": "",
+      "options": [
+        "时钟",
+        "三态",
+        "开漏",
+        "上拉"
+      ]
+    },
+    {
+      "id": "dig-096",
+      "cat": "digital",
+      "sub": "shixu",
+      "type": "single",
+      "q": "保持时间tH是？",
+      "answer": 0,
+      "explain": "沿后再稳定。",
+      "src": "",
+      "options": [
+        "时钟沿后数据须稳定多久",
+        "沿前提前稳定",
+        "门延迟",
+        "周期"
+      ]
+    },
+    {
+      "id": "dig-097",
+      "cat": "digital",
+      "sub": "shixu",
+      "type": "single",
+      "q": "亚稳态通常由什么引起？",
+      "answer": 1,
+      "explain": "异步未同步。",
+      "src": "",
+      "options": [
+        "同步信号打一拍",
+        "异步跨时钟未同步",
+        "复位",
+        "时钟太快"
+      ]
+    },
+    {
+      "id": "dig-098",
+      "cat": "digital",
+      "sub": "shixu",
+      "type": "single",
+      "q": "FSM(状态机)的状态存在哪？",
+      "answer": 0,
+      "explain": "触发器。",
+      "src": "",
+      "options": [
+        "触发器",
+        "LUT",
+        "布线",
+        "BRAM"
+      ]
+    },
+    {
+      "id": "dig-099",
+      "cat": "digital",
+      "sub": "shixu",
+      "type": "multi",
+      "q": "下列关于时序逻辑正确的有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "必须有时钟。",
+      "src": "",
+      "options": [
+        "输出依赖历史状态",
+        "触发器存状态",
+        "时钟沿更新",
+        "可没有时钟"
+      ]
+    },
+    {
+      "id": "dig-100",
+      "cat": "digital",
+      "sub": "shixu",
+      "type": "multi",
+      "q": "亚稳态可能由哪些引起？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "同步信号打一拍不会亚稳。",
+      "src": "",
+      "options": [
+        "异步信号直接打一拍",
+        "跨时钟域未同步",
+        "建立/保持不满足",
+        "同步信号打一拍"
+      ]
+    },
+    {
+      "id": "dig-101",
+      "cat": "digital",
+      "sub": "shixu",
+      "type": "multi",
+      "q": "下列关于流水线/寄存器正确的有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "打一拍不缩短路径。",
+      "src": "",
+      "options": [
+        "打一拍=寄存",
+        "流水线提频率",
+        "每打一拍多1拍延迟",
+        "打一拍缩短关键路径延迟到0"
+      ]
+    },
+    {
+      "id": "dig-102",
+      "cat": "digital",
+      "sub": "shixu",
+      "type": "multi",
+      "q": "下列关于复位说法正确的有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "复位不是异步释放。",
+      "src": "",
+      "options": [
+        "复位应在测试开始先拉低",
+        "异步复位同步释放更稳",
+        "复位可随便异步释放",
+        "复位与时钟无关"
+      ]
+    },
+    {
+      "id": "dig-103",
+      "cat": "digital",
+      "sub": "shixu",
+      "type": "judge",
+      "q": "时钟沿打一拍相当于寄存(延迟一拍)。",
+      "answer": true,
+      "explain": "流水线寄存器。",
+      "src": ""
+    },
+    {
+      "id": "dig-104",
+      "cat": "digital",
+      "sub": "shixu",
+      "type": "judge",
+      "q": "保持时间指时钟沿后数据还须稳定多久。",
+      "answer": true,
+      "explain": "tH。",
+      "src": ""
+    },
+    {
+      "id": "dig-105",
+      "cat": "digital",
+      "sub": "shixu",
+      "type": "judge",
+      "q": "异步信号直接采样到触发器不会有任何问题。",
+      "answer": false,
+      "explain": "可能亚稳，需同步。",
+      "src": ""
+    },
+    {
+      "id": "dig-106",
+      "cat": "digital",
+      "sub": "shixu",
+      "type": "judge",
+      "q": "状态机的次态由现态和输入决定。",
+      "answer": true,
+      "explain": "FSM定义。",
+      "src": ""
+    },
+    {
+      "id": "dig-107",
       "cat": "digital",
       "sub": "shixu",
       "type": "fill",
-      "q": "计数器要数到 1000，至少需要多少位(2^10=1024)？",
+      "q": "计数器要数到999，至少需要多少位(2^10=1024)？",
       "answer": [
         "10",
         "10位"
       ],
-      "explain": "2^10=1024 > 1000，2^9=512 < 1000。",
+      "explain": "2^10>999。",
+      "src": ""
+    },
+    {
+      "id": "dig-108",
+      "cat": "digital",
+      "sub": "shixu",
+      "type": "fill",
+      "q": "处理异步跨时钟域信号常用几级触发器同步？",
+      "answer": [
+        "2",
+        "两",
+        "2级"
+      ],
+      "explain": "双拍同步。",
+      "src": ""
+    },
+    {
+      "id": "dig-109",
+      "cat": "digital",
+      "sub": "shixu",
+      "type": "fill",
+      "q": "在时钟沿打一拍，信号延迟几个周期？",
+      "answer": [
+        "1",
+        "1个",
+        "一"
+      ],
+      "explain": "1拍。",
+      "src": ""
+    },
+    {
+      "id": "dig-110",
+      "cat": "digital",
+      "sub": "shixu",
+      "type": "fill",
+      "q": "建立时间的缩写是？",
+      "answer": [
+        "tSU",
+        "tsu",
+        "setup"
+      ],
+      "explain": "tSU。",
+      "src": ""
+    },
+    {
+      "id": "dig-111",
+      "cat": "digital",
+      "sub": "dianping",
+      "type": "single",
+      "q": "3.3V LVCMOS高电平约？",
+      "answer": 1,
+      "explain": "≈VCCO。",
+      "src": "",
+      "options": [
+        "1.8V",
+        "3.3V",
+        "5V",
+        "0V"
+      ]
+    },
+    {
+      "id": "dig-112",
+      "cat": "digital",
+      "sub": "dianping",
+      "type": "single",
+      "q": "I2C总线常用输出结构？",
+      "answer": 1,
+      "explain": "开漏+上拉。",
+      "src": "",
+      "options": [
+        "推挽",
+        "开漏+外部上拉",
+        "三态",
+        "差分"
+      ]
+    },
+    {
+      "id": "dig-113",
+      "cat": "digital",
+      "sub": "dianping",
+      "type": "single",
+      "q": "LVDS属于？",
+      "answer": 1,
+      "explain": "差分。",
+      "src": "",
+      "options": [
+        "单端5V",
+        "低压差分",
+        "开漏",
+        "电平敏感"
+      ]
+    },
+    {
+      "id": "dig-114",
+      "cat": "digital",
+      "sub": "dianping",
+      "type": "single",
+      "q": "带上拉的按键未按下时读到？",
+      "answer": 1,
+      "explain": "上拉默认高。",
+      "src": "",
+      "options": [
+        "低",
+        "高",
+        "高阻",
+        "随机"
+      ]
+    },
+    {
+      "id": "dig-115",
+      "cat": "digital",
+      "sub": "dianping",
+      "type": "single",
+      "q": "推挽输出特点？",
+      "answer": 0,
+      "explain": "主动出高低。",
+      "src": "",
+      "options": [
+        "主动出高低",
+        "只能拉低",
+        "高阻",
+        "需上拉"
+      ]
+    },
+    {
+      "id": "dig-116",
+      "cat": "digital",
+      "sub": "dianping",
+      "type": "single",
+      "q": "XDC中3.3V电平关键字？",
+      "answer": 0,
+      "explain": "LVCMOS33。",
+      "src": "",
+      "options": [
+        "LVCMOS33",
+        "TTL5",
+        "CMOS5",
+        "LVDS"
+      ]
+    },
+    {
+      "id": "dig-117",
+      "cat": "digital",
+      "sub": "dianping",
+      "type": "single",
+      "q": "LVCMOS1.8高电平参考？",
+      "answer": 1,
+      "explain": "≈1.8V。",
+      "src": "",
+      "options": [
+        "3.3V",
+        "1.8V",
+        "5V",
+        "0V"
+      ]
+    },
+    {
+      "id": "dig-118",
+      "cat": "digital",
+      "sub": "dianping",
+      "type": "single",
+      "q": "I2C信号线上需要？",
+      "answer": 1,
+      "explain": "上拉电阻。",
+      "src": "",
+      "options": [
+        "下拉电阻",
+        "上拉电阻",
+        "电容",
+        "电感"
+      ]
+    },
+    {
+      "id": "dig-119",
+      "cat": "digital",
+      "sub": "dianping",
+      "type": "single",
+      "q": "开漏输出必须外接？",
+      "answer": 0,
+      "explain": "上拉。",
+      "src": "",
+      "options": [
+        "上拉电阻",
+        "下拉电阻",
+        "电源",
+        "电容"
+      ]
+    },
+    {
+      "id": "dig-120",
+      "cat": "digital",
+      "sub": "dianping",
+      "type": "single",
+      "q": "扇出指？",
+      "answer": 1,
+      "explain": "能驱动的输入数。",
+      "src": "",
+      "options": [
+        "输出频率",
+        "一个输出能驱动的输入个数",
+        "电压",
+        "功率"
+      ]
+    },
+    {
+      "id": "dig-121",
+      "cat": "digital",
+      "sub": "dianping",
+      "type": "multi",
+      "q": "下列电平/IO说法正确的有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "推挽可出高低。",
+      "src": "",
+      "options": [
+        "LVCMOS33高≈3.3V",
+        "LVDS差分抗干扰强",
+        "开漏必须外接上拉",
+        "推挽只能输出低"
+      ]
+    },
+    {
+      "id": "dig-122",
+      "cat": "digital",
+      "sub": "dianping",
+      "type": "multi",
+      "q": "下列属于常见FPGA IO电平的有？",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explain": "全部。",
+      "src": "",
+      "options": [
+        "LVCMOS33",
+        "LVCMOS18",
+        "LVDS",
+        "TTL"
+      ]
+    },
+    {
+      "id": "dig-123",
+      "cat": "digital",
+      "sub": "dianping",
+      "type": "multi",
+      "q": "下列关于上拉/下拉说法正确的有？",
+      "answer": [
+        0,
+        1,
+        3
+      ],
+      "explain": "按键按下接地读到低。",
+      "src": "",
+      "options": [
+        "上拉默认高电平",
+        "下拉默认高电平",
+        "按键输入常用上拉",
+        "上拉电阻接输出高才有用"
+      ]
+    },
+    {
+      "id": "dig-124",
+      "cat": "digital",
+      "sub": "dianping",
+      "type": "multi",
+      "q": "下列关于推挽/开漏正确的有？",
+      "answer": [
+        0,
+        1
+      ],
+      "explain": "推挽不高阻。",
+      "src": "",
+      "options": [
+        "推挽主动出高低",
+        "开漏可主动出高",
+        "开漏需上拉线与",
+        "开漏无需任何电阻"
+      ]
+    },
+    {
+      "id": "dig-125",
+      "cat": "digital",
+      "sub": "dianping",
+      "type": "judge",
+      "q": "按键输入常用外部上拉，按下读到低电平。",
+      "answer": true,
+      "explain": "接地为低。",
       "src": ""
     },
     {
       "id": "dig-126",
       "cat": "digital",
-      "sub": "shixu",
-      "type": "fill",
-      "q": "计数器要数到 50，至少需要多少位(2^6=64)？",
-      "answer": [
-        "6",
-        "6位"
-      ],
-      "explain": "2^6=64 > 50，2^5=32 < 50。",
+      "sub": "dianping",
+      "type": "judge",
+      "q": "推挽输出可主动输出高和低电平。",
+      "answer": true,
+      "explain": "上管出高下管出低。",
       "src": ""
     },
     {
       "id": "dig-127",
       "cat": "digital",
-      "sub": "shixu",
-      "type": "fill",
-      "q": "计数器要数到 256，至少需要多少位(2^9=512)？",
-      "answer": [
-        "9",
-        "9位"
-      ],
-      "explain": "2^9=512 > 256，2^8=256 < 256。",
+      "sub": "dianping",
+      "type": "judge",
+      "q": "LVCMOS1.8的高电平参考约为1.8V。",
+      "answer": true,
+      "explain": "≈VCCO。",
       "src": ""
     },
     {
       "id": "dig-128",
       "cat": "digital",
-      "sub": "shixu",
+      "sub": "dianping",
       "type": "judge",
-      "q": "复位信号应在测试开始时先拉低(低有效)再释放。",
-      "answer": true,
-      "explain": "模拟上电复位。",
+      "q": "不同电压域IO可以直接相连无需转换。",
+      "answer": false,
+      "explain": "需电平转换芯片。",
       "src": ""
     },
     {
       "id": "dig-129",
       "cat": "digital",
-      "sub": "shixu",
-      "type": "single",
-      "q": "下列哪种是同步时序电路必备要素？",
-      "options": [
-        "时钟",
-        "三态",
-        "开漏",
-        "上拉电阻"
+      "sub": "dianping",
+      "type": "fill",
+      "q": "XDC中声明3.3V电平的IOSTANDARD是？",
+      "answer": [
+        "LVCMOS33"
       ],
-      "answer": 0,
-      "explain": "触发器由时钟驱动。",
+      "explain": "LVCMOS33。",
       "src": ""
     },
     {
       "id": "dig-130",
       "cat": "digital",
       "sub": "dianping",
-      "type": "judge",
-      "q": "LVCMOS18 的高电平参考约为 1.8V。",
-      "answer": true,
-      "explain": "高电平≈VCCO。",
+      "type": "fill",
+      "q": "I2C总线每个信号需要外接什么电阻？",
+      "answer": [
+        "上拉",
+        "上拉电阻"
+      ],
+      "explain": "开漏需上拉。",
       "src": ""
     },
     {
       "id": "dig-131",
       "cat": "digital",
       "sub": "dianping",
-      "type": "single",
-      "q": "I2C总线需要每个信号都外接什么？",
-      "options": [
-        "下拉电阻",
-        "上拉电阻",
-        "电容",
-        "电感"
+      "type": "fill",
+      "q": "未按下(带上拉)时FPGA读到什么电平？",
+      "answer": [
+        "高",
+        "高电平"
       ],
-      "answer": 1,
-      "explain": "开漏需上拉到高电平。",
+      "explain": "上拉默认高。",
       "src": ""
     },
     {
       "id": "dig-132",
       "cat": "digital",
       "sub": "dianping",
-      "type": "single",
-      "q": "按键未按下(带上拉)时FPGA读到的电平是？",
-      "options": [
-        "低",
-        "高",
-        "高阻",
-        "随机"
-      ],
-      "answer": 1,
-      "explain": "上拉默认高。",
-      "src": ""
-    },
-    {
-      "id": "dig-133",
-      "cat": "digital",
-      "sub": "dianping",
       "type": "fill",
-      "q": "FPGA引脚的电平标准在哪个约束文件里声明？",
+      "q": "FPGA引脚管脚号在哪个约束文件里声明？",
       "answer": [
         "XDC",
         "xdc",
         "约束文件"
       ],
-      "explain": "XDC里写IOSTANDARD。",
+      "explain": "XDC。",
       "src": ""
     }
   ]
