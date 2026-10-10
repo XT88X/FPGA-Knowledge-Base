@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 280" font-family="system-ui,sans-serif" font-size="12">
+  <rect x="0" y="0" width="820" height="280" fill="#0d1420"/>
+  <text x="410" y="22" fill="#7dd3fc" text-anchor="middle" font-size="15" font-weight="bold">数字电子钟系统框图</text>
+
+  <rect x="40" y="50" width="120" height="50" fill="#1e293b" stroke="#22d3ee"/>
+  <text x="100" y="80" fill="#22d3ee" text-anchor="middle">50MHz 时钟</text>
+
+  <rect x="220" y="50" width="120" height="50" fill="#1e293b" stroke="#34d399"/>
+  <text x="280" y="72" fill="#34d399" text-anchor="middle">秒计数器</text>
+  <text x="280" y="88" fill="#94a3b8" text-anchor="middle">0~59</text>
+
+  <rect x="400" y="50" width="120" height="50" fill="#1e293b" stroke="#34d399"/>
+  <text x="460" y="72" fill="#34d399" text-anchor="middle">分计数器</text>
+  <text x="460" y="88" fill="#94a3b8" text-anchor="middle">0~59</text>
+
+  <rect x="580" y="50" width="120" height="50" fill="#1e293b" stroke="#34d399"/>
+  <text x="640" y="72" fill="#34d399" text-anchor="middle">时计数器</text>
+  <text x="640" y="88" fill="#94a3b8" text-anchor="middle">0~23</text>
+
+  <line x1="160" y1="75" x2="220" y2="75" stroke="#64748b"/>
+  <line x1="340" y1="75" x2="400" y2="75" stroke="#64748b"/>
+  <line x1="520" y1="75" x2="580" y2="75" stroke="#64748b"/>
+
+  <rect x="220" y="140" width="160" height="50" fill="#1e293b" stroke="#f59e0b"/>
+  <text x="300" y="162" fill="#f59e0b" text-anchor="middle">按键消抖</text>
+  <text x="300" y="178" fill="#94a3b8" text-anchor="middle">mode / add</text>
+
+  <rect x="440" y="140" width="160" height="50" fill="#1e293b" stroke="#f59e0b"/>
+  <text x="520" y="162" fill="#f59e0b" text-anchor="middle">动态扫描</text>
+  <text x="520" y="178" fill="#94a3b8" text-anchor="middle">6 位数码管</text>
+
+  <line x1="300" y1="140" x2="300" y2="100" stroke="#64748b"/>
+  <line x1="520" y1="140" x2="460" y2="100" stroke="#64748b"/>
+
+  <text x="410" y="230" fill="#fcd34d" text-anchor="middle">秒满 59 -> 分+1，分满 59 -> 时+1，时满 23 -> 归零</text>
+  <text x="410" y="255" fill="#94a3b8" text-anchor="middle">每 1ms 切一位数码管，视觉暂留形成 6 位同时亮</text>
+</svg>

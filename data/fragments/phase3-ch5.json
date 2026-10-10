@@ -1,0 +1,43 @@
+{
+  "chapterId": "3.5",
+  "phase": 3,
+  "slug": "digital-clock",
+  "title": "综合项目·数字电子钟",
+  "summary": "时分秒自动计时（60/60/24 进位）、按键调时、6 位数码管动态扫描显示。",
+  "doc": "docs/phase3/ch5-digital-clock.md",
+  "code": [
+    {"file": "code/phase3/clk_debounce.v", "type": "verilog", "role": "synthesizable", "title": "clk_debounce.v - 按键消抖"},
+    {"file": "code/phase3/time_counter.v", "type": "verilog", "role": "synthesizable", "title": "time_counter.v - 时分秒计数+调时"},
+    {"file": "code/phase3/tb_time_counter.v", "type": "verilog", "role": "testbench", "title": "tb_time_counter.v - 加速验证 59->00、23:59:59 归零"},
+    {"file": "code/phase3/seg_dynamic_scan.v", "type": "verilog", "role": "synthesizable", "title": "seg_dynamic_scan.v - 6 位动态扫描"},
+    {"file": "code/phase3/tb_seg_dynamic_scan.v", "type": "verilog", "role": "testbench", "title": "tb_seg_dynamic_scan.v - 位选/段码自检"},
+    {"file": "code/phase3/digital_clock_top.v", "type": "verilog", "role": "synthesizable", "title": "digital_clock_top.v - 电子钟顶层"},
+    {"file": "code/phase3/tb_digital_clock_top.v", "type": "verilog", "role": "testbench", "title": "tb_digital_clock_top.v - 顶层自检"}
+  ],
+  "diagrams": [
+    {"file": "assets/phase3/clock-block.svg", "title": "电子钟系统框图", "caption": "时钟->秒->分->时进位链，按键消抖接入调时，动态扫描驱动数码管。"}
+  ],
+  "tools": [
+    {"name": "通用引脚约束模板 fpga_common.xdc", "url": "../code/common/fpga_common.xdc", "required": true, "note": "数码管段选/位选与按键引脚按开发板替换。"}
+  ],
+  "tasks": [
+    {"id": "task-3-5-1", "text": "实现数码管显示时分秒自动计时"},
+    {"id": "task-3-5-2", "text": "实现按键调时功能"}
+  ],
+  "cards": [
+    {"q": "秒/分/时的进位规则？", "a": "秒 0~59 到 59 回 0 分+1；分 0~59 到 59 回 0 时+1；时 0~23 到 23 回 0。", "tags": ["进位", "电子钟"]},
+    {"q": "动态扫描原理？", "a": "每 1ms 切一位数码管，视觉暂留让 6 位看起来同时亮。", "tags": ["动态扫描"]},
+    {"q": "按键消抖为什么需要？", "a": "机械按键按下/松开时有抖动，直接读会误触发；用 20ms 计数滤除。", "tags": ["消抖"]},
+    {"q": "共阴数码管段码 0 是多少？", "a": "0x3F（gfedcba=0111111，a~f 亮 g 灭）。", "tags": ["段码"]},
+    {"q": "调时模式怎么切换？", "a": "mode 键在 0走时/1调分/2调时 三态间循环；add 键在当前模式加一。", "tags": ["调时"]},
+    {"q": "时分秒怎么拆成 BCD 给数码管？", "a": "十位=sec/10，个位=sec%10；分、时同理。", "tags": ["BCD"]},
+    {"q": "1 秒怎么从 50MHz 产生？", "a": "数满 50,000,000 个时钟拍即 1 秒。", "tags": ["秒基准"]},
+    {"q": "数码管位选高有效还是低有效？", "a": "取决于硬件；本设计位选低有效（seg_sel=6'b111110 选最右位）。", "tags": ["位选"]}
+  ],
+  "quiz": [
+    {"q": "时计数到多少后归零？", "options": ["23", "24", "59", "12"], "answer": 0, "explain": "24 小时制，hour 0~23，到 23+1=24 时归零。"},
+    {"q": "动态扫描每位间隔约多少？", "options": ["1us", "1ms", "100ms", "1s"], "answer": 1, "explain": "每 1ms 切一位，6 位刷新周期 6ms，人眼不闪。"},
+    {"q": "共阴数码管数字 0 的段码？", "options": ["0x3F", "0x06", "0x5B", "0x4F"], "answer": 0, "explain": "a~f 亮 g 灭 = 0x3F。"},
+    {"q": "按键消抖时间典型值？", "options": ["1us", "20ms", "1s", "1min"], "answer": 1, "explain": "机械抖动持续约几 ms，20ms 计数足够滤除。"}
+  ]
+}
