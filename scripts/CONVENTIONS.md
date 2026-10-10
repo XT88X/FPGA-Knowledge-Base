@@ -98,3 +98,37 @@ FPGA-Knowledge-Base/
 2. 运行 `python3 scripts/build.py` 重新生成 index.html；
 3. 运行 `python3 scripts/check_verilog.py code/phase2` 确认通过；
 4. 单独 commit：`phase2: 2.1 组合逻辑设计 知识+代码+入库`。
+
+---
+
+## 6. 通关考卷题库 schema（data/exam/phaseN.json）
+
+每阶段一个文件：`data/exam/phase{阶段}.json`。build.py 会聚合进 `KB.exams[phase]`。
+引擎为纯函数 `window.FPGAExam`（compose/shufflePaper/gradePaper/unlockState），与 DOM 解耦。
+
+```json
+{
+  "phase": 1,
+  "passScore": 85,
+  "questions": [
+    {"id":"p1-001","ch":"1.1","type":"single","pts":5,
+     "q":"题干","options":["选项A","选项B","选项C","选项D"],
+     "answer": 0, "explain":"解析"},
+    {"id":"p1-002","ch":"1.2","type":"multi","pts":5,
+     "q":"多选题干","options":["甲","乙","丙","丁"],
+     "answer": [0,2], "explain":"全对才得分"},
+    {"id":"p1-003","ch":"1.3","type":"judge","pts":5,
+     "q":"判断题干（正确/错误）","answer": true, "explain":"解析"},
+    {"id":"p1-004","ch":"1.1","type":"fill","pts":5,
+     "q":"填空题干","answer": ["可接受写法1","写法2"], "explain":"归一化判分"}
+  ]
+}
+```
+
+规则：
+- `type`：`single`（answer=正确下标）/ `multi`（answer=正确下标数组，全对得分）/ `judge`（answer=true/false，选项固定 正确/错误）/ `fill`（answer=可接受写法数组，判分去空白/标点/大小写后命中任一即对）。
+- 组卷：每次随机抽 20 题（每题 5 分=100），按章节 round-robin 均衡 + 章内随机。
+- 乱序：single/multi/judge 抽卷后随机打乱选项顺序，answer 自动重映射，题答严格对应。
+- 通过线 `passScore`=85；阶段 N 解锁条件 = N==1 或 阶段 N-1 已通过。
+- 存档 key `fpga-exam-state`：`{unlocked:{}, passed:{}, best:{}}`，与 `fpga-learning-progress` 互不干扰；重置按钮会一并清空。
+- 题库量建议每阶段 ≥30 题（每章 ≥10），四种题型都要有，内容必须与该阶段 docs/code 严格一致，answer 必须正确。
