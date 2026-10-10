@@ -1,0 +1,2145 @@
+{
+  "cat": "advanced",
+  "catName": "IP 核、RISC-V 软核与硬件加速进阶",
+  "cards": [
+    {
+      "id": "adv-c01",
+      "sub": "ip",
+      "title": "什么是IP核",
+      "body": "① 预先写好、验证过、可复用的功能模块；② 分软核(HDL综合)与硬核(版图固定)；③ 在Vivado IP Catalog里调用。",
+      "src": "AMD UG896"
+    },
+    {
+      "id": "adv-c02",
+      "sub": "ip",
+      "title": "软核vs硬核",
+      "body": "① 软核=HDL网表/RTL，可综合到任意FPGA，可改；② 硬核=晶体管级固定版图，性能高不可改；③ Xilinx RAM/FIFO多为软核，PCIe Gen3 Integrated Block含硬核。",
+      "src": ""
+    },
+    {
+      "id": "adv-c03",
+      "sub": "ip",
+      "title": "IP Catalog",
+      "body": "① Vivado里集中管理官方/第三方/自定义IP；② 图形化配置参数并生成输出产品；③ 生成后用例化模板或Block Design挂载。",
+      "src": "AMD UG896"
+    },
+    {
+      "id": "adv-c04",
+      "sub": "ip",
+      "title": "Clocking Wizard",
+      "body": "① 例化MMCM/PLL；② 输入时钟分频/倍频出多路时钟；③ 输出去抖动、相位、动态重配置；④ 对应缓冲区BUFG。",
+      "src": "AMD PG065 Clocking Wizard"
+    },
+    {
+      "id": "adv-c05",
+      "sub": "ip",
+      "title": "Block Memory Generator",
+      "body": "① 例化片上BRAM；② 配单口/简单双口/真双口、位宽、深度、输出寄存器；③ 可加初始化coe文件；④ 比分布式RAM省LUT、容量大。",
+      "src": "AMD PG058"
+    },
+    {
+      "id": "adv-c06",
+      "sub": "ip",
+      "title": "FIFO Generator",
+      "body": "① 例化同步/异步FIFO；② 跨时钟域用异步FIFO；③ 带满空阈值、几乎满/几乎空；④ 内部用BRAM/分布式RAM实现。",
+      "src": "AMD PG057"
+    },
+    {
+      "id": "adv-c07",
+      "sub": "ip",
+      "title": "参数化与例化",
+      "body": "① parameter/localparam定义位宽/深度；② 例化时#(.W(8))覆盖；③ 同一个IP换参数即新实例；④ 建议端口位宽用参数而非魔数。",
+      "src": ""
+    },
+    {
+      "id": "adv-c08",
+      "sub": "ip",
+      "title": "自定义IP封装流程",
+      "body": "① 写好RTL并验证；② Package IP:打包成Vivado IP；③ 暴露参数/接口；④ 加GUI/文档即可在Catalog复用。",
+      "src": "AMD UG1118"
+    },
+    {
+      "id": "adv-c09",
+      "sub": "riscv",
+      "title": "开源ISA",
+      "body": "① RISC-V是开放指令集规范，无授权费；② 基础整数RV32I；③ 可按需要加M/A/F/D/C等扩展；④ 规范在docs.riscv.org。",
+      "src": "RISC-V Unpriv Spec"
+    },
+    {
+      "id": "adv-c10",
+      "sub": "riscv",
+      "title": "寄存器x0~x31",
+      "body": "① x0恒零不可写；② x1 ra返回地址,x2 sp栈；③ x5-x7/x28-31临时t0-t6；④ x10-x11参数a0-a1兼返回；⑤ x8/x9,x18-27保存s。",
+      "src": "RISC-V Unpriv Spec"
+    },
+    {
+      "id": "adv-c11",
+      "sub": "riscv",
+      "title": "六种指令格式",
+      "body": "① R型寄存器运算；② I型立即数/load/jalr；③ S型store；④ B型分支；⑤ U型lui/auipc；⑥ J型jal。",
+      "src": ""
+    },
+    {
+      "id": "adv-c12",
+      "sub": "riscv",
+      "title": "opcode/funct3/funct7",
+      "body": "① 低7位opcode决定大类；② funct3细分；③ funct7区分add/sub等同op；④ 定长32位(解压除外)。",
+      "src": ""
+    },
+    {
+      "id": "adv-c13",
+      "sub": "riscv",
+      "title": "lui/auipc",
+      "body": "① lui把20位立即数放rd高位；② auipc=pc+立即数；③ 用于加载32位常数/取地址。",
+      "src": ""
+    },
+    {
+      "id": "adv-c14",
+      "sub": "riscv",
+      "title": "跳转分支",
+      "body": "① jal=相对跳转写返回地址rd；② jalr=寄存器间接跳转；③ beq/bne按rs1,rs2比较；④ 分支目标按2字节对齐。",
+      "src": ""
+    },
+    {
+      "id": "adv-c15",
+      "sub": "riscv",
+      "title": "load/store与小端",
+      "body": "① lw/sw按字load/store；② RISC-V默认小端；③ 未对齐访问在本教学核不支持；④ 地址字节单位。",
+      "src": ""
+    },
+    {
+      "id": "adv-c16",
+      "sub": "riscv",
+      "title": "扩展M/A/C/F",
+      "body": "① M=乘除；② A=原子同步；③ C=16位压缩指令省代码；④ F/D=单/双浮点；⑤ E=嵌入式16寄存器。",
+      "src": ""
+    },
+    {
+      "id": "adv-c17",
+      "sub": "soc",
+      "title": "五级流水线",
+      "body": "① IF取指->ID译码->EX执行->MEM访存->WB写回；② 单周期把五级压成一拍；③ 流水线提吞吐但有冒险。",
+      "src": "RISC-V教材"
+    },
+    {
+      "id": "adv-c18",
+      "sub": "soc",
+      "title": "x0恒零与寄存器堆",
+      "body": "① 32个通用寄存器；② x0硬连线为0；③ 双口读单口写；④ 组合读同步写。",
+      "src": ""
+    },
+    {
+      "id": "adv-c19",
+      "sub": "soc",
+      "title": "哈佛vs冯诺依曼",
+      "body": "① 哈佛：指令/数据分开存储器口；② 冯诺依曼：共用一块RAM；③ 教学核多用冯诺依曼省资源。",
+      "src": ""
+    },
+    {
+      "id": "adv-c20",
+      "sub": "soc",
+      "title": "总线与内存映射",
+      "body": "① 外设寄存器占固定地址；② CPU用lw/sw访问外设；③ 地址译码片选；④ 如UART_DATA=0x20000000。",
+      "src": ""
+    },
+    {
+      "id": "adv-c21",
+      "sub": "soc",
+      "title": "外设地址映射",
+      "body": "① UART数据/状态；② GPIO方向/输出/输入；③ Timer控制/比较/计数；④ 中断使能/标志。",
+      "src": ""
+    },
+    {
+      "id": "adv-c22",
+      "sub": "soc",
+      "title": "中断与异常向量",
+      "body": "① 中断跳转到固定trap向量；② 硬件保存返回地址；③ ISR清标志后返回；④ 教学版无完整特权架构。",
+      "src": ""
+    },
+    {
+      "id": "adv-c23",
+      "sub": "soc",
+      "title": "PicoRV32",
+      "body": "① ClaireWolf/Yosys出品；② 极小RV32I/E/M/C软核；③ 约数百到数千LUT；④ 适合资源受限。",
+      "src": "github.com/YosysHQ/picorv32"
+    },
+    {
+      "id": "adv-c24",
+      "sub": "soc",
+      "title": "NEORV32",
+      "body": "① Stephan Nolting出品；② 类单片机SoC自带UART/GPIO/Timer/中断；③ 开源、文档齐全；④ 适合直接做软MCU。",
+      "src": "github.com/stnolting/neorv32"
+    },
+    {
+      "id": "adv-c25",
+      "sub": "accel",
+      "title": "CPU串行vs并行",
+      "body": "① CPU每周期一条指令；② FPGA多块电路同时工作；③ 加速来自同拍做更多而非提频。",
+      "src": ""
+    },
+    {
+      "id": "adv-c26",
+      "sub": "accel",
+      "title": "流水线与展开",
+      "body": "① 流水线分级插寄存提频；② 展开(unroll)复制功能单元并行；③ 用面积换时间。",
+      "src": ""
+    },
+    {
+      "id": "adv-c27",
+      "sub": "accel",
+      "title": "吞吐与延迟",
+      "body": "① 延迟=一条数据从进来到出去的周期；② 吞吐=每拍出几个结果；③ 流水线填满后吞吐高、延迟固定。",
+      "src": ""
+    },
+    {
+      "id": "adv-c28",
+      "sub": "accel",
+      "title": "valid/ready背压",
+      "body": "① valid数据有效,ready下游可收；② 两高同拍才成交；③ ready拉低即背压,上游保持数据。",
+      "src": "AXI-Stream"
+    },
+    {
+      "id": "adv-c29",
+      "sub": "accel",
+      "title": "MAC/FIR结构",
+      "body": "① MAC=a*b累加；② FIR=乘加求和；③ 转置FIR寄存器贴加法链易跑高频；④ 滑动平均是特例FIR。",
+      "src": ""
+    },
+    {
+      "id": "adv-c30",
+      "sub": "accel",
+      "title": "加速比与Roofline",
+      "body": "① 理论加速≈P*指令数/元素；② 受带宽与fmax限制；③ Roofline=min(计算峰,带宽峰)。",
+      "src": ""
+    },
+    {
+      "id": "adv-c31",
+      "sub": "accel",
+      "title": "片上存储/带宽瓶颈",
+      "body": "① 数据喂不饱则乘法器空转；② 双缓冲/分块减少DRAM往返；③ 数据复用度决定真实性能。",
+      "src": ""
+    },
+    {
+      "id": "adv-c32",
+      "sub": "accel",
+      "title": "HLS pragma",
+      "body": "① pipeline:让循环重叠执行；② unroll:复制循环体并行；③ dataflow:任务级流水线；④ 仅Vitis HLS,手写RTL无。",
+      "src": "AMD UG1399"
+    },
+    {
+      "id": "adv-c33",
+      "sub": "method",
+      "title": "模块化层次化",
+      "body": "① 一个模块一件事；② 顶层例化子模块；③ 便于复用与分工；④ 端口命名统一。",
+      "src": ""
+    },
+    {
+      "id": "adv-c34",
+      "sub": "method",
+      "title": "parameter参数化",
+      "body": "① 位宽/深度用parameter；② 例化覆盖；③ 避免魔数；④ 大写参数名。",
+      "src": ""
+    },
+    {
+      "id": "adv-c35",
+      "sub": "method",
+      "title": "可综合RTL风格",
+      "body": "① 时序逻辑用always@(posedge clk)；② 组合用always@(*)先赋默认值；③ 避免latch；④ 区分reg/wire。",
+      "src": "AMD UG901"
+    },
+    {
+      "id": "adv-c36",
+      "sub": "method",
+      "title": "复位策略",
+      "body": "① 同步复位易满足时序；② 异步复位同步释放更稳；③ 复位值确定避免上电不定态。",
+      "src": ""
+    },
+    {
+      "id": "adv-c37",
+      "sub": "method",
+      "title": "资源频率权衡",
+      "body": "① 加流水线提频但加寄存器；② 并行度高耗DSP/LUT；③ 面积/速度/功耗三角。",
+      "src": ""
+    },
+    {
+      "id": "adv-c38",
+      "sub": "method",
+      "title": "状态机设计",
+      "body": "① 三段式:时序现态+次态组合+输出；② 用localparam编码；③ 写全default防锁存。",
+      "src": ""
+    },
+    {
+      "id": "adv-c39",
+      "sub": "method",
+      "title": "调试ILA",
+      "body": "① Vivado ILA核在线抓内部信号波形；② 设触发条件；③ 上板后定位时序/协议问题。",
+      "src": "AMD PG260 ILA"
+    },
+    {
+      "id": "adv-c40",
+      "sub": "method",
+      "title": "文档与testbench",
+      "body": "① 每模块写端口表；② testbench自检+golden比对；③ 版本管理(git)；④ 不声称未验证结论。",
+      "src": ""
+    }
+  ],
+  "questions": [
+    {
+      "id": "adv-001",
+      "cat": "advanced",
+      "sub": "ip",
+      "type": "single",
+      "q": "关于FPGA中的IP核，正确的是？",
+      "answer": 1,
+      "explain": "IP核是预先验证可复用的功能模块。",
+      "src": "",
+      "options": [
+        "只能自己从零手写",
+        "预先写好验证过可复用的模块",
+        "只能由AMD官方提供",
+        "只能用于仿真不能综合"
+      ]
+    },
+    {
+      "id": "adv-002",
+      "cat": "advanced",
+      "sub": "ip",
+      "type": "single",
+      "q": "软核(soft IP)的特点是？",
+      "answer": 0,
+      "explain": "软核以HDL/网表交付，可综合到任意FPGA并可改。",
+      "src": "",
+      "options": [
+        "以HDL交付可综合可改",
+        "晶体管版图固定不可改",
+        "只能在Xilinx芯片用",
+        "不需要综合直接下载"
+      ]
+    },
+    {
+      "id": "adv-003",
+      "cat": "advanced",
+      "sub": "ip",
+      "type": "single",
+      "q": "硬核(hard IP)的特点是？",
+      "answer": 1,
+      "explain": "硬核是固定版图，性能高但不可改。",
+      "src": "",
+      "options": [
+        "以Verilog源码交付",
+        "固定版图性能高不可改",
+        "可随意改逻辑",
+        "占大量LUT"
+      ]
+    },
+    {
+      "id": "adv-004",
+      "cat": "advanced",
+      "sub": "ip",
+      "type": "single",
+      "q": "Clocking Wizard主要用来？",
+      "answer": 2,
+      "explain": "例化MMCM/PLL产生多路时钟。",
+      "src": "",
+      "options": [
+        "产生串口波特率",
+        "例化BRAM",
+        "例化MMCM/PLL产生多路时钟",
+        "做逻辑分析仪"
+      ]
+    },
+    {
+      "id": "adv-005",
+      "cat": "advanced",
+      "sub": "ip",
+      "type": "single",
+      "q": "需要跨时钟域缓存一批数据，最适合调用？",
+      "answer": 1,
+      "explain": "异步FIFO处理跨时钟域。",
+      "src": "",
+      "options": [
+        "Carry逻辑",
+        "FIFO Generator(异步FIFO)",
+        "PLL",
+        "ILA"
+      ]
+    },
+    {
+      "id": "adv-006",
+      "cat": "advanced",
+      "sub": "ip",
+      "type": "single",
+      "q": "Block Memory Generator主要例化？",
+      "answer": 0,
+      "explain": "例化片上BRAM。",
+      "src": "",
+      "options": [
+        "片上BRAM",
+        "PLL",
+        "DSP乘法器",
+        "触发器"
+      ]
+    },
+    {
+      "id": "adv-007",
+      "cat": "advanced",
+      "sub": "ip",
+      "type": "single",
+      "q": "在Vivado中集中管理官方与自定义IP的入口是？",
+      "answer": 1,
+      "explain": "IP Catalog。",
+      "src": "",
+      "options": [
+        "Sources窗口",
+        "IP Catalog",
+        "Tcl Console",
+        "Flow Navigator"
+      ]
+    },
+    {
+      "id": "adv-008",
+      "cat": "advanced",
+      "sub": "ip",
+      "type": "single",
+      "q": "FIFO的'满(Full)'标志表示？",
+      "answer": 2,
+      "explain": "FIFO写满不能再写。",
+      "src": "",
+      "options": [
+        "可以读出",
+        "写指针追上读指针",
+        "写满不能再写",
+        "读空了"
+      ]
+    },
+    {
+      "id": "adv-009",
+      "cat": "advanced",
+      "sub": "ip",
+      "type": "single",
+      "q": "FIFO的'空(Empty)'标志表示？",
+      "answer": 0,
+      "explain": "读无可读。",
+      "src": "",
+      "options": [
+        "读无可读",
+        "写满了",
+        "可继续写",
+        "正在复位"
+      ]
+    },
+    {
+      "id": "adv-010",
+      "cat": "advanced",
+      "sub": "ip",
+      "type": "multi",
+      "q": "下列属于常用AMD/Xilinx IP的有？",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explain": "全部是常用IP。",
+      "src": "",
+      "options": [
+        "Clocking Wizard",
+        "Block Memory Generator",
+        "FIFO Generator",
+        "ILA 核"
+      ]
+    },
+    {
+      "id": "adv-011",
+      "cat": "advanced",
+      "sub": "ip",
+      "type": "multi",
+      "q": "下列关于软核/硬核说法正确的有？",
+      "answer": [
+        0,
+        1,
+        3
+      ],
+      "explain": "硬核不可改。",
+      "src": "",
+      "options": [
+        "软核以HDL交付",
+        "软核可综合到多种FPGA",
+        "硬核可随意修改逻辑",
+        "硬核性能高但版图固定"
+      ]
+    },
+    {
+      "id": "adv-012",
+      "cat": "advanced",
+      "sub": "ip",
+      "type": "multi",
+      "q": "关于参数化IP说法正确的有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "位宽应参数化。",
+      "src": "",
+      "options": [
+        "可用parameter配置位宽/深度",
+        "例化时#(.W(8))覆盖",
+        "同一IP换参数即新实例",
+        "IP的位宽一旦固定不可改"
+      ]
+    },
+    {
+      "id": "adv-013",
+      "cat": "advanced",
+      "sub": "ip",
+      "type": "multi",
+      "q": "下列哪些情况适合调用现成IP而非手写？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "存储/时钟/调试用IP更省更稳。",
+      "src": "",
+      "options": [
+        "大容量片上存储",
+        "需要MMCM/PLL时钟",
+        "跨时钟域FIFO",
+        "单个2选1多路器"
+      ]
+    },
+    {
+      "id": "adv-014",
+      "cat": "advanced",
+      "sub": "ip",
+      "type": "judge",
+      "q": "自定义IP打包后也能在Vivado IP Catalog里被复用。",
+      "answer": true,
+      "explain": "Package IP即可入库复用。",
+      "src": ""
+    },
+    {
+      "id": "adv-015",
+      "cat": "advanced",
+      "sub": "ip",
+      "type": "judge",
+      "q": "硬核IP可以像Verilog源码一样随意修改内部逻辑。",
+      "answer": false,
+      "explain": "硬核版图固定不可改。",
+      "src": ""
+    },
+    {
+      "id": "adv-016",
+      "cat": "advanced",
+      "sub": "ip",
+      "type": "judge",
+      "q": "Clocking Wizard底层例化的是MMCM/PLL，并接全局时钟缓冲BUFG。",
+      "answer": true,
+      "explain": "MMCM/PLL+BUFG。",
+      "src": "AMD PG065"
+    },
+    {
+      "id": "adv-017",
+      "cat": "advanced",
+      "sub": "ip",
+      "type": "judge",
+      "q": "FIFO Generator只能做同步FIFO，不能做异步FIFO。",
+      "answer": false,
+      "explain": "它支持同步与异步FIFO。",
+      "src": "AMD PG057"
+    },
+    {
+      "id": "adv-018",
+      "cat": "advanced",
+      "sub": "ip",
+      "type": "fill",
+      "q": "Vivado中图形化管理和配置IP的入口叫IP什么？",
+      "answer": [
+        "Catalog",
+        "IP Catalog"
+      ],
+      "explain": "IP Catalog。",
+      "src": ""
+    },
+    {
+      "id": "adv-019",
+      "cat": "advanced",
+      "sub": "ip",
+      "type": "fill",
+      "q": "跨时钟域缓存数据通常用同步还是异步FIFO？",
+      "answer": [
+        "异步",
+        "异步FIFO"
+      ],
+      "explain": "跨时钟域用异步FIFO。",
+      "src": ""
+    },
+    {
+      "id": "adv-020",
+      "cat": "advanced",
+      "sub": "ip",
+      "type": "fill",
+      "q": "片上大容量存储在Vivado中通常用哪种存储器原语？",
+      "answer": [
+        "BRAM",
+        "块存储器"
+      ],
+      "explain": "BRAM。",
+      "src": "AMD PG058"
+    },
+    {
+      "id": "adv-021",
+      "cat": "advanced",
+      "sub": "ip",
+      "type": "fill",
+      "q": "在Verilog例化IP时，用哪个符号覆盖参数？",
+      "answer": [
+        "#(",
+        "#(.W(8))"
+      ],
+      "explain": "#()参数覆盖。",
+      "src": ""
+    },
+    {
+      "id": "adv-022",
+      "cat": "advanced",
+      "sub": "ip",
+      "type": "single",
+      "q": "Block Memory Generator配置的真双口RAM特点是？",
+      "answer": 2,
+      "explain": "两个口都可独立读写。",
+      "src": "",
+      "options": [
+        "只有一个口",
+        "只能读",
+        "两个口都可独立读写",
+        "不能加初始化文件"
+      ]
+    },
+    {
+      "id": "adv-023",
+      "cat": "advanced",
+      "sub": "ip",
+      "type": "multi",
+      "q": "下列关于IP核授权/License说法正确的有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "免费版可用常用IP。",
+      "src": "",
+      "options": [
+        "Vivado ML Standard对常用IP免费",
+        "部分硬核(如高速SerDes)需授权",
+        "调用IP无需了解其内部版图",
+        "所有IP都必须购买License"
+      ]
+    },
+    {
+      "id": "adv-024",
+      "cat": "advanced",
+      "sub": "ip",
+      "type": "judge",
+      "q": "调用IP时需要关心其内部如何用LUT/BRAM实现。",
+      "answer": false,
+      "explain": "IP是黑盒，配置接口即可。",
+      "src": ""
+    },
+    {
+      "id": "adv-025",
+      "cat": "advanced",
+      "sub": "ip",
+      "type": "judge",
+      "q": "异步FIFO常用于跨两个不同时钟域之间的数据缓冲。",
+      "answer": true,
+      "explain": "异步FIFO处理跨时钟域。",
+      "src": "AMD PG057"
+    },
+    {
+      "id": "adv-026",
+      "cat": "advanced",
+      "sub": "riscv",
+      "type": "single",
+      "q": "RISC-V架构中哪个寄存器硬连线恒为0？",
+      "answer": 0,
+      "explain": "x0恒零。",
+      "src": "",
+      "options": [
+        "x0",
+        "x1",
+        "x2",
+        "x10"
+      ]
+    },
+    {
+      "id": "adv-027",
+      "cat": "advanced",
+      "sub": "riscv",
+      "type": "single",
+      "q": "RISC-V的基树整数指令集是？",
+      "answer": 1,
+      "explain": "RV32I为基础整数。",
+      "src": "",
+      "options": [
+        "RV64G",
+        "RV32I",
+        "RV128",
+        "RV8"
+      ]
+    },
+    {
+      "id": "adv-028",
+      "cat": "advanced",
+      "sub": "riscv",
+      "type": "single",
+      "q": "下列哪种指令格式用于存储(sw)？",
+      "answer": 2,
+      "explain": "S型。",
+      "src": "",
+      "options": [
+        "R型",
+        "I型",
+        "S型",
+        "U型"
+      ]
+    },
+    {
+      "id": "adv-029",
+      "cat": "advanced",
+      "sub": "riscv",
+      "type": "single",
+      "q": "jalr指令属于哪种格式？",
+      "answer": 1,
+      "explain": "JALR是I型。",
+      "src": "",
+      "options": [
+        "R型",
+        "I型",
+        "S型",
+        "B型"
+      ]
+    },
+    {
+      "id": "adv-030",
+      "cat": "advanced",
+      "sub": "riscv",
+      "type": "single",
+      "q": "条件分支beq/bne属于哪种格式？",
+      "answer": 2,
+      "explain": "B型。",
+      "src": "",
+      "options": [
+        "J型",
+        "U型",
+        "B型",
+        "R型"
+      ]
+    },
+    {
+      "id": "adv-031",
+      "cat": "advanced",
+      "sub": "riscv",
+      "type": "single",
+      "q": "RISC-V默认采用哪种字节序？",
+      "answer": 1,
+      "explain": "小端。",
+      "src": "",
+      "options": [
+        "大端",
+        "小端",
+        "与端序无关",
+        "可运行时切换"
+      ]
+    },
+    {
+      "id": "adv-032",
+      "cat": "advanced",
+      "sub": "riscv",
+      "type": "single",
+      "q": "lui指令的作用是？",
+      "answer": 0,
+      "explain": "把20位立即数放到寄存器高位。",
+      "src": "",
+      "options": [
+        "把20位立即数放到寄存器高位",
+        "跳转到子程序",
+        "两个数相乘",
+        "读内存"
+      ]
+    },
+    {
+      "id": "adv-033",
+      "cat": "advanced",
+      "sub": "riscv",
+      "type": "single",
+      "q": "下列哪个扩展提供硬件乘除指令？",
+      "answer": 0,
+      "explain": "M扩展。",
+      "src": "",
+      "options": [
+        "M",
+        "A",
+        "C",
+        "F"
+      ]
+    },
+    {
+      "id": "adv-034",
+      "cat": "advanced",
+      "sub": "riscv",
+      "type": "single",
+      "q": "C扩展(Compressed)的作用是？",
+      "answer": 1,
+      "explain": "把常用指令压缩成16位省代码。",
+      "src": "",
+      "options": [
+        "增加浮点",
+        "把常用指令压成16位",
+        "加密",
+        "缓存"
+      ]
+    },
+    {
+      "id": "adv-035",
+      "cat": "advanced",
+      "sub": "riscv",
+      "type": "single",
+      "q": "返回地址寄存器(ra)是哪一个？",
+      "answer": 1,
+      "explain": "x1=ra。",
+      "src": "",
+      "options": [
+        "x0",
+        "x1",
+        "x2",
+        "x5"
+      ]
+    },
+    {
+      "id": "adv-036",
+      "cat": "advanced",
+      "sub": "riscv",
+      "type": "single",
+      "q": "栈指针sp是哪一个？",
+      "answer": 0,
+      "explain": "x2=sp。",
+      "src": "",
+      "options": [
+        "x2",
+        "x3",
+        "x5",
+        "x10"
+      ]
+    },
+    {
+      "id": "adv-037",
+      "cat": "advanced",
+      "sub": "riscv",
+      "type": "multi",
+      "q": "下列属于RISC-V六种指令格式的有？",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explain": "R/I/S/B/U/J六种。",
+      "src": "",
+      "options": [
+        "R型",
+        "I型",
+        "S型",
+        "B型"
+      ]
+    },
+    {
+      "id": "adv-038",
+      "cat": "advanced",
+      "sub": "riscv",
+      "type": "multi",
+      "q": "下列关于RISC-V寄存器说法正确的有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "x10/a0兼返回值。",
+      "src": "",
+      "options": [
+        "x0恒为0",
+        "x1存返回地址",
+        "x2为栈指针",
+        "x0可被软件写成任意值"
+      ]
+    },
+    {
+      "id": "adv-039",
+      "cat": "advanced",
+      "sub": "riscv",
+      "type": "multi",
+      "q": "下列哪些是RISC-V可选扩展？",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explain": "M/A/F/C都是扩展。",
+      "src": "",
+      "options": [
+        "M乘除",
+        "A原子",
+        "F单精度浮点",
+        "C压缩"
+      ]
+    },
+    {
+      "id": "adv-040",
+      "cat": "advanced",
+      "sub": "riscv",
+      "type": "multi",
+      "q": "下列关于opcode/funct说法正确的有？",
+      "answer": [
+        0,
+        1,
+        3
+      ],
+      "explain": "add与sub靠funct7区分。",
+      "src": "",
+      "options": [
+        "低7位是opcode",
+        "funct3细分同opcode",
+        "funct7不区分任何指令",
+        "add与sub由funct7[5]区分"
+      ]
+    },
+    {
+      "id": "adv-041",
+      "cat": "advanced",
+      "sub": "riscv",
+      "type": "judge",
+      "q": "RISC-V指令默认定长32位(压缩扩展除外)。",
+      "answer": true,
+      "explain": "基础RV32I定长32位。",
+      "src": ""
+    },
+    {
+      "id": "adv-042",
+      "cat": "advanced",
+      "sub": "riscv",
+      "type": "judge",
+      "q": "写x0寄存器会把它改成非零值。",
+      "answer": false,
+      "explain": "x0恒零，写无效。",
+      "src": ""
+    },
+    {
+      "id": "adv-043",
+      "cat": "advanced",
+      "sub": "riscv",
+      "type": "judge",
+      "q": "RISC-V是开放指令集，使用无需支付ISA授权费。",
+      "answer": true,
+      "explain": "开放ISA。",
+      "src": "RISC-V Unpriv Spec"
+    },
+    {
+      "id": "adv-044",
+      "cat": "advanced",
+      "sub": "riscv",
+      "type": "judge",
+      "q": "auipc = 当前PC + 立即数。",
+      "answer": true,
+      "explain": "auipc含义。",
+      "src": ""
+    },
+    {
+      "id": "adv-045",
+      "cat": "advanced",
+      "sub": "riscv",
+      "type": "fill",
+      "q": "RISC-V中恒为0的寄存器名是？",
+      "answer": [
+        "x0",
+        "zero"
+      ],
+      "explain": "x0。",
+      "src": ""
+    },
+    {
+      "id": "adv-046",
+      "cat": "advanced",
+      "sub": "riscv",
+      "type": "fill",
+      "q": "RV32I里，用于保存函数返回地址的寄存器别名是？",
+      "answer": [
+        "ra",
+        "x1"
+      ],
+      "explain": "x1=ra。",
+      "src": ""
+    },
+    {
+      "id": "adv-047",
+      "cat": "advanced",
+      "sub": "riscv",
+      "type": "fill",
+      "q": "提供硬件乘法/除法指令的扩展字母是？",
+      "answer": [
+        "M"
+      ],
+      "explain": "M扩展。",
+      "src": ""
+    },
+    {
+      "id": "adv-048",
+      "cat": "advanced",
+      "sub": "riscv",
+      "type": "fill",
+      "q": "RISC-V默认的字节序是大端还是小端？",
+      "answer": [
+        "小端",
+        "little-endian"
+      ],
+      "explain": "小端。",
+      "src": ""
+    },
+    {
+      "id": "adv-049",
+      "cat": "advanced",
+      "sub": "riscv",
+      "type": "single",
+      "q": "R型指令(add/sub等)的操作数来源是？",
+      "answer": 2,
+      "explain": "R型rs1,rs2两个寄存器。",
+      "src": "",
+      "options": [
+        "立即数",
+        "内存",
+        "两个寄存器rs1,rs2",
+        "栈"
+      ]
+    },
+    {
+      "id": "adv-050",
+      "cat": "advanced",
+      "sub": "riscv",
+      "type": "single",
+      "q": "LW指令按什么单位访问内存？",
+      "answer": 1,
+      "explain": "RV32I的lw按32位字。",
+      "src": "",
+      "options": [
+        "字节",
+        "字(32位)",
+        "位",
+        "双字"
+      ]
+    },
+    {
+      "id": "adv-051",
+      "cat": "advanced",
+      "sub": "soc",
+      "type": "single",
+      "q": "经典五级流水线的正确顺序是？",
+      "answer": 0,
+      "explain": "IF->ID->EX->MEM->WB。",
+      "src": "",
+      "options": [
+        "IF->ID->EX->MEM->WB",
+        "MEM->IF->WB->EX->ID",
+        "EX->IF->ID->WB->MEM",
+        "WB->MEM->EX->ID->IF"
+      ]
+    },
+    {
+      "id": "adv-052",
+      "cat": "advanced",
+      "sub": "soc",
+      "type": "single",
+      "q": "在FPGA上搭CPU最核心的部件不包括？",
+      "answer": 3,
+      "explain": "PC/寄存器堆/ALU是核心；HDMI不是。",
+      "src": "",
+      "options": [
+        "PC程序计数器",
+        "寄存器堆",
+        "ALU",
+        "HDMI发送器"
+      ]
+    },
+    {
+      "id": "adv-053",
+      "cat": "advanced",
+      "sub": "soc",
+      "type": "single",
+      "q": "冯诺依曼结构与哈佛结构的区别是？",
+      "answer": 0,
+      "explain": "冯诺依曼指令/数据共用存储器。",
+      "src": "",
+      "options": [
+        "指令数据共用存储器",
+        "指令数据分开存储口",
+        "没有存储器",
+        "只能跑汇编"
+      ]
+    },
+    {
+      "id": "adv-054",
+      "cat": "advanced",
+      "sub": "soc",
+      "type": "single",
+      "q": "外设寄存器被映射到CPU地址空间，这种方式叫？",
+      "answer": 1,
+      "explain": "内存映射IO。",
+      "src": "",
+      "options": [
+        "独立IO端口",
+        "内存映射IO",
+        "DMA直连",
+        "中断"
+      ]
+    },
+    {
+      "id": "adv-055",
+      "cat": "advanced",
+      "sub": "soc",
+      "type": "single",
+      "q": "CPU要向UART发一个字符，通常执行？",
+      "answer": 0,
+      "explain": "sw写到UART_DATA地址。",
+      "src": "",
+      "options": [
+        "sw写到UART_DATA地址",
+        "按一个按键",
+        "改时钟",
+        "复位"
+      ]
+    },
+    {
+      "id": "adv-056",
+      "cat": "advanced",
+      "sub": "soc",
+      "type": "single",
+      "q": "NEORV32与PicoRV32属于？",
+      "answer": 1,
+      "explain": "开源RISC-V软核。",
+      "src": "",
+      "options": [
+        "商业硬核",
+        "开源RISC-V软核",
+        "操作系统",
+        "EDA工具"
+      ]
+    },
+    {
+      "id": "adv-057",
+      "cat": "advanced",
+      "sub": "soc",
+      "type": "single",
+      "q": "单周期CPU相比流水线CPU？",
+      "answer": 2,
+      "explain": "单周期结构简单、每指令一拍。",
+      "src": "",
+      "options": [
+        "频率更高",
+        "吞吐更高",
+        "结构简单每指令一拍",
+        "需要缓存"
+      ]
+    },
+    {
+      "id": "adv-058",
+      "cat": "advanced",
+      "sub": "soc",
+      "type": "single",
+      "q": "中断发生时，CPU通常先做什么？",
+      "answer": 0,
+      "explain": "跳转到固定中断向量地址。",
+      "src": "",
+      "options": [
+        "跳转到中断向量地址",
+        "关机",
+        "继续当前指令",
+        "断电"
+      ]
+    },
+    {
+      "id": "adv-059",
+      "cat": "advanced",
+      "sub": "soc",
+      "type": "single",
+      "q": "片上RAM上电加载程序镜像常用系统任务？",
+      "answer": 1,
+      "explain": "$readmemh。",
+      "src": "",
+      "options": [
+        "$display",
+        "$readmemh",
+        "$finish",
+        "$time"
+      ]
+    },
+    {
+      "id": "adv-060",
+      "cat": "advanced",
+      "sub": "soc",
+      "type": "single",
+      "q": "GPIO方向寄存器(DDR/DIR)某位写1表示？",
+      "answer": 0,
+      "explain": "该脚为输出。",
+      "src": "",
+      "options": [
+        "该脚为输出",
+        "该脚为输入",
+        "该脚为高阻",
+        "该脚断开"
+      ]
+    },
+    {
+      "id": "adv-061",
+      "cat": "advanced",
+      "sub": "soc",
+      "type": "multi",
+      "q": "下列属于典型SoC外设的有？",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explain": "都是常见外设。",
+      "src": "",
+      "options": [
+        "UART",
+        "GPIO",
+        "定时器",
+        "中断控制器"
+      ]
+    },
+    {
+      "id": "adv-062",
+      "cat": "advanced",
+      "sub": "soc",
+      "type": "multi",
+      "q": "下列关于五级流水线说法正确的有？",
+      "answer": [
+        0,
+        1,
+        3
+      ],
+      "explain": "取指/译码/执行/访存/写回。",
+      "src": "",
+      "options": [
+        "IF取指",
+        "ID译码",
+        "WB在EX之前",
+        "MEM访存"
+      ]
+    },
+    {
+      "id": "adv-063",
+      "cat": "advanced",
+      "sub": "soc",
+      "type": "multi",
+      "q": "下列关于内存映射IO说法正确的有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "lw/sw访问外设。",
+      "src": "",
+      "options": [
+        "外设寄存器占固定地址",
+        "用load/store访问",
+        "地址译码片选外设",
+        "外设需要专用IN/OUT指令"
+      ]
+    },
+    {
+      "id": "adv-064",
+      "cat": "advanced",
+      "sub": "soc",
+      "type": "multi",
+      "q": "下列关于PicoRV32说法正确的有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "极小软核。",
+      "src": "",
+      "options": [
+        "开源RISC-V软核",
+        "资源占用小",
+        "支持RV32I/M/C扩展",
+        "只能在ASIC不能在FPGA"
+      ]
+    },
+    {
+      "id": "adv-065",
+      "cat": "advanced",
+      "sub": "soc",
+      "type": "judge",
+      "q": "冯诺依曼结构取指和数据访问共用同一块RAM。",
+      "answer": true,
+      "explain": "共用存储器。",
+      "src": ""
+    },
+    {
+      "id": "adv-066",
+      "cat": "advanced",
+      "sub": "soc",
+      "type": "judge",
+      "q": "x0寄存器在CPU复位后可以由软件写入任意值。",
+      "answer": false,
+      "explain": "x0恒零。",
+      "src": ""
+    },
+    {
+      "id": "adv-067",
+      "cat": "advanced",
+      "sub": "soc",
+      "type": "judge",
+      "q": "定时器溢出触发中断后，ISR应清除中断标志再返回。",
+      "answer": true,
+      "explain": "否则反复进中断。",
+      "src": ""
+    },
+    {
+      "id": "adv-068",
+      "cat": "advanced",
+      "sub": "soc",
+      "type": "judge",
+      "q": "NEORV32是一个自带UART/GPIO/Timer的类单片机SoC软核。",
+      "answer": true,
+      "explain": "NEORV32定位。",
+      "src": "github.com/stnolting/neorv32"
+    },
+    {
+      "id": "adv-069",
+      "cat": "advanced",
+      "sub": "soc",
+      "type": "fill",
+      "q": "五级流水线中，取指的缩写是？",
+      "answer": [
+        "IF"
+      ],
+      "explain": "IF。",
+      "src": ""
+    },
+    {
+      "id": "adv-070",
+      "cat": "advanced",
+      "sub": "soc",
+      "type": "fill",
+      "q": "CPU读外设状态寄存器用load指令，该指令缩写是？",
+      "answer": [
+        "lw",
+        "LW"
+      ],
+      "explain": "lw。",
+      "src": ""
+    },
+    {
+      "id": "adv-071",
+      "cat": "advanced",
+      "sub": "soc",
+      "type": "fill",
+      "q": "中断发生后CPU跳转去执行的固定地址叫中断什么？",
+      "answer": [
+        "向量",
+        "向量地址",
+        "trap vector"
+      ],
+      "explain": "中断向量。",
+      "src": ""
+    },
+    {
+      "id": "adv-072",
+      "cat": "advanced",
+      "sub": "soc",
+      "type": "fill",
+      "q": "把程序镜像文件读入RAM的Verilog系统任务是$read什么？",
+      "answer": [
+        "readmemh",
+        "readmem"
+      ],
+      "explain": "$readmemh。",
+      "src": ""
+    },
+    {
+      "id": "adv-073",
+      "cat": "advanced",
+      "sub": "soc",
+      "type": "single",
+      "q": "哈佛结构相对冯诺依曼的潜在优势是？",
+      "answer": 0,
+      "explain": "指令/数据各一个端口可同时访问。",
+      "src": "",
+      "options": [
+        "可同时取指和访存",
+        "面积更小",
+        "不需要寄存器",
+        "没有优势"
+      ]
+    },
+    {
+      "id": "adv-074",
+      "cat": "advanced",
+      "sub": "soc",
+      "type": "multi",
+      "q": "下列哪些是把裸机程序跑在软核上需要的？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "工具链+链接脚本+启动文件。",
+      "src": "",
+      "options": [
+        "交叉编译工具链",
+        "链接脚本.ld",
+        "启动文件startup",
+        "Windows系统"
+      ]
+    },
+    {
+      "id": "adv-075",
+      "cat": "advanced",
+      "sub": "accel",
+      "type": "single",
+      "q": "FPGA相对CPU做数据并行计算的核心优势是？",
+      "answer": 2,
+      "explain": "多块电路同时工作。",
+      "src": "",
+      "options": [
+        "主频更高",
+        "功耗更低",
+        "多块电路同时并行工作",
+        "指令更简单"
+      ]
+    },
+    {
+      "id": "adv-076",
+      "cat": "advanced",
+      "sub": "accel",
+      "type": "single",
+      "q": "流水线分级主要目的是？",
+      "answer": 1,
+      "explain": "缩短关键路径提频。",
+      "src": "",
+      "options": [
+        "增加延迟到无穷",
+        "缩短关键路径提高频率",
+        "减少寄存器",
+        "降低吞吐"
+      ]
+    },
+    {
+      "id": "adv-077",
+      "cat": "advanced",
+      "sub": "accel",
+      "type": "single",
+      "q": "valid/ready握手中，一次传输成功的条件是？",
+      "answer": 2,
+      "explain": "两信号同拍都为高。",
+      "src": "",
+      "options": [
+        "valid为高即可",
+        "ready为高即可",
+        "同一拍valid与ready都为高",
+        "时钟沿即可"
+      ]
+    },
+    {
+      "id": "adv-078",
+      "cat": "advanced",
+      "sub": "accel",
+      "type": "single",
+      "q": "下游来不及接收时把ready拉低，称为？",
+      "answer": 0,
+      "explain": "背压。",
+      "src": "",
+      "options": [
+        "背压",
+        "仲裁",
+        "流水线",
+        "缓存"
+      ]
+    },
+    {
+      "id": "adv-079",
+      "cat": "advanced",
+      "sub": "accel",
+      "type": "single",
+      "q": "Roofline模型中，实际性能受限于？",
+      "answer": 1,
+      "explain": "min(计算峰值,带宽峰值)。",
+      "src": "",
+      "options": [
+        "只受计算峰值",
+        "min(计算峰值,带宽峰值)",
+        "只受带宽",
+        "电压"
+      ]
+    },
+    {
+      "id": "adv-080",
+      "cat": "advanced",
+      "sub": "accel",
+      "type": "single",
+      "q": "MAC指的是？",
+      "answer": 0,
+      "explain": "乘加操作multiply-accumulate。",
+      "src": "",
+      "options": [
+        "乘加",
+        "多路选择",
+        "存储",
+        "状态机"
+      ]
+    },
+    {
+      "id": "adv-081",
+      "cat": "advanced",
+      "sub": "accel",
+      "type": "single",
+      "q": "展开(unroll)循环的代价是？",
+      "answer": 2,
+      "explain": "复制功能单元耗更多资源。",
+      "src": "",
+      "options": [
+        "延迟变大",
+        "频率变高",
+        "复制功能单元耗更多LUT/DSP",
+        "无代价"
+      ]
+    },
+    {
+      "id": "adv-082",
+      "cat": "advanced",
+      "sub": "accel",
+      "type": "single",
+      "q": "转置结构FIR把寄存器放在哪里？",
+      "answer": 0,
+      "explain": "加法反馈链上，缩短关键路径。",
+      "src": "",
+      "options": [
+        "加法反馈链上",
+        "输入延迟链上",
+        "时钟树",
+        "复位"
+      ]
+    },
+    {
+      "id": "adv-083",
+      "cat": "advanced",
+      "sub": "accel",
+      "type": "single",
+      "q": "双缓冲(double buffering)的目的是？",
+      "answer": 1,
+      "explain": "计算与数据搬运重叠。",
+      "src": "",
+      "options": [
+        "增加延迟",
+        "计算与搬数据重叠隐藏延迟",
+        "减少寄存器",
+        "提高电压"
+      ]
+    },
+    {
+      "id": "adv-084",
+      "cat": "advanced",
+      "sub": "accel",
+      "type": "single",
+      "q": "软件参考模型(golden)在testbench中的作用是？",
+      "answer": 2,
+      "explain": "与硬件输出逐拍比对验证正确性。",
+      "src": "",
+      "options": [
+        "提高频率",
+        "减少资源",
+        "与硬件输出比对验证",
+        "生成时钟"
+      ]
+    },
+    {
+      "id": "adv-085",
+      "cat": "advanced",
+      "sub": "accel",
+      "type": "multi",
+      "q": "下列属于硬件加速常用手段的有？",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explain": "都是。",
+      "src": "",
+      "options": [
+        "空间并行展开",
+        "流水线分级",
+        "数据复用",
+        "双缓冲"
+      ]
+    },
+    {
+      "id": "adv-086",
+      "cat": "advanced",
+      "sub": "accel",
+      "type": "multi",
+      "q": "下列关于吞吐(throughput)与延迟(latency)说法正确的有？",
+      "answer": [
+        0,
+        1,
+        3
+      ],
+      "explain": "延迟是单数据路径耗时。",
+      "src": "",
+      "options": [
+        "延迟是单数据进出耗时",
+        "吞吐是每拍出几个结果",
+        "流水线降低延迟但提高吞吐",
+        "流水线填满后吞吐高"
+      ]
+    },
+    {
+      "id": "adv-087",
+      "cat": "advanced",
+      "sub": "accel",
+      "type": "multi",
+      "q": "下列哪些情况适合硬件加速？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "规则重复循环适合并行。",
+      "src": "",
+      "options": [
+        "大量重复乘加",
+        "卷积滤波",
+        "向量点积",
+        "充满随机分支的错误处理"
+      ]
+    },
+    {
+      "id": "adv-088",
+      "cat": "advanced",
+      "sub": "accel",
+      "type": "multi",
+      "q": "关于Vitis HLS的pragma说法正确的有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "dataflow做任务级流水。",
+      "src": "",
+      "options": [
+        "pipeline让循环重叠",
+        "unroll复制循环体并行",
+        "dataflow任务级流水线",
+        "pragma能提高CPU主频"
+      ]
+    },
+    {
+      "id": "adv-089",
+      "cat": "advanced",
+      "sub": "accel",
+      "type": "judge",
+      "q": "valid/ready中，ready拉低时上游必须保持数据不变。",
+      "answer": true,
+      "explain": "背压语义。",
+      "src": ""
+    },
+    {
+      "id": "adv-090",
+      "cat": "advanced",
+      "sub": "accel",
+      "type": "judge",
+      "q": "流水线加深一定能无代价提高系统频率。",
+      "answer": false,
+      "explain": "加寄存器、增延迟耗面积。",
+      "src": ""
+    },
+    {
+      "id": "adv-091",
+      "cat": "advanced",
+      "sub": "accel",
+      "type": "judge",
+      "q": "数据喂不饱时，再强的乘法器也会空转。",
+      "answer": true,
+      "explain": "带宽受限。",
+      "src": ""
+    },
+    {
+      "id": "adv-092",
+      "cat": "advanced",
+      "sub": "accel",
+      "type": "judge",
+      "q": "软硬件划分应把规则、重复、可并行的循环交给硬件。",
+      "answer": true,
+      "explain": "数据密集型适合硬件。",
+      "src": ""
+    },
+    {
+      "id": "adv-093",
+      "cat": "advanced",
+      "sub": "accel",
+      "type": "fill",
+      "q": "流式握手中，下游表示'我能收'的信号叫ready，上游表示'数据有效'的信号叫什么？",
+      "answer": [
+        "valid"
+      ],
+      "explain": "valid。",
+      "src": ""
+    },
+    {
+      "id": "adv-094",
+      "cat": "advanced",
+      "sub": "accel",
+      "type": "fill",
+      "q": "下游不ready、上游被迫停发的现象叫背压，英文是？",
+      "answer": [
+        "backpressure"
+      ],
+      "explain": "backpressure。",
+      "src": ""
+    },
+    {
+      "id": "adv-095",
+      "cat": "advanced",
+      "sub": "accel",
+      "type": "fill",
+      "q": "乘加运算的英文缩写是？",
+      "answer": [
+        "MAC",
+        "mac"
+      ],
+      "explain": "MAC。",
+      "src": ""
+    },
+    {
+      "id": "adv-096",
+      "cat": "advanced",
+      "sub": "accel",
+      "type": "fill",
+      "q": "Vitis HLS中让循环重叠执行的编译指令pragma是# HLS什么？",
+      "answer": [
+        "pipeline",
+        "HLS pipeline"
+      ],
+      "explain": "pipeline。",
+      "src": "AMD UG1399"
+    },
+    {
+      "id": "adv-097",
+      "cat": "advanced",
+      "sub": "accel",
+      "type": "single",
+      "q": "一个8点FIR滤波器若系数全1，其功能等价于？",
+      "answer": 0,
+      "explain": "8点滑动平均。",
+      "src": "",
+      "options": [
+        "8点滑动平均",
+        "高通滤波",
+        "微分",
+        "只保留直流"
+      ]
+    },
+    {
+      "id": "adv-098",
+      "cat": "advanced",
+      "sub": "accel",
+      "type": "multi",
+      "q": "下列哪些是加速比被拉低的现实因素？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "带宽/开销/fmax。",
+      "src": "",
+      "options": [
+        "内存带宽喂不饱",
+        "DMA/起止开销",
+        "FPGA实际fmax低于假设",
+        "N特别大时排空占比变大"
+      ]
+    },
+    {
+      "id": "adv-099",
+      "cat": "advanced",
+      "sub": "method",
+      "type": "single",
+      "q": "可综合时序逻辑在Verilog中应写在？",
+      "answer": 1,
+      "explain": "always@(posedge clk)。",
+      "src": "",
+      "options": [
+        "always@(*)",
+        "always@(posedge clk)",
+        "assign",
+        "initial"
+      ]
+    },
+    {
+      "id": "adv-100",
+      "cat": "advanced",
+      "sub": "method",
+      "type": "single",
+      "q": "always@(*)内if分支不写全会综合出？",
+      "answer": 0,
+      "explain": "意外锁存器latch。",
+      "src": "",
+      "options": [
+        "锁存器latch",
+        "触发器",
+        "更好的性能",
+        "BRAM"
+      ]
+    },
+    {
+      "id": "adv-101",
+      "cat": "advanced",
+      "sub": "method",
+      "type": "single",
+      "q": "推荐的复位策略是？",
+      "answer": 1,
+      "explain": "异步复位同步释放。",
+      "src": "",
+      "options": [
+        "异步释放不管",
+        "异步复位同步释放",
+        "不要复位",
+        "只用同步释放"
+      ]
+    },
+    {
+      "id": "adv-102",
+      "cat": "advanced",
+      "sub": "method",
+      "type": "single",
+      "q": "Vivado中在线抓取内部信号波形的IP是？",
+      "answer": 0,
+      "explain": "ILA。",
+      "src": "",
+      "options": [
+        "ILA",
+        "Clocking Wizard",
+        "BRAM",
+        "FIFO"
+      ]
+    },
+    {
+      "id": "adv-103",
+      "cat": "advanced",
+      "sub": "method",
+      "type": "single",
+      "q": "模块端口位宽推荐用什么定义？",
+      "answer": 1,
+      "explain": "parameter参数。",
+      "src": "",
+      "options": [
+        "魔数硬写",
+        "parameter参数",
+        "注释",
+        "随机数"
+      ]
+    },
+    {
+      "id": "adv-104",
+      "cat": "advanced",
+      "sub": "method",
+      "type": "single",
+      "q": "三段式状态机不包括下列哪一段？",
+      "answer": 2,
+      "explain": "三段是现态寄存器/次态组合/输出组合。",
+      "src": "",
+      "options": [
+        "时序现态寄存器",
+        "次态组合逻辑",
+        "下载比特流",
+        "输出逻辑"
+      ]
+    },
+    {
+      "id": "adv-105",
+      "cat": "advanced",
+      "sub": "method",
+      "type": "single",
+      "q": "模块化设计的主要好处是？",
+      "answer": 0,
+      "explain": "可复用、可分工、易调试。",
+      "src": "",
+      "options": [
+        "可复用可分工",
+        "必须用CPU",
+        "减少所有寄存器",
+        "不用testbench"
+      ]
+    },
+    {
+      "id": "adv-106",
+      "cat": "advanced",
+      "sub": "method",
+      "type": "single",
+      "q": "资源与频率的关系通常是？",
+      "answer": 1,
+      "explain": "加流水线提频但多耗寄存器。",
+      "src": "",
+      "options": [
+        "提频不耗任何资源",
+        "加流水线提频但多耗寄存器",
+        "资源越多频率越低",
+        "二者无关"
+      ]
+    },
+    {
+      "id": "adv-107",
+      "cat": "advanced",
+      "sub": "method",
+      "type": "single",
+      "q": "写testbench时，自检断言的好处是？",
+      "answer": 0,
+      "explain": "自动判断对错、回归方便。",
+      "src": "",
+      "options": [
+        "自动判断对错回归方便",
+        "提高fmax",
+        "减少LUT",
+        "替代综合"
+      ]
+    },
+    {
+      "id": "adv-108",
+      "cat": "advanced",
+      "sub": "method",
+      "type": "single",
+      "q": "版本管理工具常用？",
+      "answer": 0,
+      "explain": "Git。",
+      "src": "",
+      "options": [
+        "Git",
+        "Word",
+        "Excel",
+        "记事本"
+      ]
+    },
+    {
+      "id": "adv-109",
+      "cat": "advanced",
+      "sub": "method",
+      "type": "multi",
+      "q": "下列属于良好可综合RTL习惯的有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "避免latch。",
+      "src": "",
+      "options": [
+        "时序逻辑用posedge clk",
+        "组合逻辑先赋默认值",
+        "避免意外锁存器",
+        "一个always块混合时序组合随意"
+      ]
+    },
+    {
+      "id": "adv-110",
+      "cat": "advanced",
+      "sub": "method",
+      "type": "multi",
+      "q": "下列关于复位说法正确的有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "异步复位同步释放。",
+      "src": "",
+      "options": [
+        "复位让寄存器上电确定初值",
+        "异步复位响应快",
+        "同步释放避免亚稳",
+        "复位可以省略不用"
+      ]
+    },
+    {
+      "id": "adv-111",
+      "cat": "advanced",
+      "sub": "method",
+      "type": "multi",
+      "q": "下列哪些是工程化调试手段？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "ILA/仿真/断言。",
+      "src": "",
+      "options": [
+        "Vivado ILA在线抓波",
+        "行为仿真testbench",
+        "加断言自检",
+        "靠猜改代码"
+      ]
+    },
+    {
+      "id": "adv-112",
+      "cat": "advanced",
+      "sub": "method",
+      "type": "multi",
+      "q": "下列关于parameter说法正确的有？",
+      "answer": [
+        0,
+        1,
+        3
+      ],
+      "explain": "参数大写。",
+      "src": "",
+      "options": [
+        "位宽用parameter定义",
+        "例化时#()覆盖",
+        "参数必须小写",
+        "提高可复用性"
+      ]
+    },
+    {
+      "id": "adv-113",
+      "cat": "advanced",
+      "sub": "method",
+      "type": "judge",
+      "q": "组合逻辑always@(*)中对所有输出先赋默认值可避免锁存器。",
+      "answer": true,
+      "explain": "默认值+全分支。",
+      "src": ""
+    },
+    {
+      "id": "adv-114",
+      "cat": "advanced",
+      "sub": "method",
+      "type": "judge",
+      "q": "为了跑更高频率，可以在关键路径上插入流水线寄存器。",
+      "answer": true,
+      "explain": "截断路径。",
+      "src": ""
+    },
+    {
+      "id": "adv-115",
+      "cat": "advanced",
+      "sub": "method",
+      "type": "judge",
+      "q": "Vivado ILA可以在上板后观察内部信号波形。",
+      "answer": true,
+      "explain": "在线逻辑分析仪。",
+      "src": "AMD PG260"
+    },
+    {
+      "id": "adv-116",
+      "cat": "advanced",
+      "sub": "method",
+      "type": "judge",
+      "q": "模块化设计会让代码完全不可复用。",
+      "answer": false,
+      "explain": "模块化正是为复用。",
+      "src": ""
+    },
+    {
+      "id": "adv-117",
+      "cat": "advanced",
+      "sub": "method",
+      "type": "fill",
+      "q": "时序逻辑触发器在哪个时钟沿更新(英文)？",
+      "answer": [
+        "posedge",
+        "上升沿"
+      ],
+      "explain": "posedge。",
+      "src": ""
+    },
+    {
+      "id": "adv-118",
+      "cat": "advanced",
+      "sub": "method",
+      "type": "fill",
+      "q": "组合逻辑块的敏感列表用@后面跟什么？",
+      "answer": [
+        "(*)",
+        "star"
+      ],
+      "explain": "always@(*)。",
+      "src": ""
+    },
+    {
+      "id": "adv-119",
+      "cat": "advanced",
+      "sub": "method",
+      "type": "fill",
+      "q": "Vivado中用于在线抓内部信号的调试IP缩写是？",
+      "answer": [
+        "ILA"
+      ],
+      "explain": "ILA。",
+      "src": "AMD PG260"
+    },
+    {
+      "id": "adv-120",
+      "cat": "advanced",
+      "sub": "method",
+      "type": "fill",
+      "q": "例化时覆盖参数用#后接什么？",
+      "answer": [
+        "()",
+        "圆括号"
+      ],
+      "explain": "#()。",
+      "src": ""
+    },
+    {
+      "id": "adv-121",
+      "cat": "advanced",
+      "sub": "method",
+      "type": "single",
+      "q": "下列哪种写法最可能生成意外锁存器？",
+      "answer": 0,
+      "explain": "if没写else且未赋默认值。",
+      "src": "",
+      "options": [
+        "if没写else且未赋默认值",
+        "always@(posedge clk)",
+        "assign连续赋值",
+        "先赋默认值"
+      ]
+    },
+    {
+      "id": "adv-122",
+      "cat": "advanced",
+      "sub": "method",
+      "type": "multi",
+      "q": "下列关于资源-频率权衡说法正确的有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "面积速度功耗三角。",
+      "src": "",
+      "options": [
+        "并行度越高耗越多DSP",
+        "流水线提频但加寄存器",
+        "面积/速度/功耗相互制约",
+        "资源用得越多频率一定越高"
+      ]
+    }
+  ]
+}
