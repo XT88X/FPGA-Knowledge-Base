@@ -1,0 +1,42 @@
+{
+  "chapterId": "3.4",
+  "phase": 3,
+  "slug": "vga",
+  "title": "VGA 显示接口",
+  "summary": "640x480@60 行场同步时序、像素坐标生成、50MHz 计数使能得 25MHz 像素时钟，彩条与移动方块。",
+  "doc": "docs/phase3/ch4-vga.md",
+  "code": [
+    {"file": "code/phase3/vga_sync.v", "type": "verilog", "role": "synthesizable", "title": "vga_sync.v - hsync/vsync/video_on/pixel_x/y"},
+    {"file": "code/phase3/tb_vga_sync.v", "type": "verilog", "role": "testbench", "title": "tb_vga_sync.v - 断言同步宽度/前后肩/总帧数"},
+    {"file": "code/phase3/vga_colorbar_top.v", "type": "verilog", "role": "synthesizable", "title": "vga_colorbar_top.v - 8 竖彩条"},
+    {"file": "code/phase3/vga_moving_block_top.v", "type": "verilog", "role": "synthesizable", "title": "vga_moving_block_top.v - 移动方块碰边反弹"},
+    {"file": "code/phase3/tb_vga_moving_block_top.v", "type": "verilog", "role": "testbench", "title": "tb_vga_moving_block_top.v - 验证坐标边界与反弹"}
+  ],
+  "diagrams": [
+    {"file": "assets/phase3/vga-timing.svg", "title": "VGA 水平时序", "caption": "一行 800 像素时钟：640 可见 + 16 前肩 + 96 同步 + 48 后肩。"}
+  ],
+  "tools": [
+    {"name": "Project F - VGA video timings", "url": "https://projectf.io/posts/video-timings-vga-720p-1080p/", "required": false, "note": "访问日期 2026-10-10；VGA 时序参数参考。"},
+    {"name": "通用引脚约束模板 fpga_common.xdc", "url": "../code/common/fpga_common.xdc", "required": true, "note": "VGA RGB/HSYNC/VSYNC 引脚按开发板替换。"}
+  ],
+  "tasks": [
+    {"id": "task-3-4-1", "text": "实现 VGA 彩条输出"},
+    {"id": "task-3-4-2", "text": "实现移动的方块动画"}
+  ],
+  "cards": [
+    {"q": "VGA 640x480@60 一行多少个像素时钟？", "a": "800 = 640 可见 + 16 前肩 + 96 同步 + 48 后肩。", "tags": ["VGA", "时序"]},
+    {"q": "一帧多少行？", "a": "525 = 480 可见 + 10 前肩 + 2 同步 + 33 后肩。", "tags": ["VGA", "行数"]},
+    {"q": "像素时钟是多少？", "a": "25.175MHz；本设计用 50MHz 计数使能得到 25MHz。", "tags": ["VGA", "像素时钟"]},
+    {"q": "video_on 信号什么时候有效？", "a": "在可见区内（h_cnt<640 且 v_cnt<480）时为 1，其余消隐区为 0。", "tags": ["VGA", "video_on"]},
+    {"q": "消隐区 RGB 应输出什么？", "a": "000（黑色），避免显示器显示杂色。", "tags": ["VGA", "消隐"]},
+    {"q": "移动方块怎么实现碰边反弹？", "a": "方块坐标到达边界时反转方向标志 dir_x/dir_y。", "tags": ["VGA", "反弹"]},
+    {"q": "VGA 接口需要什么硬件？", "a": "HSYNC/VSYNC 数字信号 + RGB 模拟电压（电阻网络 DAC）。", "tags": ["VGA", "硬件"]},
+    {"q": "pixel_x/pixel_y 的范围？", "a": "pixel_x 0~639，pixel_y 0~479（可见区内）。", "tags": ["VGA", "坐标"]}
+  ],
+  "quiz": [
+    {"q": "VGA 640x480@60 一行多少像素时钟？", "options": ["640", "800", "525", "480"], "answer": 1, "explain": "640+16+96+48=800。"},
+    {"q": "一帧多少行？", "options": ["480", "525", "640", "800"], "answer": 1, "explain": "480+10+2+33=525。"},
+    {"q": "像素时钟标称值？", "options": ["25.175MHz", "50MHz", "100MHz", "12MHz"], "answer": 0, "explain": "VESA 标准 640x480@60 像素时钟 25.175MHz。"},
+    {"q": "消隐区 RGB 应输出？", "options": ["白", "黑", "红", "随机"], "answer": 1, "explain": "消隐区输出 000 黑色。"}
+  ]
+}

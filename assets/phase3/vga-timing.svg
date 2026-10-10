@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 260" font-family="system-ui,sans-serif" font-size="12">
+  <rect x="0" y="0" width="820" height="260" fill="#0d1420"/>
+  <text x="410" y="22" fill="#7dd3fc" text-anchor="middle" font-size="15" font-weight="bold">VGA 640x480@60 水平时序（一行 800 像素时钟）</text>
+
+  <!-- hsync waveform -->
+  <text x="30" y="70" fill="#94a3b8">hsync</text>
+  <polyline points="90,65 200,65 200,80 344,80 344,65 780,65" fill="none" stroke="#22d3ee" stroke-width="2"/>
+
+  <!-- regions -->
+  <line x1="90" y1="100" x2="200" y2="100" stroke="#34d399" stroke-width="1"/>
+  <text x="145" y="115" fill="#34d399" text-anchor="middle">可见 640</text>
+
+  <line x1="200" y1="100" x2="216" y2="100" stroke="#f59e0b" stroke-width="1"/>
+  <text x="208" y="115" fill="#f59e0b" text-anchor="middle">前肩16</text>
+
+  <line x1="216" y1="100" x2="312" y2="100" stroke="#fca5a5" stroke-width="1"/>
+  <text x="264" y="115" fill="#fca5a5" text-anchor="middle">同步 96</text>
+
+  <line x1="312" y1="100" x2="360" y2="100" stroke="#f59e0b" stroke-width="1"/>
+  <text x="336" y="115" fill="#f59e0b" text-anchor="middle">后肩48</text>
+
+  <!-- vertical note -->
+  <text x="410" y="160" fill="#94a3b8" text-anchor="middle">垂直：480 可见 + 10 前肩 + 2 同步 + 33 后肩 = 525 行</text>
+  <text x="410" y="185" fill="#fcd34d" text-anchor="middle">像素时钟 25.175MHz；50MHz 计数使能（每 2 拍一个像素）</text>
+  <text x="410" y="210" fill="#94a3b8" text-anchor="middle">消隐区输出 RGB=000；可见区 pixel_x/pixel_y 作为坐标生成图案</text>
+</svg>
