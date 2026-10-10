@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 360" font-family="Consolas,Menlo,monospace">
+  <rect width="880" height="360" fill="#0d1420"/>
+  <text x="20" y="30" fill="#4fc3f7" font-size="18" font-weight="bold">游戏控制状态机（frame_tick 驱动）</text>
+
+  <rect x="60" y="140" width="130" height="60" rx="30" fill="#16263c" stroke="#4fc3f7"/>
+  <text x="90" y="175" fill="#4fc3f7" font-size="13">INIT 初始化</text>
+
+  <rect x="260" y="140" width="140" height="60" rx="6" fill="#16263c" stroke="#81c784"/>
+  <text x="285" y="165" fill="#81c784" font-size="13">MOVE 移动</text>
+  <text x="285" y="185" fill="#9fb3d1" font-size="11">算新头/锁方向</text>
+
+  <polygon points="500,120 580,170 500,220 420,170" fill="#16263c" stroke="#ffb74d"/>
+  <text x="465" y="165" fill="#ffb74d" font-size="12">撞墙/撞自身?</text>
+  <text x="470" y="185" fill="#9fb3d1" font-size="11">吃到食物?</text>
+
+  <rect x="640" y="90" width="150" height="55" rx="6" fill="#2a1620" stroke="#f06060"/>
+  <text x="665" y="123" fill="#f06060" font-size="13">GAME_OVER</text>
+
+  <rect x="640" y="200" width="150" height="55" rx="6" fill="#102a1a" stroke="#81c784"/>
+  <text x="665" y="223" fill="#81c784" font-size="12">GROW 增长+计分</text>
+  <text x="665" y="242" fill="#9fb3d1" font-size="11">重投食物</text>
+
+  <line x1="190" y1="170" x2="260" y2="170" stroke="#9fb3d1" marker-end="url(#d)"/>
+  <line x1="400" y1="170" x2="420" y2="170" stroke="#9fb3d1" marker-end="url(#d)"/>
+  <line x1="580" y1="170" x2="640" y2="118" stroke="#f06060" marker-end="url(#d)"/>
+  <text x="590" y="140" fill="#f06060" font-size="11">是</text>
+  <line x1="580" y1="170" x2="640" y2="228" stroke="#81c784" marker-end="url(#d)"/>
+  <text x="590" y="200" fill="#81c784" font-size="11">吃食物</text>
+  <!-- loop back to move -->
+  <path d="M 715 200 L 715 280 L 330 280 L 330 200" fill="none" stroke="#81c784" stroke-dasharray="4,3" marker-end="url(#d)"/>
+  <text x="420" y="295" fill="#81c784" font-size="11">下一拍继续移动</text>
+
+  <defs><marker id="d" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#9fb3d1"/></marker></defs>
+  <text x="20" y="330" fill="#7c8db0" font-size="12">方向锁：禁止 180° 反向；restart 回到 INIT。</text>
+</svg>

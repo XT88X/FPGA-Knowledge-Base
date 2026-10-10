@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 400" font-family="Consolas,Menlo,monospace">
+  <rect width="880" height="400" fill="#0d1420"/>
+  <text x="20" y="30" fill="#4fc3f7" font-size="18" font-weight="bold">网格到像素映射（20x15 格，每格 32px）</text>
+
+  <!-- grid -->
+  <g stroke="#2a3a55" stroke-width="1">
+    <!-- 8x6 sample grid representing 20x15 -->
+    <rect x="60" y="70" width="480" height="300" fill="#101c2e"/>
+  </g>
+  <!-- vertical lines every 60px (sample) -->
+  <g stroke="#2a3a55">
+    <line x1="120" y1="70" x2="120" y2="370"/><line x1="180" y1="70" x2="180" y2="370"/>
+    <line x1="240" y1="70" x2="240" y2="370"/><line x1="300" y1="70" x2="300" y2="370"/>
+    <line x1="360" y1="70" x2="360" y2="370"/><line x1="420" y1="70" x2="420" y2="370"/>
+    <line x1="480" y1="70" x2="480" y2="370"/>
+    <line x1="60" y1="130" x2="540" y2="130"/><line x1="60" y1="190" x2="540" y2="190"/>
+    <line x1="60" y1="250" x2="540" y2="250"/><line x1="60" y1="310" x2="540" y2="310"/>
+  </g>
+  <!-- head cell -->
+  <rect x="180" y="190" width="60" height="60" fill="#2a7a2a" stroke="#81c784"/>
+  <text x="195" y="225" fill="#d7ffd7" font-size="12">蛇头(5,7)</text>
+  <!-- food cell -->
+  <rect x="300" y="190" width="60" height="60" fill="#7a1a1a" stroke="#f06060"/>
+  <text x="315" y="225" fill="#ffd7d7" font-size="12">食物(7,7)</text>
+
+  <text x="580" y="90" fill="#9fb3d1" font-size="13">坐标换算：</text>
+  <text x="580" y="120" fill="#4fc3f7" font-size="13">gx = pixel_x / 32</text>
+  <text x="580" y="145" fill="#4fc3f7" font-size="13">gy = pixel_y / 32</text>
+  <text x="580" y="185" fill="#9fb3d1" font-size="12">640/32 = 20 列</text>
+  <text x="580" y="205" fill="#9fb3d1" font-size="12">480/32 = 15 行</text>
+  <text x="580" y="245" fill="#e0a7f0" font-size="12">渲染逐像素问 core：</text>
+  <text x="580" y="265" fill="#e0a7f0" font-size="12">snake_hit(gx,gy)?</text>
+
+  <text x="20" y="390" fill="#7c8db0" font-size="12">图为示意缩放；真实坐标 0..19(x)、0..14(y)。</text>
+</svg>

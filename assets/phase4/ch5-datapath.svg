@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 360" font-family="Consolas,Menlo,monospace">
+  <rect width="880" height="360" fill="#0d1420"/>
+  <text x="20" y="30" fill="#4fc3f7" font-size="18" font-weight="bold">核心数据通路：蛇身数组与坐标比较</text>
+
+  <!-- body array -->
+  <text x="40" y="80" fill="#9fb3d1" font-size="13">bx[0..31] / by[0..31]（index0=头）</text>
+  <g font-size="12" font-family="Consolas,monospace">
+    <rect x="40" y="95" width="60" height="34" fill="#16263c" stroke="#81c784"/><text x="52" y="117" fill="#81c784">[0]头</text>
+    <rect x="105" y="95" width="60" height="34" fill="#16263c" stroke="#9fb3d1"/><text x="118" y="117" fill="#9fb3d1">[1]</text>
+    <rect x="170" y="95" width="60" height="34" fill="#16263c" stroke="#9fb3d1"/><text x="183" y="117" fill="#9fb3d1">[2]</text>
+    <rect x="235" y="95" width="60" height="34" fill="#101826" stroke="#3a4a63"/><text x="248" y="117" fill="#7c8db0">...</text>
+  </g>
+
+  <!-- shift on move -->
+  <text x="40" y="160" fill="#e0a7f0" font-size="12">移动：整体后移一格，新头写 [0]，尾部丢弃</text>
+  <text x="40" y="180" fill="#e0a7f0" font-size="12">吃食物：len+1（尾部保留）</text>
+
+  <!-- compare -->
+  <rect x="40" y="210" width="360" height="110" rx="6" fill="#101c2e" stroke="#ffb74d"/>
+  <text x="55" y="235" fill="#ffb74d" font-size="13">碰撞/吃食物比较器</text>
+  <text x="55" y="260" fill="#9fb3d1" font-size="12">nx,ny  vs  bx[i],by[i]（i&lt;len）</text>
+  <text x="55" y="282" fill="#9fb3d1" font-size="12">越界(nx&gt;19/ny&gt;14) -> 撞墙</text>
+  <text x="55" y="302" fill="#9fb3d1" font-size="12">nx==food_x &amp;&amp; ny==food_y -> 吃</text>
+
+  <defs><marker id="e" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#9fb3d1"/></marker></defs>
+  <path d="M 300 112 L 430 112 L 430 250 L 400 250" fill="none" stroke="#9fb3d1" marker-end="url(#e)"/>
+  <text x="430" y="200" fill="#7c8db0" font-size="11">逐格比较</text>
+</svg>

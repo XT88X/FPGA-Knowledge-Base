@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 380" font-family="Consolas,Menlo,monospace">
+  <rect width="880" height="380" fill="#0d1420"/>
+  <text x="20" y="30" fill="#4fc3f7" font-size="18" font-weight="bold">VGA 贪吃蛇系统框图</text>
+
+  <rect x="40" y="130" width="150" height="70" rx="6" fill="#16263c" stroke="#4fc3f7"/>
+  <text x="55" y="160" fill="#4fc3f7" font-size="13">ch5_vga_sync</text>
+  <text x="55" y="180" fill="#9fb3d1" font-size="11">640x480@60 行场同步</text>
+
+  <rect x="250" y="130" width="160" height="70" rx="6" fill="#16263c" stroke="#81c784"/>
+  <text x="265" y="155" fill="#81c784" font-size="13">ch5_snake_core</text>
+  <text x="265" y="173" fill="#9fb3d1" font-size="11">移动/转向/碰撞/食物</text>
+  <text x="265" y="188" fill="#9fb3d1" font-size="11">计分状态机</text>
+
+  <rect x="470" y="130" width="150" height="70" rx="6" fill="#16263c" stroke="#e0a7f0"/>
+  <text x="485" y="160" fill="#e0a7f0" font-size="13">ch5_render</text>
+  <text x="485" y="180" fill="#9fb3d1" font-size="11">网格->RGB 配色</text>
+
+  <rect x="660" y="130" width="160" height="70" rx="6" fill="#16263c" stroke="#ffb74d"/>
+  <text x="675" y="160" fill="#ffb74d" font-size="13">VGA 输出</text>
+  <text x="675" y="180" fill="#9fb3d1" font-size="11">hsync/vsync/RGB[3:0]</text>
+
+  <line x1="190" y1="165" x2="250" y2="165" stroke="#9fb3d1" marker-end="url(#c)"/>
+  <text x="200" y="158" fill="#9fb3d1" font-size="10">pixel_x/y,video_on</text>
+  <line x1="410" y1="165" x2="470" y2="165" stroke="#9fb3d1" marker-end="url(#c)"/>
+  <text x="418" y="158" fill="#9fb3d1" font-size="10">snake_hit/head/food</text>
+  <line x1="620" y1="165" x2="660" y2="165" stroke="#9fb3d1" marker-end="url(#c)"/>
+
+  <!-- lfsr -->
+  <rect x="250" y="250" width="160" height="50" rx="6" fill="#1a2030" stroke="#ffb74d"/>
+  <text x="270" y="280" fill="#ffb74d" font-size="12">ch5_lfsr 伪随机食物</text>
+  <line x1="330" y1="250" x2="330" y2="200" stroke="#ffb74d" stroke-dasharray="4,3" marker-end="url(#c)"/>
+
+  <!-- 按键 -->
+  <text x="250" y="115" fill="#81c784" font-size="11">按键(消抖/编码) -> dir_cmd</text>
+  <defs><marker id="c" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#9fb3d1"/></marker></defs>
+  <text x="20" y="340" fill="#7c8db0" font-size="12">像素使能 25MHz、游戏帧节拍约 8~10Hz；引脚见 code/common/fpga_common.xdc。</text>
+</svg>

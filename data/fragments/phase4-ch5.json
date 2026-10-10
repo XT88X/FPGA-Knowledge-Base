@@ -1,0 +1,55 @@
+{
+  "chapterId": "4.5",
+  "phase": 4,
+  "slug": "vga-snake",
+  "title": "综合项目 · VGA 贪吃蛇游戏",
+  "summary": "640x480@60 VGA 上做完整贪吃蛇：20x15 网格、蛇身数组、按键控向禁反向、LFSR 食物、撞墙/撞自身检测、计分与结束重启。",
+  "doc": "docs/phase4/ch5-snake.md",
+  "code": [
+    {"file": "code/phase4/ch5_vga_sync.v", "type": "verilog", "role": "synthesizable", "title": "ch5_vga_sync.v — 640x480@60 行场同步（可综合）"},
+    {"file": "code/phase4/tb_ch5_vga_sync.v", "type": "verilog", "role": "testbench", "title": "tb_ch5_vga_sync.v"},
+    {"file": "code/phase4/ch5_lfsr.v", "type": "verilog", "role": "synthesizable", "title": "ch5_lfsr.v — 8 位伪随机（可综合）"},
+    {"file": "code/phase4/tb_ch5_lfsr.v", "type": "verilog", "role": "testbench", "title": "tb_ch5_lfsr.v"},
+    {"file": "code/phase4/ch5_snake_core.v", "type": "verilog", "role": "synthesizable", "title": "ch5_snake_core.v — 移动/转向/碰撞/计分状态机（可综合）"},
+    {"file": "code/phase4/tb_ch5_snake_core.v", "type": "verilog", "role": "testbench", "title": "tb_ch5_snake_core.v"},
+    {"file": "code/phase4/ch5_render.v", "type": "verilog", "role": "synthesizable", "title": "ch5_render.v — 网格到像素配色（可综合）"},
+    {"file": "code/phase4/tb_ch5_render.v", "type": "verilog", "role": "testbench", "title": "tb_ch5_render.v"},
+    {"file": "code/phase4/ch5_snake_top.v", "type": "verilog", "role": "synthesizable", "title": "ch5_snake_top.v — 贪吃蛇顶层（可综合）"},
+    {"file": "code/phase4/tb_ch5_snake_top.v", "type": "verilog", "role": "testbench", "title": "tb_ch5_snake_top.v"}
+  ],
+  "diagrams": [
+    {"file": "assets/phase4/ch5-game-block.svg", "title": "游戏系统框图", "caption": "vga_sync→snake_core→render→VGA，LFSR 供食物，按键经同步编码。"},
+    {"file": "assets/phase4/ch5-grid-map.svg", "title": "网格到像素映射", "caption": "20x15 格、每格 32px；gx=pixel_x/32，gy=pixel_y/32。"},
+    {"file": "assets/phase4/ch5-fsm.svg", "title": "游戏控制状态机", "caption": "帧节拍驱动：移动→碰撞/吃食物判定→增长或结束。"},
+    {"file": "assets/phase4/ch5-datapath.svg", "title": "核心数据通路", "caption": "蛇身数组后移、新头写入，nx/ny 与 bx/by 逐格比较。"}
+  ],
+  "tools": [
+    {"name": "AMD/Xilinx Vivado 下载", "url": "https://www.xilinx.com/support/download.html", "required": true, "note": "ML Standard 免费版；访问日期 2026-10。"},
+    {"name": "VGA 640x480 时序参考（MIT 6.111）", "url": "https://web.mit.edu/6.111/www/s2004/NEWKIT/vga.shtml", "required": false, "note": "行 800/场 525、25.175MHz 像素时钟；访问日期 2026-10。"},
+    {"name": "通用引脚约束模板 fpga_common.xdc", "url": "../code/common/fpga_common.xdc", "required": true, "note": "相对本仓库；VGA RGB/同步与按键引脚按板卡替换。"},
+    {"name": "板级适配方法 board-adaptation.md", "url": "../docs/board-adaptation.md", "required": true, "note": "如何找板卡 VGA/按键参考引脚。"}
+  ],
+  "tasks": [
+    {"id": "task-4-5-1", "text": "实现游戏画面渲染与蛇身移动"},
+    {"id": "task-4-5-2", "text": "按键控制方向，食物生成与碰撞检测"},
+    {"id": "task-4-5-3", "text": "加分与游戏结束逻辑"}
+  ],
+  "cards": [
+    {"q": "640x480@60 的行/场总像素是多少？", "a": "行 800（640可见+16前肩+96同步+48后肩），场 525（480可见+10前肩+2同步+33后肩），像素时钟约 25.175MHz。", "tags": ["VGA", "时序"]},
+    {"q": "为什么用 25MHz 像素使能而不是真起一个 25MHz 时钟？", "a": "板载 50MHz，用时钟使能每两拍推一个像素点，避免多时钟域，时序约束更简单。", "tags": ["时钟", "使能"]},
+    {"q": "20x15 网格每格多少像素正好满 640x480？", "a": "每格 32px：20*32=640，15*32=480。", "tags": ["网格", "计算"]},
+    {"q": "渲染时怎么由像素坐标得到网格格号？", "a": "gx=pixel_x/32（取 pixel_x[9:5]），gy=pixel_y/32（取 pixel_y[8:5]）。", "tags": ["坐标", "换算"]},
+    {"q": "贪吃蛇为什么禁止 180° 反向？", "a": "蛇身连续，向右时直接按左会立刻撞到自己脖子；状态机只接受垂直转向或同向。", "tags": ["方向", "规则"]},
+    {"q": "蛇身移动时数组怎么更新？", "a": "整体后移一格（bx[i]=bx[i-1]），新头写入 index0；吃食物时长度+1 保留尾部。", "tags": ["蛇身", "数据通路"]},
+    {"q": "撞墙判定怎么做？", "a": "新头坐标 nx>19 或 ny>14（网格边界）即越界撞墙。", "tags": ["碰撞", "撞墙"]},
+    {"q": "LFSR 在游戏里干什么？", "a": "产生伪随机食物落点；8 位最长序列，上电固定种子避免全 0 死锁。", "tags": ["LFSR", "随机"]},
+    {"q": "游戏帧节拍为什么是 8~10Hz 而不是像素速率？", "a": "蛇要按可玩速度移动，约每秒 8~10 步；像素只负责渲染，二者分离。", "tags": ["帧节拍", "时序"]},
+    {"q": "snake_hit(qx,qy) 是组合还是时序输出？", "a": "组合：逐格比较 qx/qy 是否落在当前蛇身数组里，供渲染逐像素查询。", "tags": ["组合逻辑", "渲染"]}
+  ],
+  "quiz": [
+    {"q": "640x480@60 一行的总像素数是？", "options": ["640", "800", "525", "480"], "answer": 1, "explain": "640+16+96+48=800。"},
+    {"q": "每格 32px，20 列对应屏幕宽度？", "options": ["320px", "480px", "640px", "800px"], "answer": 2, "explain": "20*32=640。"},
+    {"q": "向右移动时按左方向键会怎样？", "options": ["立即反向", "被忽略（禁180°）", "加速", "结束游戏"], "answer": 1, "explain": "状态机禁止 180° 反向，按左无效。"},
+    {"q": "新头 nx=20（网格 0..19）属于？", "options": ["正常移动", "撞墙", "吃食物", "重生"], "answer": 1, "explain": "nx>19 越界即撞墙。"}
+  ]
+}
