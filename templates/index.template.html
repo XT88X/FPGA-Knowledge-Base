@@ -147,6 +147,44 @@ pre.code{background:#081020; border:1px solid var(--cyan); border-radius:0 8px 8
 #aiSettings input{width:100%; background:#0a1226; border:1px solid var(--line); color:var(--txt); border-radius:8px; padding:7px;}
 .presets{display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;}
 footer{text-align:center; color:var(--muted); font-size:12px; margin-top:30px;}
+/* ===== 科目一刷题面板 ===== */
+#drillOverlay{position:fixed; inset:0; background:rgba(4,8,18,.96); z-index:80; display:none; flex-direction:column;}
+#drillOverlay.open{display:flex;}
+#drillPanel{flex:1; display:flex; flex-direction:column; max-width:1000px; width:100%; margin:0 auto;
+  background:var(--card); border:1px solid var(--line); border-radius:14px; overflow:hidden; margin-top:10px; margin-bottom:10px;}
+#drillTop{display:flex; justify-content:space-between; align-items:center; padding:12px 16px; background:#16223e; border-bottom:1px solid var(--line);}
+#drillBody{flex:1; overflow-y:auto; padding:16px; -webkit-overflow-scrolling:touch;}
+.drill-tabs{display:flex; gap:8px; flex-wrap:wrap; margin:8px 0 14px;}
+.drill-stat{display:flex; gap:14px; flex-wrap:wrap; background:var(--card2); border:1px solid var(--line); border-radius:10px; padding:10px 14px; margin:8px 0;}
+.drill-stat b{color:var(--cyan);}
+.drill-mode{display:flex; gap:8px; flex-wrap:wrap; margin:8px 0;}
+.drill-qbox{border:1px solid var(--line); border-radius:12px; padding:16px; background:#0b1530; margin:12px 0;}
+.drill-qbox .meta{font-size:11px; color:var(--muted); margin-bottom:6px;}
+.drill-qbox .meta .tag{display:inline-block; background:#1e2c4a; color:#9fd8ff; border-radius:6px; padding:2px 7px; margin-right:6px;}
+.drill-qbox .qt{font-size:16px; font-weight:600; margin:6px 0 10px;}
+.drill-opt{display:flex; gap:8px; align-items:center; padding:9px 11px; border:1px solid var(--line); border-radius:9px; margin:6px 0; cursor:pointer;}
+.drill-opt:hover{border-color:var(--blue);}
+.drill-opt.right{background:rgba(52,211,153,.16); border-color:var(--green);}
+.drill-opt.wrong{background:rgba(248,113,113,.16); border-color:var(--red);}
+.drill-exp{font-size:13px; color:var(--amber); margin-top:8px; display:none; border-top:1px dashed var(--line); padding-top:8px;}
+.drill-exp.show{display:block;}
+.drill-nav{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:14px; flex-wrap:wrap;}
+.drill-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(90px,1fr)); gap:6px; margin:8px 0;}
+.drill-cell{font-size:12px; text-align:center; padding:6px 2px; border-radius:6px; background:#0a1226; border:1px solid var(--line); cursor:pointer;}
+.drill-cell.cur{border-color:var(--cyan); color:var(--cyan);}
+.drill-cell.ok{background:rgba(52,211,153,.2); color:var(--green);}
+.drill-cell.bad{background:rgba(248,113,113,.2); color:var(--red);}
+.drill-card{border:1px solid var(--line); border-radius:10px; padding:12px; margin:8px 0; background:var(--card2);}
+.drill-card .sub{font-size:11px; color:var(--cyan);}
+.drill-card h6{margin:4px 0; font-size:14px;}
+.drill-card .body{font-size:13px; color:var(--txt); white-space:pre-wrap;}
+.drill-card .src{font-size:11px; color:var(--muted); margin-top:4px;}
+#drillTimer{font-size:18px; font-weight:800; color:var(--amber);}
+.moc-result{margin:10px 0;}
+@media (max-width:640px){
+  #drillPanel{margin:0; border-radius:0; height:100%; max-width:100%;}
+  #drillOverlay{padding:0;}
+}
 @media (max-width:640px){
   .badges{grid-template-columns:repeat(2,1fr);}
   header.hero h1{font-size:23px;}
@@ -183,6 +221,7 @@ footer{text-align:center; color:var(--muted); font-size:12px; margin-top:30px;}
   </div>
 
   <div class="controls">
+    <button class="btn" id="btnDrill">📚 科目一刷题</button>
     <button class="btn primary" id="btnExpandAll">展开全部</button>
     <button class="btn" id="btnCollapseAll">折叠全部</button>
     <button class="btn danger" id="btnReset">重置进度</button>
@@ -225,6 +264,19 @@ footer{text-align:center; color:var(--muted); font-size:12px; margin-top:30px;}
   <div class="controls" style="margin:12px 0 0;">
     <button class="btn primary" id="cfgSave">保存</button>
     <button class="btn" id="cfgClose">关闭</button>
+  </div>
+</div>
+
+<div id="drillOverlay">
+  <div id="drillPanel">
+    <div id="drillTop">
+      <strong style="color:var(--cyan);">📚 科目一 · FPGA 刷题</strong>
+      <span style="display:flex;gap:10px;align-items:center;">
+        <span id="drillTimer"></span>
+        <button class="btn" id="drillClose" style="padding:5px 12px;font-size:13px;">关闭 ✕</button>
+      </span>
+    </div>
+    <div id="drillBody"></div>
   </div>
 </div>
 
@@ -341,6 +393,413 @@ var FPGAExam = {
     return {unlocked:unlocked, passed:passed, best:state.best||{}};
   }
 };
+window.FPGAExam = FPGAExam;
+
+/* ================= 刷题引擎（纯函数，挂 window.FPGADrill） ================= */
+var DRILL_KEY = "fpga-drill-state";
+var MOCK_KEY = "fpga-mock-state";
+var FPGADrill = {
+  _normFill: FPGAExam._normFill,
+  // 顺序：按 catName -> sub -> id
+  practiceSeq: function(pool){
+    return pool.slice().sort(function(a,b){
+      if((a.catName||'')!==(b.catName||'')) return (a.catName||'')<(b.catName||'')?-1:1;
+      if((a.sub||'')!==(b.sub||'')) return (a.sub||'')<(b.sub||'')?-1:1;
+      return (a.id||'')<(b.id||'')?-1:1;
+    });
+  },
+  practiceRandom: function(pool){ return shuffled(pool.slice()); },
+  // f={cat,sub,type}
+  filterBy: function(pool,f){
+    f=f||{};
+    return pool.filter(function(q){
+      if(f.cat && q.cat!==f.cat) return false;
+      if(f.sub && q.sub!==f.sub) return false;
+      if(f.type && q.type!==f.type) return false;
+      return true;
+    });
+  },
+  // 按 groupKey round-robin 均衡抽 count 题
+  composePool: function(pool,count,groupKey){
+    count=count||20; groupKey=groupKey||'sub';
+    var byG={};
+    pool.forEach(function(q){(byG[q[groupKey]||'其他']=byG[q[groupKey]||'其他']||[]).push(q);});
+    Object.keys(byG).forEach(function(k){byG[k]=shuffled(byG[k]);});
+    var gs=Object.keys(byG), paper=[], idx={};
+    gs.forEach(function(g){idx[g]=0;});
+    var guard=0;
+    while(paper.length<count && guard<count*gs.length+10){
+      var prog=false;
+      for(var i=0;i<gs.length;i++){
+        var g=gs[i];
+        if(idx[g]<byG[g].length){paper.push(byG[g][idx[g]]);idx[g]++;prog=true;if(paper.length>=count)break;}
+      }
+      if(!prog)break; guard++;
+    }
+    return shuffled(paper).slice(0,count);
+  },
+  // 判单题正误：ans 与 FPGAExam.gradePaper 入参一致
+  isCorrect: function(q,ans){
+    var self=this;
+    if(q.type==='single') return ans===q.answer;
+    if(q.type==='judge'){
+      // practice 存下标(0=正确,1=错误)；兼容布尔
+      if(typeof ans==='number') ans = (ans===0);
+      return ans===q.answer;
+    }
+    if(q.type==='multi'){ ans=Array.isArray(ans)?ans:[];
+      return ans.length===q.answer.length && ans.slice().sort().join()===q.answer.slice().sort().join(); }
+    if(q.type==='fill'){ if(typeof ans!=='string'||!ans.trim()) return false;
+      return q.answer.some(function(a){return self._normFill(a)===self._normFill(ans);}); }
+    return false;
+  },
+  // 记录一次作答：更新 done/lastCorrect/wrong/fav 不在这里改
+  recordAnswer: function(state,qid,correct){
+    state.done=state.done||{}; state.lastCorrect=state.lastCorrect||{}; state.wrong=state.wrong||[];
+    state.done[qid]=1; state.lastCorrect[qid]=!!correct;
+    var k=state.wrong.indexOf(qid);
+    if(correct){ if(k>=0) state.wrong.splice(k,1); }
+    else if(k<0){ state.wrong.push(qid); }
+    return state;
+  },
+  statsOf: function(state){
+    state=state||{}; state.done=state.done||{}; state.lastCorrect=state.lastCorrect||{};
+    state.wrong=state.wrong||[]; state.fav=state.fav||[];
+    var doneN=Object.keys(state.done).length;
+    var rightN=Object.keys(state.lastCorrect).filter(function(k){return state.lastCorrect[k];}).length;
+    return {done:doneN, right:rightN,
+            acc:doneN?Math.round(rightN/doneN*100):0,
+            wrong:state.wrong.length, fav:state.fav.length};
+  },
+  // 全局综合考水平档（90合格）
+  levelGlobal: function(score){
+    if(score>=90) return {pass:true, label:'优秀 · 合格'};
+    if(score>=80) return {pass:false, label:'良好 · 差一点'};
+    if(score>=60) return {pass:false, label:'待加强 · 多刷错题'};
+    return {pass:false, label:'需重学 · 回到知识速记'};
+  }
+};
+window.FPGADrill = FPGADrill;
+
+/* ================= 刷题面板 UI ================= */
+var DRILL = {mode:'home', list:[], idx:0, answers:{}, fav:false,
+             paper:null, mock:null, timer:null, secondsLeft:0};
+function loadDrillState(){ try{return JSON.parse(localStorage.getItem(DRILL_KEY)||'{}');}catch(e){return{done:{}};} }
+function saveDrillState(s){ try{localStorage.setItem(DRILL_KEY,JSON.stringify(s));}catch(e){} }
+function loadMockState(){ try{return JSON.parse(localStorage.getItem(MOCK_KEY)||'{}');}catch(e){return{};} }
+function saveMockState(s){ try{localStorage.setItem(MOCK_KEY,JSON.stringify(s));}catch(e){} }
+function drillPool(){ return ((KB.drill||{}).allQuestions)||[]; }
+function drillCats(){ return ((KB.drill||{}).categories)||[]; }
+
+function drillOpen(){ document.getElementById('drillOverlay').classList.add('open'); drillHome(); }
+function drillClosePanel(){ stopTimer(); document.getElementById('drillOverlay').classList.remove('open'); }
+
+function drillHome(){
+  stopTimer();
+  var st=loadDrillState(); var sc=FPGADrill.statsOf(st);
+  var cats=drillCats();
+  var h='<div class="drill-tabs">';
+  h+='<button class="btn primary" data-dh="home">🏠 首页</button>';
+  h+='<button class="btn" data-dh="cards">📖 知识速记</button>';
+  h+='<button class="btn" data-dh="mock">🎯 模拟考试</button>';
+  h+='</div>';
+  h+='<div class="drill-stat">';
+  h+='<span>已做 <b>'+sc.done+'</b></span><span>正确率 <b>'+sc.acc+'%</b></span>';
+  h+='<span>错题 <b style="color:var(--red);">'+sc.wrong+'</b></span><span>收藏 <b style="color:var(--amber);">'+sc.fav+'</b></span>';
+  h+='<span style="color:var(--muted);">总题库 <b>'+drillPool().length+'</b></span></div>';
+  h+='<div style="font-weight:700;margin-top:10px;">练习模式</div>';
+  h+='<div class="drill-mode">';
+  h+='<button class="btn" data-start="seq">📝 顺序练习</button>';
+  h+='<button class="btn" data-start="rand">🔀 随机练习</button>';
+  h+='<button class="btn" data-start="special">🎯 专项练习</button>';
+  h+='<button class="btn" data-start="wrong">❌ 错题本('+sc.wrong+')</button>';
+  h+='<button class="btn" data-start="fav">★ 收藏('+sc.fav+')</button>';
+  h+='</div>';
+  h+='<div style="font-weight:700;margin-top:10px;">各大类进度</div><div class="drill-mode">';
+  cats.forEach(function(c){
+    var n=drillPool().filter(function(q){return q.cat===c.cat;}).length;
+    h+='<span class="btn" style="cursor:default;">'+esc(c.catName)+' · '+n+'题</span>';
+  });
+  h+='</div>';
+  setDrillBody(h);
+  bindDrillHome();
+}
+
+function setDrillBody(h){ document.getElementById('drillBody').innerHTML=h; }
+function bindDrillHome(){
+  document.querySelectorAll('[data-dh]').forEach(function(b){b.onclick=function(){
+    if(b.dataset.dh==='cards') drillCards(); else if(b.dataset.dh==='mock') drillMockHome(); else drillHome();};});
+  document.querySelectorAll('[data-start]').forEach(function(b){b.onclick=function(){ startPractice(b.dataset.start); };});
+}
+
+function drillCards(){
+  var cats=drillCats();
+  var h='<div class="drill-tabs"><button class="btn" data-dh="home">← 首页</button></div>';
+  cats.forEach(function(c){
+    h+='<div style="font-weight:700;color:var(--cyan);margin:12px 0 4px;">'+esc(c.catName)+'</div>';
+    (c.cards||[]).forEach(function(card){
+      h+='<div class="drill-card"><div class="sub">'+esc(card.sub||'')+'</div>'+
+        '<h6>'+esc(card.title)+'</h6><div class="body">'+esc(card.body||'')+'</div>'+
+        (card.src?'<div class="src">来源：'+esc(card.src)+'</div>':'')+'</div>';
+    });
+  });
+  setDrillBody(h);
+  bindDrillHome();
+}
+
+function drillMockHome(){
+  var ms=loadMockState();
+  var h='<div class="drill-tabs"><button class="btn" data-dh="home">← 首页</button></div>';
+  h+='<div class="exam-card" style="margin:0;"><h5>全局综合模拟考（对标驾考科目一）</h5>';
+  h+='<div style="font-size:13px;color:var(--muted);">从刷题总题库(全部大类+阶段课程)按大类均衡抽 100 题，每题1分=100，<b style="color:var(--green);">≥90 合格</b>。限时45分钟（可关）。</div>';
+  h+='<div style="margin:8px 0;font-size:13px;">历史最高分：<b>'+(ms.global!=null?ms.global+' 分':'暂无')+'</b>　次数：'+(ms.globalN||0)+'</div>';
+  h+='<label style="font-size:13px;"><input type="checkbox" id="mockGlobalTimer" checked style="accent-color:var(--cyan);"> 限时45分钟</label>';
+  h+='<div class="controls" style="justify-content:flex-start;"><button class="btn primary" data-mock="global">开始全局综合考</button></div></div>';
+  h+='<div class="exam-card" style="margin:14px 0 0;"><h5>大类专项考</h5>';
+  h+='<div style="font-size:13px;color:var(--muted);">选一个大类，按 sub 均衡抽 20 题×5分=100，≥85合格。限时可选15分钟。</div>';
+  drillCats().forEach(function(c){
+    var best=(ms.specials||{})[c.cat];
+    h+='<div class="row" style="margin:8px 0;"><span>'+esc(c.catName)+'</span>'+
+      '<span style="font-size:12px;color:var(--muted);">'+(best!=null?'最高'+best:'暂无')+'</span>'+
+      '<button class="btn" data-mock="spec" data-cat="'+esc(c.cat)+'">专项考</button></div>';
+  });
+  h+='</div>';
+  setDrillBody(h);
+  document.querySelectorAll('[data-dh]').forEach(function(b){b.onclick=drillHome;});
+  document.querySelectorAll('[data-mock="global"]').forEach(function(b){b.onclick=function(){
+    startMock('global',null, document.getElementById('mockGlobalTimer').checked?2700:0);};});
+  document.querySelectorAll('[data-mock="spec"]').forEach(function(b){b.onclick=function(){
+    startMock('spec',b.dataset.cat, 900);};});
+}
+
+/* ---- 练习 ---- */
+function startPractice(mode){
+  var pool=drillPool();
+  var st=loadDrillState();
+  var list=[];
+  if(mode==='seq'){ list=FPGADrill.practiceSeq(pool); }
+  else if(mode==='rand'){ list=FPGADrill.practiceRandom(pool); }
+  else if(mode==='wrong'){ var w=(st.wrong||[]); var set={}; w.forEach(function(id){set[id]=1;}); list=pool.filter(function(q){return set[q.id];}); }
+  else if(mode==='fav'){ var f=(st.fav||[]); var fset={}; f.forEach(function(id){fset[id]=1;}); list=pool.filter(function(q){return fset[q.id];}); }
+  else if(mode==='special'){ drillSpecialPick(pool); return; }
+  if(!list.length){ toast('该分类暂无题目'); drillHome(); return; }
+  DRILL={mode:'practice', submode:mode, list:list, idx:0, answers:{}};
+  renderPracticeQ();
+}
+
+function drillSpecialPick(pool){
+  var cats=drillCats();
+  var subs=uniq(pool.map(function(q){return q.sub;}));
+  var h='<div class="drill-tabs"><button class="btn" data-back="home">← 首页</button></div>';
+  h+='<div style="font-weight:700;">选择知识大类</div><div class="drill-mode">';
+  cats.forEach(function(c){ h+='<button class="btn" data-subcat="'+esc(c.cat)+'">'+esc(c.catName)+'</button>'; });
+  h+='</div><div id="subPick"></div>';
+  setDrillBody(h);
+  document.querySelectorAll('[data-back]').forEach(function(b){b.onclick=drillHome;});
+  document.querySelectorAll('[data-subcat]').forEach(function(b){b.onclick=function(){
+    var cat=b.dataset.subcat;
+    var subsel=uniq(pool.filter(function(q){return q.cat===cat;}).map(function(q){return q.sub;}));
+    var hh='<div class="drill-tabs"><button class="btn" data-back="home">← 首页</button></div>';
+    hh+='<div style="font-weight:700;">子知识点（'+esc(cat)+'）</div><div class="drill-mode">';
+    subsel.forEach(function(s){ hh+='<button class="btn" data-gosub="'+esc(cat)+'|'+esc(s)+'">'+esc(s)+'</button>'; });
+    hh+='<button class="btn primary" data-gosub="'+esc(cat)+'|">整类</button></div>';
+    hh+='<div style="margin-top:10px;">题型：</div><div class="drill-mode">';
+    ['all','single','multi','judge','fill'].forEach(function(t,i){
+      hh+='<button class="btn" data-gotype="'+t+'">'+({all:'全部',single:'单选',multi:'多选',judge:'判断',fill:'填空'})[t]+'</button>';
+    });
+    hh+='</div><div id="subStart"></div>';
+    setDrillBody(hh);
+    document.querySelectorAll('[data-back]').forEach(function(x){x.onclick=drillHome;});
+    window._sp={cat:cat,sub:'',type:'all'};
+    document.querySelectorAll('[data-gosub]').forEach(function(x){x.onclick=function(){window._sp.sub=x.dataset.gosub.split('|')[1]||''; toast('已选子知识点，再选题型'); renderSubStart();};});
+    document.querySelectorAll('[data-gotype]').forEach(function(x){x.onclick=function(){window._sp.type=x.dataset.gotype; renderSubStart();};});
+  };});
+  function renderSubStart(){
+    var sp=window._sp;
+    var pool2=drillPool().filter(function(q){return q.cat===sp.cat && (!sp.sub||q.sub===sp.sub) && (sp.type==='all'||q.type===sp.type);});
+    document.getElementById('subStart').innerHTML='<div class="controls" style="justify-content:flex-start;margin-top:12px;"><button class="btn primary" id="subGo">开始专项练习（'+pool2.length+'题）</button></div>';
+    document.getElementById('subGo').onclick=function(){
+      if(!pool2.length){toast('该筛选无题目');return;}
+      DRILL={mode:'practice',submode:'special',list:shuffled(pool2),idx:0,answers:{}};
+      renderPracticeQ();
+    };
+  }
+}
+
+function typeName(t){return {single:'单选',multi:'多选',judge:'判断',fill:'填空'}[t]||t;}
+
+function renderPracticeQ(){
+  var L=DRILL.list, i=DRILL.idx, q=L[i];
+  var st=loadDrillState();
+  var isFav=(st.fav||[]).indexOf(q.id)>=0;
+  var h='<div class="drill-tabs"><button class="btn" data-back="home">← 首页</button>'+
+    '<span style="color:var(--muted);font-size:13px;margin-left:auto;">第 '+(i+1)+' / '+L.length+' 题</span></div>';
+  h+='<div class="drill-qbox" id="dq">';
+  h+='<div class="meta"><span class="tag">'+esc(q.catName||'')+'</span><span class="tag">'+esc(q.sub||'')+'</span><span class="tag">'+typeName(q.type)+'</span>'+
+     '<span style="float:right;cursor:pointer;" id="favBtn">'+(isFav?'★':'☆')+'</span></div>';
+  h+='<div class="qt">'+esc(q.q)+'</div>';
+  var done=DRILL.answered && DRILL.answered[q.id];
+  if(q.type==='single'||q.type==='judge'){
+    var opts=q.type==='judge'?['正确','错误']:q.options;
+    var ans=q.type==='judge'?(q.answer===true?0:1):q.answer;
+    opts.forEach(function(op,oi){
+      var cls=''; if(done){ if(oi===ans)cls='right'; else if(oi===DRILL.userAns[q.id])cls='wrong'; }
+      h+='<div class="drill-opt '+cls+'" data-oi="'+oi+'">'+(q.type==='judge'?'':String.fromCharCode(65+oi)+'. ')+esc(op)+'</div>';
+    });
+    h+='<div class="drill-exp'+(done?' show':'')+'">答案：'+(q.type==='judge'?(ans===0?'正确':'错误'):String.fromCharCode(65+ans)+'. '+q.options[ans])+'<br>解析：'+esc(q.explain)+'</div>';
+  } else if(q.type==='multi'){
+    q.options.forEach(function(op,oi){
+      h+='label style="display:block;"><div class="drill-opt" data-oi="'+oi+'"><input type="checkbox" data-oi="'+oi+'"> '+String.fromCharCode(65+oi)+'. '+esc(op)+'</div></label>';
+    });
+    h+='<div class="controls" style="justify-content:flex-start;"><button class="btn primary" id="multiConfirm">确认答案</button></div>';
+    h+='<div class="drill-exp'+(done?' show':'')+'">正确：'+q.answer.map(function(a){return String.fromCharCode(65+a);}).join('')+'<br>解析：'+esc(q.explain)+'</div>';
+  } else if(q.type==='fill'){
+    h+='<input class="exam-fill" id="fillIn" placeholder="输入答案" value="'+esc(DRILL.userAns&&DRILL.userAns[q.id]||'')+'">';
+    h+='<div class="controls" style="justify-content:flex-start;"><button class="btn primary" id="fillConfirm">确认</button></div>';
+    h+='<div class="drill-exp'+(done?' show':'')+'">可接受答案：'+q.answer.join(' / ')+'<br>解析：'+esc(q.explain)+'</div>';
+  }
+  h+='</div>';
+  h+='<div class="drill-nav"><button class="btn" id="prevQ">← 上一题</button>'+
+    '<div class="drill-grid">';
+  L.forEach(function(_,ii){ h+='<div class="drill-cell'+(ii===i?' cur':'')+'" data-jump="'+ii+'">'+(ii+1)+'</div>'; });
+  h+='</div><button class="btn primary" id="nextQ">下一题 →</button></div>';
+  setDrillBody(h);
+  document.querySelector('[data-back]').onclick=drillHome;
+  document.getElementById('favBtn').onclick=function(){
+    var s2=loadDrillState(); s2.fav=s2.fav||[];
+    var k=s2.fav.indexOf(q.id); if(k>=0)s2.fav.splice(k,1); else s2.fav.push(q.id);
+    saveDrillState(s2); toast(k>=0?'已取消收藏':'已收藏★'); renderPracticeQ();
+  };
+  DRILL.answered=DRILL.answered||{}; DRILL.userAns=DRILL.userAns||{};
+  // single/judge immediate
+  document.querySelectorAll('#dq .drill-opt[data-oi]').forEach(function(op){
+    op.onclick=function(){
+      if(DRILL.answered[q.id]) return;
+      var oi=+op.dataset.oi; DRILL.userAns[q.id]=oi;
+      var ok=FPGADrill.isCorrect(q,oi);
+      DRILL.answered[q.id]=1;
+      var s3=loadDrillState(); FPGADrill.recordAnswer(s3,q.id,ok); saveDrillState(s3);
+      renderPracticeQ();
+    };
+  });
+  // multi confirm
+  var mc=document.getElementById('multiConfirm');
+  if(mc) mc.onclick=function(){
+    if(DRILL.answered[q.id]) return;
+    var sel=[]; document.querySelectorAll('#dq input[type=checkbox]:checked').forEach(function(c){sel.push(+c.dataset.oi);});
+    var ok=FPGADrill.isCorrect(q,sel);
+    DRILL.answered[q.id]=1; DRILL.userAns[q.id]=sel;
+    var s3=loadDrillState(); FPGADrill.recordAnswer(s3,q.id,ok); saveDrillState(s3);
+    renderPracticeQ();
+  };
+  var fc=document.getElementById('fillConfirm');
+  if(fc) fc.onclick=function(){
+    if(DRILL.answered[q.id]) return;
+    var v=document.getElementById('fillIn').value; DRILL.userAns[q.id]=v;
+    var ok=FPGADrill.isCorrect(q,v);
+    DRILL.answered[q.id]=1;
+    var s3=loadDrillState(); FPGADrill.recordAnswer(s3,q.id,ok); saveDrillState(s3);
+    renderPracticeQ();
+  };
+  document.getElementById('prevQ').onclick=function(){ if(i>0){DRILL.idx=i-1; renderPracticeQ();} };
+  document.getElementById('nextQ').onclick=function(){ if(i<L.length-1){DRILL.idx=i+1; renderPracticeQ();} else toast('已是最后一题'); };
+  document.querySelectorAll('[data-jump]').forEach(function(c){c.onclick=function(){DRILL.idx=+c.dataset.jump; renderPracticeQ();};});
+}
+
+/* ---- 模拟考（复用 FPGAExam） ---- */
+function startMock(kind,cat,seconds){
+  var pool=drillPool();
+  var paper;
+  if(kind==='global'){ paper=FPGADrill.composePool(pool,100,'cat'); }
+  else { paper=FPGADrill.composePool(pool.filter(function(q){return q.cat===cat;}),20,'sub'); }
+  var scored=paper.map(function(q){ var n=Object.assign({},q); n.pts=(kind==='global'?1:5); return n; });
+  DRILL={mode:'mock', kind:kind, cat:cat, paper:FPGAExam.shufflePaper(scored), answers:{}, secondsLeft:seconds||0, submitted:false};
+  renderMockQ();
+  if(seconds>0) startTimer(seconds);
+}
+function startTimer(sec){ stopTimer(); DRILL.secondsLeft=sec; tick(); }
+function tick(){ var el=document.getElementById('drillTimer');
+  if(!DRILL.timerOn) return;
+  if(DRILL.secondsLeft<=0){ el.textContent=''; stopTimer(); submitMock(true); return; }
+  var m=Math.floor(DRILL.secondsLeft/60), s=DRILL.secondsLeft%60;
+  el.textContent='⏱ '+m+':'+(s<10?'0':'')+s;
+  DRILL.secondsLeft--; DRILL._t=setTimeout(tick,1000);
+}
+function stopTimer(){ if(DRILL._t){clearTimeout(DRILL._t);DRILL._t=null;} DRILL.timerOn=false;
+  var el=document.getElementById('drillTimer'); if(el) el.textContent=''; }
+function renderMockQ(){
+  var p=DRILL.paper;
+  if(DRILL.submitted){ renderMockResult(); return; }
+  DRILL.timerOn=!!DRILL.secondsLeft; if(DRILL.secondsLeft>0) tick();
+  var h='<div class="drill-tabs"><button class="btn" data-cancel="1">← 放弃考试</button>'+
+    '<span style="color:var(--muted);font-size:13px;margin-left:auto;">作答进度 <b id="mockProg">0</b>/'+p.length+'</span></div>';
+  p.forEach(function(q,i){
+    h+='<div class="drill-qbox"><div class="meta"><span class="tag">'+typeName(q.type)+'</span><span class="tag">'+esc(q.catName||' · '+(q.sub||''))+'</span></div>';
+    h+='<div class="qt">'+(i+1)+'. '+esc(q.q)+'</div>';
+    if(q.type==='single'||q.type==='judge'){
+      q.options.forEach(function(op,oi){
+        var ck=(DRILL.answers[i]===oi)?'checked':'';
+        h+='<label class="drill-opt"><input type="radio" name="m'+i+'" data-q="'+i+'" data-oi="'+oi+'" '+ck+'> '+esc(op)+'</label>';
+      });
+    } else if(q.type==='multi'){
+      q.options.forEach(function(op,oi){
+        var ck=(DRILL.answers[i]&&DRILL.answers[i].indexOf(oi)>=0)?'checked':'';
+        h+='<label class="drill-opt"><input type="checkbox" data-q="'+i+'" data-oi="'+oi+'" '+ck+'> '+String.fromCharCode(65+oi)+'. '+esc(op)+'</label>';
+      });
+    } else { h+='<input class="exam-fill" data-q="'+i+'" value="'+esc(DRILL.answers[i]||'')+'" placeholder="输入答案">'; }
+    h+='</div>';
+  });
+  h+='<div class="controls" style="justify-content:center;"><button class="btn primary" id="mockSubmit">交卷</button></div>';
+  setDrillBody(h);
+  document.querySelector('[data-cancel]').onclick=function(){ if(confirm('放弃本次考试？')){stopTimer();drillMockHome();} };
+  document.querySelectorAll('input[type=radio]').forEach(function(r){r.onchange=function(){DRILL.answers[+r.dataset.q]=+r.dataset.oi; mockProg();};});
+  document.querySelectorAll('input[type=checkbox]').forEach(function(c){c.onchange=function(){
+    var i=+c.dataset.q; DRILL.answers[i]=DRILL.answers[i]||[];
+    var oi=+c.dataset.oi,k=DRILL.answers[i].indexOf(oi);
+    if(c.checked&&k<0)DRILL.answers[i].push(oi); if(!c.checked&&k>=0)DRILL.answers[i].splice(k,1); mockProg();};});
+  document.querySelectorAll('input.exam-fill').forEach(function(f){f.oninput=function(){DRILL.answers[+f.dataset.q]=f.value; mockProg();};});
+  document.getElementById('mockSubmit').onclick=function(){
+    var n=p.filter(function(_,i){var a=DRILL.answers[i];return Array.isArray(a)?a.length>0:(a!==undefined&&a!=='');}).length;
+    if(n<p.length && !confirm('还有 '+(p.length-n)+' 题未答，确定交卷？')) return;
+    submitMock(false);
+  };
+  mockProg();
+}
+function mockProg(){ var p=DRILL.paper,n=0;
+  p.forEach(function(_,i){var a=DRILL.answers[i];if(Array.isArray(a)){if(a.length)n++;}else if(a!==undefined&&a!=='')n++;});
+  var el=document.getElementById('mockProg'); if(el)el.textContent=n; }
+function submitMock(timeup){
+  stopTimer();
+  var p=DRILL.paper;
+  var res=FPGAExam.gradePaper(p,p.map(function(_,i){return DRILL.answers[i];}));
+  res.passed = DRILL.kind==='global' ? res.score>=90 : res.score>=85;
+  DRILL.submitted=true; DRILL.result=res;
+  // 存档
+  var ms=loadMockState();
+  if(DRILL.kind==='global'){ ms.global=Math.max(ms.global||0,res.score); ms.globalN=(ms.globalN||0)+1; }
+  else { ms.specials=ms.specials||{}; ms.specials[DRILL.cat]=Math.max(ms.specials[DRILL.cat]||0,res.score); ms[DRILL.cat+'N']=(ms[DRILL.cat+'N']||0)+1; }
+  saveMockState(ms);
+  renderMockResult();
+}
+function renderMockResult(){
+  var res=DRILL.result;
+  var lv = DRILL.kind==='global' ? FPGADrill.levelGlobal(res.score) : (res.passed?{pass:true,label:'合格通过'}:{pass:false,label:'未达85，再刷一刷'});
+  var h='<div class="drill-tabs"><button class="btn" data-back="home">← 首页</button></div>';
+  h+='<div class="moc-result" style="text-align:center;"><div class="score-big" style="color:'+(res.passed?'var(--green)':'var(--red)')+'">'+res.score+'</div>';
+  h+='<div>'+(res.passed?'<span style="color:var(--green);">✔ 合格</span>':'<span style="color:var(--red);">✘ 未合格</span>')+' — '+esc(lv.label)+'</div></div>';
+  h+='<div class="controls" style="justify-content:center;"><button class="btn primary" id="mockAgain">再来一套</button></div>';
+  res.detail.forEach(function(d,i){
+    h+='<div class="drill-qbox" style="border-color:'+(d.ok?'var(--green)':'var(--red)')+'">'+
+      '<b>'+(i+1)+'. '+esc(d.q)+'</b> <span style="color:'+(d.ok?'var(--green)':'var(--red)')+'">['+(d.ok?'✓':'✗')+']</span>'+
+      '<div style="font-size:13px;color:var(--amber);">你的作答：'+esc(d.your)+'</div>'+
+      '<div style="font-size:13px;color:var(--green);">正确：'+esc(d.correct)+'</div>'+
+      '<div style="font-size:12px;color:var(--muted);">解析：'+esc(d.explain)+'</div></div>';
+  });
+  setDrillBody(h);
+  document.querySelector('[data-back]').onclick=drillHome;
+  document.getElementById('mockAgain').onclick=function(){ startMock(DRILL.kind,DRILL.cat, DRILL.kind==='global'?2700:900); };
+}
+
 window.FPGAExam = FPGAExam;
 
 /* ================= 考试存档 ================= */
@@ -763,9 +1222,11 @@ document.addEventListener('DOMContentLoaded',function(){
   };
   document.getElementById('btnCollapseAll').onclick=function(){document.querySelectorAll('.phase').forEach(function(p){p.classList.remove('open');});};
   document.getElementById('btnReset').onclick=function(){
-    if(confirm('确定要重置所有学习进度与考试存档吗（含勾选/通关最高分/解锁状态）？此操作不可撤销！')){
+    if(confirm('确定要重置所有学习进度、考试存档与刷题/模考记录吗（含勾选/通关/错题本/收藏/模考最高分）？此操作不可撤销！')){
       localStorage.removeItem(PROGRESS_KEY);
       localStorage.removeItem(EXAM_KEY);
+      localStorage.removeItem(DRILL_KEY);
+      localStorage.removeItem(MOCK_KEY);
       allCheckboxes().forEach(function(cb){cb.checked=false;});
       renderApp(); renderPhaseNav();
       updateProgress();
@@ -774,6 +1235,9 @@ document.addEventListener('DOMContentLoaded',function(){
 
   // AI panel
   var panel=document.getElementById('aiPanel');
+  // drill
+  document.getElementById('btnDrill').onclick=drillOpen;
+  document.getElementById('drillClose').onclick=drillClosePanel;
   document.getElementById('aiFab').onclick=function(){panel.classList.toggle('open');
     if(panel.classList.contains('open') && !document.getElementById('aiMsgs').children.length)
       aiSay('ai','你好，我是 FPGA 助教。默认离线检索本知识库作答；点“设置”可填 OpenAI 兼容 Key 在线增强。');};
