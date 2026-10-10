@@ -1,0 +1,58 @@
+# ===== Vivado / Vitis 工程产物 =====
+*.cache/
+*.hw/
+*.ip_user_files/
+*.runs/
+*.sim/
+*.gen/
+*.Xil/
+*.jou
+*.log
+*.str
+*.debug
+*.pb
+*.bak
+xelab.*
+xvhdl.*
+xvlog.*
+*.wdb
+*.wpc
+# Vitis
+*.metadata/
+*.launch/
+*.settings/
+RemoteSystemsTempFiles/
+*.sdk/
+Vitis/
+export/
+# 生成的比特流与产物（保留源码，产物按需）
+# *.bit
+# *.bin
+# *.ltx
+
+# ===== ModelSim / Questa =====
+transcript
+*.wlf
+*.do.bak
+work/
+vsim.wlf
+*.vstf
+
+# ===== Icarus / GTKWave
+*.vcd
+*.fst
+a.out
+*.o
+
+# ===== 编辑器 / 系统 =====
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# ===== 临时与敏感 =====
+*.tmp
+*.local
+secrets.*
