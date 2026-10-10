@@ -1,0 +1,2417 @@
+{
+  "cat": "software",
+  "catName": "FPGA 开发工具与 EDA 全流程（Vivado/Vitis）",
+  "cards": [
+    {
+      "id": "sw-c01",
+      "sub": "flow",
+      "title": "Vivado 标准设计流程",
+      "body": "① 新建工程→加设计源→加约束→综合Synthesis→实现Implementation→生成比特流→下载。\n② 每步产物逐级收敛：RTL→门级网表→布局布线→.bit。",
+      "src": "AMD UG892"
+    },
+    {
+      "id": "sw-c02",
+      "sub": "flow",
+      "title": "工程文件 .xpr",
+      "body": "① .xpr 是 Vivado 工程文件，记录源文件引用与器件选择。\n② 它本身不含 RTL 全文，RTL 实际存于 .srcs 等目录。",
+      "src": ""
+    },
+    {
+      "id": "sw-c03",
+      "sub": "flow",
+      "title": "工程目录结构",
+      "body": "① .srcs 存设计/约束/仿真源；.runs 存综合与实现中间产物。\n② .gen/.sim 存生成产物与仿真；.xpr 为工程入口。",
+      "src": ""
+    },
+    {
+      "id": "sw-c04",
+      "sub": "flow",
+      "title": "三个源文件集 fileset",
+      "body": "① Design Sources：RTL 设计。\n② Constraints：XDC 约束。\n③ Simulation Sources：testbench。\n④ 三者分工明确，不要放错。",
+      "src": ""
+    },
+    {
+      "id": "sw-c05",
+      "sub": "flow",
+      "title": "综合 Synthesis",
+      "body": "① 把 RTL 解析、逻辑化简后映射到 LUT/FF/RAM。\n② 输出门级网表与综合检查点。",
+      "src": "AMD UG901"
+    },
+    {
+      "id": "sw-c06",
+      "sub": "flow",
+      "title": "实现与比特流",
+      "body": "① Implementation=布局Place+布线Route+物理优化。\n② Generate Bitstream 生成 .bit，Hardware Manager 下载。",
+      "src": "AMD UG904"
+    },
+    {
+      "id": "sw-c07",
+      "sub": "synth-impl",
+      "title": "RTL→门级网表",
+      "body": "① 综合将行为/结构 RTL 转成与工艺无关的门级/原语网表。\n② 还不到具体引脚位置。",
+      "src": "AMD UG901"
+    },
+    {
+      "id": "sw-c08",
+      "sub": "synth-impl",
+      "title": "LUT/FF/RAM 映射",
+      "body": "① 组合逻辑→LUT(Artix-7 6输入)。\n② 时序状态→触发器FF；大容量存储→BRAM/DSP。",
+      "src": "AMD UG474"
+    },
+    {
+      "id": "sw-c09",
+      "sub": "synth-impl",
+      "title": "综合优化",
+      "body": "① 逻辑化简、常量折叠、扇出优化、寄存器平衡。\n② 目标：面积/速度/功耗折中。",
+      "src": "AMD UG901"
+    },
+    {
+      "id": "sw-c10",
+      "sub": "synth-impl",
+      "title": "布局与布线",
+      "body": "① Place：把单元放到芯片具体位置。\n② Route：用互连线连接各单元。\n③ 顺序：先布局后布线。",
+      "src": "AMD UG904"
+    },
+    {
+      "id": "sw-c11",
+      "sub": "synth-impl",
+      "title": "三类报告",
+      "body": "① Utilization：LUT/FF/BRAM/DSP 占用。\n② Timing：建立/保持 slack。\n③ Power：动态/静态功耗估计。",
+      "src": "AMD UG904"
+    },
+    {
+      "id": "sw-c12",
+      "sub": "synth-impl",
+      "title": "OOC 离群综合",
+      "body": "① Out-of-Context：模块单独综合，结果可复用。\n② 适合 IP 与大模块，加速迭代。",
+      "src": "AMD UG949"
+    },
+    {
+      "id": "sw-c13",
+      "sub": "ip",
+      "title": "IP Catalog",
+      "body": "① 浏览、配置、实例化 AMD 官方与自定义 IP。\n② 每个 IP 有参数化对话框。",
+      "src": "AMD UG994"
+    },
+    {
+      "id": "sw-c14",
+      "sub": "ip",
+      "title": "IP Integrator/Block Design",
+      "body": "① 以框图方式拖拽互连 IP(含CPU/AXI)。\n② 保存后需 Generate Output Products。",
+      "src": "AMD UG994"
+    },
+    {
+      "id": "sw-c15",
+      "sub": "ip",
+      "title": "AXI 自动连接",
+      "body": "① 右键 Automation 自动连时钟/复位与 AXI 主从。\n② 减少手动连线错误。",
+      "src": "AMD UG1037"
+    },
+    {
+      "id": "sw-c16",
+      "sub": "ip",
+      "title": "Address Editor",
+      "body": "① 给每个 AXI 从设备分配基地址与范围。\n② 区间不可重叠，否则访问冲突。",
+      "src": "AMD UG1037"
+    },
+    {
+      "id": "sw-c17",
+      "sub": "ip",
+      "title": "封装自定义 IP",
+      "body": "① Package IP：把自定义 RTL+XDC 打包成 AXI 外设。\n② 完成后出现在 IP Catalog 可复用。",
+      "src": "AMD UG1118"
+    },
+    {
+      "id": "sw-c18",
+      "sub": "ip",
+      "title": ".xci 配置文件",
+      "body": "① 记录某个 IP 实例的参数配置。\n② 参数改变后需重新 Generate Output Products。",
+      "src": "AMD UG994"
+    },
+    {
+      "id": "sw-c19",
+      "sub": "simtool",
+      "title": "Vivado Simulator",
+      "body": "① Vivado 自带 HDL 仿真器。\n② 支持行为/功能与时序后仿真。",
+      "src": "AMD UG900"
+    },
+    {
+      "id": "sw-c20",
+      "sub": "simtool",
+      "title": "行为 vs 时序仿真",
+      "body": "① 行为仿真：不含门级/布线延迟，只验功能，快。\n② 时序后仿真：含 SDF 延迟，接近上板。",
+      "src": "AMD UG900"
+    },
+    {
+      "id": "sw-c21",
+      "sub": "simtool",
+      "title": "Testbench",
+      "body": "① 放 Simulation Sources 文件集。\n② 产生时钟/复位/激励，检查输出。\n③ 不被综合进 FPGA。",
+      "src": "AMD UG900"
+    },
+    {
+      "id": "sw-c22",
+      "sub": "simtool",
+      "title": "波形窗口",
+      "body": "① Waveform 窗口观察信号随时间变化。\n② 可分组、放大、加游标测延迟。",
+      "src": "AMD UG900"
+    },
+    {
+      "id": "sw-c23",
+      "sub": "simtool",
+      "title": "Force 与断点",
+      "body": "① Force：强制某信号取值，用于调试。\n② Breakpoint：停在指定行/条件。\n③ 均为仿真调试手段。",
+      "src": "AMD UG900"
+    },
+    {
+      "id": "sw-c24",
+      "sub": "simtool",
+      "title": "仿真与综合差异",
+      "body": "① testbench 里 $display/#delay/initial 不可综合。\n② 仿真过≠时序收敛，上板前仍需约束与实现。",
+      "src": "AMD UG901"
+    },
+    {
+      "id": "sw-c25",
+      "sub": "constraints",
+      "title": "XDC 本质",
+      "body": "① XDC=Synopsys SDC 1.9 + Xilinx 专有物理约束。\n② 基于 Tcl 语法，按顺序读取。",
+      "src": "AMD UG903"
+    },
+    {
+      "id": "sw-c26",
+      "sub": "constraints",
+      "title": "create_clock",
+      "body": "① create_clock -period 10 -name clk [get_ports clk]。\n② -period 单位 ns；10ns=100MHz。\n③ 是时序分析的基础。",
+      "src": "AMD UG903"
+    },
+    {
+      "id": "sw-c27",
+      "sub": "constraints",
+      "title": "引脚与电平",
+      "body": "① set_property PACKAGE_PIN F16 [get_ports clk]。\n② set_property IOSTANDARD LVCMOS33 [get_ports clk]。\n③ 分别定位置与电平。",
+      "src": "AMD UG903"
+    },
+    {
+      "id": "sw-c28",
+      "sub": "constraints",
+      "title": "set_property",
+      "body": "① XDC 中设置对象属性的通用命令。\n② 用于 PACKAGE_PIN/IOSTANDARD 等物理约束。",
+      "src": "AMD UG903"
+    },
+    {
+      "id": "sw-c29",
+      "sub": "constraints",
+      "title": "I/O 时序约束",
+      "body": "① set_input_delay / set_output_delay 描述板级延迟。\n② 与 create_clock 配合完成时序收敛。",
+      "src": "AMD UG903"
+    },
+    {
+      "id": "sw-c30",
+      "sub": "constraints",
+      "title": "XDC 读取顺序",
+      "body": "① 用户 XDC 默认 PROCESSING_ORDER=NORMAL。\n② 不依赖时钟的约束常 EARLY，依赖时钟的 LATE。",
+      "src": "AMD UG903"
+    },
+    {
+      "id": "sw-c31",
+      "sub": "vitis",
+      "title": "Vitis 统一平台",
+      "body": "① AMD Vitis 用于在处理器(PS)上开发 C/C++。\n② 与 Vivado 协同，取代早期 Xilinx SDK。",
+      "src": "AMD Vitis"
+    },
+    {
+      "id": "sw-c32",
+      "sub": "vitis",
+      "title": "BSP 板级支持包",
+      "body": "① Board Support Package：含驱动、寄存器定义、启动支持。\n② 裸机程序依赖 BSP。",
+      "src": "AMD Vitis"
+    },
+    {
+      "id": "sw-c33",
+      "sub": "vitis",
+      "title": "SDK 演变",
+      "body": "① 早期 Xilinx SDK → Vitis 统一软件平台。\n② 新版提供 hw_server/bootgen/program_flash 等工具。",
+      "src": "AMD Vitis"
+    },
+    {
+      "id": "sw-c34",
+      "sub": "vitis",
+      "title": "Zynq PS 与 PL",
+      "body": "① PS=Processing System(ARM 子系统)。\n② PL=Programmable Logic(FPGA 部分)。\n③ Zynq 二者兼有。",
+      "src": "AMD UG1085"
+    },
+    {
+      "id": "sw-c35",
+      "sub": "vitis",
+      "title": "交叉编译与下载",
+      "body": "① 在 PC 上交叉编译出 ARM 代码。\n② 经 hw_server/JTAG 下载运行。",
+      "src": "AMD Vitis"
+    },
+    {
+      "id": "sw-c36",
+      "sub": "vitis",
+      "title": "纯 PL vs PS+PL",
+      "body": "① 纯 PL：只烧 .bit，不需 Vitis。\n② PS+PL：还需编译下载 C 程序。",
+      "src": "AMD Vitis"
+    },
+    {
+      "id": "sw-c37",
+      "sub": "setup",
+      "title": "Vivado ML Standard",
+      "body": "① 免费、器件受限，无需单独 license。\n② 历史上的 WebPACK 即此类免费版。",
+      "src": "AMD vivado-ml"
+    },
+    {
+      "id": "sw-c38",
+      "sub": "setup",
+      "title": "版本与器件授权",
+      "body": "① Enterprise 付费、支持全部器件。\n② Standard 免费但器件数受限(含 Artix-7/Zynq-7000 常用型号)。",
+      "src": "AMD vivado-ml"
+    },
+    {
+      "id": "sw-c39",
+      "sub": "setup",
+      "title": "Vivado Lab Edition",
+      "body": "① 精简版，专用于下载/调试。\n② 无需 license 即可编程。",
+      "src": "AMD vivado-ml"
+    },
+    {
+      "id": "sw-c40",
+      "sub": "setup",
+      "title": "下载器与驱动",
+      "body": "① JTAG 下载：Digilent JTAG-HS3/SMT、FTDI USB 桥。\n② 新版 Vivado 常内置 Digilent 驱动。",
+      "src": "Digilent"
+    },
+    {
+      "id": "sw-c41",
+      "sub": "setup",
+      "title": "串口终端",
+      "body": "① PuTTY/Tera Term/minicom 看 UART 打印。\n② 调试裸机 printf 的常用手段。",
+      "src": ""
+    },
+    {
+      "id": "sw-c42",
+      "sub": "setup",
+      "title": "常见环境问题",
+      "body": "① 认不到板子：查电缆/驱动/JTAG 链。\n② license/器件不支持：选 Standard 内器件或升级。",
+      "src": "AMD UG973"
+    }
+  ],
+  "questions": [
+    {
+      "id": "sw-001",
+      "cat": "software",
+      "sub": "flow",
+      "type": "single",
+      "q": "Vivado 中从 RTL 到可下载配置文件的正确顺序是？",
+      "explain": "标准流程：Synthesis→Implementation→Generate Bitstream→Program。",
+      "src": "AMD UG892/UG904 Vivado Design Suite",
+      "options": [
+        "综合 → 实现 → 生成比特流",
+        "实现 → 综合 → 下载",
+        "仿真 → 综合 → 写代码",
+        "生成比特流 → 综合 → 实现"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-002",
+      "cat": "software",
+      "sub": "flow",
+      "type": "single",
+      "q": "Vivado 工程文件(.xpr)的扩展名是？",
+      "explain": "工程入口为 .xpr。",
+      "src": "",
+      "options": [
+        ".xpr",
+        ".prj",
+        ".xml",
+        ".v"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-003",
+      "cat": "software",
+      "sub": "flow",
+      "type": "single",
+      "q": "综合(Synthesis)阶段输出的核心是？",
+      "explain": "综合产出门级/工艺映射网表，引脚位置由实现决定。",
+      "src": "AMD UG901 Synthesis / UG904 Implementation",
+      "options": [
+        "逻辑优化后的门级网表",
+        "物理引脚位置",
+        "最终比特流",
+        "可执行 C 程序"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-004",
+      "cat": "software",
+      "sub": "flow",
+      "type": "single",
+      "q": "Vivado 工程中存放设计源文件的目录通常叫？",
+      "explain": "源文件在 .srcs；.runs 放综合/实现中间产物。",
+      "src": "",
+      "options": [
+        ".srcs",
+        ".runs",
+        ".gen",
+        ".sim"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-005",
+      "cat": "software",
+      "sub": "flow",
+      "type": "single",
+      "q": "实现(Implementation)主要包含哪两个步骤？",
+      "explain": "实现核心即布局+布线。",
+      "src": "AMD UG901 Synthesis / UG904 Implementation",
+      "options": [
+        "布局 Place 与布线 Route",
+        "综合与优化",
+        "编译与链接",
+        "编码与解码"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-006",
+      "cat": "software",
+      "sub": "flow",
+      "type": "single",
+      "q": "生成比特流得到的配置文件扩展名是？",
+      "explain": "比特流为 .bit，用 Hardware Manager 下载。",
+      "src": "AMD UG892/UG904 Vivado Design Suite",
+      "options": [
+        ".bit",
+        ".xpr",
+        ".dcp",
+        ".xdc"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-007",
+      "cat": "software",
+      "sub": "flow",
+      "type": "single",
+      "q": "Vivado 中设计检查点 DCP 的含义是？",
+      "explain": "DCP 保存某阶段设计快照，可用 open_checkpoint 恢复。",
+      "src": "",
+      "options": [
+        "Design Check Point(设计快照)",
+        "Design Constraint Point",
+        "Direct Config Program",
+        "Design Check Program"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-008",
+      "cat": "software",
+      "sub": "flow",
+      "type": "single",
+      "q": "XDC 约束文件在 Vivado 工程中属于哪个文件集？",
+      "explain": "约束属 Constraints 文件集。",
+      "src": "AMD UG903 Using Constraints",
+      "options": [
+        "Constraints",
+        "Design Sources",
+        "Simulation Sources",
+        "IP"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-009",
+      "cat": "software",
+      "sub": "flow",
+      "type": "single",
+      "q": "把比特流下载到 FPGA 板子用哪个工具？",
+      "explain": "Hardware Manager 通过 JTAG 下载调试。",
+      "src": "AMD UG892/UG904 Vivado Design Suite",
+      "options": [
+        "Hardware Manager",
+        "Address Editor",
+        "IP Packager",
+        "Package Manager"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-010",
+      "cat": "software",
+      "sub": "flow",
+      "type": "multi",
+      "q": "下列属于 Vivado 标准设计流程步骤的有？",
+      "explain": "C 程序由 Vitis 处理，不在 PL 设计主流程。",
+      "src": "AMD UG892/UG904 Vivado Design Suite",
+      "options": [
+        "综合 Synthesis",
+        "实现 Implementation",
+        "生成比特流",
+        "编译 C 程序"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sw-011",
+      "cat": "software",
+      "sub": "flow",
+      "type": "multi",
+      "q": "关于 .xpr 工程与目录说法正确的有？",
+      "explain": ".xpr 只是工程引用，RTL 单独存于 .srcs。",
+      "src": "",
+      "options": [
+        ".xpr 是工程文件",
+        ".srcs 存设计源",
+        ".runs 存综合/实现中间产物",
+        ".xpr 内保存了全部 RTL 原文"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sw-012",
+      "cat": "software",
+      "sub": "flow",
+      "type": "multi",
+      "q": "下列哪些是 Vivado 工程中的文件集(fileset)？",
+      "explain": "Build Report 不是 fileset。",
+      "src": "",
+      "options": [
+        "Design Sources",
+        "Constraints",
+        "Simulation Sources",
+        "Build Report"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sw-013",
+      "cat": "software",
+      "sub": "flow",
+      "type": "multi",
+      "q": "关于 DCP 检查点说法正确的有？",
+      "explain": "DCP 不是 .bit。",
+      "src": "",
+      "options": [
+        "可在某阶段保存设计快照",
+        "可用 open_checkpoint 恢复",
+        "含综合后/实现后网表与布局信息",
+        "DCP 就是比特流"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sw-014",
+      "cat": "software",
+      "sub": "flow",
+      "type": "judge",
+      "q": "Vivado 中综合通过后才能进行实现。",
+      "explain": "实现依赖综合后的网表。",
+      "src": "AMD UG901 Synthesis / UG904 Implementation",
+      "answer": true
+    },
+    {
+      "id": "sw-015",
+      "cat": "software",
+      "sub": "flow",
+      "type": "judge",
+      "q": "生成比特流之前必须先完成布局布线。",
+      "explain": "比特流由实现后的布局布线结果生成。",
+      "src": "AMD UG892/UG904 Vivado Design Suite",
+      "answer": true
+    },
+    {
+      "id": "sw-016",
+      "cat": "software",
+      "sub": "flow",
+      "type": "judge",
+      "q": ".xpr 文件里完整保存了所有 RTL 源代码文本。",
+      "explain": ".xpr 仅记录引用，RTL 实际在 .srcs 目录。",
+      "src": "",
+      "answer": false
+    },
+    {
+      "id": "sw-017",
+      "cat": "software",
+      "sub": "flow",
+      "type": "judge",
+      "q": "Hardware Manager 用于把比特流下载到开发板。",
+      "explain": "Hardware Manager 负责 JTAG 下载与调试。",
+      "src": "AMD UG892/UG904 Vivado Design Suite",
+      "answer": true
+    },
+    {
+      "id": "sw-018",
+      "cat": "software",
+      "sub": "flow",
+      "type": "fill",
+      "q": "Vivado 工程文件的扩展名是 .___(四个小写字母)。",
+      "explain": "工程入口 .xpr。",
+      "src": "",
+      "answer": [
+        "xpr"
+      ]
+    },
+    {
+      "id": "sw-019",
+      "cat": "software",
+      "sub": "flow",
+      "type": "fill",
+      "q": "综合与实现之后生成的位流文件扩展名是 .___。",
+      "explain": "比特流 .bit。",
+      "src": "AMD UG892/UG904 Vivado Design Suite",
+      "answer": [
+        "bit"
+      ]
+    },
+    {
+      "id": "sw-020",
+      "cat": "software",
+      "sub": "flow",
+      "type": "fill",
+      "q": "设计检查点文件的扩展名是 .___。",
+      "explain": "Design Check Point = .dcp。",
+      "src": "",
+      "answer": [
+        "dcp"
+      ]
+    },
+    {
+      "id": "sw-021",
+      "cat": "software",
+      "sub": "synth-impl",
+      "type": "single",
+      "q": "综合把 RTL 转换成什么？",
+      "explain": "综合→门级网表；引脚位置在实现阶段。",
+      "src": "AMD UG901 Synthesis / UG904 Implementation",
+      "options": [
+        "门级/工艺映射网表",
+        "具体物理引脚位置",
+        "C 代码",
+        "PCB 布线"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-022",
+      "cat": "software",
+      "sub": "synth-impl",
+      "type": "single",
+      "q": "Artix-7 中实现任意组合函数基本靠哪种资源？",
+      "explain": "LUT 是小 RAM，写入真值表即得组合函数。",
+      "src": "AMD UG901 Synthesis / UG904 Implementation",
+      "options": [
+        "LUT(查找表)",
+        "触发器",
+        "DSP 块",
+        "BRAM"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-023",
+      "cat": "software",
+      "sub": "synth-impl",
+      "type": "single",
+      "q": "时序状态(寄存器)在 FPGA 中映射到哪种资源？",
+      "explain": "触发器保存时序状态。",
+      "src": "AMD UG901 Synthesis / UG904 Implementation",
+      "options": [
+        "触发器 FF",
+        "查找表 LUT",
+        "块 RAM",
+        "进位链"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-024",
+      "cat": "software",
+      "sub": "synth-impl",
+      "type": "single",
+      "q": "布局(Place)的任务是？",
+      "explain": "Place 决定位置，Route 负责连线。",
+      "src": "AMD UG901 Synthesis / UG904 Implementation",
+      "options": [
+        "把逻辑单元放到芯片的具体位置",
+        "连接各单元的互连线",
+        "解析 RTL",
+        "仿真激励"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-025",
+      "cat": "software",
+      "sub": "synth-impl",
+      "type": "single",
+      "q": "布线(Route)的任务是？",
+      "explain": "Route 在 Place 之后连通网络。",
+      "src": "AMD UG901 Synthesis / UG904 Implementation",
+      "options": [
+        "连接已布局单元之间的互连线",
+        "把逻辑映射到 LUT",
+        "逻辑综合",
+        "编译程序"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-026",
+      "cat": "software",
+      "sub": "synth-impl",
+      "type": "single",
+      "q": "查看已用 LUT/FF/BRAM 数量应看哪份报告？",
+      "explain": "Utilization Report 给资源占用。",
+      "src": "AMD UG901 Synthesis / UG904 Implementation",
+      "options": [
+        "Utilization 利用率报告",
+        "仿真波形",
+        "串口日志",
+        "BSP 文档"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-027",
+      "cat": "software",
+      "sub": "synth-impl",
+      "type": "single",
+      "q": "时序报告中 Slack 为负表示？",
+      "explain": "负 slack = 建立/保持不满足，跑不上目标频率。",
+      "src": "AMD UG901 Synthesis / UG904 Implementation",
+      "options": [
+        "时序违例(建立时间不满足)",
+        "资源空闲",
+        "功耗超标",
+        "完全正常"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-028",
+      "cat": "software",
+      "sub": "synth-impl",
+      "type": "single",
+      "q": "OOC 缩写指？",
+      "explain": "OOC 让模块单独综合加速迭代。",
+      "src": "AMD UG901 Synthesis / UG904 Implementation",
+      "options": [
+        "Out-of-Context 离群综合",
+        "在线仿真",
+        "优化关闭",
+        "输出控制"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-029",
+      "cat": "software",
+      "sub": "synth-impl",
+      "type": "single",
+      "q": "功耗报告(Power Report)的主要作用是？",
+      "explain": "Power Report 估算功耗与散热需求。",
+      "src": "AMD UG901 Synthesis / UG904 Implementation",
+      "options": [
+        "估算动态/静态功耗",
+        "分配引脚",
+        "生成比特流",
+        "编译 C 程序"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-030",
+      "cat": "software",
+      "sub": "synth-impl",
+      "type": "multi",
+      "q": "综合阶段会做哪些事？",
+      "explain": "布线在实现阶段，不属于综合。",
+      "src": "AMD UG901 Synthesis / UG904 Implementation",
+      "options": [
+        "RTL 解析与逻辑化简",
+        "映射到 LUT/FF/RAM",
+        "插入互连线布线",
+        "扇出优化/寄存器平衡"
+      ],
+      "answer": [
+        0,
+        1,
+        3
+      ]
+    },
+    {
+      "id": "sw-031",
+      "cat": "software",
+      "sub": "synth-impl",
+      "type": "multi",
+      "q": "实现(Implementation)包含哪些子步骤？",
+      "explain": "逻辑综合在实现之前。",
+      "src": "AMD UG901 Synthesis / UG904 Implementation",
+      "options": [
+        "布局 Place",
+        "布线 Route",
+        "布局后物理优化",
+        "逻辑综合"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sw-032",
+      "cat": "software",
+      "sub": "synth-impl",
+      "type": "multi",
+      "q": "下列属于实现后可查看的报告有？",
+      "explain": "C 源码不是 FPGA 实现报告。",
+      "src": "AMD UG901 Synthesis / UG904 Implementation",
+      "options": [
+        "利用率 Utilization",
+        "时序 Timing",
+        "功耗 Power",
+        "C 源码清单"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sw-033",
+      "cat": "software",
+      "sub": "synth-impl",
+      "type": "multi",
+      "q": "关于 OOC(Out-of-Context)说法正确的有？",
+      "explain": "OOC 通常加速迭代而非拖慢。",
+      "src": "AMD UG901 Synthesis / UG904 Implementation",
+      "options": [
+        "模块可单独综合、加速迭代",
+        "有独立的综合结果",
+        "适合 IP 与大模块",
+        "一定会显著拖慢整体编译"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sw-034",
+      "cat": "software",
+      "sub": "synth-impl",
+      "type": "judge",
+      "q": "综合就是把 RTL 放到 FPGA 具体物理位置的过程。",
+      "explain": "综合只到门级网表，具体位置由实现(Place)决定。",
+      "src": "AMD UG901 Synthesis / UG904 Implementation",
+      "answer": false
+    },
+    {
+      "id": "sw-035",
+      "cat": "software",
+      "sub": "synth-impl",
+      "type": "judge",
+      "q": "负的建立时间 slack 说明设计达不到目标频率。",
+      "explain": "建立 slack<0 即时序违例。",
+      "src": "AMD UG901 Synthesis / UG904 Implementation",
+      "answer": true
+    },
+    {
+      "id": "sw-036",
+      "cat": "software",
+      "sub": "synth-impl",
+      "type": "judge",
+      "q": "LUT 本质是一小块 RAM，写入真值表即可实现任意组合函数。",
+      "explain": "n 输入 LUT=2^n 深的小 RAM。",
+      "src": "AMD UG901 Synthesis / UG904 Implementation",
+      "answer": true
+    },
+    {
+      "id": "sw-037",
+      "cat": "software",
+      "sub": "synth-impl",
+      "type": "judge",
+      "q": "布线(Route)发生在布局(Place)之前。",
+      "explain": "先 Place 后 Route。",
+      "src": "AMD UG901 Synthesis / UG904 Implementation",
+      "answer": false
+    },
+    {
+      "id": "sw-038",
+      "cat": "software",
+      "sub": "synth-impl",
+      "type": "fill",
+      "q": "FPGA 中实现组合函数的基本单元叫 L___ Table(缩写)。",
+      "explain": "Look-Up Table。",
+      "src": "AMD UG901 Synthesis / UG904 Implementation",
+      "answer": [
+        "LUT"
+      ]
+    },
+    {
+      "id": "sw-039",
+      "cat": "software",
+      "sub": "synth-impl",
+      "type": "fill",
+      "q": "实现阶段把逻辑放到芯片具体位置的步骤英文是 P___。",
+      "explain": "布局 Place。",
+      "src": "AMD UG901 Synthesis / UG904 Implementation",
+      "answer": [
+        "Place",
+        "布局"
+      ]
+    },
+    {
+      "id": "sw-040",
+      "cat": "software",
+      "sub": "synth-impl",
+      "type": "fill",
+      "q": "时序裕量为负称为违例，时序报告里该裕量英文叫 S____。",
+      "explain": "Setup/Hold Slack。",
+      "src": "AMD UG901 Synthesis / UG904 Implementation",
+      "answer": [
+        "Slack"
+      ]
+    },
+    {
+      "id": "sw-041",
+      "cat": "software",
+      "sub": "ip",
+      "type": "single",
+      "q": "Vivado 中浏览/添加官方 IP 核的窗口叫？",
+      "explain": "IP Catalog 管理所有 IP。",
+      "src": "AMD UG994 IP Subsystems / UG1118 Custom IP",
+      "options": [
+        "IP Catalog",
+        "Address Editor",
+        "Hardware Manager",
+        "波形 Scope"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-042",
+      "cat": "software",
+      "sub": "ip",
+      "type": "single",
+      "q": "Block Design 在 Vivado 中也称作？",
+      "explain": "Block Design 即 IP Integrator 图形化集成。",
+      "src": "AMD UG994 IP Subsystems / UG1118 Custom IP",
+      "options": [
+        "IP Integrator 块设计",
+        "工程向导",
+        "时序约束",
+        "下载器"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-043",
+      "cat": "software",
+      "sub": "ip",
+      "type": "single",
+      "q": "AXI 外设基地址(地址映射)在哪个窗口分配？",
+      "explain": "Address Editor 分配从设备地址区间。",
+      "src": "AMD UG994 IP Subsystems / UG1118 Custom IP",
+      "options": [
+        "Address Editor",
+        "IP Catalog",
+        "波形窗口",
+        "日志窗口"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-044",
+      "cat": "software",
+      "sub": "ip",
+      "type": "single",
+      "q": "把自定义 RTL 打包成可复用 AXI 外设的过程叫？",
+      "explain": "Package IP 封装自定义外设。",
+      "src": "AMD UG994 IP Subsystems / UG1118 Custom IP",
+      "options": [
+        "Package IP",
+        "Run Simulation",
+        "Generate Bitstream",
+        "Route"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-045",
+      "cat": "software",
+      "sub": "ip",
+      "type": "single",
+      "q": "IP 核配置文件的扩展名是？",
+      "explain": ".xci 记录某 IP 实例参数。",
+      "src": "AMD UG994 IP Subsystems / UG1118 Custom IP",
+      "options": [
+        ".xci",
+        ".xpr",
+        ".v",
+        ".xdc"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-046",
+      "cat": "software",
+      "sub": "ip",
+      "type": "single",
+      "q": "Block Design 中 Automatically Connect 主要用于？",
+      "explain": "Automation 自动连接口与时钟复位。",
+      "src": "AMD UG994 IP Subsystems / UG1118 Custom IP",
+      "options": [
+        "自动连接时钟/复位与 AXI 接口",
+        "自动编写 RTL",
+        "自动分配引脚",
+        "自动生成 C 代码"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-047",
+      "cat": "software",
+      "sub": "ip",
+      "type": "single",
+      "q": "AXI Interconnect IP 的作用是？",
+      "explain": "PG059 AXI Interconnect 负责 AXI 总线互连。",
+      "src": "AMD UG994 IP Subsystems / UG1118 Custom IP",
+      "options": [
+        "把多个 AXI 主/从设备互连",
+        "驱动 LED",
+        "生成时钟",
+        "编译程序"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-048",
+      "cat": "software",
+      "sub": "ip",
+      "type": "single",
+      "q": "自定义寄存器映射外设通常实现成哪种总线接口？",
+      "explain": "AXI4-Lite 适合简单寄存器外设。",
+      "src": "AMD UG994 IP Subsystems / UG1118 Custom IP",
+      "options": [
+        "AXI4-Lite(内存映射寄存器)",
+        "裸 UART",
+        "裸 SPI 线",
+        "完全没有总线"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-049",
+      "cat": "software",
+      "sub": "ip",
+      "type": "single",
+      "q": "打包好的 IP 要在工程中复用，通常？",
+      "explain": "封装后进入 IP Catalog 可直接例化。",
+      "src": "AMD UG994 IP Subsystems / UG1118 Custom IP",
+      "options": [
+        "出现在 IP Catalog 中后例化",
+        "手工重写全部引脚",
+        "直接复制网表",
+        "必须重新手工综合"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-050",
+      "cat": "software",
+      "sub": "ip",
+      "type": "multi",
+      "q": "下列属于 IP Integrator / Block Design 流程环节的有？",
+      "explain": "均为 Block Design 标准环节。",
+      "src": "AMD UG994 IP Subsystems / UG1118 Custom IP",
+      "options": [
+        "从 IP Catalog 拖入 IP",
+        "自动连接接口",
+        "Address Editor 分配地址",
+        "Generate Output Products"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "sw-051",
+      "cat": "software",
+      "sub": "ip",
+      "type": "multi",
+      "q": "关于 Address Editor 说法正确的有？",
+      "explain": "Address Editor 只做地址映射，不写 RTL。",
+      "src": "AMD UG994 IP Subsystems / UG1118 Custom IP",
+      "options": [
+        "给每个从设备分配地址区间",
+        "地址区间不能重叠",
+        "可设置基地址与范围",
+        "它用于编写 Verilog 代码"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sw-052",
+      "cat": "software",
+      "sub": "ip",
+      "type": "multi",
+      "q": "下列哪些是 Vivado 官方 IP/总线组件？",
+      "explain": "HDMI 显示器是外设硬件，不是 IP 核。",
+      "src": "AMD UG994 IP Subsystems / UG1118 Custom IP",
+      "options": [
+        "AXI Interconnect",
+        "AXI Uartlite",
+        "Clocking Wizard",
+        "HDMI 显示器"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sw-053",
+      "cat": "software",
+      "sub": "ip",
+      "type": "multi",
+      "q": "关于 .xci 文件说法正确的有？",
+      "explain": ".xci 不是 .bit。",
+      "src": "AMD UG994 IP Subsystems / UG1118 Custom IP",
+      "options": [
+        "记录 IP 的参数配置",
+        "参数改变需重新 Generate Output Products",
+        "可看作 IP 实例化配置",
+        ".xci 就是比特流"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sw-054",
+      "cat": "software",
+      "sub": "ip",
+      "type": "judge",
+      "q": "Block Design 保存后需要 Generate Output Products 才能被综合。",
+      "explain": "生成输出产物后才能综合。",
+      "src": "AMD UG994 IP Subsystems / UG1118 Custom IP",
+      "answer": true
+    },
+    {
+      "id": "sw-055",
+      "cat": "software",
+      "sub": "ip",
+      "type": "judge",
+      "q": "Address Editor 中两个从设备可以分配重叠的地址区间。",
+      "explain": "地址重叠会导致访问冲突。",
+      "src": "AMD UG994 IP Subsystems / UG1118 Custom IP",
+      "answer": false
+    },
+    {
+      "id": "sw-056",
+      "cat": "software",
+      "sub": "ip",
+      "type": "judge",
+      "q": "Clocking Wizard 是 Vivado 官方 IP，用于生成/分频时钟。",
+      "explain": "Clock Wizard 封装 MMCM/PLL。",
+      "src": "AMD UG994 IP Subsystems / UG1118 Custom IP",
+      "answer": true
+    },
+    {
+      "id": "sw-057",
+      "cat": "software",
+      "sub": "ip",
+      "type": "judge",
+      "q": "封装自定义 IP 时不能附带自己的 XDC 约束。",
+      "explain": "IP Packager 支持附带综合/实现/OOC XDC。",
+      "src": "AMD UG994 IP Subsystems / UG1118 Custom IP",
+      "answer": false
+    },
+    {
+      "id": "sw-058",
+      "cat": "software",
+      "sub": "ip",
+      "type": "fill",
+      "q": "Vivado 中管理与参数化 IP 的窗口叫 IP C____。",
+      "explain": "IP Catalog。",
+      "src": "AMD UG994 IP Subsystems / UG1118 Custom IP",
+      "answer": [
+        "Catalog"
+      ]
+    },
+    {
+      "id": "sw-059",
+      "cat": "software",
+      "sub": "ip",
+      "type": "fill",
+      "q": "Block Design 在 Vivado 中也称 IP I_________ 设计。",
+      "explain": "IP Integrator。",
+      "src": "AMD UG994 IP Subsystems / UG1118 Custom IP",
+      "answer": [
+        "Integrator"
+      ]
+    },
+    {
+      "id": "sw-060",
+      "cat": "software",
+      "sub": "ip",
+      "type": "fill",
+      "q": "AXI 外设基地址通过 Address E_____ 分配。",
+      "explain": "Address Editor。",
+      "src": "AMD UG994 IP Subsystems / UG1118 Custom IP",
+      "answer": [
+        "Editor"
+      ]
+    },
+    {
+      "id": "sw-061",
+      "cat": "software",
+      "sub": "simtool",
+      "type": "single",
+      "q": "Vivado 自带的仿真器叫？",
+      "explain": "Vivado Simulator 内置。",
+      "src": "AMD UG900 Vivado Simulation",
+      "options": [
+        "Vivado Simulator",
+        "独立版 Excel",
+        "GCC",
+        "MATLAB"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-062",
+      "cat": "software",
+      "sub": "simtool",
+      "type": "single",
+      "q": "行为仿真(Behavioral)的特点是？",
+      "explain": "行为仿真只验功能、速度快。",
+      "src": "AMD UG900 Vivado Simulation",
+      "options": [
+        "不考虑门级延迟，只验证逻辑功能",
+        "包含全部布线延迟",
+        "必须先上板",
+        "只看功耗"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-063",
+      "cat": "software",
+      "sub": "simtool",
+      "type": "single",
+      "q": "时序后仿真相比行为仿真？",
+      "explain": "时序后仿含 SDF 延迟，接近上板。",
+      "src": "AMD UG900 Vivado Simulation",
+      "options": [
+        "加入了门级与布线延迟",
+        "运行更快",
+        "不验证功能",
+        "不需要 testbench"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-064",
+      "cat": "software",
+      "sub": "simtool",
+      "type": "single",
+      "q": "Testbench 在 Vivado 中属于哪个文件集？",
+      "explain": "testbench 在 Simulation Sources。",
+      "src": "AMD UG900 Vivado Simulation",
+      "options": [
+        "Simulation Sources",
+        "Design Sources",
+        "Constraints",
+        "Bitstream"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-065",
+      "cat": "software",
+      "sub": "simtool",
+      "type": "single",
+      "q": "观察信号随时间变化应打开哪个窗口？",
+      "explain": "Waveform 看波形。",
+      "src": "AMD UG900 Vivado Simulation",
+      "options": [
+        "Waveform 波形窗口",
+        "Address Editor",
+        "IP Catalog",
+        "Package 窗口"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-066",
+      "cat": "software",
+      "sub": "simtool",
+      "type": "single",
+      "q": "仿真中强行给某信号赋值的操作叫？",
+      "explain": "Force 强制赋值用于调试。",
+      "src": "AMD UG900 Vivado Simulation",
+      "options": [
+        "Force",
+        "Place",
+        "Route",
+        "Compile"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-067",
+      "cat": "software",
+      "sub": "simtool",
+      "type": "single",
+      "q": "行为仿真通过主要说明？",
+      "explain": "行为过≠时序收敛，仍需约束与实现。",
+      "src": "AMD UG900 Vivado Simulation",
+      "options": [
+        "逻辑功能正确",
+        "时序已经收敛",
+        "资源一定够用",
+        "已经成功上板"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-068",
+      "cat": "software",
+      "sub": "simtool",
+      "type": "single",
+      "q": "testbench 里产生时钟常用语句是？",
+      "explain": "周期性取反产生时钟。",
+      "src": "AMD UG900 Vivado Simulation",
+      "options": [
+        "always #5 clk = ~clk",
+        "assign",
+        "function",
+        "package import"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-069",
+      "cat": "software",
+      "sub": "simtool",
+      "type": "single",
+      "q": "下列哪类常用于 testbench、但不可综合？",
+      "explain": "$display/#delay/initial 多为仿真专用。",
+      "src": "AMD UG900 Vivado Simulation",
+      "options": [
+        "$display 等系统任务/#delay",
+        "assign 连续赋值",
+        "always @(posedge clk)",
+        "寄存器声明"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-070",
+      "cat": "software",
+      "sub": "simtool",
+      "type": "multi",
+      "q": "Vivado Simulator 能完成的有？",
+      "explain": "烧写由 Hardware Manager 完成。",
+      "src": "AMD UG900 Vivado Simulation",
+      "options": [
+        "行为功能仿真",
+        "时序后仿真",
+        "查看波形",
+        "直接烧写板子"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sw-071",
+      "cat": "software",
+      "sub": "simtool",
+      "type": "multi",
+      "q": "关于 testbench 说法正确的有？",
+      "explain": "testbench 不被综合。",
+      "src": "AMD UG900 Vivado Simulation",
+      "options": [
+        "位于 Simulation Sources",
+        "产生时钟/复位/激励",
+        "可用 $display 或断言检查结果",
+        "它会被综合进 FPGA"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sw-072",
+      "cat": "software",
+      "sub": "simtool",
+      "type": "multi",
+      "q": "下列哪些是仿真窗口/调试功能？",
+      "explain": "布局布线属于实现，不是仿真。",
+      "src": "AMD UG900 Vivado Simulation",
+      "options": [
+        "波形 Waveform",
+        "断点 Breakpoint",
+        "强制 Force",
+        "布局布线"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sw-073",
+      "cat": "software",
+      "sub": "simtool",
+      "type": "multi",
+      "q": "行为仿真与时序后仿真区别正确的有？",
+      "explain": "行为仿真更快。",
+      "src": "AMD UG900 Vivado Simulation",
+      "options": [
+        "行为仿真不含门级/布线延迟",
+        "时序后仿真含 SDF 延迟",
+        "时序后仿真更接近上板",
+        "行为仿真比时序后仿真更慢"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sw-074",
+      "cat": "software",
+      "sub": "simtool",
+      "type": "judge",
+      "q": "Testbench 本身会被综合成 FPGA 硬件。",
+      "explain": "testbench 仅用于仿真，不综合。",
+      "src": "AMD UG900 Vivado Simulation",
+      "answer": false
+    },
+    {
+      "id": "sw-075",
+      "cat": "software",
+      "sub": "simtool",
+      "type": "judge",
+      "q": "行为仿真通过就意味着上板时序一定收敛。",
+      "explain": "时序收敛需靠约束与实现报告确认。",
+      "src": "AMD UG900 Vivado Simulation",
+      "answer": false
+    },
+    {
+      "id": "sw-076",
+      "cat": "software",
+      "sub": "simtool",
+      "type": "judge",
+      "q": "Vivado Simulator 可在不依赖外部软件的情况下查看波形。",
+      "explain": "内置波形窗口。",
+      "src": "AMD UG900 Vivado Simulation",
+      "answer": true
+    },
+    {
+      "id": "sw-077",
+      "cat": "software",
+      "sub": "simtool",
+      "type": "judge",
+      "q": "Force 强制赋值主要用于仿真调试。",
+      "explain": "Force 是仿真调试手段。",
+      "src": "AMD UG900 Vivado Simulation",
+      "answer": true
+    },
+    {
+      "id": "sw-078",
+      "cat": "software",
+      "sub": "simtool",
+      "type": "fill",
+      "q": "产生时钟的语句常写为 always #5 clk = ~___。",
+      "explain": "对 clk 自身取反。",
+      "src": "AMD UG900 Vivado Simulation",
+      "answer": [
+        "clk"
+      ]
+    },
+    {
+      "id": "sw-079",
+      "cat": "software",
+      "sub": "simtool",
+      "type": "fill",
+      "q": "观察信号随时间变化用 W______ 窗口。",
+      "explain": "Waveform。",
+      "src": "AMD UG900 Vivado Simulation",
+      "answer": [
+        "Waveform",
+        "波形"
+      ]
+    },
+    {
+      "id": "sw-080",
+      "cat": "software",
+      "sub": "simtool",
+      "type": "fill",
+      "q": "只验逻辑功能、不含门级延迟的仿真叫 B______ 仿真。",
+      "explain": "行为/功能仿真。",
+      "src": "AMD UG900 Vivado Simulation",
+      "answer": [
+        "Behavioral",
+        "行为",
+        "Functional",
+        "功能"
+      ]
+    },
+    {
+      "id": "sw-081",
+      "cat": "software",
+      "sub": "constraints",
+      "type": "single",
+      "q": "Vivado 使用的约束文件格式是？",
+      "explain": "Vivado 用 XDC。",
+      "src": "AMD UG903 Using Constraints",
+      "options": [
+        "XDC",
+        "SDF",
+        "CSV",
+        "VHD"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-082",
+      "cat": "software",
+      "sub": "constraints",
+      "type": "single",
+      "q": "XDC 是哪两者的结合？",
+      "explain": "XDC=SDC 1.9+Xilinx 物理约束，基于 Tcl。",
+      "src": "AMD UG903 Using Constraints",
+      "options": [
+        "Synopsys SDC + Xilinx 专有物理约束",
+        "Tcl 脚本 + Excel",
+        "VHDL + C",
+        "Verilog + Python"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-083",
+      "cat": "software",
+      "sub": "constraints",
+      "type": "single",
+      "q": "定义主时钟用哪条命令？",
+      "explain": "create_clock 定义时钟周期。",
+      "src": "AMD UG903 Using Constraints",
+      "options": [
+        "create_clock",
+        "create_waveform",
+        "set_property",
+        "create_port"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-084",
+      "cat": "software",
+      "sub": "constraints",
+      "type": "single",
+      "q": "指定 FPGA 引脚位置用？",
+      "explain": "PACKAGE_PIN 定位置。",
+      "src": "AMD UG903 Using Constraints",
+      "options": [
+        "set_property PACKAGE_PIN",
+        "create_clock",
+        "set_input_delay",
+        "route_design"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-085",
+      "cat": "software",
+      "sub": "constraints",
+      "type": "single",
+      "q": "指定 IO 电平标准用？",
+      "explain": "IOSTANDARD 定电平。",
+      "src": "AMD UG903 Using Constraints",
+      "options": [
+        "set_property IOSTANDARD",
+        "set_false_path",
+        "create_clock",
+        "set_clock_latency"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-086",
+      "cat": "software",
+      "sub": "constraints",
+      "type": "single",
+      "q": "create_clock -period 10 表示？",
+      "explain": "period 单位 ns，10ns=100MHz。",
+      "src": "AMD UG903 Using Constraints",
+      "options": [
+        "周期 10ns(约 100MHz)",
+        "10MHz",
+        "10ps",
+        "10 个时钟"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-087",
+      "cat": "software",
+      "sub": "constraints",
+      "type": "single",
+      "q": "XDC 文件在 Vivado 中属于哪个文件集？",
+      "explain": "约束文件属 Constraints。",
+      "src": "AMD UG903 Using Constraints",
+      "options": [
+        "Constraints",
+        "Design Sources",
+        "Simulation Sources",
+        "IP"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-088",
+      "cat": "software",
+      "sub": "constraints",
+      "type": "single",
+      "q": "set_property PACKAGE_PIN F16 [get_ports clk] 中 F16 表示？",
+      "explain": "F16 是封装引脚号。",
+      "src": "AMD UG903 Using Constraints",
+      "options": [
+        "引脚封装位置",
+        "电平标准",
+        "时钟频率",
+        "时钟周期"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-089",
+      "cat": "software",
+      "sub": "constraints",
+      "type": "single",
+      "q": "声明 3.3V 电平标准应写在？",
+      "explain": "set_property IOSTANDARD LVCMOS33。",
+      "src": "AMD UG903 Using Constraints",
+      "options": [
+        "IOSTANDARD 后",
+        "PACKAGE_PIN 后",
+        "create_clock 后",
+        "文件名里"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-090",
+      "cat": "software",
+      "sub": "constraints",
+      "type": "multi",
+      "q": "下列属于时序约束的有？",
+      "explain": "PACKAGE_PIN 是物理约束。",
+      "src": "AMD UG903 Using Constraints",
+      "options": [
+        "create_clock",
+        "set_input_delay",
+        "set_output_delay",
+        "set_property PACKAGE_PIN"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sw-091",
+      "cat": "software",
+      "sub": "constraints",
+      "type": "multi",
+      "q": "下列属于物理约束的有？",
+      "explain": "create_clock 是时序约束。",
+      "src": "AMD UG903 Using Constraints",
+      "options": [
+        "set_property PACKAGE_PIN",
+        "set_property IOSTANDARD",
+        "create_clock",
+        "引脚位置约束 LOC"
+      ],
+      "answer": [
+        0,
+        1,
+        3
+      ]
+    },
+    {
+      "id": "sw-092",
+      "cat": "software",
+      "sub": "constraints",
+      "type": "multi",
+      "q": "关于 XDC 说法正确的有？",
+      "explain": "XDC 是 Tcl 命令，不是 Verilog。",
+      "src": "AMD UG903 Using Constraints",
+      "options": [
+        "基于 Tcl 语法",
+        "按顺序读取解析",
+        "包含时序与物理约束",
+        "它就是 Verilog 代码"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sw-093",
+      "cat": "software",
+      "sub": "constraints",
+      "type": "multi",
+      "q": "关于 create_clock 说法正确的有？",
+      "explain": "分配引脚用 PACKAGE_PIN。",
+      "src": "AMD UG903 Using Constraints",
+      "options": [
+        "需指定 -period",
+        "通常作用于时钟 get_ports",
+        "定义频率供时序分析",
+        "它用于分配引脚位置"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sw-094",
+      "cat": "software",
+      "sub": "constraints",
+      "type": "judge",
+      "q": "不写任何时钟约束，Vivado 也能做完整准确的时序分析。",
+      "explain": "无时钟约束时序分析不完整，无法正确收敛。",
+      "src": "AMD UG903 Using Constraints",
+      "answer": false
+    },
+    {
+      "id": "sw-095",
+      "cat": "software",
+      "sub": "constraints",
+      "type": "judge",
+      "q": "XDC 是基于 Tcl 的约束命令集合。",
+      "explain": "XDC 遵循 Tcl 语义。",
+      "src": "AMD UG903 Using Constraints",
+      "answer": true
+    },
+    {
+      "id": "sw-096",
+      "cat": "software",
+      "sub": "constraints",
+      "type": "judge",
+      "q": "PACKAGE_PIN 与 IOSTANDARD 都属于 set_property 的物理约束。",
+      "explain": "二者均为物理 IO 约束。",
+      "src": "AMD UG903 Using Constraints",
+      "answer": true
+    },
+    {
+      "id": "sw-097",
+      "cat": "software",
+      "sub": "constraints",
+      "type": "judge",
+      "q": "set_input_delay 属于物理引脚位置约束。",
+      "explain": "它是时序约束(板级输入延迟)。",
+      "src": "AMD UG903 Using Constraints",
+      "answer": false
+    },
+    {
+      "id": "sw-098",
+      "cat": "software",
+      "sub": "constraints",
+      "type": "fill",
+      "q": "定义时钟周期的命令是 create____。",
+      "explain": "create_clock。",
+      "src": "AMD UG903 Using Constraints",
+      "answer": [
+        "clock",
+        "create_clock"
+      ]
+    },
+    {
+      "id": "sw-099",
+      "cat": "software",
+      "sub": "constraints",
+      "type": "fill",
+      "q": "引脚位置约束关键字是 PACKAGE____。",
+      "explain": "PACKAGE_PIN。",
+      "src": "AMD UG903 Using Constraints",
+      "answer": [
+        "_PIN",
+        "PIN",
+        "PACKAGE_PIN"
+      ]
+    },
+    {
+      "id": "sw-100",
+      "cat": "software",
+      "sub": "constraints",
+      "type": "fill",
+      "q": "声明 3.3V 电平，IOSTANDARD 设为 L____33。",
+      "explain": "LVCMOS33。",
+      "src": "AMD UG903 Using Constraints",
+      "answer": [
+        "LVCMOS",
+        "LVCMOS33"
+      ]
+    },
+    {
+      "id": "sw-101",
+      "cat": "software",
+      "sub": "vitis",
+      "type": "single",
+      "q": "Vitis 主要用于？",
+      "explain": "Vitis 面向嵌入式软件。",
+      "src": "AMD Vitis Unified Platform docs.amd.com",
+      "options": [
+        "在处理器(PS)上开发 C/C++ 嵌入式软件",
+        "画 PCB",
+        "做机械设计",
+        "绘制电路原理图"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-102",
+      "cat": "software",
+      "sub": "vitis",
+      "type": "single",
+      "q": "早期 Xilinx SDK 在新一代工具中演变为？",
+      "explain": "Vitis 统一平台取代 SDK。",
+      "src": "AMD Vitis Unified Platform docs.amd.com",
+      "options": [
+        "Vitis",
+        "ModelSim",
+        "ISE",
+        "Vivado Simulator"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-103",
+      "cat": "software",
+      "sub": "vitis",
+      "type": "single",
+      "q": "BSP 的全称是？",
+      "explain": "板级支持包。",
+      "src": "AMD Vitis Unified Platform docs.amd.com",
+      "options": [
+        "Board Support Package",
+        "Board Schematic Program",
+        "Basic Signal Process",
+        "Board System Port"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-104",
+      "cat": "software",
+      "sub": "vitis",
+      "type": "single",
+      "q": "Zynq 中 PS 指？",
+      "explain": "PS=处理器系统(ARM)。",
+      "src": "AMD Vitis Unified Platform docs.amd.com",
+      "options": [
+        "Processing System(ARM 处理器子系统)",
+        "Programming System",
+        "Print Signal",
+        "Power System"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-105",
+      "cat": "software",
+      "sub": "vitis",
+      "type": "single",
+      "q": "Zynq 中 PL 指？",
+      "explain": "PL=可编程逻辑部分。",
+      "src": "AMD Vitis Unified Platform docs.amd.com",
+      "options": [
+        "Programmable Logic(可编程逻辑/FPGA)",
+        "Power Line",
+        "Phase Lock",
+        "Process Logic"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-106",
+      "cat": "software",
+      "sub": "vitis",
+      "type": "single",
+      "q": "裸机程序读写 AXI 外设寄存器常用？",
+      "explain": "Xil_Out32/Xil_In32 直接访问内存映射寄存器。",
+      "src": "AMD Vitis Unified Platform docs.amd.com",
+      "options": [
+        "Xil_Out32 / Xil_In32",
+        "printf",
+        "malloc",
+        "pthread"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-107",
+      "cat": "software",
+      "sub": "vitis",
+      "type": "single",
+      "q": "Vitis 工程通常从 Vivado 导出什么作为硬件平台？",
+      "explain": "Vivado 导出 .xsa 作为 Vitis 平台。",
+      "src": "AMD Vitis Unified Platform docs.amd.com",
+      "options": [
+        "含地址信息的 .xsa(硬件平台)",
+        "一张图片",
+        "PCB 原理图",
+        "PDF 文档"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-108",
+      "cat": "software",
+      "sub": "vitis",
+      "type": "single",
+      "q": "交叉编译是指？",
+      "explain": "宿主 PC 编译→目标 ARM。",
+      "src": "AMD Vitis Unified Platform docs.amd.com",
+      "options": [
+        "在 PC 上编译出 ARM 目标代码",
+        "在 ARM 上编译 PC 代码",
+        "不做编译",
+        "只做逻辑综合"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-109",
+      "cat": "software",
+      "sub": "vitis",
+      "type": "single",
+      "q": "Vitis 下载运行程序时通常通过？",
+      "explain": "经 hw_server/JTAG 下载调试。",
+      "src": "AMD Vitis Unified Platform docs.amd.com",
+      "options": [
+        "hw_server / JTAG 连接板子",
+        "串口打印",
+        "直接写 .bit",
+        "显示器"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-110",
+      "cat": "software",
+      "sub": "vitis",
+      "type": "multi",
+      "q": "关于 Vitis 说法正确的有？",
+      "explain": "RTL 综合是 Vivado 的事。",
+      "src": "AMD Vitis Unified Platform docs.amd.com",
+      "options": [
+        "面向处理器子系统开发 C/C++",
+        "与 Vivado 协同",
+        "取代早期 Xilinx SDK",
+        "它主要做 RTL 逻辑综合"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sw-111",
+      "cat": "software",
+      "sub": "vitis",
+      "type": "multi",
+      "q": "一个 Zynq 裸机程序典型包含？",
+      "explain": "原理图属硬件，不属程序。",
+      "src": "AMD Vitis Unified Platform docs.amd.com",
+      "options": [
+        "应用 main.c",
+        "对外设寄存器的地址访问",
+        "启动代码/链接脚本",
+        "PCB 原理图"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sw-112",
+      "cat": "software",
+      "sub": "vitis",
+      "type": "multi",
+      "q": "BSP 提供的内容通常包括？",
+      "explain": "BSP 是软件层，不做 RTL 综合。",
+      "src": "AMD Vitis Unified Platform docs.amd.com",
+      "options": [
+        "外设驱动库",
+        "外设寄存器定义",
+        "启动/中断支持",
+        "Verilog 逻辑综合"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sw-113",
+      "cat": "software",
+      "sub": "vitis",
+      "type": "multi",
+      "q": "纯 PL 工程 vs 带 PS 工程说法正确的有？",
+      "explain": "带 PS 仍需 JTAG 下载程序。",
+      "src": "AMD Vitis Unified Platform docs.amd.com",
+      "options": [
+        "纯 PL 只烧比特流",
+        "带 PS 还需运行 C 程序",
+        "纯 PL 不一定要装 Vitis",
+        "带 PS 一定不需要 JTAG"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sw-114",
+      "cat": "software",
+      "sub": "vitis",
+      "type": "judge",
+      "q": "Vitis 取代了早期 Xilinx SDK，用于嵌入式软件开发。",
+      "explain": "Vitis 统一软件平台承接 SDK 职能。",
+      "src": "AMD Vitis Unified Platform docs.amd.com",
+      "answer": true
+    },
+    {
+      "id": "sw-115",
+      "cat": "software",
+      "sub": "vitis",
+      "type": "judge",
+      "q": "纯 PL 工程(无软核/ARM)也必须安装 Vitis 才能烧板子。",
+      "explain": "纯 PL 用 Vivado Hardware Manager 即可。",
+      "src": "AMD Vitis Unified Platform docs.amd.com",
+      "answer": false
+    },
+    {
+      "id": "sw-116",
+      "cat": "software",
+      "sub": "vitis",
+      "type": "judge",
+      "q": "Zynq-7000 同时包含 ARM PS 与可编程逻辑 PL。",
+      "explain": "Zynq=PS+PL。",
+      "src": "AMD Vitis Unified Platform docs.amd.com",
+      "answer": true
+    },
+    {
+      "id": "sw-117",
+      "cat": "software",
+      "sub": "vitis",
+      "type": "judge",
+      "q": "Xil_Out32(base+offset, value) 用于写外设寄存器。",
+      "explain": "写内存映射寄存器。",
+      "src": "AMD Vitis Unified Platform docs.amd.com",
+      "answer": true
+    },
+    {
+      "id": "sw-118",
+      "cat": "software",
+      "sub": "vitis",
+      "type": "fill",
+      "q": "BSP 中文常称板级____包。",
+      "explain": "板级支持包。",
+      "src": "AMD Vitis Unified Platform docs.amd.com",
+      "answer": [
+        "支持",
+        "Support",
+        "BSP"
+      ]
+    },
+    {
+      "id": "sw-119",
+      "cat": "software",
+      "sub": "vitis",
+      "type": "fill",
+      "q": "Zynq 中 ARM 处理器子系统简称 P___。",
+      "explain": "PS。",
+      "src": "AMD Vitis Unified Platform docs.amd.com",
+      "answer": [
+        "PS",
+        "Processing System"
+      ]
+    },
+    {
+      "id": "sw-120",
+      "cat": "software",
+      "sub": "vitis",
+      "type": "fill",
+      "q": "在 PC 上编译出 ARM 可执行代码称为交叉____。",
+      "explain": "交叉编译。",
+      "src": "AMD Vitis Unified Platform docs.amd.com",
+      "answer": [
+        "编译",
+        "compile"
+      ]
+    },
+    {
+      "id": "sw-121",
+      "cat": "software",
+      "sub": "setup",
+      "type": "single",
+      "q": "Vivado 对学生/个人免费的版本是？",
+      "explain": "ML Standard 免费且器件受限。",
+      "src": "AMD Vivado ML Standard / Digilent docs",
+      "options": [
+        "ML Standard(免费、器件受限)",
+        "Enterprise(付费)",
+        "必须购买 license",
+        "老 ISE"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-122",
+      "cat": "software",
+      "sub": "setup",
+      "type": "single",
+      "q": "历史上 Xilinx 免费版 WebPACK 现在对应？",
+      "explain": "WebPACK 即现 ML Standard 免费版的前身。",
+      "src": "AMD Vivado ML Standard / Digilent docs",
+      "options": [
+        "Vivado ML Standard",
+        "Vivado Lab",
+        "Vitis HLS",
+        "ModelSim"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-123",
+      "cat": "software",
+      "sub": "setup",
+      "type": "single",
+      "q": "Vivado Lab Edition 的主要用途是？",
+      "explain": "Lab Edition 专用于编程调试、免 license。",
+      "src": "AMD Vivado ML Standard / Digilent docs",
+      "options": [
+        "下载/调试，无需 license",
+        "做完整综合实现流程",
+        "编译 C 程序",
+        "画 PCB"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-124",
+      "cat": "software",
+      "sub": "setup",
+      "type": "single",
+      "q": "在 Vivado ML Standard(免费版)下 Artix-7/Zynq-7000 常用型号？",
+      "explain": "Standard 免费覆盖常用 Artix-7/Zynq-7000。",
+      "src": "AMD Vivado ML Standard / Digilent docs",
+      "options": [
+        "在器件受限范围内通常支持",
+        "完全不能综合",
+        "必须单独付费才能综合",
+        "只能仿真不能实现"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-125",
+      "cat": "software",
+      "sub": "setup",
+      "type": "single",
+      "q": "下载 .bit 到板子最常用的物理连接是？",
+      "explain": "JTAG 是标准下载调试口。",
+      "src": "AMD Vivado ML Standard / Digilent docs",
+      "options": [
+        "JTAG",
+        "USB-UART 供电线",
+        "仅网口",
+        "PCI"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-126",
+      "cat": "software",
+      "sub": "setup",
+      "type": "single",
+      "q": "Digilent 下载器(JTAG-HS3/SMT 系列)在新版 Vivado 中？",
+      "explain": "新版 Vivado 常自带 Digilent 驱动。",
+      "src": "AMD Vivado ML Standard / Digilent docs",
+      "options": [
+        "通常内置驱动可直接识别",
+        "必须另购 license",
+        "完全不能用",
+        "需购买付费插件"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-127",
+      "cat": "software",
+      "sub": "setup",
+      "type": "single",
+      "q": "串口终端(PuTTY/Tera Term)主要用来？",
+      "explain": "串口终端看 UART printf。",
+      "src": "AMD Vivado ML Standard / Digilent docs",
+      "options": [
+        "查看 UART 打印信息",
+        "做逻辑综合",
+        "做布局布线",
+        "分配地址"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-128",
+      "cat": "software",
+      "sub": "setup",
+      "type": "single",
+      "q": "Vivado 装好了但 Hardware Manager 找不到板子，最常见原因是？",
+      "explain": "认不到板多因电缆连接或 JTAG 驱动。",
+      "src": "AMD Vivado ML Standard / Digilent docs",
+      "options": [
+        "电缆/驱动问题",
+        "显示器分辨率不够",
+        "没装 Office",
+        "必须联网才能下载"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-129",
+      "cat": "software",
+      "sub": "setup",
+      "type": "single",
+      "q": "开发板上的 FTDI 芯片通常用作？",
+      "explain": "FTDI 提供 USB-JTAG/UART 桥。",
+      "src": "AMD Vivado ML Standard / Digilent docs",
+      "options": [
+        "USB 转 JTAG/UART 桥接",
+        "LED 驱动",
+        "电源管理",
+        "FPGA 主芯片"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sw-130",
+      "cat": "software",
+      "sub": "setup",
+      "type": "multi",
+      "q": "关于 Vivado 授权说法正确的有？",
+      "explain": "Standard 器件受限，不支持全部高端器件。",
+      "src": "AMD Vivado ML Standard / Digilent docs",
+      "options": [
+        "ML Standard 免费、器件受限",
+        "Enterprise 付费、支持全部器件",
+        "Lab Edition 免 license 专用于下载调试",
+        "免费版可综合全部 UltraScale+"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sw-131",
+      "cat": "software",
+      "sub": "setup",
+      "type": "multi",
+      "q": "开发板与 PC 连接常用接口有？",
+      "explain": "VGA 是显示口，不是配置连接。",
+      "src": "AMD Vivado ML Standard / Digilent docs",
+      "options": [
+        "JTAG 下载",
+        "USB-UART 串口",
+        "网口",
+        "VGA 直连当电源"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sw-132",
+      "cat": "software",
+      "sub": "setup",
+      "type": "multi",
+      "q": "下列属于串口终端软件的有？",
+      "explain": "Excel 不是串口终端。",
+      "src": "AMD Vivado ML Standard / Digilent docs",
+      "options": [
+        "PuTTY",
+        "Tera Term",
+        "minicom",
+        "Excel"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sw-133",
+      "cat": "software",
+      "sub": "setup",
+      "type": "multi",
+      "q": "关于下载器/驱动说法正确的有？",
+      "explain": "驱动直接影响 JTAG 识别。",
+      "src": "AMD Vivado ML Standard / Digilent docs",
+      "options": [
+        "Digilent Adept 是 Digilent 官方软件",
+        "FTDI 提供 USB 转串口/JTAG 桥",
+        "新版 Vivado 常内置 Digilent 驱动",
+        "装不装驱动与 JTAG 识别无关"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": "sw-134",
+      "cat": "software",
+      "sub": "setup",
+      "type": "judge",
+      "q": "Vivado ML Standard 是免费的，但支持的器件数量受限。",
+      "explain": "Standard=免费器件受限版。",
+      "src": "AMD Vivado ML Standard / Digilent docs",
+      "answer": true
+    },
+    {
+      "id": "sw-135",
+      "cat": "software",
+      "sub": "setup",
+      "type": "judge",
+      "q": "只要装好 Vivado，开发板 JTAG 一定能被识别，无需任何驱动。",
+      "explain": "仍需正确的电缆驱动与连接。",
+      "src": "AMD Vivado ML Standard / Digilent docs",
+      "answer": false
+    },
+    {
+      "id": "sw-136",
+      "cat": "software",
+      "sub": "setup",
+      "type": "judge",
+      "q": "Vivado Lab Edition 不需要 license 即可用于下载调试。",
+      "explain": "Lab Edition 免 license。",
+      "src": "AMD Vivado ML Standard / Digilent docs",
+      "answer": true
+    },
+    {
+      "id": "sw-137",
+      "cat": "software",
+      "sub": "setup",
+      "type": "judge",
+      "q": "串口终端可以看到 FPGA 通过 UART 打印的字符。",
+      "explain": "UART 打印经串口终端显示。",
+      "src": "AMD Vivado ML Standard / Digilent docs",
+      "answer": true
+    },
+    {
+      "id": "sw-138",
+      "cat": "software",
+      "sub": "setup",
+      "type": "fill",
+      "q": "Vivado 免费、器件受限的版本叫 ML S______。",
+      "explain": "ML Standard。",
+      "src": "AMD Vivado ML Standard / Digilent docs",
+      "answer": [
+        "Standard"
+      ]
+    },
+    {
+      "id": "sw-139",
+      "cat": "software",
+      "sub": "setup",
+      "type": "fill",
+      "q": "历史上 Xilinx 免费 FPGA 工具包叫 Web____。",
+      "explain": "WebPACK。",
+      "src": "AMD Vivado ML Standard / Digilent docs",
+      "answer": [
+        "PACK",
+        "WebPACK"
+      ]
+    },
+    {
+      "id": "sw-140",
+      "cat": "software",
+      "sub": "setup",
+      "type": "fill",
+      "q": "FPGA 下载/调试常用的物理接口是 J___。",
+      "explain": "JTAG。",
+      "src": "AMD Vivado ML Standard / Digilent docs",
+      "answer": [
+        "JTAG"
+      ]
+    }
+  ]
+}
