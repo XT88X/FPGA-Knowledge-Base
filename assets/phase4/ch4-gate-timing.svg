@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 420" font-family="Consolas,Menlo,monospace">
+  <rect width="880" height="420" fill="#0d1420"/>
+  <text x="20" y="30" fill="#4fc3f7" font-size="18" font-weight="bold">闸门法测频时序（gate method timing）</text>
+
+  <!-- 50MHz clk -->
+  <text x="20" y="80" fill="#9fb3d1" font-size="13">clk 50MHz</text>
+  <polyline points="120,70 140,70 140,55 160,55 160,70 180,70 180,55 200,55 200,70 220,70 220,55 240,55 240,70 260,70 260,55 280,55 280,70 300,70 300,55 320,55 320,70 340,70 340,55 360,55 360,70 380,70 380,55 400,55 400,70 420,70 420,55 440,55 440,70 460,70 460,55 480,55 480,70 500,70 500,55 520,55 520,70 540,70 540,55 560,55 560,70" fill="none" stroke="#9fb3d1" stroke-width="1.5"/>
+
+  <!-- gate -->
+  <text x="20" y="140" fill="#81c784" font-size="13">gate 闸门</text>
+  <line x1="120" y1="150" x2="560" y2="150" stroke="#3a4a63" stroke-width="1"/>
+  <rect x="120" y="120" width="360" height="26" fill="#1b3a2a" stroke="#81c784"/>
+  <text x="230" y="138" fill="#81c784" font-size="12">gate = 1 （计数窗口 GATE_TICKS）</text>
+  <line x1="480" y1="120" x2="480" y2="150" stroke="#81c784"/>
+  <text x="490" y="138" fill="#ffb74d" font-size="12">保持/锁存期</text>
+
+  <!-- sig_in -->
+  <text x="20" y="210" fill="#9fb3d1" font-size="13">sig_in 被测</text>
+  <polyline points="120,220 150,220 150,200 180,200 180,220 210,220 210,200 240,200 240,220 270,220 270,200 300,200 300,220 330,220 330,200 360,200 360,220 390,220 390,200 420,200 420,220 450,220 450,200 480,200 480,220" fill="none" stroke="#e0a7f0" stroke-width="1.5"/>
+
+  <!-- count ramp -->
+  <text x="20" y="290" fill="#9fb3d1" font-size="13">count 累加</text>
+  <line x1="120" y1="330" x2="480" y2="330" stroke="#3a4a63"/>
+  <polyline points="120,330 150,322 180,314 210,306 240,298 270,290 300,282 330,274 360,266 390,258 420,250 450,242 480,242" fill="none" stroke="#4fc3f7" stroke-width="2"/>
+  <text x="300" y="350" fill="#4fc3f7" font-size="12">闸门内每个上升沿 count+1 → 计数值 = 频率</text>
+
+  <!-- gate_done / latch -->
+  <line x1="480" y1="100" x2="480" y2="360" stroke="#ffb74d" stroke-dasharray="4,3"/>
+  <text x="486" y="105" fill="#ffb74d" font-size="12">gate_done↑ latch / clr</text>
+
+  <text x="20" y="395" fill="#7c8db0" font-size="12">±1 个字误差：闸门起止与被测沿异步对齐，计数误差 ±1；闸门越长相对误差越小。</text>
+</svg>

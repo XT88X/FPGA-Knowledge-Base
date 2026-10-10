@@ -1,0 +1,52 @@
+{
+  "chapterId": "4.4",
+  "phase": 4,
+  "slug": "freq-meter",
+  "title": "综合项目 · 数字频率计",
+  "summary": "闸门法测频：1s 闸门内对被测脉冲计数得频率，±1 字误差，量程自动切 Hz/kHz/MHz，数码管动态扫描显示。",
+  "doc": "docs/phase4/ch4-freq-meter.md",
+  "code": [
+    {"file": "code/phase4/ch4_gate_gen.v", "type": "verilog", "role": "synthesizable", "title": "ch4_gate_gen.v — 闸门发生器（可综合）"},
+    {"file": "code/phase4/tb_ch4_gate_gen.v", "type": "verilog", "role": "testbench", "title": "tb_ch4_gate_gen.v"},
+    {"file": "code/phase4/ch4_event_counter.v", "type": "verilog", "role": "synthesizable", "title": "ch4_event_counter.v — 闸门内事件计数/锁存（可综合）"},
+    {"file": "code/phase4/tb_ch4_event_counter.v", "type": "verilog", "role": "testbench", "title": "tb_ch4_event_counter.v"},
+    {"file": "code/phase4/ch4_freq_fsm.v", "type": "verilog", "role": "synthesizable", "title": "ch4_freq_fsm.v — 测量状态机+量程切换+BCD（可综合）"},
+    {"file": "code/phase4/tb_ch4_freq_fsm.v", "type": "verilog", "role": "testbench", "title": "tb_ch4_freq_fsm.v"},
+    {"file": "code/phase4/ch4_seg7_scan.v", "type": "verilog", "role": "synthesizable", "title": "ch4_seg7_scan.v — 6 位数码管动态扫描（可综合）"},
+    {"file": "code/phase4/tb_ch4_seg7_scan.v", "type": "verilog", "role": "testbench", "title": "tb_ch4_seg7_scan.v"},
+    {"file": "code/phase4/ch4_freq_meter_top.v", "type": "verilog", "role": "synthesizable", "title": "ch4_freq_meter_top.v — 频率计顶层（可综合）"},
+    {"file": "code/phase4/tb_ch4_freq_meter_top.v", "type": "verilog", "role": "testbench", "title": "tb_ch4_freq_meter_top.v"}
+  ],
+  "diagrams": [
+    {"file": "assets/phase4/ch4-gate-timing.svg", "title": "闸门法测频时序", "caption": "gate 高电平窗口内对 sig_in 上升沿计数，落下时锁存，±1 字误差。"},
+    {"file": "assets/phase4/ch4-freq-block.svg", "title": "频率计系统框图", "caption": "gate_gen→event_counter→freq_fsm→seg7_scan 的数据流与 latch/clr 反馈。"},
+    {"file": "assets/phase4/ch4-range-switch.svg", "title": "量程/单位切换逻辑", "caption": "按 count 阈值自动切 Hz/kHz/MHz 并缩放显示值。"}
+  ],
+  "tools": [
+    {"name": "AMD/Xilinx Vivado 下载", "url": "https://www.xilinx.com/support/download.html", "required": true, "note": "ML Standard 免费版；访问日期 2026-10。"},
+    {"name": "通用引脚约束模板 fpga_common.xdc", "url": "../code/common/fpga_common.xdc", "required": true, "note": "相对本仓库；按开发板替换 PACKAGE_PIN，不编造引脚号。"},
+    {"name": "板级适配方法 board-adaptation.md", "url": "../docs/board-adaptation.md", "required": true, "note": "如何找正点原子/野火板的时钟/数码管/按键参考引脚。"}
+  ],
+  "tasks": [
+    {"id": "task-4-4-1", "text": "实现闸门法测频，测量范围 1Hz-50MHz"},
+    {"id": "task-4-4-2", "text": "数码管显示频率数值，单位自动切换"}
+  ],
+  "cards": [
+    {"q": "闸门法测频的基本思路是什么？", "a": "开一个精确闸门窗口（默认 1s），窗口内对被测脉冲上升沿计数，窗口结束锁存计数值；闸门为 1s 时计数值就是频率 Hz。", "tags": ["测频", "原理"]},
+    {"q": "为什么闸门法有 ±1 个字误差？", "a": "闸门起止与被测信号沿异步对齐，开始/结束时可能多抓或少抓一个沿，量化误差恒为 ±1；相对误差≈1/N。", "tags": ["误差"]},
+    {"q": "闸门越长测低频越准吗？", "a": "相对误差随计数值 N 增大而减小，但 1Hz 信号在 1s 闸门只数到 1，相对误差 100%，需用等精度/倒数法改善。", "tags": ["误差", "低频"]},
+    {"q": "1 秒闸门、50MHz 时钟，事件计数器至少要多少位？", "a": "最多数 50,000,000 个沿，2^26=67M 够，取 27 位留余量（CNT_WIDTH=27）。", "tags": ["位宽", "计算"]},
+    {"q": "ch4_gate_gen 里 GATE_TICKS 怎么定 1 秒闸门？", "a": "50MHz 一秒 50,000,000 个时钟，故 GATE_TICKS=50,000,000；仿真时改小（如 100）即可加速。", "tags": ["参数", "闸门"]},
+    {"q": "量程自动切换的阈值怎么定？", "a": "count≥1,000,000 显示 MHz（除 1e6）；count≥1,000 显示 kHz（除 1e3）；否则 Hz。", "tags": ["量程", "单位"]},
+    {"q": "数码管为什么要动态扫描？", "a": "多位共阴/共阳数码管若全点亮需大量引脚；扫描法逐位快速轮亮，利用人眼视觉暂留看起来常亮。", "tags": ["数码管", "扫描"]},
+    {"q": "为什么不能直接用系统时钟去数 50MHz 被测信号？", "a": "系统时钟也是 50MHz，采样/同步会丢边沿；工业级应让被测信号自己异步计数，结束后跨时钟域读回。", "tags": ["跨时钟域", "精度"]},
+    {"q": "double-dabble 是做什么的？", "a": "二进制转 BCD 的经典算法：每轮左移一位，某 BCD 位≥5 就先加 3，循环完成后得到每位 0-9 的 BCD。", "tags": ["BCD", "算法"]},
+    {"q": "被测输入 sig_in 为什么要做同步？", "a": "sig_in 相对系统时钟异步，直接采样会亚稳态/采样错；模块内用 2 级触发器同步后再做边沿检测。", "tags": ["同步", "亚稳态"]}
+  ],
+  "quiz": [
+    {"q": "1 秒闸门下，闸门内数到 12,345,000 个沿，表示被测频率约为？", "options": ["12.345 kHz", "12.345 MHz", "123.45 Hz", "1.2345 MHz"], "answer": 1, "explain": "闸门 1s，计数即频率 Hz；12,345,000 Hz=12.345 MHz。"},
+    {"q": "闸门法测频的 ±1 个字误差来源是？", "options": ["晶振不准", "闸门与被测沿异步对齐", "数码管刷新", "电源纹波"], "answer": 1, "explain": "闸门起止与被测沿异步，开始/结束多抓或少抓一个沿。"},
+    {"q": "count=1,500,000 时量程切换模块应输出？", "options": ["unit=Hz，值 1500000", "unit=kHz，值 1500", "unit=MHz，值 1", "unit=MHz，值 1500"], "answer": 2, "explain": "≥1,000,000 归 MHz 档，显示值=1500000/1e6=1。"},
+    {"q": "事件计数器位宽取 27 位是为了？", "options": ["降低功耗", "数满 50MHz×1s 且留余量", "兼容数码管", "减少 LUT"], "answer": 1, "explain": "2^26=67M>50M，27 位保证 1s 闸门下不溢出。"}
+  ]
+}

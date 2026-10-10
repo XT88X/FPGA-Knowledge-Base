@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 380" font-family="Consolas,Menlo,monospace">
+  <rect width="880" height="380" fill="#0d1420"/>
+  <text x="20" y="30" fill="#4fc3f7" font-size="18" font-weight="bold">数字频率计系统框图</text>
+
+  <!-- boxes -->
+  <rect x="40" y="120" width="130" height="70" rx="6" fill="#16263c" stroke="#4fc3f7"/>
+  <text x="55" y="150" fill="#4fc3f7" font-size="13">ch4_gate_gen</text>
+  <text x="55" y="170" fill="#9fb3d1" font-size="11">50MHz→1s闸门</text>
+
+  <rect x="230" y="120" width="150" height="70" rx="6" fill="#16263c" stroke="#81c784"/>
+  <text x="245" y="150" fill="#81c784" font-size="13">ch4_event_counter</text>
+  <text x="245" y="170" fill="#9fb3d1" font-size="11">闸门内沿计数/锁存</text>
+
+  <rect x="430" y="120" width="150" height="70" rx="6" fill="#16263c" stroke="#ffb74d"/>
+  <text x="445" y="145" fill="#ffb74d" font-size="13">ch4_freq_fsm</text>
+  <text x="445" y="163" fill="#9fb3d1" font-size="11">测量-锁存-复位</text>
+  <text x="445" y="178" fill="#9fb3d1" font-size="11">量程判定+BCD</text>
+
+  <rect x="630" y="120" width="170" height="70" rx="6" fill="#16263c" stroke="#e0a7f0"/>
+  <text x="645" y="150" fill="#e0a7f0" font-size="13">ch4_seg7_scan</text>
+  <text x="645" y="170" fill="#9fb3d1" font-size="11">6位数码管动态扫描</text>
+
+  <!-- arrows -->
+  <line x1="170" y1="155" x2="230" y2="155" stroke="#9fb3d1" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="180" y="148" fill="#9fb3d1" font-size="10">gate</text>
+  <line x1="380" y1="155" x2="430" y2="155" stroke="#9fb3d1" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="388" y="148" fill="#9fb3d1" font-size="10">count</text>
+  <line x1="580" y1="155" x2="630" y2="155" stroke="#9fb3d1" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="588" y="148" fill="#9fb3d1" font-size="10">bcd/unit</text>
+
+  <!-- feedback -->
+  <path d="M 505 190 L 505 250 L 305 250 L 305 190" fill="none" stroke="#ffb74d" stroke-dasharray="4,3" marker-end="url(#a)"/>
+  <text x="360" y="265" fill="#ffb74d" font-size="11">latch / clr 反馈</text>
+
+  <!-- inputs/outputs -->
+  <text x="230" y="105" fill="#e0a7f0" font-size="11">sig_in 被测脉冲</text>
+  <line x1="305" y1="108" x2="305" y2="120" stroke="#e0a7f0"/>
+  <text x="630" y="105" fill="#81c784" font-size="11">seg[7:0] sel[5:0] unit_led[1:0]</text>
+
+  <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#9fb3d1"/></marker></defs>
+  <text x="20" y="340" fill="#7c8db0" font-size="12">顶层 ch4_freq_meter_top 把上述模块互连；引脚见 code/common/fpga_common.xdc（不编造引脚号）。</text>
+</svg>
