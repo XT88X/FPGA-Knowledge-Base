@@ -32,6 +32,7 @@ except Exception:
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FRAG_DIR = os.path.join(ROOT, "data", "fragments")
 EXAM_DIR = os.path.join(ROOT, "data", "exam")
+DRILL_DIR = os.path.join(ROOT, "data", "drill")
 TEMPLATE = os.path.join(ROOT, "templates", "index.template.html")
 OUT_INDEX = os.path.join(ROOT, "index.html")
 OUT_KBJSON = os.path.join(ROOT, "data", "knowledge-base.json")
@@ -111,6 +112,7 @@ def main():
 
     # 聚合通关考卷题库 data/exam/phaseN.json -> KB.exams[phase]
     raw_exams = {}
+    exam_pool = []  # 阶段课程题并入刷题总题库
     if os.path.isdir(EXAM_DIR):
         for fn in sorted(os.listdir(EXAM_DIR)):
             m = re.match(r"phase(\d+)\.json$", fn)
@@ -120,11 +122,43 @@ def main():
                 exam = json.load(f)
             kb["exams"][int(m.group(1))] = exam
             raw_exams[int(m.group(1))] = exam
+            ph = int(m.group(1))
+            for q in exam.get("questions", []):
+                eq = dict(q)
+                eq["id"] = "exam-p%d-%s" % (ph, q.get("id", "x"))
+                eq["cat"] = "phasecourse"
+                eq["catName"] = "阶段课程"
+                eq["sub"] = "阶段%d" % ph
+                exam_pool.append(eq)
+
+    # 聚合 data/drill/<cat>.json -> KB.drill
+    drill = {"categories": [], "questions": []}
+    if os.path.isdir(DRILL_DIR):
+        for fn in sorted(os.listdir(DRILL_DIR)):
+            if not re.match(r"[a-z0-9_\-]+\.json$", fn) or fn.startswith("_"):
+                continue
+            with open(os.path.join(DRILL_DIR, fn), encoding="utf-8") as f:
+                d = json.load(f)
+            drill["categories"].append({
+                "cat": d.get("cat", fn[:-5]),
+                "catName": d.get("catName", d.get("cat", "")),
+                "cards": d.get("cards", []),
+            })
+            for q in d.get("questions", []):
+                qq = dict(q)
+                qq.setdefault("cat", d.get("cat", ""))
+                qq.setdefault("catName", d.get("catName", ""))
+                drill["questions"].append(qq)
+    # 刷题总题库 = drill 题 + 阶段课程题
+    drill["allQuestions"] = drill["questions"] + exam_pool
+    kb["drill"] = drill
 
     # 1) 独立聚合 JSON（原始 fragment + 题库，供仓库阅读/检索）
     with open(OUT_KBJSON, "w", encoding="utf-8") as f:
         json.dump({"chapters": raw_fragments, "tools": list(tools_seen.values()),
-                   "exams": raw_exams},
+                   "exams": raw_exams,
+                   "drill": {"categories": kb["drill"]["categories"],
+                             "questions": kb["drill"]["allQuestions"]}},
                   f, ensure_ascii=False, indent=2)
 
     # 2) 模板注入

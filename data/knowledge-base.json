@@ -7806,5 +7806,6383 @@
         }
       ]
     }
+  },
+  "drill": {
+    "categories": [
+      {
+        "cat": "digital",
+        "catName": "数字电路与电平标准",
+        "cards": [
+          {
+            "id": "dig-c001",
+            "sub": "shuzhi",
+            "title": "二进制与十六进制",
+            "body": "① 每4位二进制对应1位十六进制（0000~1111 = 0~F）。\n② 八进制每3位一组；十进制逢10进1。\n③ FPGA内部只用高低电平，天然是二进制世界。",
+            "src": "AMD UG199"
+          },
+          {
+            "id": "dig-c002",
+            "sub": "shuzhi",
+            "title": "位宽与能表示的数值",
+            "body": "① n位无符号范围 0 ~ 2^n-1。\n② n位有符号(补码)范围 -2^(n-1) ~ 2^(n-1)-1。\n③ 例：8位无符号 0~255；8位有符号 -128~127。",
+            "src": ""
+          },
+          {
+            "id": "dig-c003",
+            "sub": "shuzhi",
+            "title": "BCD码",
+            "body": "① BCD用4位二进制表示1位十进制(0000~1001)。\n② 12 的 BCD = 0001 0010。\n③ 常用于数码管/时钟显示，不是纯二进制。",
+            "src": ""
+          },
+          {
+            "id": "dig-c004",
+            "sub": "shuzhi",
+            "title": "格雷码(Gray)",
+            "body": "① 相邻两个码只差1位，消除翻码冒险。\n② 常用于同步 FIFO 跨时钟域指针、旋转编码器。\n③ 二进制转格雷：g=b xor (b>>1)。",
+            "src": ""
+          },
+          {
+            "id": "dig-c005",
+            "sub": "shuzhi",
+            "title": "原码/反码/补码",
+            "body": "① 正数三者相同。\n② 负数反码=按位取反；补码=反码+1。\n③ FPGA有符号运算一律用补码，减法变加法。",
+            "src": ""
+          },
+          {
+            "id": "dig-c006",
+            "sub": "shuzhi",
+            "title": "有符号数拓展",
+            "body": "① 符号拓展：把最高位(符号位)向左复制。\n② 4位 -1(1111) 拓展到8位 = 11111111。\n③ 零拓展用于无符号数左边补0。",
+            "src": ""
+          },
+          {
+            "id": "dig-c007",
+            "sub": "shuzhi",
+            "title": "常见幂次",
+            "body": "① 2^10=1,024(K)；2^20=1,048,576(M)；2^30=1,073,741,824(G)。\n② 50MHz 半周期到1Hz = 25,000,000。",
+            "src": ""
+          },
+          {
+            "id": "dig-c008",
+            "sub": "shuzhi",
+            "title": "ASCII/编码",
+            "body": "① 数字'0'=0x30，'A'=0x41，'a'=0x61。\n② UART/串口按字节(8bit)传ASCII。",
+            "src": ""
+          },
+          {
+            "id": "dig-c009",
+            "sub": "men",
+            "title": "基本逻辑门",
+            "body": "① AND与：全1出1；OR或：有1出1。\n② NOT非：取反；NAND与非、NOR或非。\n③ XOR异或：相同出0、不同出1；XNOR同或相反。",
+            "src": ""
+          },
+          {
+            "id": "dig-c010",
+            "sub": "men",
+            "title": "布尔代数定律",
+            "body": "① 交换律/结合律/分配律同普通代数。\n② A+0=A, A+1=1, A·0=0, A·1=A。\n③ A+A=A, A·A=A, A+A'=1, A·A'=0。",
+            "src": ""
+          },
+          {
+            "id": "dig-c011",
+            "sub": "men",
+            "title": "德摩根定律",
+            "body": "① (A·B)' = A' + B'；(A+B)' = A'·B'。\n② 与非可凑出任意门；FPGA LUT基于此实现。",
+            "src": ""
+          },
+          {
+            "id": "dig-c012",
+            "sub": "men",
+            "title": "XOR的用途",
+            "body": "① 异或可做比较器：A^B=0 表示相等。\n② 可做可控反相器：B=1则输出~A，B=0则A。\n③ 奇偶校验。",
+            "src": ""
+          },
+          {
+            "id": "dig-c013",
+            "sub": "men",
+            "title": "最小项/最大项",
+            "body": "① 最小项m：所有变量以原/反码出现且 AND。\n② 最大项M：所有变量 OR。\n③ 真值表→最小项之和(SOP)。",
+            "src": ""
+          },
+          {
+            "id": "dig-c014",
+            "sub": "men",
+            "title": "LUT如何实现函数",
+            "body": "① 一个n输入LUT是2^n深的小RAM。\n② 把真值表写进去，输入即地址。\n③ Artix-7基本是6输入LUT。",
+            "src": "AMD UG474"
+          },
+          {
+            "id": "dig-c015",
+            "sub": "zuhe",
+            "title": "组合逻辑定义",
+            "body": "① 输出只由当前输入决定，无记忆、无时钟。\n② 表达式里用 assign 或 always @(*)。\n③ 不写 always 时钟沿。",
+            "src": ""
+          },
+          {
+            "id": "dig-c016",
+            "sub": "zuhe",
+            "title": "真值表到电路",
+            "body": "① 列出输入所有组合与输出。\n② 把输出为1的最小项写成SOP。\n③ 或化简后映射到LUT。",
+            "src": ""
+          },
+          {
+            "id": "dig-c017",
+            "sub": "zuhe",
+            "title": "卡诺图",
+            "body": "① 方格相邻只差1位(格雷序)。\n② 圈1得SOP、圈0得POS。\n③ 圈越大项越少，速度越快。",
+            "src": ""
+          },
+          {
+            "id": "dig-c018",
+            "sub": "zuhe",
+            "title": "竞争与冒险",
+            "body": "① 同一信号经不同路径延迟不同到达。\n② 输出出现毛刺(glitch)。\n③ 同步采样/加同步器/卡诺消项可消除。",
+            "src": ""
+          },
+          {
+            "id": "dig-c019",
+            "sub": "zuhe",
+            "title": "组合逻辑必须完整赋值",
+            "body": "① always @(*) 里 if/else 要覆盖全情况。\n② 否则综合出 latch(锁存器)，不希望。\n③ 用 default 或先给默认值。",
+            "src": "AMD UG901"
+          },
+          {
+            "id": "dig-c020",
+            "sub": "zhongzu",
+            "title": "译码器",
+            "body": "① n输入→2^n输出，每次仅1路有效(one-hot)。\n② 3-8译码器常用于地址译码。",
+            "src": ""
+          },
+          {
+            "id": "dig-c021",
+            "sub": "zhongzu",
+            "title": "编码器",
+            "body": "① 与译码相反：多输入→二进制编号。\n② 优先编码器(优先编码器)常用。",
+            "src": ""
+          },
+          {
+            "id": "dig-c022",
+            "sub": "zhongzu",
+            "title": "多路选择器MUX",
+            "body": "① sel选一路输入送到输出。\n② 可用assign case或三元嵌套。\n③ 数据通路核心。",
+            "src": ""
+          },
+          {
+            "id": "dig-c023",
+            "sub": "zhongzu",
+            "title": "加法器",
+            "body": "① 半加器：sum=a^b, cout=a&b。\n② 全加器再加进位cin。\n③ 多级级联成RCA，更快用CLA。",
+            "src": ""
+          },
+          {
+            "id": "dig-c024",
+            "sub": "zhongzu",
+            "title": "比较器",
+            "body": "① 比较两个数大小，输出 gt/eq/lt。\n② LUT 直接实现。",
+            "src": ""
+          },
+          {
+            "id": "dig-c025",
+            "sub": "zhongzu",
+            "title": "三态缓冲/使能",
+            "body": "① 输出由 en 控制：en=0 时高阻 Z。\n② 现代FPGA少用片内三态，多用MUX。",
+            "src": ""
+          },
+          {
+            "id": "dig-c026",
+            "sub": "shixu",
+            "title": "时序逻辑本质",
+            "body": "① 输出=当前输入+历史状态。\n② 由时钟沿驱动，触发器保存状态。\n③ always @(posedge clk ...)。",
+            "src": ""
+          },
+          {
+            "id": "dig-c027",
+            "sub": "shixu",
+            "title": "锁存器 vs 触发器",
+            "body": "① 锁存器电平敏感(透明)。\n② 触发器边沿敏感(采样)。\n③ FPGA推荐用触发器，避免意外锁存器。",
+            "src": ""
+          },
+          {
+            "id": "dig-c028",
+            "sub": "shixu",
+            "title": "寄存器/流水线",
+            "body": "① 触发器打一拍=寄存。\n② 流水线拆分长路径提频率。\n③ 每打一拍多1拍延迟。",
+            "src": ""
+          },
+          {
+            "id": "dig-c029",
+            "sub": "shixu",
+            "title": "建立时间/保持时间",
+            "body": "① 建立tSU：数据须在时钟沿前稳定。\n② 保持tH：时钟沿后须再稳定一段时间。\n③ 不满足→亚稳态/采样错。",
+            "src": "AMD UG474"
+          },
+          {
+            "id": "dig-c030",
+            "sub": "shixu",
+            "title": "计数器",
+            "body": "① 时序状态机：在时钟沿更新计数值。\n② 位宽由最大值决定：2^N>最大值。",
+            "src": ""
+          },
+          {
+            "id": "dig-c031",
+            "sub": "shixu",
+            "title": "亚稳态与同步",
+            "body": "① 异步信号直接采可能亚稳。\n② 用两级触发器同步器打两拍。\n③ 跨时钟域必做同步。",
+            "src": ""
+          },
+          {
+            "id": "dig-c032",
+            "sub": "dianping",
+            "title": "LVCMOS电平",
+            "body": "① LVCMOS3.3：高≈3.3V，低≈0V。\n② LVCMOS1.8：高≈1.8V。\n③ XDC里 IOSTANDARD=LVCMOS33。",
+            "src": ""
+          },
+          {
+            "id": "dig-c033",
+            "sub": "dianping",
+            "title": "TTL电平",
+            "body": "① TTL高≈2.0~5V，低≤0.8V。\n② 3.3V LVCMOS 与5V TTL常可互通(注意耐压)。",
+            "src": ""
+          },
+          {
+            "id": "dig-c034",
+            "sub": "dianping",
+            "title": "LVDS",
+            "body": "① 低压差分信号，两线互补。\n② 抗干扰强、速率高，用于高速传输/显示。\n③ 摆幅约±350mV。",
+            "src": ""
+          },
+          {
+            "id": "dig-c035",
+            "sub": "dianping",
+            "title": "推挽 vs 开漏",
+            "body": "① 推挽：上下管主动驱动，可输出高低。\n② 开漏：只能拉低，需外部上拉电阻。\n③ I2C用开漏+上拉实现线与。",
+            "src": ""
+          },
+          {
+            "id": "dig-c036",
+            "sub": "dianping",
+            "title": "上拉/下拉电阻",
+            "body": "① 上拉：默认高电平。\n② 下拉：默认低电平。\n③ 按键输入常用上拉，按下接地为低。",
+            "src": ""
+          },
+          {
+            "id": "dig-c037",
+            "sub": "dianping",
+            "title": "扇出/灌拉电流",
+            "body": "① 一个输出能驱动的输入个数叫扇出。\n② 灌电流<拉电流(看器件)。\n③ 大电流需缓冲/电平转换芯片。",
+            "src": ""
+          },
+          {
+            "id": "dig-c038",
+            "sub": "dianping",
+            "title": "XDC电平声明",
+            "body": "① set_property PACKAGE_PIN F16 [get_ports clk]。\n② set_property IOSTANDARD LVCMOS33 [get_ports {*}]。",
+            "src": ""
+          },
+          {
+            "id": "dig-c039",
+            "sub": "shixu",
+            "title": "状态机FSM",
+            "body": "① 时序设计常用FSM：现态+输入→次态。\n② 一段式/两段式/三段式写法。\n③ FPGA里FSM用触发器寄存状态。",
+            "src": ""
+          },
+          {
+            "id": "dig-c040",
+            "sub": "shixu",
+            "title": "异步复位同步释放",
+            "body": "① 复位异步生效(快)。\n② 释放时与时钟同步(避免亚稳)。\n③ 工业标准做法。",
+            "src": ""
+          },
+          {
+            "id": "dig-c041",
+            "sub": "zuhe",
+            "title": "case与if-else",
+            "body": "① case是并行MUX，无优先级。\n② if-else有优先级(priority encoder)。\n③ 时序要求选合适写法。",
+            "src": ""
+          },
+          {
+            "id": "dig-c042",
+            "sub": "zhongzu",
+            "title": "计数器使能/加载",
+            "body": "① 带en才计数；带load可预置初值。\n② 可做分频/脉冲生成。",
+            "src": ""
+          },
+          {
+            "id": "dig-c043",
+            "sub": "dianping",
+            "title": "电平转换",
+            "body": "① 不同电压域之间需电平转换芯片。\n② 直接相连可能损坏IO或读错。",
+            "src": ""
+          },
+          {
+            "id": "dig-c044",
+            "sub": "shuzhi",
+            "title": "位拼接与选择",
+            "body": "① {a,b}拼接；a[i:j]选位。\n② Verilog里最常用的位操作。",
+            "src": ""
+          },
+          {
+            "id": "dig-c045",
+            "sub": "men",
+            "title": "缓冲/延迟链",
+            "body": "① 反相器链可做粗略延迟。\n② 关键路径延迟由布线+LUT决定。",
+            "src": ""
+          },
+          {
+            "id": "dig-c046",
+            "sub": "zuhe",
+            "title": "时序违例",
+            "body": "① 建立时间不够→跑不上目标频率。\n② 改约束/加寄存器/缩短路径。",
+            "src": ""
+          }
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "id": "dig-001",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "8位无符号二进制能表示的最大值是？",
+        "options": [
+          "127",
+          "128",
+          "255",
+          "256"
+        ],
+        "answer": 2,
+        "explain": "n位无符号最大值=2^n-1=255。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-002",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "8位有符号(补码)的范围是？",
+        "options": [
+          "-127~127",
+          "-128~127",
+          "0~255",
+          "-256~255"
+        ],
+        "answer": 1,
+        "explain": "补码n位范围 -2^(n-1)~2^(n-1)-1。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-003",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十六进制数 0x1F 等于十进制？",
+        "options": [
+          "29",
+          "31",
+          "30",
+          "17"
+        ],
+        "answer": 1,
+        "explain": "0x1F=1*16+15=31。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-004",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 255 的十六进制写法是？",
+        "options": [
+          "0xFF",
+          "0x100",
+          "0xFE",
+          "0x0F"
+        ],
+        "answer": 0,
+        "explain": "255=15*16+15=0xFF。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-005",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "4位二进制 1011 等于十进制？",
+        "options": [
+          "11",
+          "13",
+          "10",
+          "12"
+        ],
+        "answer": 0,
+        "explain": "8+2+1=11。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-006",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "BCD 码 0001 0010 表示的十进制数是？",
+        "options": [
+          "12",
+          "18",
+          "2",
+          "110"
+        ],
+        "answer": 0,
+        "explain": "4位一组：0001=1, 0010=2 → 12。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-007",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "judge",
+        "q": "格雷码相邻两个码字之间只有1位发生变化。",
+        "answer": true,
+        "explain": "格雷码特意如此，用于消除多位同时翻转的冒险。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-008",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "judge",
+        "q": "在FPGA中，减法运算可以用补码的加法来实现。",
+        "answer": true,
+        "explain": "补码把减法统一成加法，硬件只需加法器。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-009",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "fill",
+        "q": "2的10次方约等于多少（十进制整数）？",
+        "answer": [
+          "1024",
+          "1,024"
+        ],
+        "explain": "2^10=1024(K)。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-010",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "fill",
+        "q": "字符'A'的ASCII十六进制值是多少？",
+        "answer": [
+          "0x41",
+          "41",
+          "65"
+        ],
+        "explain": "A=0x41=65。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-011",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "multi",
+        "q": "下列关于有符号数的说法正确的有？",
+        "options": [
+          "负数在FPGA中用补码表示",
+          "符号拓展是把最高位向左复制",
+          "正数的原码反码补码相同",
+          "补码中 -128 与 +127 都可表示"
+        ],
+        "answer": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "explain": "全部正确：补码表示、符号拓展、正数三码相同、8位范围-128~127。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-012",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "multi",
+        "q": "下列属于'编码'应用的有？",
+        "options": [
+          "BCD码用于数码管",
+          "格雷码用于跨时钟指针",
+          "ASCII用于串口字符",
+          "二进制直接表示真值"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "前三种都是编码；二进制是直接计数不算编码。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-013",
+        "cat": "digital",
+        "sub": "men",
+        "type": "single",
+        "q": "与门(AND)的输出何时为1？",
+        "options": [
+          "任一输入为1",
+          "所有输入都为1",
+          "输入全为0",
+          "奇数个1"
+        ],
+        "answer": 1,
+        "explain": "与门全1出1。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-014",
+        "cat": "digital",
+        "sub": "men",
+        "type": "single",
+        "q": "异或门 XOR 的逻辑是？",
+        "options": [
+          "输入相同出1",
+          "输入不同出1",
+          "全1出1",
+          "全0出1"
+        ],
+        "answer": 1,
+        "explain": "异或：不同出1，相同出0。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-015",
+        "cat": "digital",
+        "sub": "men",
+        "type": "single",
+        "q": "德摩根定律 (A·B)' 等于？",
+        "options": [
+          "A'·B'",
+          "A'+B'",
+          "A+B",
+          "A'·B"
+        ],
+        "answer": 1,
+        "explain": "与非=各取反后相或。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-016",
+        "cat": "digital",
+        "sub": "men",
+        "type": "single",
+        "q": "布尔恒等式 A + A' 等于？",
+        "options": [
+          "0",
+          "1",
+          "A",
+          "不确定"
+        ],
+        "answer": 1,
+        "explain": "互补律：A+A'=1。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-017",
+        "cat": "digital",
+        "sub": "men",
+        "type": "single",
+        "q": "一个6输入LUT能存多少条真值表条目？",
+        "options": [
+          "6",
+          "36",
+          "64",
+          "256"
+        ],
+        "answer": 2,
+        "explain": "2^6=64。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-018",
+        "cat": "digital",
+        "sub": "men",
+        "type": "judge",
+        "q": "异或门可以用来判断两个信号是否相等。",
+        "answer": true,
+        "explain": "A^B=0 ⇔ A=B。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-019",
+        "cat": "digital",
+        "sub": "men",
+        "type": "judge",
+        "q": "在FPGA里所有组合逻辑最终都由LUT查真值表实现。",
+        "answer": true,
+        "explain": "LUT是小RAM，写入真值表即得任意组合函数。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-020",
+        "cat": "digital",
+        "sub": "men",
+        "type": "fill",
+        "q": "逻辑表达式 A · 1 = ?",
+        "answer": [
+          "A",
+          "a"
+        ],
+        "explain": "1与任何量相与仍是该量。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-021",
+        "cat": "digital",
+        "sub": "men",
+        "type": "fill",
+        "q": "逻辑表达式 A + 1 = ?",
+        "answer": [
+          "1"
+        ],
+        "explain": "1或任何量都是1。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-022",
+        "cat": "digital",
+        "sub": "men",
+        "type": "multi",
+        "q": "下列门电路输出为1的情形，正确的有？",
+        "options": [
+          "AND：全输入1",
+          "OR：至少一个输入1",
+          "XOR：输入电平不同",
+          "NOR：至少一个输入1"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "NOR是或非，输入有1输出为0。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-023",
+        "cat": "digital",
+        "sub": "men",
+        "type": "multi",
+        "q": "下列是德摩根定律正确形式的有？",
+        "options": [
+          "(A·B)'=A'+B'",
+          "(A+B)'=A'·B'",
+          "取反时·变+、+变·",
+          "(A')'=A"
+        ],
+        "answer": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "explain": "全部正确。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-024",
+        "cat": "digital",
+        "sub": "zuhe",
+        "type": "single",
+        "q": "组合逻辑的输出取决于？",
+        "options": [
+          "仅当前输入",
+          "时钟沿",
+          "历史状态",
+          "复位"
+        ],
+        "answer": 0,
+        "explain": "组合逻辑无记忆。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-025",
+        "cat": "digital",
+        "sub": "zuhe",
+        "type": "single",
+        "q": "消除组合逻辑生成锁存器(latch)的正确做法是？",
+        "options": [
+          "if/else 不写全",
+          "always @(*) 内对输出赋默认值并覆盖全分支",
+          "不用default",
+          "随便写"
+        ],
+        "answer": 1,
+        "explain": "完整赋值避免锁存器。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-026",
+        "cat": "digital",
+        "sub": "zuhe",
+        "type": "single",
+        "q": "卡诺图化简的目标是？",
+        "options": [
+          "让表达式项数/文字最少",
+          "让真值表更长",
+          "增加LUT数",
+          "引入毛刺"
+        ],
+        "answer": 0,
+        "explain": "化简后更快更省资源。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-027",
+        "cat": "digital",
+        "sub": "zuhe",
+        "type": "judge",
+        "q": "组合逻辑电路中可以没有时钟输入。",
+        "answer": true,
+        "explain": "组合逻辑本身无记忆无时钟。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-028",
+        "cat": "digital",
+        "sub": "zuhe",
+        "type": "judge",
+        "q": "竞争冒险会在组合逻辑输出端产生短暂毛刺。",
+        "answer": true,
+        "explain": "路径延迟不同导致瞬时毛刺。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-029",
+        "cat": "digital",
+        "sub": "zuhe",
+        "type": "fill",
+        "q": "组合逻辑在Verilog中常用哪种赋值？",
+        "answer": [
+          "assign",
+          "连续赋值",
+          "always @(*)"
+        ],
+        "explain": "assign 或 always @(*) 均可。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-030",
+        "cat": "digital",
+        "sub": "zuhe",
+        "type": "multi",
+        "q": "下列哪些属于组合逻辑？",
+        "options": [
+          "译码器",
+          "数据选择器MUX",
+          "加法器",
+          "上升沿触发的寄存器"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "寄存器是时序逻辑。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-031",
+        "cat": "digital",
+        "sub": "zuhe",
+        "type": "multi",
+        "q": "消除/避免毛刺(glitch)的常见做法有？",
+        "options": [
+          "输出后打一拍(同步)",
+          "卡诺图消项",
+          "关键路径加同步器",
+          "故意让路径延迟不同"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "故意延迟不同反而制造毛刺。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-032",
+        "cat": "digital",
+        "sub": "zhongzu",
+        "type": "single",
+        "q": "3-8译码器的有效输出特征是？",
+        "options": [
+          "8路同时有效",
+          "任意时刻仅1路有效",
+          "输出二进制编号",
+          "输出格雷码"
+        ],
+        "answer": 1,
+        "explain": "one-hot：仅1路有效。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-033",
+        "cat": "digital",
+        "sub": "zhongzu",
+        "type": "single",
+        "q": "多路选择器(MUX)的核心作用是？",
+        "options": [
+          "把多路输入选一路输出",
+          "把一路信号分到多路",
+          "做加法",
+          "存储数据"
+        ],
+        "answer": 0,
+        "explain": "MUX按sel选通一路。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-034",
+        "cat": "digital",
+        "sub": "zhongzu",
+        "type": "single",
+        "q": "半加器的和 sum 等于？",
+        "options": [
+          "a&b",
+          "a|b",
+          "a^b",
+          "~a"
+        ],
+        "answer": 2,
+        "explain": "sum=a xor b。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-035",
+        "cat": "digital",
+        "sub": "zhongzu",
+        "type": "judge",
+        "q": "优先编码器会根据优先级只响应优先级最高的有效输入。",
+        "answer": true,
+        "explain": "优先级编码常用在中断/DMA请求。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-036",
+        "cat": "digital",
+        "sub": "zhongzu",
+        "type": "fill",
+        "q": "2选1 MUX 当 sel=0 时输出哪一路输入？",
+        "answer": [
+          "0路",
+          "a",
+          "i0",
+          "输入0"
+        ],
+        "explain": "按命名 i0/a 路。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-037",
+        "cat": "digital",
+        "sub": "zhongzu",
+        "type": "multi",
+        "q": "下列关于加法器说法正确的有？",
+        "options": [
+          "半加器不处理进位输入",
+          "全加器有cin输入",
+          "RCA是逐位进位",
+          "CLA比RCA更快"
+        ],
+        "answer": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "explain": "全部正确。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-038",
+        "cat": "digital",
+        "sub": "zhongzu",
+        "type": "multi",
+        "q": "比较器的常见输出标志有？",
+        "options": [
+          "大于 gt",
+          "等于 eq",
+          "小于 lt",
+          "时钟 clk"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "比较器无时钟。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-039",
+        "cat": "digital",
+        "sub": "shixu",
+        "type": "single",
+        "q": "时序逻辑在Verilog中正确的敏感表是？",
+        "options": [
+          "always @(*)",
+          "always @(posedge clk)",
+          "assign always",
+          "always @(a or b)"
+        ],
+        "answer": 1,
+        "explain": "时钟沿触发。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-040",
+        "cat": "digital",
+        "sub": "shixu",
+        "type": "single",
+        "q": "为了避免意外锁存器，时序逻辑应使用？",
+        "options": [
+          "电平敏感锁存",
+          "时钟沿触发的always块",
+          "组合assign",
+          "三态门"
+        ],
+        "answer": 1,
+        "explain": "时钟沿触发即触发器。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-041",
+        "cat": "digital",
+        "sub": "shixu",
+        "type": "single",
+        "q": "建立时间 tSU 是指？",
+        "options": [
+          "时钟沿后数据须保持的时间",
+          "时钟沿前数据须提前稳定的时间",
+          "门延迟",
+          "复位时间"
+        ],
+        "answer": 1,
+        "explain": "数据须在时钟沿前稳定。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-042",
+        "cat": "digital",
+        "sub": "shixu",
+        "type": "single",
+        "q": "处理异步跨时钟域信号最常用的电路是？",
+        "options": [
+          "一级寄存器",
+          "两级触发器同步器",
+          "组合MUX",
+          "锁存器"
+        ],
+        "answer": 1,
+        "explain": "双触发器同步链降低亚稳态概率。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-043",
+        "cat": "digital",
+        "sub": "shixu",
+        "type": "judge",
+        "q": "在时钟沿打一拍相当于把信号寄存(延迟一个周期)。",
+        "answer": true,
+        "explain": "流水线寄存器=延迟一拍。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-044",
+        "cat": "digital",
+        "sub": "shixu",
+        "type": "judge",
+        "q": "保持时间是指时钟沿到来之后数据还需要稳定多久。",
+        "answer": true,
+        "explain": "保持tH。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-045",
+        "cat": "digital",
+        "sub": "shixu",
+        "type": "fill",
+        "q": "计数器要数到 999，至少需要多少位(2^10=1024)？",
+        "answer": [
+          "10",
+          "10位"
+        ],
+        "explain": "2^9=512<999，2^10=1024>999。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-046",
+        "cat": "digital",
+        "sub": "shixu",
+        "type": "multi",
+        "q": "下列关于时序逻辑说法正确的有？",
+        "options": [
+          "输出依赖历史状态",
+          "由触发器保存状态",
+          "时钟沿更新",
+          "可没有时钟"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "时序逻辑必须有时钟。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-047",
+        "cat": "digital",
+        "sub": "shixu",
+        "type": "multi",
+        "q": "亚稳态可能由下列哪些情况引起？",
+        "options": [
+          "异步信号直接打一拍",
+          "跨时钟域未同步",
+          "建立/保持时间不满足",
+          "同步信号打一拍"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "同步信号打一拍不会亚稳。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-048",
+        "cat": "digital",
+        "sub": "dianping",
+        "type": "single",
+        "q": "3.3V LVCMOS 的高电平约为？",
+        "options": [
+          "1.8V",
+          "3.3V",
+          "5V",
+          "0V"
+        ],
+        "answer": 1,
+        "explain": "高电平≈电源电压3.3V。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-049",
+        "cat": "digital",
+        "sub": "dianping",
+        "type": "single",
+        "q": "I2C 总线通常使用哪种输出结构？",
+        "options": [
+          "推挽",
+          "开漏+外部上拉",
+          "三态",
+          "差分"
+        ],
+        "answer": 1,
+        "explain": "开漏+上拉实现线与。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-050",
+        "cat": "digital",
+        "sub": "dianping",
+        "type": "single",
+        "q": "LVDS 属于哪种信号？",
+        "options": [
+          "单端5V",
+          "低压差分",
+          "开漏",
+          "电平敏感"
+        ],
+        "answer": 1,
+        "explain": "差分对，抗干扰高速。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-051",
+        "cat": "digital",
+        "sub": "dianping",
+        "type": "judge",
+        "q": "按键输入常用外部上拉电阻，按下时读到低电平。",
+        "answer": true,
+        "explain": "上拉默认高，按下接地变低。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-052",
+        "cat": "digital",
+        "sub": "dianping",
+        "type": "judge",
+        "q": "推挽输出可以主动输出高电平和低电平。",
+        "answer": true,
+        "explain": "上管出高、下管出低。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-053",
+        "cat": "digital",
+        "sub": "dianping",
+        "type": "fill",
+        "q": "XDC 中声明3.3V电平的 IOSTANDARD 关键字是？",
+        "answer": [
+          "LVCMOS33",
+          "LVCMOS3.3"
+        ],
+        "explain": "写 LVCMOS33。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-054",
+        "cat": "digital",
+        "sub": "dianping",
+        "type": "multi",
+        "q": "下列关于电平与IO的说法正确的有？",
+        "options": [
+          "LVCMOS33高电平约3.3V",
+          "LVDS是差分信号抗干扰强",
+          "开漏输出必须外接上拉",
+          "推挽只能输出低电平"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "推挽可出高低。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-055",
+        "cat": "digital",
+        "sub": "dianping",
+        "type": "multi",
+        "q": "下列哪些是常见的FPGA IO电平标准？",
+        "options": [
+          "LVCMOS33",
+          "LVCMOS18",
+          "LVDS",
+          "TTL"
+        ],
+        "answer": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "explain": "均为常见电平。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-056",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 2 对应的十六进制是？",
+        "options": [
+          "0x3",
+          "0x2",
+          "0x1",
+          "0x4"
+        ],
+        "answer": 1,
+        "explain": "十进制2 = 0x2。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-057",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 2 用二进制表示是？",
+        "options": [
+          "11",
+          "10",
+          "1",
+          "100"
+        ],
+        "answer": 1,
+        "explain": "除2取余：2 = 10。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-058",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 3 对应的十六进制是？",
+        "options": [
+          "0x4",
+          "0x3",
+          "0x2",
+          "0x6"
+        ],
+        "answer": 1,
+        "explain": "十进制3 = 0x3。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-059",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 3 用二进制表示是？",
+        "options": [
+          "100",
+          "11",
+          "10",
+          "110"
+        ],
+        "answer": 1,
+        "explain": "除2取余：3 = 11。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-060",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 5 对应的十六进制是？",
+        "options": [
+          "0x6",
+          "0x5",
+          "0x4",
+          "0xA"
+        ],
+        "answer": 1,
+        "explain": "十进制5 = 0x5。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-061",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 5 用二进制表示是？",
+        "options": [
+          "110",
+          "101",
+          "100",
+          "1010"
+        ],
+        "answer": 1,
+        "explain": "除2取余：5 = 101。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-062",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 6 对应的十六进制是？",
+        "options": [
+          "0x7",
+          "0x6",
+          "0x5",
+          "0xC"
+        ],
+        "answer": 1,
+        "explain": "十进制6 = 0x6。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-063",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 6 用二进制表示是？",
+        "options": [
+          "111",
+          "110",
+          "101",
+          "1100"
+        ],
+        "answer": 1,
+        "explain": "除2取余：6 = 110。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-064",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 7 对应的十六进制是？",
+        "options": [
+          "0x8",
+          "0x7",
+          "0x6",
+          "0xE"
+        ],
+        "answer": 1,
+        "explain": "十进制7 = 0x7。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-065",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 7 用二进制表示是？",
+        "options": [
+          "1000",
+          "111",
+          "110",
+          "1110"
+        ],
+        "answer": 1,
+        "explain": "除2取余：7 = 111。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-066",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 9 对应的十六进制是？",
+        "options": [
+          "0xA",
+          "0x9",
+          "0x8",
+          "0x12"
+        ],
+        "answer": 1,
+        "explain": "十进制9 = 0x9。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-067",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 9 用二进制表示是？",
+        "options": [
+          "1010",
+          "1001",
+          "1000",
+          "10010"
+        ],
+        "answer": 1,
+        "explain": "除2取余：9 = 1001。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-068",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 10 对应的十六进制是？",
+        "options": [
+          "0xB",
+          "0xA",
+          "0x9",
+          "0x14"
+        ],
+        "answer": 1,
+        "explain": "十进制10 = 0xA。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-069",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 10 用二进制表示是？",
+        "options": [
+          "1011",
+          "1010",
+          "1001",
+          "10100"
+        ],
+        "answer": 1,
+        "explain": "除2取余：10 = 1010。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-070",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 12 对应的十六进制是？",
+        "options": [
+          "0xD",
+          "0xC",
+          "0xB",
+          "0x18"
+        ],
+        "answer": 1,
+        "explain": "十进制12 = 0xC。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-071",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 12 用二进制表示是？",
+        "options": [
+          "1101",
+          "1100",
+          "1011",
+          "11000"
+        ],
+        "answer": 1,
+        "explain": "除2取余：12 = 1100。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-072",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 14 对应的十六进制是？",
+        "options": [
+          "0xF",
+          "0xE",
+          "0xD",
+          "0x1C"
+        ],
+        "answer": 1,
+        "explain": "十进制14 = 0xE。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-073",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 14 用二进制表示是？",
+        "options": [
+          "1111",
+          "1110",
+          "1101",
+          "11100"
+        ],
+        "answer": 1,
+        "explain": "除2取余：14 = 1110。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-074",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 15 对应的十六进制是？",
+        "options": [
+          "0x10",
+          "0xF",
+          "0xE",
+          "0x1E"
+        ],
+        "answer": 1,
+        "explain": "十进制15 = 0xF。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-075",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 15 用二进制表示是？",
+        "options": [
+          "10000",
+          "1111",
+          "1110",
+          "11110"
+        ],
+        "answer": 1,
+        "explain": "除2取余：15 = 1111。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-076",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 16 对应的十六进制是？",
+        "options": [
+          "0x11",
+          "0x10",
+          "0xF",
+          "0x20"
+        ],
+        "answer": 1,
+        "explain": "十进制16 = 0x10。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-077",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 16 用二进制表示是？",
+        "options": [
+          "10001",
+          "10000",
+          "1111",
+          "100000"
+        ],
+        "answer": 1,
+        "explain": "除2取余：16 = 10000。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-078",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 17 对应的十六进制是？",
+        "options": [
+          "0x12",
+          "0x11",
+          "0x10",
+          "0x22"
+        ],
+        "answer": 1,
+        "explain": "十进制17 = 0x11。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-079",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 17 用二进制表示是？",
+        "options": [
+          "10010",
+          "10001",
+          "10000",
+          "100010"
+        ],
+        "answer": 1,
+        "explain": "除2取余：17 = 10001。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-080",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 32 对应的十六进制是？",
+        "options": [
+          "0x21",
+          "0x20",
+          "0x1F",
+          "0x40"
+        ],
+        "answer": 1,
+        "explain": "十进制32 = 0x20。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-081",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 32 用二进制表示是？",
+        "options": [
+          "100001",
+          "100000",
+          "11111",
+          "1000000"
+        ],
+        "answer": 1,
+        "explain": "除2取余：32 = 100000。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-082",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 64 对应的十六进制是？",
+        "options": [
+          "0x41",
+          "0x40",
+          "0x3F",
+          "0x80"
+        ],
+        "answer": 1,
+        "explain": "十进制64 = 0x40。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-083",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 64 用二进制表示是？",
+        "options": [
+          "1000001",
+          "1000000",
+          "111111",
+          "10000000"
+        ],
+        "answer": 1,
+        "explain": "除2取余：64 = 1000000。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-084",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 100 对应的十六进制是？",
+        "options": [
+          "0x65",
+          "0x64",
+          "0x63",
+          "0xC8"
+        ],
+        "answer": 1,
+        "explain": "十进制100 = 0x64。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-085",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 100 用二进制表示是？",
+        "options": [
+          "1100101",
+          "1100100",
+          "1100011",
+          "11001000"
+        ],
+        "answer": 1,
+        "explain": "除2取余：100 = 1100100。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-086",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 128 对应的十六进制是？",
+        "options": [
+          "0x81",
+          "0x80",
+          "0x7F",
+          "0x100"
+        ],
+        "answer": 1,
+        "explain": "十进制128 = 0x80。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-087",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 128 用二进制表示是？",
+        "options": [
+          "10000001",
+          "10000000",
+          "1111111",
+          "100000000"
+        ],
+        "answer": 1,
+        "explain": "除2取余：128 = 10000000。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-088",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 200 对应的十六进制是？",
+        "options": [
+          "0xC9",
+          "0xC8",
+          "0xC7",
+          "0x190"
+        ],
+        "answer": 1,
+        "explain": "十进制200 = 0xC8。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-089",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 200 用二进制表示是？",
+        "options": [
+          "11001001",
+          "11001000",
+          "11000111",
+          "110010000"
+        ],
+        "answer": 1,
+        "explain": "除2取余：200 = 11001000。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-090",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 254 对应的十六进制是？",
+        "options": [
+          "0xFF",
+          "0xFE",
+          "0xFD",
+          "0x1FC"
+        ],
+        "answer": 1,
+        "explain": "十进制254 = 0xFE。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-091",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 254 用二进制表示是？",
+        "options": [
+          "11111111",
+          "11111110",
+          "11111101",
+          "111111100"
+        ],
+        "answer": 1,
+        "explain": "除2取余：254 = 11111110。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-092",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 256 对应的十六进制是？",
+        "options": [
+          "0x101",
+          "0x100",
+          "0xFF",
+          "0x200"
+        ],
+        "answer": 1,
+        "explain": "十进制256 = 0x100。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-093",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 256 用二进制表示是？",
+        "options": [
+          "100000001",
+          "100000000",
+          "11111111",
+          "1000000000"
+        ],
+        "answer": 1,
+        "explain": "除2取余：256 = 100000000。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-094",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 512 对应的十六进制是？",
+        "options": [
+          "0x201",
+          "0x200",
+          "0x1FF",
+          "0x400"
+        ],
+        "answer": 1,
+        "explain": "十进制512 = 0x200。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-095",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "single",
+        "q": "十进制 512 用二进制表示是？",
+        "options": [
+          "1000000001",
+          "1000000000",
+          "111111111",
+          "10000000000"
+        ],
+        "answer": 1,
+        "explain": "除2取余：512 = 1000000000。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-096",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "fill",
+        "q": "二进制 1010 等于十进制多少？",
+        "answer": [
+          "10",
+          "10"
+        ],
+        "explain": "按权展开 = 10。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-097",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "fill",
+        "q": "二进制 1011 等于十进制多少？",
+        "answer": [
+          "11",
+          "11"
+        ],
+        "explain": "按权展开 = 11。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-098",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "fill",
+        "q": "二进制 1100 等于十进制多少？",
+        "answer": [
+          "12",
+          "12"
+        ],
+        "explain": "按权展开 = 12。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-099",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "fill",
+        "q": "二进制 1101 等于十进制多少？",
+        "answer": [
+          "13",
+          "13"
+        ],
+        "explain": "按权展开 = 13。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-100",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "fill",
+        "q": "二进制 1110 等于十进制多少？",
+        "answer": [
+          "14",
+          "14"
+        ],
+        "explain": "按权展开 = 14。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-101",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "fill",
+        "q": "二进制 1111 等于十进制多少？",
+        "answer": [
+          "15",
+          "15"
+        ],
+        "explain": "按权展开 = 15。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-102",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "fill",
+        "q": "二进制 10000 等于十进制多少？",
+        "answer": [
+          "16",
+          "16"
+        ],
+        "explain": "按权展开 = 16。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-103",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "fill",
+        "q": "二进制 10001 等于十进制多少？",
+        "answer": [
+          "17",
+          "17"
+        ],
+        "explain": "按权展开 = 17。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-104",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "fill",
+        "q": "二进制 10010 等于十进制多少？",
+        "answer": [
+          "18",
+          "18"
+        ],
+        "explain": "按权展开 = 18。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-105",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "fill",
+        "q": "二进制 10011 等于十进制多少？",
+        "answer": [
+          "19",
+          "19"
+        ],
+        "explain": "按权展开 = 19。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-106",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "fill",
+        "q": "十六进制 0xA 等于十进制多少？",
+        "answer": [
+          "10",
+          "10"
+        ],
+        "explain": "0xA = 10。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-107",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "fill",
+        "q": "十六进制 0xB 等于十进制多少？",
+        "answer": [
+          "11",
+          "11"
+        ],
+        "explain": "0xB = 11。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-108",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "fill",
+        "q": "十六进制 0xC 等于十进制多少？",
+        "answer": [
+          "12",
+          "12"
+        ],
+        "explain": "0xC = 12。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-109",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "fill",
+        "q": "十六进制 0xD 等于十进制多少？",
+        "answer": [
+          "13",
+          "13"
+        ],
+        "explain": "0xD = 13。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-110",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "fill",
+        "q": "十六进制 0xE 等于十进制多少？",
+        "answer": [
+          "14",
+          "14"
+        ],
+        "explain": "0xE = 14。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-111",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "fill",
+        "q": "十六进制 0xF 等于十进制多少？",
+        "answer": [
+          "15",
+          "15"
+        ],
+        "explain": "0xF = 15。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-112",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "fill",
+        "q": "十六进制 0x10 等于十进制多少？",
+        "answer": [
+          "16",
+          "16"
+        ],
+        "explain": "0x10 = 16。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-113",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "fill",
+        "q": "十六进制 0x20 等于十进制多少？",
+        "answer": [
+          "32",
+          "32"
+        ],
+        "explain": "0x20 = 32。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-114",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "fill",
+        "q": "十六进制 0x7F 等于十进制多少？",
+        "answer": [
+          "127",
+          "127"
+        ],
+        "explain": "0x7F = 127。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-115",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "fill",
+        "q": "十六进制 0xFF 等于十进制多少？",
+        "answer": [
+          "255",
+          "255"
+        ],
+        "explain": "0xFF = 255。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-116",
+        "cat": "digital",
+        "sub": "shuzhi",
+        "type": "fill",
+        "q": "十六进制 0x80 等于十进制多少？",
+        "answer": [
+          "128",
+          "128"
+        ],
+        "explain": "0x80 = 128。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-117",
+        "cat": "digital",
+        "sub": "men",
+        "type": "judge",
+        "q": "异或门输出为1当且仅当两个输入不同。",
+        "answer": true,
+        "explain": "XOR: 不同出1。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-118",
+        "cat": "digital",
+        "sub": "men",
+        "type": "judge",
+        "q": "与非门(NAND)可以当作反相器使用(把两输入短接)。",
+        "answer": true,
+        "explain": "两输入短接成 A·A 再取反 = ~A。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-119",
+        "cat": "digital",
+        "sub": "men",
+        "type": "single",
+        "q": "XNOR(同或)在两输入相同时输出？",
+        "options": [
+          "0",
+          "1",
+          "高阻",
+          "不确定"
+        ],
+        "answer": 1,
+        "explain": "同或：相同出1。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-120",
+        "cat": "digital",
+        "sub": "men",
+        "type": "fill",
+        "q": "布尔式 A · A = ?",
+        "answer": [
+          "A"
+        ],
+        "explain": "重叠律。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-121",
+        "cat": "digital",
+        "sub": "men",
+        "type": "fill",
+        "q": "布尔式 A + A = ?",
+        "answer": [
+          "A"
+        ],
+        "explain": "重叠律。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-122",
+        "cat": "digital",
+        "sub": "men",
+        "type": "judge",
+        "q": "任意组合逻辑函数都能用LUT的真值表实现。",
+        "answer": true,
+        "explain": "LUT本质就是真值表RAM。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-123",
+        "cat": "digital",
+        "sub": "shixu",
+        "type": "fill",
+        "q": "计数器要数到 10，至少需要多少位(2^4=16)？",
+        "answer": [
+          "4",
+          "4位"
+        ],
+        "explain": "2^4=16 > 10，2^3=8 < 10。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-124",
+        "cat": "digital",
+        "sub": "shixu",
+        "type": "fill",
+        "q": "计数器要数到 100，至少需要多少位(2^7=128)？",
+        "answer": [
+          "7",
+          "7位"
+        ],
+        "explain": "2^7=128 > 100，2^6=64 < 100。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-125",
+        "cat": "digital",
+        "sub": "shixu",
+        "type": "fill",
+        "q": "计数器要数到 1000，至少需要多少位(2^10=1024)？",
+        "answer": [
+          "10",
+          "10位"
+        ],
+        "explain": "2^10=1024 > 1000，2^9=512 < 1000。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-126",
+        "cat": "digital",
+        "sub": "shixu",
+        "type": "fill",
+        "q": "计数器要数到 50，至少需要多少位(2^6=64)？",
+        "answer": [
+          "6",
+          "6位"
+        ],
+        "explain": "2^6=64 > 50，2^5=32 < 50。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-127",
+        "cat": "digital",
+        "sub": "shixu",
+        "type": "fill",
+        "q": "计数器要数到 256，至少需要多少位(2^9=512)？",
+        "answer": [
+          "9",
+          "9位"
+        ],
+        "explain": "2^9=512 > 256，2^8=256 < 256。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-128",
+        "cat": "digital",
+        "sub": "shixu",
+        "type": "judge",
+        "q": "复位信号应在测试开始时先拉低(低有效)再释放。",
+        "answer": true,
+        "explain": "模拟上电复位。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-129",
+        "cat": "digital",
+        "sub": "shixu",
+        "type": "single",
+        "q": "下列哪种是同步时序电路必备要素？",
+        "options": [
+          "时钟",
+          "三态",
+          "开漏",
+          "上拉电阻"
+        ],
+        "answer": 0,
+        "explain": "触发器由时钟驱动。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-130",
+        "cat": "digital",
+        "sub": "dianping",
+        "type": "judge",
+        "q": "LVCMOS18 的高电平参考约为 1.8V。",
+        "answer": true,
+        "explain": "高电平≈VCCO。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-131",
+        "cat": "digital",
+        "sub": "dianping",
+        "type": "single",
+        "q": "I2C总线需要每个信号都外接什么？",
+        "options": [
+          "下拉电阻",
+          "上拉电阻",
+          "电容",
+          "电感"
+        ],
+        "answer": 1,
+        "explain": "开漏需上拉到高电平。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-132",
+        "cat": "digital",
+        "sub": "dianping",
+        "type": "single",
+        "q": "按键未按下(带上拉)时FPGA读到的电平是？",
+        "options": [
+          "低",
+          "高",
+          "高阻",
+          "随机"
+        ],
+        "answer": 1,
+        "explain": "上拉默认高。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "dig-133",
+        "cat": "digital",
+        "sub": "dianping",
+        "type": "fill",
+        "q": "FPGA引脚的电平标准在哪个约束文件里声明？",
+        "answer": [
+          "XDC",
+          "xdc",
+          "约束文件"
+        ],
+        "explain": "XDC里写IOSTANDARD。",
+        "src": "",
+        "catName": "数字电路与电平标准"
+      },
+      {
+        "id": "exam-p1-p1-101",
+        "ch": "1.1",
+        "type": "single",
+        "pts": 5,
+        "q": "FPGA 内部实现任意组合逻辑函数的基本资源是？",
+        "options": [
+          "LUT（查找表）",
+          "BRAM（块存储器）",
+          "UART 串口",
+          "PLL 锁相环"
+        ],
+        "answer": 0,
+        "explain": "LUT 本质是小 RAM，存真值表，输入一来直接查表得到组合逻辑输出。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-102",
+        "ch": "1.1",
+        "type": "single",
+        "pts": 5,
+        "q": "在 FPGA 里保存一位状态、实现时序逻辑与“记忆”的基本单元是？",
+        "options": [
+          "LUT",
+          "FF（触发器）",
+          "布线开关",
+          "IO 电平"
+        ],
+        "answer": 1,
+        "explain": "FF 在时钟沿保存一位状态，是时序逻辑的记忆单元。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-103",
+        "ch": "1.1",
+        "type": "judge",
+        "pts": 5,
+        "q": "FPGA 和 CPU 一样，是靠提高主频串行执行一条条指令来工作的。",
+        "answer": false,
+        "explain": "错。FPGA 是硬件并行，例化的多块电路同时独立运行，没有指令取指与串行流水线。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-104",
+        "ch": "1.1",
+        "type": "single",
+        "pts": 5,
+        "q": "把 Verilog 代码翻译成门级网表（LUT/FF）这一步叫？",
+        "options": [
+          "布局布线",
+          "综合",
+          "下载",
+          "仿真"
+        ],
+        "answer": 1,
+        "explain": "综合(Synthesis)生成网表；布局布线属于后续实现阶段。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-105",
+        "ch": "1.1",
+        "type": "single",
+        "pts": 5,
+        "q": "对 Artix-7/Zynq 常用型号免费、无需 License 的 Vivado 版本是？",
+        "options": [
+          "Vivado ML Standard",
+          "Vivado Enterprise",
+          "Vitis HLS",
+          "Quartus Pro"
+        ],
+        "answer": 0,
+        "explain": "ML Standard（原 WebPACK）2025.2 及更早版本免费、无需 License。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-106",
+        "ch": "1.1",
+        "type": "multi",
+        "pts": 5,
+        "q": "下列哪些属于 FPGA 内部的可编程资源？（多选）",
+        "options": [
+          "LUT 查找表",
+          "FF 触发器",
+          "BRAM 块存储器",
+          "可编程布线开关矩阵"
+        ],
+        "answer": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "explain": "四类资源：LUT、FF、BRAM、可编程布线。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-107",
+        "ch": "1.1",
+        "type": "single",
+        "pts": 5,
+        "q": "描述芯片内部开关接通、LUT 存什么真值表，供下载用的配置文件扩展名是？",
+        "options": [
+          ".v",
+          ".xdc",
+          ".bit",
+          ".md"
+        ],
+        "answer": 2,
+        "explain": "比特流 .bit 描述芯片配置；.v 是源码，.xdc 是引脚约束。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-108",
+        "ch": "1.1",
+        "type": "judge",
+        "pts": 5,
+        "q": "Vivado ML Standard（2025.2 及更早版本）对 Artix-7/Zynq 常用型号需要购买 License。",
+        "answer": false,
+        "explain": "错。ML Standard 版无需 License 即可综合/实现/下载。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-109",
+        "ch": "1.1",
+        "type": "multi",
+        "pts": 5,
+        "q": "下列哪些属于 FPGA 开发流程的环节？（多选）",
+        "options": [
+          "写 Verilog 设计输入",
+          "综合与实现(布局布线)",
+          "生成比特流",
+          "JTAG 下载调试"
+        ],
+        "answer": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "explain": "7 步流程覆盖设计输入→仿真→综合→实现→约束→比特流→下载。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-110",
+        "ch": "1.1",
+        "type": "fill",
+        "pts": 5,
+        "q": "FPGA 的中文全称是什么？",
+        "answer": [
+          "现场可编程门阵列"
+        ],
+        "explain": "Field Programmable Gate Array，现场可编程门阵列。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-111",
+        "ch": "1.1",
+        "type": "single",
+        "pts": 5,
+        "q": "下面哪项最准确地描述了 FPGA 的并行特性？",
+        "options": [
+          "同一时刻多个模块同时独立工作",
+          "靠提高主频让指令跑更快",
+          "只能串行处理一路数据",
+          "必须装操作系统"
+        ],
+        "answer": 0,
+        "explain": "FPGA 例化的模块是真实并行电路，与 CPU 串行执行有本质区别。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-201",
+        "ch": "1.2",
+        "type": "single",
+        "pts": 5,
+        "q": "50MHz 时钟、希望 LED 每秒翻转一次，计数器实际计到的满分值是？",
+        "options": [
+          "25,000,000",
+          "24,999,999",
+          "50,000,000",
+          "1,000,000"
+        ],
+        "answer": 1,
+        "explain": "半周期=50,000,000/2=25,000,000 个时钟；计数器从 0 数到 HALF_COUNT-1=24,999,999 后翻转并清零。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-202",
+        "ch": "1.2",
+        "type": "single",
+        "pts": 5,
+        "q": "为了数到 25,000,000，计数器位宽至少需要多少位？",
+        "options": [
+          "24 位",
+          "25 位",
+          "26 位",
+          "32 位"
+        ],
+        "answer": 1,
+        "explain": "2^24=16.7M<25M，2^25=33.5M>25M，故 25 位（reg [24:0]）。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-203",
+        "ch": "1.2",
+        "type": "single",
+        "pts": 5,
+        "q": "下面哪个是正确的同步时序 always 块敏感表？",
+        "options": [
+          "always @(*)",
+          "always @(posedge clk or negedge rst_n)",
+          "always @(clk)",
+          "assign always"
+        ],
+        "answer": 1,
+        "explain": "时序逻辑在时钟沿触发，并带异步低电平复位。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-204",
+        "ch": "1.2",
+        "type": "judge",
+        "pts": 5,
+        "q": "端口声明为 output reg，综合后一定是一个触发器。",
+        "answer": false,
+        "explain": "错。reg 只是“在过程块里被赋值”的变量；组合逻辑里的 reg 综合后是连线，时序逻辑里的才是触发器。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-205",
+        "ch": "1.2",
+        "type": "fill",
+        "pts": 5,
+        "q": "半周期计数的通用公式是：半周期 = ____（用 CLK_FREQ_HZ 与 BLINK_HZ 表示）。",
+        "answer": [
+          "CLK_FREQ_HZ/(2*BLINK_HZ)",
+          "CLK_FREQ_HZ / (2*BLINK_HZ)",
+          "CLK_FREQ_HZ/2/BLINK_HZ"
+        ],
+        "explain": "半周期计数 = 时钟频率 / (2 × 翻转频率)。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-206",
+        "ch": "1.2",
+        "type": "single",
+        "pts": 5,
+        "q": "引脚号 PACKAGE_PIN 与电平 IOSTANDARD 应写在哪里？",
+        "options": [
+          "Verilog module 里",
+          "XDC 约束文件",
+          "C 代码里",
+          "无需指定"
+        ],
+        "answer": 1,
+        "explain": "物理引脚与电平通过 XDC 约束指定，不写进 RTL。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-207",
+        "ch": "1.2",
+        "type": "multi",
+        "pts": 5,
+        "q": "关于 50MHz→1Hz LED 闪烁的计数器设计，正确的有？（多选）",
+        "options": [
+          "半周期需数 25,000,000 个时钟",
+          "计数器位宽取 25 位",
+          "计满后翻转 LED 并清零计数",
+          "时钟上升沿才更新计数器"
+        ],
+        "answer": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "explain": "全部正确：半周期、位宽、翻转清零、时钟沿更新。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-208",
+        "ch": "1.2",
+        "type": "judge",
+        "pts": 5,
+        "q": "异步低电平复位，在 always 敏感表里要写成 or negedge rst_n。",
+        "answer": true,
+        "explain": "对。敏感表加 or negedge rst_n，块内先 if(!rst_n) 赋初值。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-209",
+        "ch": "1.2",
+        "type": "fill",
+        "pts": 5,
+        "q": "50MHz 系统时钟的周期是多少 ns？",
+        "answer": [
+          "20",
+          "20ns",
+          "20 ns"
+        ],
+        "explain": "周期=1/50MHz=20ns。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-210",
+        "ch": "1.2",
+        "type": "single",
+        "pts": 5,
+        "q": "50MHz 时钟，每秒钟有多少个上升沿？",
+        "options": [
+          "50,000,000",
+          "5,000,000",
+          "500,000",
+          "1,000,000"
+        ],
+        "answer": 0,
+        "explain": "50MHz 即每秒 50,000,000 个时钟沿。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-211",
+        "ch": "1.2",
+        "type": "multi",
+        "pts": 5,
+        "q": "一个规范的可综合计数器模块，通常包含下列哪些要素？（多选）",
+        "options": [
+          "时钟沿触发的 always 块",
+          "异步复位",
+          "计满阈值判断",
+          "计满后清零并翻转输出"
+        ],
+        "answer": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "explain": "四要素齐全才是可综合且行为正确的计数器。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-301",
+        "ch": "1.3",
+        "type": "single",
+        "pts": 5,
+        "q": "在 testbench 里产生 50MHz 时钟，正确写法是？",
+        "options": [
+          "always #20 clk = ~clk;",
+          "always #10 clk = ~clk;",
+          "always #1 clk = ~clk;",
+          "assign clk = 1;"
+        ],
+        "answer": 1,
+        "explain": "50MHz 周期 20ns，每 10ns 翻转一次。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-302",
+        "ch": "1.3",
+        "type": "judge",
+        "pts": 5,
+        "q": "Testbench 是一个有对外输入输出端口的顶层模块。",
+        "answer": false,
+        "explain": "错。testbench 本身没有端口，它负责例化 DUT 并产生激励。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-303",
+        "ch": "1.3",
+        "type": "single",
+        "pts": 5,
+        "q": "testbench 中 $dumpvars 的作用是？",
+        "options": [
+          "结束仿真",
+          "导出内部信号波形(VCD)",
+          "产生时钟",
+          "复位设计"
+        ],
+        "answer": 1,
+        "explain": "$dumpvars 导出 VCD 波形，供波形窗口查看。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-304",
+        "ch": "1.3",
+        "type": "multi",
+        "pts": 5,
+        "q": "关于行为仿真与时序仿真，正确的有？（多选）",
+        "options": [
+          "行为仿真不考虑门/线延迟，跑得快",
+          "行为仿真主要验证功能对错",
+          "时序仿真加回真实延迟，最接近硬件",
+          "时序仿真能发现建立/保持时间类问题"
+        ],
+        "answer": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "explain": "行为验功能快，时序加延迟接近硬件并能发现时序违例。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-305",
+        "ch": "1.3",
+        "type": "single",
+        "pts": 5,
+        "q": "PWM 呼吸灯中控制 LED 平均亮度的关键信号是？",
+        "options": [
+          "clk",
+          "duty（占空比）",
+          "rst_n",
+          "波特率"
+        ],
+        "answer": 1,
+        "explain": "led=(pwm_cnt<duty)，duty 占空比越大平均越亮。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-306",
+        "ch": "1.3",
+        "type": "judge",
+        "pts": 5,
+        "q": "仿真时把 BLINK_HZ 调大，是为了让 LED 翻转在仿真里更快出现、便于观察。",
+        "answer": true,
+        "explain": "对。真实 1Hz 等太久，调大 BLINK_HZ 让半周期缩短到几十个时钟。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-307",
+        "ch": "1.3",
+        "type": "fill",
+        "pts": 5,
+        "q": "50MHz 时钟周期 20ns，testbench 里用 always #N clk=~clk 翻转，N 应为多少 ns？",
+        "answer": [
+          "10",
+          "10ns",
+          "10 ns"
+        ],
+        "explain": "翻转间隔=周期一半=10ns。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-308",
+        "ch": "1.3",
+        "type": "single",
+        "pts": 5,
+        "q": "在 testbench 里施加复位，正确做法是？",
+        "options": [
+          "一直保持 rst_n=1",
+          "先把 rst_n=0 保持几十 ns 再拉高",
+          "复位不需要",
+          "rst_n 随机跳变"
+        ],
+        "answer": 1,
+        "explain": "先低电平复位再释放，模拟上电复位顺序。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-309",
+        "ch": "1.3",
+        "type": "multi",
+        "pts": 5,
+        "q": "一个完整 testbench 通常包含下列哪些职责？（多选）",
+        "options": [
+          "例化被测设计 DUT",
+          "产生时钟与复位激励",
+          "$dumpvars 导出波形",
+          "用 $display/断言判断结果"
+        ],
+        "answer": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "explain": "四项都是 testbench 的职责。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-310",
+        "ch": "1.3",
+        "type": "judge",
+        "pts": 5,
+        "q": "行为仿真因为加了真实门延迟，所以最接近硬件真实行为。",
+        "answer": false,
+        "explain": "错。行为仿真门延迟为 0；时序仿真才加回真实延迟。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p1-p1-311",
+        "ch": "1.3",
+        "type": "fill",
+        "pts": 5,
+        "q": "PWM_BITS=8 时，PWM 占空比的分辨率是多少分之一？",
+        "answer": [
+          "256",
+          "1/256",
+          "256分之一"
+        ],
+        "explain": "PWM 周期=2^8=256，占空比步进为 1/256。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段1"
+      },
+      {
+        "id": "exam-p2-p2-001",
+        "ch": "2.1",
+        "type": "single",
+        "pts": 5,
+        "q": "组合逻辑的输出取决于？",
+        "options": [
+          "仅当前输入",
+          "时钟上升沿",
+          "历史状态",
+          "复位信号"
+        ],
+        "answer": 0,
+        "explain": "组合逻辑无记忆、无时钟，输出只由当前输入经门延迟后决定。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-002",
+        "ch": "2.1",
+        "type": "single",
+        "pts": 5,
+        "q": "3-8 译码器在 en=1、地址 a=3 时，独热输出 y 为？",
+        "options": [
+          "8'b0000_0001",
+          "8'b0000_1000",
+          "8'b0000_0100",
+          "8'b1000_0000"
+        ],
+        "answer": 1,
+        "explain": "独热输出，a=3 对应 y3=1，即 8'b0000_1000。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-003",
+        "ch": "2.1",
+        "type": "judge",
+        "pts": 5,
+        "q": "组合逻辑 always@(*) 的 case 若不写全所有分支（无 default），综合器可能推断出锁存器。",
+        "answer": true,
+        "explain": "对。某些情况输出保持不变会被综合成锁存器，组合逻辑必须覆盖所有分支。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-004",
+        "ch": "2.1",
+        "type": "single",
+        "pts": 5,
+        "q": "共阳七段数码管要点亮某一段，该段引脚应给？",
+        "options": [
+          "高电平",
+          "低电平",
+          "高阻态",
+          "PWM"
+        ],
+        "answer": 1,
+        "explain": "共阳公共端接 VCC，段引脚给低电平才有电流流过该段点亮。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-005",
+        "ch": "2.1",
+        "type": "fill",
+        "pts": 5,
+        "q": "共阴极性下，数字 5 的七段段码（gfedcba，hex）是多少？",
+        "answer": [
+          "7'h6d",
+          "0x6d",
+          "6d",
+          "109"
+        ],
+        "explain": "5 点亮 a/f/g/c/d 段，gfedcba=1101101=7'h6D。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-006",
+        "ch": "2.1",
+        "type": "multi",
+        "pts": 5,
+        "q": "消除组合逻辑毛刺（冒险）的常用思路有哪些？（多选）",
+        "options": [
+          "输出经一级寄存器在时钟沿采样",
+          "加选通/采样使能",
+          "卡诺图增加冗余项",
+          "提高供电电压"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "同步采样、加选通、卡诺图消险是三种思路；提高电压不能消除路径延迟差。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-007",
+        "ch": "2.1",
+        "type": "single",
+        "pts": 5,
+        "q": "多位数码管动态扫描时，为避免人眼察觉闪烁，整帧扫描频率建议？",
+        "options": [
+          "约 5Hz",
+          "不低于 50Hz",
+          "必须 1MHz",
+          "越高越好无下限"
+        ],
+        "answer": 1,
+        "explain": "扫描频率高于约 50Hz 时人眼靠视觉暂留觉得几位同时亮。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-008",
+        "ch": "2.1",
+        "type": "judge",
+        "pts": 5,
+        "q": "译码器与 MUX 是一体两面：译码器把地址译成独热使能线，MUX 用选择信号从多路输入选一路。",
+        "answer": true,
+        "explain": "对。二者是地址译码与数据选择的对偶关系。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-009",
+        "ch": "2.1",
+        "type": "fill",
+        "pts": 5,
+        "q": "3-8 译码器用 3 位地址，最多译出多少路输出？",
+        "answer": [
+          "8",
+          "8路",
+          "八路",
+          "8个"
+        ],
+        "explain": "2^3=8 路独热输出。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-010",
+        "ch": "2.1",
+        "type": "multi",
+        "pts": 5,
+        "q": "关于组合逻辑，下列说法正确的有？（多选）",
+        "options": [
+          "无记忆、无时钟",
+          "输出只由当前输入决定",
+          "case 必须覆盖全部分支",
+          "输出必须等时钟沿才更新"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "前三项正确；输出等时钟沿更新是时序逻辑的特征。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-011",
+        "ch": "2.1",
+        "type": "single",
+        "pts": 5,
+        "q": "组合逻辑输出产生窄毛刺（冒险）的根本原因是？",
+        "options": [
+          "时钟太快",
+          "同一信号经不同路径延迟不同",
+          "电源噪声",
+          "复位不干净"
+        ],
+        "answer": 1,
+        "explain": "竞争导致不同路径到达时间不一致，输出端出现短暂毛刺。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-012",
+        "ch": "2.2",
+        "type": "single",
+        "pts": 5,
+        "q": "D 触发器更新输出 Q 的时刻是？",
+        "options": [
+          "任何时刻",
+          "clk 上升沿",
+          "clk 下降沿",
+          "复位释放时"
+        ],
+        "answer": 1,
+        "explain": "always@(posedge clk) 只在上升沿把 D 锁存到 Q。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-013",
+        "ch": "2.2",
+        "type": "judge",
+        "pts": 5,
+        "q": "时序逻辑 always 块里应使用非阻塞赋值 <= 来描述寄存器并行更新。",
+        "answer": true,
+        "explain": "对。<= 描述时钟沿到来时各寄存器并行更新。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-014",
+        "ch": "2.2",
+        "type": "fill",
+        "pts": 5,
+        "q": "50MHz 时钟、每步 250ms，流水灯一个节拍要数多少个时钟？",
+        "answer": [
+          "12500000",
+          "12,500,000",
+          "1250万"
+        ],
+        "explain": "50,000,000×0.25=12,500,000 个时钟。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-015",
+        "ch": "2.2",
+        "type": "fill",
+        "pts": 5,
+        "q": "要数到 12,500,000，节拍计数器至少需要多少位？",
+        "answer": [
+          "24",
+          "24位",
+          "24bit"
+        ],
+        "explain": "2^23=8.4M 不够，2^24=16.7M 够，故 24 位。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-016",
+        "ch": "2.2",
+        "type": "single",
+        "pts": 5,
+        "q": "8 位流水灯让独热“1”循环左移一位，正确写法是？",
+        "options": [
+          "led <= {led[6:0], led[7]}",
+          "led <= {led[0], led[7:1]}",
+          "led <= led + 1",
+          "led <= ~led"
+        ],
+        "answer": 0,
+        "explain": "{led[6:0],led[7]} 把最高位接到最低位形成左移环。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-017",
+        "ch": "2.2",
+        "type": "multi",
+        "pts": 5,
+        "q": "关于移位寄存器 q<={q[6:0],sin}，正确的有？（多选）",
+        "options": [
+          "每个时钟沿所有位右挪一格",
+          "sin 进入最低位",
+          "8 个时钟后可并行读出",
+          "它是纯组合逻辑无时钟"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "移位寄存器是时序逻辑，每个沿右移一格，串入并出。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-018",
+        "ch": "2.2",
+        "type": "judge",
+        "pts": 5,
+        "q": "扭环（约翰逊）计数器 n 位产生 n 个状态。",
+        "answer": false,
+        "explain": "错。扭环把取反的最高位反馈，n 位产生 2n 个状态。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-019",
+        "ch": "2.2",
+        "type": "single",
+        "pts": 5,
+        "q": "扭环（约翰逊）计数器 n 位产生多少个状态？",
+        "options": [
+          "n",
+          "2n",
+          "2^n",
+          "n/2"
+        ],
+        "answer": 1,
+        "explain": "取反反馈使状态数翻倍为 2n，且相邻仅变一位。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-020",
+        "ch": "2.2",
+        "type": "single",
+        "pts": 5,
+        "q": "water_led_dir.v 里对外部按键先做两级触发器同步，主要目的是？",
+        "options": [
+          "消去抖动时长",
+          "把异步按键同步到时钟域、降低亚稳态概率",
+          "加快按键响应",
+          "提高亮度"
+        ],
+        "answer": 1,
+        "explain": "两级同步把异步信号同步到时钟域，降低跨域亚稳态概率；完整消抖在 2.3。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-021",
+        "ch": "2.2",
+        "type": "fill",
+        "pts": 5,
+        "q": "8 位流水灯复位后 led 的初始独热值是（最低位为 1）？",
+        "answer": [
+          "8'b0000_0001",
+          "00000001",
+          "1"
+        ],
+        "explain": "led <= 8'b0000_0001，从最右一盏灯开始流动。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-022",
+        "ch": "2.2",
+        "type": "multi",
+        "pts": 5,
+        "q": "关于 D 触发器与时序逻辑，正确的有？（多选）",
+        "options": [
+          "敏感表写 always@(posedge clk or negedge rst_n)",
+          "只在时钟上升沿更新",
+          "用非阻塞赋值",
+          "输出立即随输入变化"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "前三项正确；输出立即随输入变是组合逻辑特征。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-023",
+        "ch": "2.3",
+        "type": "single",
+        "pts": 5,
+        "q": "机械按键按下/松开时的抖动通常持续多久？",
+        "options": [
+          "纳秒级",
+          "约 5~20ms",
+          "约 5 秒",
+          "永远不抖动"
+        ],
+        "answer": 1,
+        "explain": "金属弹片弹跳约 5~20ms。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-024",
+        "ch": "2.3",
+        "type": "fill",
+        "pts": 5,
+        "q": "50MHz 时钟、消抖保持 20ms，计数窗口 HOLD_CNT 是多少个时钟？",
+        "answer": [
+          "1000000",
+          "1,000,000",
+          "100万"
+        ],
+        "explain": "50,000,000×0.02=1,000,000。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-025",
+        "ch": "2.3",
+        "type": "fill",
+        "pts": 5,
+        "q": "为计数到 1,000,000，消抖计数器至少需要多少位？",
+        "answer": [
+          "20",
+          "20位",
+          "20bit"
+        ],
+        "explain": "2^19=524k 不够，2^20=1.05M 够，故 20 位。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-026",
+        "ch": "2.3",
+        "type": "judge",
+        "pts": 5,
+        "q": "两级触发器同步可以直接用于多 bit 总线跨时钟域。",
+        "answer": false,
+        "explain": "错。多 bit 总线各位采样时刻不一致会采到拼接错误数据，需握手或异步 FIFO。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-027",
+        "ch": "2.3",
+        "type": "single",
+        "pts": 5,
+        "q": "触发器进入亚稳态的直接原因通常是？",
+        "options": [
+          "时钟频率过高",
+          "异步输入在建立/保持时间窗内变化",
+          "电源纹波",
+          "复位太快"
+        ],
+        "answer": 1,
+        "explain": "输入在采样窗内跳变，触发器输出既非确定 0 也非 1，需时间收敛。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-028",
+        "ch": "2.3",
+        "type": "single",
+        "pts": 5,
+        "q": "两级触发器同步缓解亚稳态的原理是？",
+        "options": [
+          "降低时钟",
+          "再打一拍等第一级亚稳收敛后再采样",
+          "提高驱动能力",
+          "屏蔽输入"
+        ],
+        "answer": 1,
+        "explain": "第一级可能亚稳，等一拍收敛后由第二级采样，把亚稳态局限在第一级。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-029",
+        "ch": "2.3",
+        "type": "multi",
+        "pts": 5,
+        "q": "关于计数窗口消抖算法，正确的有？（多选）",
+        "options": [
+          "输入与当前输出不同且连续保持 HOLD_MS 才采纳",
+          "抖动回到原态则计数清零",
+          "窗口计满才更新输出",
+          "看到电平变化立刻翻转输出"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "前三项是计数消抖核心；立刻翻转会把抖动误判成多次触发。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-030",
+        "ch": "2.3",
+        "type": "judge",
+        "pts": 5,
+        "q": "对消抖后的信号打一拍得到 d，用 d & ~sig 可检测一次下降沿（有效按下）。",
+        "answer": true,
+        "explain": "对。d&~sig 即同步后下降沿，代表一次有效按下。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-031",
+        "ch": "2.3",
+        "type": "single",
+        "pts": 5,
+        "q": "key_toggle 实现“按一下切换一次 LED”，检测到有效按下后执行的动作是？",
+        "options": [
+          "led <= 1'b1",
+          "led <= ~led",
+          "led <= 1'b0",
+          "led 保持不变"
+        ],
+        "answer": 1,
+        "explain": "每次有效按下翻转一次 led。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-032",
+        "ch": "2.3",
+        "type": "fill",
+        "pts": 5,
+        "q": "debounce.v 默认的消抖保持时间 HOLD_MS 是多少毫秒？",
+        "answer": [
+          "20",
+          "20ms",
+          "20 ms"
+        ],
+        "explain": "默认 HOLD_MS=20，对应机械按键常见抖动时长。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-033",
+        "ch": "2.3",
+        "type": "multi",
+        "pts": 5,
+        "q": "关于亚稳态与两级同步，正确的有？（多选）",
+        "options": [
+          "两级同步把亚稳态局限在第一级",
+          "到第二级采样时信号通常已稳定",
+          "适用于单 bit 控制信号",
+          "多 bit 总线也直接打两拍即可"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "前三项正确；多 bit 总线不能简单打两拍。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-034",
+        "ch": "2.4",
+        "type": "single",
+        "pts": 5,
+        "q": "Moore 型状态机的输出取决于？",
+        "options": [
+          "仅当前状态",
+          "当前输入",
+          "状态+当前输入",
+          "时钟频率"
+        ],
+        "answer": 0,
+        "explain": "Moore 输出只由当前状态决定。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-035",
+        "ch": "2.4",
+        "type": "multi",
+        "pts": 5,
+        "q": "三段式状态机的三段分别是？（多选）",
+        "options": [
+          "时序状态寄存器 state<=next",
+          "组合次态逻辑 case 算 next",
+          "组合（或时序）输出",
+          "产生时钟 PLL"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "三段为状态寄存器、次态组合、输出组合；PLL 不是 FSM 的一段。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-036",
+        "ch": "2.4",
+        "type": "judge",
+        "pts": 5,
+        "q": "FPGA 中状态编码常优先选用独热（one-hot）编码。",
+        "answer": true,
+        "explain": "对。FPGA 触发器充裕，独热译码简单、速度快、毛刺少。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-037",
+        "ch": "2.4",
+        "type": "single",
+        "pts": 5,
+        "q": "售货机在金额状态 A10（已投 1.0 元）时再投 1.0 元，应？",
+        "options": [
+          "不出货",
+          "出货且找零 0.5 元",
+          "退回所有币",
+          "进入错误态"
+        ],
+        "answer": 1,
+        "explain": "1.0+1.0=2.0，商品 1.5 元，出货并找零 0.5 元。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-038",
+        "ch": "2.4",
+        "type": "fill",
+        "pts": 5,
+        "q": "售货机 vending_machine.v 中商品单价是多少元？",
+        "answer": [
+          "1.5",
+          "1.5元",
+          "1.50",
+          "1.50元"
+        ],
+        "explain": "商品 1.5 元，投币累计达到 1.5 即出货。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-039",
+        "ch": "2.4",
+        "type": "judge",
+        "pts": 5,
+        "q": "traffic_light.v 是典型的 Moore 型状态机。",
+        "answer": true,
+        "explain": "对。灯色只取决于当前相位状态，与输入无关。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-040",
+        "ch": "2.4",
+        "type": "single",
+        "pts": 5,
+        "q": "交通灯状态机中“互锁”的含义是？",
+        "options": [
+          "两路方向同时绿灯",
+          "任一方向同一时刻只亮一种灯，另一方向保持红",
+          "黄灯持续亮",
+          "红灯可闪烁"
+        ],
+        "answer": 1,
+        "explain": "互锁保证路口冲突方向必有红灯，且同方向只亮一种灯。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-041",
+        "ch": "2.4",
+        "type": "multi",
+        "pts": 5,
+        "q": "关于 Moore 与 Mealy，正确的有？（多选）",
+        "options": [
+          "Moore 输出只看当前状态",
+          "Mealy 输出取决于状态+当前输入",
+          "售货机是 Mealy",
+          "交通灯是 Mealy"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "售货机出货/找零取决于金额状态+刚投的币，是 Mealy；交通灯是 Moore。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-042",
+        "ch": "2.4",
+        "type": "fill",
+        "pts": 5,
+        "q": "FSM 中各状态名建议用什么关键字定义，避免裸数字？",
+        "answer": [
+          "localparam",
+          "local param",
+          "参数",
+          "parameter"
+        ],
+        "explain": "用 localparam 定义 S_NS_G 等状态，可读性与可维护性更好。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-043",
+        "ch": "2.4",
+        "type": "single",
+        "pts": 5,
+        "q": "Mealy 型状态机的输出通常标注在状态转移图的哪里？",
+        "options": [
+          "状态圆圈内",
+          "转移边上",
+          "时钟上",
+          "复位线上"
+        ],
+        "answer": 1,
+        "explain": "Mealy 输出取决于状态+输入，标注在转移边上。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p2-p2-044",
+        "ch": "2.4",
+        "type": "multi",
+        "pts": 5,
+        "q": "关于交通灯状态机，正确的有？（多选）",
+        "options": [
+          "NS绿→NS黄→EW绿→EW黄循环",
+          "每状态维持 T_GREEN 或 T_YELLOW 拍",
+          "南北绿时东西为红",
+          "允许南北与东西同时绿灯"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "四相位循环、按时长切换、方向互锁；不允许两方向同时绿。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段2"
+      },
+      {
+        "id": "exam-p3-p3-101",
+        "ch": "3.1",
+        "type": "single",
+        "pts": 5,
+        "q": "UART 8N1 帧格式中，一个数据帧包含哪些位？",
+        "options": [
+          "1起始位+8数据位+1停止位",
+          "1起始位+8数据位+校验位+1停止位",
+          "8起始位+1数据位+1停止位",
+          "1起始位+16数据位+1停止位"
+        ],
+        "answer": 0,
+        "explain": "8N1 = 1 起始位、8 数据位、无校验、1 停止位。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-102",
+        "ch": "3.1",
+        "type": "single",
+        "pts": 5,
+        "q": "50MHz 系统时钟、115200 波特率，uart_tx 中 BIT_DIV（每比特分频系数）约为？",
+        "options": [
+          "434",
+          "27",
+          "25",
+          "500"
+        ],
+        "answer": 0,
+        "explain": "BIT_DIV = 50,000,000 / 115200 ≈ 434。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-103",
+        "ch": "3.1",
+        "type": "single",
+        "pts": 5,
+        "q": "uart_rx 采用 16 倍过采样，50MHz 下 OV_DIV（每过采样点分频）约为？",
+        "options": [
+          "27",
+          "434",
+          "25",
+          "16"
+        ],
+        "answer": 0,
+        "explain": "OV_DIV = 50,000,000 / (115200×16) ≈ 27。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-104",
+        "ch": "3.1",
+        "type": "single",
+        "pts": 5,
+        "q": "UART 空闲时 RX 线为高电平，起始位用什么电平通知接收方？",
+        "options": [
+          "拉低一个比特时间",
+          "拉高一个比特时间",
+          "输出时钟脉冲",
+          "翻转波特率"
+        ],
+        "answer": 0,
+        "explain": "起始位为低电平，从空闲高电平拉低标志帧开始。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-105",
+        "ch": "3.1",
+        "type": "multi",
+        "pts": 5,
+        "q": "下列哪些属于 UART 8N1 帧的组成部分？（多选）",
+        "options": [
+          "起始位",
+          "8 个数据位",
+          "停止位",
+          "同步时钟线"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "UART 异步通信无时钟线，只有起始位/数据位/停止位。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-106",
+        "ch": "3.1",
+        "type": "judge",
+        "pts": 5,
+        "q": "UART 是同步串行通信，收发双方共用一根时钟线。",
+        "answer": false,
+        "explain": "错。UART 异步，无时钟线，双方预先约定波特率。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-107",
+        "ch": "3.1",
+        "type": "judge",
+        "pts": 5,
+        "q": "uart_rx 在 16 倍过采样下，通常在每个比特的第 8 个采样点（中点）采样以减小误差。",
+        "answer": true,
+        "explain": "对。中点采样避开起始/停止沿的抖动。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-108",
+        "ch": "3.1",
+        "type": "fill",
+        "pts": 5,
+        "q": "50MHz 下 115200 波特率的每比特分频系数 BIT_DIV = 50000000/115200 ≈ ____（整数）。",
+        "answer": [
+          "434",
+          "434.0",
+          "约434"
+        ],
+        "explain": "50,000,000 / 115,200 ≈ 434。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-109",
+        "ch": "3.1",
+        "type": "fill",
+        "pts": 5,
+        "q": "16 倍过采样下，50MHz 对应的过采样分频系数 OV_DIV ≈ ____（整数）。",
+        "answer": [
+          "27",
+          "27.0",
+          "约27"
+        ],
+        "explain": "50,000,000 / (115200×16) ≈ 27。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-110",
+        "ch": "3.1",
+        "type": "single",
+        "pts": 5,
+        "q": "uart_echo_top 的功能是？",
+        "options": [
+          "收到一个字节后通过 TX 原样发回",
+          "循环发送固定字符",
+          "只接收不发送",
+          "产生波特率时钟"
+        ],
+        "answer": 0,
+        "explain": "回显：RX 收到的数据直接喂给 TX 发回。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-111",
+        "ch": "3.1",
+        "type": "multi",
+        "pts": 5,
+        "q": "uart_rx 模块的输出/标志信号包括？（多选）",
+        "options": [
+          "rx_data 并行数据",
+          "rx_valid 有效脉冲",
+          "frame_err 帧错误",
+          "tx_out 串行发送"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "rx_data/rx_valid/frame_err 是接收端信号；tx_out 属于发送端。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-201",
+        "ch": "3.2",
+        "type": "single",
+        "pts": 5,
+        "q": "SPI CPOL=0、CPHA=0 时，SCLK 空闲电平与采样沿分别是？",
+        "options": [
+          "空闲低，第一个上升沿采样",
+          "空闲高，第一个下降沿采样",
+          "空闲低，第二个下降沿采样",
+          "空闲高，第二个上升沿采样"
+        ],
+        "answer": 0,
+        "explain": "CPOL=0 空闲低，CPHA=0 在第一个 SCLK 沿（上升沿）采样。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-202",
+        "ch": "3.2",
+        "type": "single",
+        "pts": 5,
+        "q": "SSD1306 驱动的 0.96 寸 OLED 分辨率是？",
+        "options": [
+          "128×64",
+          "64×32",
+          "240×320",
+          "320×240"
+        ],
+        "answer": 0,
+        "explain": "SSD1306 驱动 128 列×64 行 OLED。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-203",
+        "ch": "3.2",
+        "type": "single",
+        "pts": 5,
+        "q": "50MHz 时钟、spi_master 中 HALF=25，则 SCLK 频率为？",
+        "options": [
+          "1MHz",
+          "2MHz",
+          "25MHz",
+          "500kHz"
+        ],
+        "answer": 0,
+        "explain": "SCLK = 50,000,000 / (2×25) = 1MHz。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-204",
+        "ch": "3.2",
+        "type": "multi",
+        "pts": 5,
+        "q": "SPI 通信有哪四种 CPOL/CPHA 组合模式？（多选）",
+        "options": [
+          "CPOL=0/CPHA=0",
+          "CPOL=0/CPHA=1",
+          "CPOL=1/CPHA=0",
+          "CPOL=1/CPHA=1"
+        ],
+        "answer": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "explain": "CPOL 与 CPHA 各 2 种，共 4 种模式。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-205",
+        "ch": "3.2",
+        "type": "judge",
+        "pts": 5,
+        "q": "SSD1306 OLED 显存按 8 页组织，每页 128 列，共 128×64 像素。",
+        "answer": true,
+        "explain": "对。8 页×128 列，每列 8 像素（1 字节）。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-206",
+        "ch": "3.2",
+        "type": "fill",
+        "pts": 5,
+        "q": "SSD1306 显存共分为 ____ 页（page）。",
+        "answer": [
+          "8",
+          "8页",
+          "八"
+        ],
+        "explain": "64 行 / 8 = 8 页。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-207",
+        "ch": "3.2",
+        "type": "fill",
+        "pts": 5,
+        "q": "50MHz 时钟下 spi_master HALF=25，SCLK 频率为 ____ MHz。",
+        "answer": [
+          "1",
+          "1mhz",
+          "1.0"
+        ],
+        "explain": "50M/(2×25)=1MHz。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-208",
+        "ch": "3.2",
+        "type": "single",
+        "pts": 5,
+        "q": "SSD1306 的 D/C（DC）引脚用于区分？",
+        "options": [
+          "命令与数据",
+          "高电平与低电平",
+          "复位与上电",
+          "主从选择"
+        ],
+        "answer": 0,
+        "explain": "DC=0 写命令，DC=1 写显存数据。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-209",
+        "ch": "3.2",
+        "type": "multi",
+        "pts": 5,
+        "q": "关于 SPI 主从通信，正确的有？（多选）",
+        "options": [
+          "全双工同时收发",
+          "MSB 先出",
+          "片选 CS 低有效",
+          "主机产生 SCLK"
+        ],
+        "answer": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "explain": "SPI 全双工、MSB 优先、CS 低有效、主机提供时钟。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-210",
+        "ch": "3.2",
+        "type": "judge",
+        "pts": 5,
+        "q": "SPI 是半双工通信，同一时刻只能发或只能收。",
+        "answer": false,
+        "explain": "错。SPI 全双工，MOSI/MISO 同时收发。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-211",
+        "ch": "3.2",
+        "type": "single",
+        "pts": 5,
+        "q": "SSD1306 初始化序列中 0xAE 命令的作用是？",
+        "options": [
+          "关闭显示",
+          "开显示",
+          "设置对比度",
+          "设置内存寻址模式"
+        ],
+        "answer": 0,
+        "explain": "0xAE = display OFF，初始化时先关显示再配置。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-301",
+        "ch": "3.3",
+        "type": "single",
+        "pts": 5,
+        "q": "PWM 输出逻辑 pwm_out = (cnt < duty)，其中 duty 决定？",
+        "options": [
+          "高电平占空比",
+          "PWM 周期",
+          "时钟频率",
+          "复位电平"
+        ],
+        "answer": 0,
+        "explain": "cnt<duty 期间输出高，duty 越大高电平越久。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-302",
+        "ch": "3.3",
+        "type": "single",
+        "pts": 5,
+        "q": "PWM_BITS=8 时，占空比分辨率为？",
+        "options": [
+          "1/256",
+          "1/64",
+          "1/16",
+          "1/1024"
+        ],
+        "answer": 0,
+        "explain": "2^8=256，步进 1/256。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-303",
+        "ch": "3.3",
+        "type": "single",
+        "pts": 5,
+        "q": "50MHz 时钟、C4=262Hz 音符，buzzer_music 中分频系数约为？",
+        "options": [
+          "95419",
+          "262",
+          "50000",
+          "190000"
+        ],
+        "answer": 0,
+        "explain": "div = 50,000,000 / (2×262) ≈ 95419。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-304",
+        "ch": "3.3",
+        "type": "multi",
+        "pts": 5,
+        "q": "呼吸灯效果通过哪些手段实现？（多选）",
+        "options": [
+          "duty 在 0~255 三角波式升降",
+          "SLOW_DIV 控制变化速度",
+          "人眼视觉暂留",
+          "固定占空比"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "三角波缓变 + 视觉暂留形成呼吸；固定占空比不会呼吸。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-305",
+        "ch": "3.3",
+        "type": "judge",
+        "pts": 5,
+        "q": "PWM 占空比越大，LED 平均亮度越高。",
+        "answer": true,
+        "explain": "对。平均电压 ≈ 占空比×Vcc。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-306",
+        "ch": "3.3",
+        "type": "fill",
+        "pts": 5,
+        "q": "PWM_BITS=8 时，占空比分辨率为 1/____。",
+        "answer": [
+          "256",
+          "256分之一"
+        ],
+        "explain": "2^8=256。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-307",
+        "ch": "3.3",
+        "type": "fill",
+        "pts": 5,
+        "q": "蜂鸣器音符分频公式：div = CLK / (____ × f)。",
+        "answer": [
+          "2",
+          "两",
+          "2*"
+        ],
+        "explain": "方波需半周期翻转，故 div=CLK/(2f)。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-308",
+        "ch": "3.3",
+        "type": "single",
+        "pts": 5,
+        "q": "breathing_rgb_top 中三路 PWM 的 duty 为什么错开 85/170？",
+        "options": [
+          "形成相位错开的彩虹呼吸",
+          "降低功耗",
+          "提高频率",
+          "减少抖动"
+        ],
+        "answer": 0,
+        "explain": "三路不同步呼吸形成渐变彩虹效果。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-309",
+        "ch": "3.3",
+        "type": "multi",
+        "pts": 5,
+        "q": "关于蜂鸣器发声，正确的有？（多选）",
+        "options": [
+          "靠方波驱动",
+          "频率越高音越高",
+          "分频系数 = CLK/(2f)",
+          "《小星星》旋律存于 ROM"
+        ],
+        "answer": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "explain": "蜂鸣器方波发声，频率决定音高，旋律以 ROM 存储。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-310",
+        "ch": "3.3",
+        "type": "judge",
+        "pts": 5,
+        "q": "SLOW_DIV 越大，呼吸灯变化越快。",
+        "answer": false,
+        "explain": "错。SLOW_DIV 越大变化越慢，呼吸越平缓。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-311",
+        "ch": "3.3",
+        "type": "single",
+        "pts": 5,
+        "q": "PWM 载波周期由什么决定？",
+        "options": [
+          "cnt 从 0 加到 2^N-1 溢出",
+          "duty 值",
+          "SLOW_DIV",
+          "复位信号"
+        ],
+        "answer": 0,
+        "explain": "cnt 自由计数到溢出即一个 PWM 周期。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-401",
+        "ch": "3.4",
+        "type": "single",
+        "pts": 5,
+        "q": "VGA 640×480@60 一行总像素时钟数为？",
+        "options": [
+          "800",
+          "640",
+          "525",
+          "480"
+        ],
+        "answer": 0,
+        "explain": "640+16+96+48=800。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-402",
+        "ch": "3.4",
+        "type": "single",
+        "pts": 5,
+        "q": "VGA 640×480@60 一帧总行数为？",
+        "options": [
+          "525",
+          "480",
+          "800",
+          "640"
+        ],
+        "answer": 0,
+        "explain": "480+10+2+33=525。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-403",
+        "ch": "3.4",
+        "type": "single",
+        "pts": 5,
+        "q": "VGA 640×480@60 的标准像素时钟为？",
+        "options": [
+          "25.175MHz",
+          "50MHz",
+          "100MHz",
+          "25MHz"
+        ],
+        "answer": 0,
+        "explain": "VESA 标准 25.175MHz；本设计用 50M/2 使能近似。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-404",
+        "ch": "3.4",
+        "type": "multi",
+        "pts": 5,
+        "q": "VGA 水平时序一行由哪些区间组成？（多选）",
+        "options": [
+          "可见区 640",
+          "前肩 16",
+          "同步脉冲 96",
+          "后肩 48"
+        ],
+        "answer": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "explain": "640+16+96+48=800。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-405",
+        "ch": "3.4",
+        "type": "judge",
+        "pts": 5,
+        "q": "VGA 消隐区应输出 RGB=000（黑色）。",
+        "answer": true,
+        "explain": "对。消隐区不显示像素，输出黑色避免杂色。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-406",
+        "ch": "3.4",
+        "type": "fill",
+        "pts": 5,
+        "q": "VGA 一行总像素时钟 H_TOTAL = 640+16+96+48 = ____。",
+        "answer": [
+          "800",
+          "800像素"
+        ],
+        "explain": "800。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-407",
+        "ch": "3.4",
+        "type": "fill",
+        "pts": 5,
+        "q": "VGA 一帧总行数 V_TOTAL = 480+10+2+33 = ____。",
+        "answer": [
+          "525",
+          "525行"
+        ],
+        "explain": "525。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-408",
+        "ch": "3.4",
+        "type": "fill",
+        "pts": 5,
+        "q": "VGA 640×480@60 标准像素时钟为 ____ MHz。",
+        "answer": [
+          "25.175",
+          "25.175mhz",
+          "25.2"
+        ],
+        "explain": "25.175MHz。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-409",
+        "ch": "3.4",
+        "type": "single",
+        "pts": 5,
+        "q": "vga_sync 中 video_on 何时为 1？",
+        "options": [
+          "pixel_x<640 且 pixel_y<480",
+          "同步脉冲期间",
+          "前肩期间",
+          "后肩期间"
+        ],
+        "answer": 0,
+        "explain": "可见区内 video_on=1。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-410",
+        "ch": "3.4",
+        "type": "multi",
+        "pts": 5,
+        "q": "vga_colorbar_top 彩条包含哪些颜色？（多选）",
+        "options": [
+          "白/黄",
+          "青/绿",
+          "品红/红",
+          "蓝/黑"
+        ],
+        "answer": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "explain": "8 竖彩条：白黄青绿品红蓝黑。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-411",
+        "ch": "3.4",
+        "type": "judge",
+        "pts": 5,
+        "q": "vga_moving_block_top 中方块到达边界后会反转方向反弹。",
+        "answer": true,
+        "explain": "对。碰边后 dir_x/dir_y 取反。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-501",
+        "ch": "3.5",
+        "type": "single",
+        "pts": 5,
+        "q": "数字电子钟中时计数到多少后归零？",
+        "options": [
+          "23",
+          "24",
+          "59",
+          "12"
+        ],
+        "answer": 0,
+        "explain": "24 小时制，hour 0~23。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-502",
+        "ch": "3.5",
+        "type": "single",
+        "pts": 5,
+        "q": "数码管动态扫描每位切换间隔典型为？",
+        "options": [
+          "1ms",
+          "1us",
+          "100ms",
+          "1s"
+        ],
+        "answer": 0,
+        "explain": "每 1ms 切一位，6 位周期 6ms。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-503",
+        "ch": "3.5",
+        "type": "single",
+        "pts": 5,
+        "q": "共阴数码管显示数字 0 的段码（a~g）为？",
+        "options": [
+          "0x3F",
+          "0x06",
+          "0x5B",
+          "0x4F"
+        ],
+        "answer": 0,
+        "explain": "a~f 亮 g 灭 = 0x3F。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-504",
+        "ch": "3.5",
+        "type": "multi",
+        "pts": 5,
+        "q": "电子钟进位链正确的有？（多选）",
+        "options": [
+          "秒 59->0 分+1",
+          "分 59->0 时+1",
+          "时 23->0",
+          "秒 59->0 时+1"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "秒满进分，分满进时，时满归零。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-505",
+        "ch": "3.5",
+        "type": "judge",
+        "pts": 5,
+        "q": "机械按键需要消抖，否则一次按下可能被误读为多次。",
+        "answer": true,
+        "explain": "对。机械抖动持续数 ms，需计数滤除。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-506",
+        "ch": "3.5",
+        "type": "fill",
+        "pts": 5,
+        "q": "24 小时制电子钟，时计数最大值为 ____。",
+        "answer": [
+          "23",
+          "23时",
+          "二十三"
+        ],
+        "explain": "0~23 共 24 小时。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-507",
+        "ch": "3.5",
+        "type": "fill",
+        "pts": 5,
+        "q": "数码管动态扫描每位切换间隔约 ____ ms。",
+        "answer": [
+          "1",
+          "1ms",
+          "1.0"
+        ],
+        "explain": "1ms。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-508",
+        "ch": "3.5",
+        "type": "single",
+        "pts": 5,
+        "q": "time_counter 中 mode 键在哪些状态间循环？",
+        "options": [
+          "走时/调分/调时",
+          "开/关/复位",
+          "上/下/中",
+          "快/慢/停"
+        ],
+        "answer": 0,
+        "explain": "mode=0 走时，1 调分，2 调时。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-509",
+        "ch": "3.5",
+        "type": "multi",
+        "pts": 5,
+        "q": "digital_clock_top 顶层包含哪些子模块？（多选）",
+        "options": [
+          "clk_debounce 消抖",
+          "time_counter 计数",
+          "seg_dynamic_scan 扫描",
+          "vga_sync 时序"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "电子钟用消抖+计数+扫描，不含 VGA。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-510",
+        "ch": "3.5",
+        "type": "judge",
+        "pts": 5,
+        "q": "动态扫描利用人眼视觉暂留，使多位数码管看起来同时点亮。",
+        "answer": true,
+        "explain": "对。快速切换每位，视觉暂留形成同时亮。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p3-p3-511",
+        "ch": "3.5",
+        "type": "single",
+        "pts": 5,
+        "q": "50MHz 时钟产生 1 秒基准，计数器需数到多少？",
+        "options": [
+          "50,000,000",
+          "5,000,000",
+          "500,000",
+          "1,000,000"
+        ],
+        "answer": 0,
+        "explain": "50MHz 即每秒 50,000,000 个时钟沿。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段3"
+      },
+      {
+        "id": "exam-p4-p4-001",
+        "ch": "4.1",
+        "type": "single",
+        "pts": 5,
+        "q": "MMCM 相对 PLL 的核心增强能力是？",
+        "options": [
+          "能省更多 LUT",
+          "可对输出做相位/占空比调整",
+          "不需要外部晶振",
+          "只能分频不能倍频"
+        ],
+        "answer": 1,
+        "explain": "MMCM 在 PLL 倍/分频之外，可对每路输出做相位移动与占空比校正，用于补偿布线延迟、对齐多路时钟。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-002",
+        "ch": "4.1",
+        "type": "single",
+        "pts": 5,
+        "q": "对 50MHz 主时钟写 create_clock，period 应填多少 ns？",
+        "options": [
+          "5",
+          "10",
+          "20",
+          "50"
+        ],
+        "answer": 2,
+        "explain": "周期=1/50MHz=20ns，即 create_clock -period 20.000。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-003",
+        "ch": "4.1",
+        "type": "multi",
+        "pts": 5,
+        "q": "一个 PLL 锁相环通常由下列哪些部分组成？（多选）",
+        "options": [
+          "PFD 鉴频鉴相器",
+          "电荷泵 CP",
+          "压控振荡器 VCO",
+          "反馈分频 N"
+        ],
+        "answer": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "explain": "PFD 比较相位、电荷泵+环路滤波转电压、VCO 振荡、反馈分频 N 使 f_vco/N=f_in 而锁定。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-004",
+        "ch": "4.1",
+        "type": "judge",
+        "pts": 5,
+        "q": "纯 RTL 计数器分频出来的时钟，可以直接当作多路时钟上板跑高频。",
+        "answer": false,
+        "explain": "错。它走普通布线、skew 大、累积抖动；真实多路时钟必须用 Clocking Wizard(MMCM) IP + BUFG。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-005",
+        "ch": "4.1",
+        "type": "single",
+        "pts": 5,
+        "q": "时钟信号为什么必须走 BUFG 全局时钟缓冲？",
+        "options": [
+          "为了省电",
+          "为了让到达各触发器的延迟/偏斜 skew 最小且可控",
+          "为了提高 IO 电平",
+          "为了节省 BRAM"
+        ],
+        "answer": 1,
+        "explain": "专用全局时钟网络(BUFG)把时钟低偏斜地送到每个触发器；普通布线 skew 大易时序失败。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-006",
+        "ch": "4.1",
+        "type": "single",
+        "pts": 5,
+        "q": "Clocking Wizard 输出的 locked 信号用途是？",
+        "options": [
+          "指示时钟已锁定稳定，下游应在其拉高前保持复位",
+          "按键输入",
+          "中断请求",
+          "LED 驱动"
+        ],
+        "answer": 0,
+        "explain": "locked 拉高表示 MMCM 已锁定；通常 rst = ~locked | 外部复位，时钟稳定后再释放下游。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-007",
+        "ch": "4.1",
+        "type": "judge",
+        "pts": 5,
+        "q": "单 bit 控制信号跨时钟域，标准做法是经过两级触发器同步器打两拍。",
+        "answer": true,
+        "explain": "对。第一拍可能进入亚稳态，第二拍让它稳定下来，吸收亚稳态。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-008",
+        "ch": "4.1",
+        "type": "multi",
+        "pts": 5,
+        "q": "下列关于 IP 核分类的说法正确的有？（多选）",
+        "options": [
+          "软核用逻辑实现、可综合，如 FIFO/FIR",
+          "硬核是芯片固化硅电路，如 Zynq 的 ARM/SerDes",
+          "加密核只给网表保护算法",
+          "所有 IP 都是硬核"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "分软核(可综合)、硬核(固化硅)、加密核(网表)三类；不是所有 IP 都是硬核。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-009",
+        "ch": "4.1",
+        "type": "single",
+        "pts": 5,
+        "q": "clk_div_tick（使能分频）每 DIV 个时钟输出什么？",
+        "options": [
+          "一个连续 50% 方波",
+          "一个单周期高电平使能脉冲",
+          "一个异步复位脉冲",
+          "一路 PLL 时钟"
+        ],
+        "answer": 1,
+        "explain": "clk_div_tick 输出一个单周期高电平使能脉冲；下游仍跑原时钟，用 if(tick) 做慢动作，不产生新时钟。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-010",
+        "ch": "4.1",
+        "type": "judge",
+        "pts": 5,
+        "q": "PLL 只能倍频/分频，不能对输出做相位移动。",
+        "answer": true,
+        "explain": "对。移相是 MMCM 相对 PLL 多出的能力。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-011",
+        "ch": "4.1",
+        "type": "fill",
+        "pts": 5,
+        "q": "50MHz 系统时钟的周期是多少 ns？",
+        "answer": [
+          "20",
+          "20ns",
+          "20 ns"
+        ],
+        "explain": "周期=1/50MHz=20ns。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-012",
+        "ch": "4.2",
+        "type": "single",
+        "pts": 5,
+        "q": "跨时钟域传指针，为什么用格雷码而不是二进制？",
+        "options": [
+          "格雷码更省面积",
+          "格雷码相邻值只变 1 位，跨域采样不会采到跳变中间态",
+          "格雷码速度更快",
+          "格雷码不需要同步器"
+        ],
+        "answer": 1,
+        "explain": "二进制加 1 多位同时跳变，对方采样会取到乱值；格雷码相邻只变 1 位，最多取到旧值或新值。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-013",
+        "ch": "4.2",
+        "type": "fill",
+        "pts": 5,
+        "q": "二进制转格雷码的公式是 gray = ____。",
+        "answer": [
+          "bin ^ (bin >> 1)",
+          "bin^(bin>>1)",
+          "bin ^(bin>>1)"
+        ],
+        "explain": "gray = bin ^ (bin>>1)，自身异或右移一位。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-014",
+        "ch": "4.2",
+        "type": "multi",
+        "pts": 5,
+        "q": "BRAM 的端口模式包括下列哪些？（多选）",
+        "options": [
+          "单口(Single Port)",
+          "简单双口(A写B读)",
+          "真双口(A/B 都可读写)",
+          "三态口"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "BRAM 支持单口、简单双口、真双口；没有所谓三态口模式。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-015",
+        "ch": "4.2",
+        "type": "judge",
+        "pts": 5,
+        "q": "同步 FIFO 中 empty 成立的条件是写指针等于读指针。",
+        "answer": true,
+        "explain": "对。wr_ptr==rd_ptr 即空；满则是指针多一位后最高位相反、低位相同。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-016",
+        "ch": "4.2",
+        "type": "single",
+        "pts": 5,
+        "q": "异步 FIFO 里把写指针格雷码送到读时钟域前，为什么要打两拍？",
+        "options": [
+          "为了降低功耗",
+          "第一拍可能采到亚稳态，第二拍让它稳定",
+          "为了增加 FIFO 深度",
+          "为了提高带宽"
+        ],
+        "answer": 1,
+        "explain": "两级同步器：第一拍可能进入亚稳态，第二拍吸收后信号才可信。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-017",
+        "ch": "4.2",
+        "type": "single",
+        "pts": 5,
+        "q": "关于 BRAM 与分布式 RAM，正确的是？",
+        "options": [
+          "BRAM 容量大、同步读，适合 FIFO/帧缓冲",
+          "分布式 RAM 容量最大",
+          "BRAM 用 LUT 实现",
+          "分布式 RAM 只能异步写"
+        ],
+        "answer": 0,
+        "explain": "BRAM 是专用大块存储、同步读；分布式 RAM 用 LUT、容量小。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-018",
+        "ch": "4.2",
+        "type": "multi",
+        "pts": 5,
+        "q": "一个经典格雷码异步 FIFO 由下列哪些部分构成？（多选）",
+        "options": [
+          "双口 RAM",
+          "二进制指针+格雷码指针",
+          "写→读、读→写两级同步器",
+          "PLL 倍频"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "双口 RAM + 格雷码指针 + 两级同步；不需要 PLL。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-019",
+        "ch": "4.2",
+        "type": "judge",
+        "pts": 5,
+        "q": "多 bit 数据总线跨时钟域，可以把每一位各自用一个同步器打两拍后直接拼接。",
+        "answer": false,
+        "explain": "错。各位到达时间不一致会采错；多 bit 跨域要用异步 FIFO + 格雷码指针。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-020",
+        "ch": "4.2",
+        "type": "single",
+        "pts": 5,
+        "q": "FIFO 的 almost_full（将满）标志表示？",
+        "options": [
+          "已经完全写满",
+          "接近设定阈值(如 DEPTH-2)，提醒上游准备停写",
+          "读空了",
+          "复位状态"
+        ],
+        "answer": 1,
+        "explain": "almost_full 在数据量接近深度阈值时置位，给上游提前预警。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-021",
+        "ch": "4.2",
+        "type": "single",
+        "pts": 5,
+        "q": "同步 FIFO 的读写端口共用几个时钟？",
+        "options": [
+          "1 个",
+          "2 个",
+          "3 个",
+          "不使用时钟"
+        ],
+        "answer": 0,
+        "explain": "同步 FIFO 读写共用同一 clk；异步 FIFO 才是读写各一个时钟。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-022",
+        "ch": "4.3",
+        "type": "single",
+        "pts": 5,
+        "q": "建立时间 slack 的正确公式是？",
+        "options": [
+          "slack = T周期 - (t逻辑+t走线+t_setup+抖动)",
+          "slack = T周期 + t逻辑",
+          "slack = t逻辑 - T周期",
+          "slack = t_setup"
+        ],
+        "answer": 0,
+        "explain": "slack = T - (t_logic + t_net + t_setup + jitter)；≥0 收敛，<0 违规。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-023",
+        "ch": "4.3",
+        "type": "single",
+        "pts": 5,
+        "q": "Timing Summary 中 WNS 表示？",
+        "options": [
+          "最坏建立时间负裕量",
+          "最坏保持时间裕量",
+          "总功耗",
+          "最高频率"
+        ],
+        "answer": 0,
+        "explain": "WNS = Worst Negative Slack，最坏建立时间裕量；≥0 表示建立时间收敛。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-024",
+        "ch": "4.3",
+        "type": "multi",
+        "pts": 5,
+        "q": "下列哪些属于 XDC 时序例外约束？（多选）",
+        "options": [
+          "set_false_path",
+          "set_multicycle_path",
+          "set_clock_groups",
+          "create_clock"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "三者都是时序例外；create_clock 是主时钟约束，不是例外。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-025",
+        "ch": "4.3",
+        "type": "judge",
+        "pts": 5,
+        "q": "如果不写 create_clock 主时钟约束，Vivado 仍会完整分析 reg-to-reg 时序。",
+        "answer": false,
+        "explain": "错。没有主时钟约束工具不做 reg-to-reg 时序分析，结果不可信。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-026",
+        "ch": "4.3",
+        "type": "fill",
+        "pts": 5,
+        "q": "写出为 50MHz 主时钟 clk_in1 加约束的 create_clock 命令（period=20）。",
+        "answer": [
+          "create_clock -period 20.000 -name clk_in1 [get_ports clk_in1]",
+          "create_clock -period 20 [get_ports clk_in1]"
+        ],
+        "explain": "create_clock -period 20.000 -name clk_in1 [get_ports clk_in1]。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-027",
+        "ch": "4.3",
+        "type": "single",
+        "pts": 5,
+        "q": "建立时间 setup 是指？",
+        "options": [
+          "采样沿之前数据必须提前稳定的最短时间",
+          "采样沿之后数据须保持的时间",
+          "时钟周期",
+          "走线延迟"
+        ],
+        "answer": 0,
+        "explain": "setup 是沿前提前稳定时间；数据到太晚违反 setup。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-028",
+        "ch": "4.3",
+        "type": "multi",
+        "pts": 5,
+        "q": "下列哪些是常用的时序收敛优化手段？（多选）",
+        "options": [
+          "插入流水线寄存器",
+          "降低逻辑层级",
+          "retiming 重定时",
+          "复制高扇出寄存器"
+        ],
+        "answer": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "explain": "四项都是常用手段：切短路径、减层级、平衡路径、降走线延迟。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-029",
+        "ch": "4.3",
+        "type": "single",
+        "pts": 5,
+        "q": "插入流水线改善时序的代价是？",
+        "options": [
+          "吞吐率下降",
+          "延迟(latency)增加一拍",
+          "面积一定变大",
+          "不需要复位"
+        ],
+        "answer": 1,
+        "explain": "流水线把长路径切段，每段易满足建立时间；代价是延迟增加一拍，吞吐率不变。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-030",
+        "ch": "4.3",
+        "type": "judge",
+        "pts": 5,
+        "q": "WNS 为负表示最快频率跑不到目标，该路径在一个周期内走不完。",
+        "answer": true,
+        "explain": "对。slack<0 即 WNS 负，时序未收敛，需优化。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-031",
+        "ch": "4.3",
+        "type": "single",
+        "pts": 5,
+        "q": "保持时间 hold 违例通常是因为？",
+        "options": [
+          "数据在采样沿之后变化太早",
+          "时钟太快",
+          "复位太长",
+          "BRAM 不足"
+        ],
+        "answer": 0,
+        "explain": "hold 要求沿后数据继续稳定；数据变太早就违反保持时间。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-032",
+        "ch": "4.4",
+        "type": "single",
+        "pts": 5,
+        "q": "闸门法测频的基本原理是？",
+        "options": [
+          "在精确 1 秒闸门内对被测方波上升沿计数，计数值即频率(Hz)",
+          "直接测量周期",
+          "用 PLL 倍频",
+          "读数码管电压"
+        ],
+        "answer": 0,
+        "explain": "闸门高电平期间逐个计上升沿，闸门 1 秒则计数值=频率(Hz)，结束时锁存。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-033",
+        "ch": "4.4",
+        "type": "single",
+        "pts": 5,
+        "q": "闸门法测频存在 ±1 个字误差的原因是？",
+        "options": [
+          "闸门起止与被测信号沿异步，可能多抓/漏抓一个沿",
+          "晶振不准",
+          "数码管位数不够",
+          "PLL 抖动"
+        ],
+        "answer": 0,
+        "explain": "闸门沿与被测沿异步，打开/落下时可能错过或多抓一个沿，量化误差 ±1。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-034",
+        "ch": "4.4",
+        "type": "multi",
+        "pts": 5,
+        "q": "频率计量程切换的阈值规则包括？（多选）",
+        "options": [
+          "count>=1,000,000 显示 MHz",
+          "count>=1,000 显示 kHz",
+          "否则显示 Hz",
+          "count>=100 显示百分比"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": ">=1MHz 显示 count/1e6；>=1kHz 显示 count/1e3；否则直接显示 Hz。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-035",
+        "ch": "4.4",
+        "type": "judge",
+        "pts": 5,
+        "q": "用 1 秒闸门测频，闸门落下时锁存的计数值就等于被测频率的 Hz 数。",
+        "answer": true,
+        "explain": "对。闸门 1 秒，计数值(Hz)即频率。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-036",
+        "ch": "4.4",
+        "type": "fill",
+        "pts": 5,
+        "q": "50MHz 时钟要产生 1 秒闸门，GATE_TICKS 应等于多少？",
+        "answer": [
+          "50000000",
+          "50,000,000",
+          "50000000 ticks"
+        ],
+        "explain": "50MHz×1s=50,000,000 个时钟。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-037",
+        "ch": "4.4",
+        "type": "single",
+        "pts": 5,
+        "q": "1 秒内最多数 50,000,000 个沿，事件计数器位宽取 27 位是因为？",
+        "options": [
+          "2^26=67M 够但留余量取 27 位",
+          "2^27 小于 50M",
+          "必须 32 位",
+          "位宽不影响"
+        ],
+        "answer": 0,
+        "explain": "2^26≈67M 已够数 50M，取 CNT_WIDTH=27 留余量。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-038",
+        "ch": "4.4",
+        "type": "judge",
+        "pts": 5,
+        "q": "用 1 秒闸门测 1Hz 信号，相对误差约为 100%。",
+        "answer": true,
+        "explain": "对。1 秒只数到 1，±1 字误差相对误差≈1/1=100%。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-039",
+        "ch": "4.4",
+        "type": "single",
+        "pts": 5,
+        "q": "教学版频率计用系统时钟采样 sig_in 边沿，测接近 50MHz 信号时的局限是？",
+        "options": [
+          "采样法会丢边沿",
+          "数码管不够亮",
+          "闸门太长",
+          "无法锁存"
+        ],
+        "answer": 0,
+        "explain": "被测接近 50MHz 时采样法丢边沿；工业级应改为被测时钟域计数+跨域读回。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-040",
+        "ch": "4.4",
+        "type": "fill",
+        "pts": 5,
+        "q": "把量程缩放后的整数转成数码管逐位显示所用的 BCD 转换算法俗称什么？",
+        "answer": [
+          "双 dabble",
+          "double dabble",
+          "双dabble",
+          "double-dabble"
+        ],
+        "explain": "Double Dabble（双 dabble）把二进制转多位 BCD。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-041",
+        "ch": "4.4",
+        "type": "single",
+        "pts": 5,
+        "q": "ch4_gate_gen 在每个测量周期结束时输出的 gate_done 脉冲作用是？",
+        "options": [
+          "通知状态机锁存读数并进入复位/下一周期",
+          "复位 PLL",
+          "选通数码管",
+          "启动 LFSR"
+        ],
+        "answer": 0,
+        "explain": "gate_done 标记闸门结束，FSM 据此锁存计数、复位并开始下一轮。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-042",
+        "ch": "4.5",
+        "type": "single",
+        "pts": 5,
+        "q": "640×480@60 VGA 标准所需的像素时钟约为？",
+        "options": [
+          "25.175MHz",
+          "50MHz",
+          "100MHz",
+          "12MHz"
+        ],
+        "answer": 0,
+        "explain": "VESA 640×480@60 像素时钟 25.175MHz；板载 50MHz 用使能分频到 25MHz。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-043",
+        "ch": "4.5",
+        "type": "single",
+        "pts": 5,
+        "q": "640×480 VGA 一行的总像素数（含前肩/同步/后肩）是？",
+        "options": [
+          "640",
+          "800",
+          "525",
+          "480"
+        ],
+        "answer": 1,
+        "explain": "行总=640+16+96+48=800；场总=480+10+2+33=525。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-044",
+        "ch": "4.5",
+        "type": "multi",
+        "pts": 5,
+        "q": "一帧 VGA 时序由下列哪些时间段组成？（多选）",
+        "options": [
+          "可见区(640/480)",
+          "前肩(front porch)",
+          "同步脉冲(sync)",
+          "后肩(back porch)"
+        ],
+        "answer": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "explain": "行/场均由可见区+前肩+同步+后肩组成，消隐期 RGB=0。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-045",
+        "ch": "4.5",
+        "type": "judge",
+        "pts": 5,
+        "q": "贪吃蛇游戏网格为 20 列×15 行、每格 32px，正好铺满 640×480。",
+        "answer": true,
+        "explain": "对。20×32=640，15×32=480。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-046",
+        "ch": "4.5",
+        "type": "fill",
+        "pts": 5,
+        "q": "本设计用的 8 位 LFSR 食物随机数多项式是 x^8 + ____ + 1（写出中间项）。",
+        "answer": [
+          "x^6+x^5+x^4",
+          "x6+x5+x4"
+        ],
+        "explain": "多项式 x^8+x^6+x^5+x^4+1。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-047",
+        "ch": "4.5",
+        "type": "single",
+        "pts": 5,
+        "q": "贪吃蛇游戏的帧节拍 frame_tick 约为多高？",
+        "options": [
+          "8Hz 左右，人眼可玩",
+          "25MHz",
+          "50MHz",
+          "1Hz"
+        ],
+        "answer": 0,
+        "explain": "游戏不跟像素走，约 8~10Hz 推进一步，速度适合人玩。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-048",
+        "ch": "4.5",
+        "type": "single",
+        "pts": 5,
+        "q": "按键信号进入蛇方向控制前做两级同步，主要为了？",
+        "options": [
+          "吸收亚稳态、避免误触发",
+          "提高亮度",
+          "加快移动",
+          "节省 LUT"
+        ],
+        "answer": 0,
+        "explain": "机械按键异步，两级同步器吸收亚稳态，方向命令才稳定。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-049",
+        "ch": "4.5",
+        "type": "multi",
+        "pts": 5,
+        "q": "蛇的碰撞检测包括下列哪些情况？（多选）",
+        "options": [
+          "新头越界(nx>19 或 ny>14)撞墙",
+          "新头命中身体某格撞自身",
+          "吃到食物",
+          "按重启键"
+        ],
+        "answer": [
+          0,
+          1
+        ],
+        "explain": "撞墙=越界，撞自身=命中身体；吃食物是加分不是碰撞结束。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-050",
+        "ch": "4.5",
+        "type": "judge",
+        "pts": 5,
+        "q": "蛇正在向右移动时按左键（180° 反向）应被状态机忽略。",
+        "answer": true,
+        "explain": "对。禁止 180° 反向，否则会立即咬到自己。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-051",
+        "ch": "4.5",
+        "type": "single",
+        "pts": 5,
+        "q": "LFSR 在贪吃蛇设计中用于？",
+        "options": [
+          "伪随机生成食物落点",
+          "产生 VGA 行同步",
+          "驱动数码管",
+          "产生复位"
+        ],
+        "answer": 0,
+        "explain": "8 位 LFSR 产生伪随机数决定食物格子落点。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p4-p4-052",
+        "ch": "4.5",
+        "type": "fill",
+        "pts": 5,
+        "q": "640×480 VGA 的 hsync/vsync 同步脉冲是高电平有效还是低电平有效？",
+        "answer": [
+          "低电平有效",
+          "低有效",
+          "低"
+        ],
+        "explain": "hsync/vsync 低电平有效，消隐期 RGB=0。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段4"
+      },
+      {
+        "id": "exam-p5-p5-001",
+        "ch": "5.1",
+        "type": "single",
+        "pts": 5,
+        "q": "经典五级流水线 RV32I，在“取指(IF)”之后的第二级是？",
+        "options": [
+          "取指 IF",
+          "译码 ID",
+          "访存 MEM",
+          "写回 WB"
+        ],
+        "answer": 1,
+        "explain": "五级顺序为 IF 取指→ID 译码→EX 执行→MEM 访存→WB 写回；本教学核把它们压平成单周期。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-002",
+        "ch": "5.1",
+        "type": "single",
+        "pts": 5,
+        "q": "RISC-V 的 x0 寄存器读出来恒等于？",
+        "options": [
+          "随机值",
+          "0",
+          "PC 当前值",
+          "栈顶地址"
+        ],
+        "answer": 1,
+        "explain": "x0 硬连线恒为 0：写它丢弃，读它恒 0。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-003",
+        "ch": "5.1",
+        "type": "single",
+        "pts": 5,
+        "q": "RV32I 指令的 opcode 固定在指令的哪几位？",
+        "options": [
+          "bit[31:25]",
+          "bit[11:7]",
+          "bit[6:0]",
+          "bit[14:12]"
+        ],
+        "answer": 2,
+        "explain": "opcode 恒在低 7 位 bit[6:0]，硬件先看它决定指令大类。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-004",
+        "ch": "5.1",
+        "type": "multi",
+        "pts": 5,
+        "q": "本教学 RV32I 核实现了下列哪些指令？（多选）",
+        "options": [
+          "ADD/SUB",
+          "SW",
+          "JALR",
+          "MUL"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "核实现了 ADD/SUB、SW、JALR 等；MUL 属 M 扩展，本教学核未实现。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-005",
+        "ch": "5.1",
+        "type": "judge",
+        "pts": 5,
+        "q": "向 x0 写入一个值之后，再读 x0 会得到刚写入的值。",
+        "answer": false,
+        "explain": "错。x0 硬连线恒零，写 x0 自动丢弃，读 x0 永远是 0。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-006",
+        "ch": "5.1",
+        "type": "fill",
+        "pts": 5,
+        "q": "RV32I 基础整数指令集的指令定长是多少位？",
+        "answer": [
+          "32",
+          "32位",
+          "32bit",
+          "32 bit"
+        ],
+        "explain": "RV32I 基础指令定长 32 位（C 扩展才压缩成 16 位）。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-007",
+        "ch": "5.1",
+        "type": "single",
+        "pts": 5,
+        "q": "下列哪个不是 RV32I 的六种指令格式之一？",
+        "options": [
+          "R",
+          "I",
+          "B",
+          "X"
+        ],
+        "answer": 3,
+        "explain": "六种是 R/I/S/B/U/J，没有 X 型。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-008",
+        "ch": "5.1",
+        "type": "single",
+        "pts": 5,
+        "q": "本最小 SoC 中，UART 数据寄存器映射在哪个地址？",
+        "options": [
+          "0x00000000",
+          "0x10000000",
+          "0x20000000",
+          "0x80000000"
+        ],
+        "answer": 1,
+        "explain": "RAM 在 0x0000_0000 起 4KB，UART 数据寄存器在 0x1000_0000，写字节即打印。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-009",
+        "ch": "5.1",
+        "type": "multi",
+        "pts": 5,
+        "q": "单周期 CPU 写回寄存器堆的数据可能来自？（多选）",
+        "options": [
+          "ALU 运算结果",
+          "LW 从数据存储器读出的值",
+          "LUI 的高位立即数",
+          "JAL/JALR 的 PC+4"
+        ],
+        "answer": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "explain": "写回来源由控制器选择：LW→存储器值、LUI→高位立即数、JAL/JALR→PC+4、其余→ALU 结果。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-010",
+        "ch": "5.1",
+        "type": "judge",
+        "pts": 5,
+        "q": "本教学 SoC 的取指与 LW/SW 共用同一块统一 RAM，属于 von Neumann 结构。",
+        "answer": true,
+        "explain": "对。统一 RAM 同时承担指令与数据访问，是冯·诺依曼结构。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-011",
+        "ch": "5.1",
+        "type": "fill",
+        "pts": 5,
+        "q": "LUI 指令把 20 位立即数加载到目标寄存器的高多少位？",
+        "answer": [
+          "20",
+          "20位",
+          "20 bit"
+        ],
+        "explain": "LUI 把立即数放到 rd[31:12]（高 20 位），低 12 位补 0。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-012",
+        "ch": "5.2",
+        "type": "single",
+        "pts": 5,
+        "q": "AXI4-Lite 共有几个独立通道？",
+        "options": [
+          "3",
+          "4",
+          "5",
+          "6"
+        ],
+        "answer": 2,
+        "explain": "AW、W、B、AR、R 共五个独立通道。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-013",
+        "ch": "5.2",
+        "type": "single",
+        "pts": 5,
+        "q": "AXI 握手被判定为完成（数据被采样）的时刻是？",
+        "options": [
+          "VALID 一拉高",
+          "READY 一拉高",
+          "VALID 与 READY 同时为高的那一拍",
+          "时钟下降沿"
+        ],
+        "answer": 2,
+        "explain": "VALID/READY 同时为高的那拍才算一次传输。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-014",
+        "ch": "5.2",
+        "type": "single",
+        "pts": 5,
+        "q": "本 AXI GPIO 外设偏移 0x04 的寄存器是什么？",
+        "options": [
+          "GPIO_DATA",
+          "GPIO_INPUT",
+          "VERSION",
+          "GPIO_DIR"
+        ],
+        "answer": 1,
+        "explain": "0x04 是 GPIO_INPUT（只读），返回 sw_i；0x00 是 DATA，0x08 是 VERSION。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-015",
+        "ch": "5.2",
+        "type": "multi",
+        "pts": 5,
+        "q": "下列哪些属于 AXI 协议族的接口变体？（多选）",
+        "options": [
+          "AXI4",
+          "AXI4-Lite",
+          "AXI4-Stream",
+          "I2C"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "AXI 族含 AXI4、AXI4-Lite、AXI4-Stream；I2C 是另一种总线。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-016",
+        "ch": "5.2",
+        "type": "judge",
+        "pts": 5,
+        "q": "主机把 VALID 拉高后，只要对方 READY 还没来，就可以提前把 VALID 拉低。",
+        "answer": false,
+        "explain": "错。VALID 一旦拉高必须保持到握手完成，否则违反 AXI 规范。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-017",
+        "ch": "5.2",
+        "type": "fill",
+        "pts": 5,
+        "q": "本外设中驱动 LED 输出的 GPIO_DATA 寄存器，相对基地址的偏移是 0x____。",
+        "answer": [
+          "00",
+          "0",
+          "0x00"
+        ],
+        "explain": "GPIO_DATA 在偏移 0x00（R/W），写它驱动 led_o。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-018",
+        "ch": "5.2",
+        "type": "single",
+        "pts": 5,
+        "q": "AXI 写传输中，从机回写响应(OKAY/SLVERR)走哪个通道？",
+        "options": [
+          "AW",
+          "W",
+          "B",
+          "R"
+        ],
+        "answer": 2,
+        "explain": "B 是写响应通道，由从机驱动。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-019",
+        "ch": "5.2",
+        "type": "multi",
+        "pts": 5,
+        "q": "一次完整的 AXI4-Lite 写传输涉及哪些通道？（多选）",
+        "options": [
+          "AW 写地址",
+          "W 写数据",
+          "B 写响应",
+          "R 读数据"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "写用 AW+W（主机发）与 B（从机回）；R 属于读通道。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-020",
+        "ch": "5.2",
+        "type": "judge",
+        "pts": 5,
+        "q": "AXI4-Stream 适合传输视频流、DMA 等无地址的单向数据流。",
+        "answer": true,
+        "explain": "对。AXI4-Stream 无地址、单向，用于视频/DMA 流式数据。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-021",
+        "ch": "5.2",
+        "type": "single",
+        "pts": 5,
+        "q": "本外设 VERSION 只读寄存器的固定值是？",
+        "options": [
+          "0x20261010",
+          "0x12345678",
+          "0xDEADBEEF",
+          "0x00000000"
+        ],
+        "answer": 0,
+        "explain": "VERSION 固定返回 0x20261010，便于软件识别外设版本。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-022",
+        "ch": "5.2",
+        "type": "fill",
+        "pts": 5,
+        "q": "AXI4-Lite 主要用于连接哪类外设？",
+        "answer": [
+          "低速寄存器外设",
+          "寄存器",
+          "控制寄存器",
+          "低速外设"
+        ],
+        "explain": "AXI4-Lite 做单次传输、寄存器级访问，用于 GPIO/UART 等低速外设。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-023",
+        "ch": "5.3",
+        "type": "single",
+        "pts": 5,
+        "q": "FPGA 例化多个乘法器、一拍同时算出多个乘积，这种加速手段叫？",
+        "options": [
+          "流水线",
+          "空间并行(展开)",
+          "背压",
+          "缓存"
+        ],
+        "answer": 1,
+        "explain": "空间并行用面积换时间，例化多个功能单元同时算。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-024",
+        "ch": "5.3",
+        "type": "single",
+        "pts": 5,
+        "q": "流水线填满后，它的主要收益是？",
+        "options": [
+          "单条结果延迟变小",
+          "每拍都能流出一个结果(吞吐提高)",
+          "占用资源变少",
+          "工作频率降低"
+        ],
+        "answer": 1,
+        "explain": "流水线延迟变大但吞吐提高，填满后每拍出一个结果。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-025",
+        "ch": "5.3",
+        "type": "multi",
+        "pts": 5,
+        "q": "FPGA 相对 CPU 做硬件加速常用的三类手段是？（多选）",
+        "options": [
+          "空间并行(展开)",
+          "时间流水线(分级)",
+          "数据级复用",
+          "一味提高主频"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "三类是并行展开、流水线分级、数据复用；FPGA 频率低，不靠提主频。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-026",
+        "ch": "5.3",
+        "type": "judge",
+        "pts": 5,
+        "q": "FPGA 加速比主要靠把时钟主频提得比 CPU 更高来获得。",
+        "answer": false,
+        "explain": "错。FPGA 通常几十~上百 MHz，加速来自同一拍并行做更多事，而非更高主频。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-027",
+        "ch": "5.3",
+        "type": "fill",
+        "pts": 5,
+        "q": "valid/ready 握手中，两个信号同时为高的那一拍，数据被下游怎样？",
+        "answer": [
+          "接收",
+          "采样",
+          "传输",
+          "锁存"
+        ],
+        "explain": "valid 与 ready 同时为高的那拍，数据被接收。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-028",
+        "ch": "5.3",
+        "type": "single",
+        "pts": 5,
+        "q": "本仓库向量点积(MAC)加速器的并行度 P=？",
+        "options": [
+          "1",
+          "2",
+          "4",
+          "8"
+        ],
+        "answer": 2,
+        "explain": "并行度 P=4，每拍送入 4 对 (a,b)，内部 4 个乘法器并行。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-029",
+        "ch": "5.3",
+        "type": "multi",
+        "pts": 5,
+        "q": "下列哪些更适合做成硬件加速器？（多选）",
+        "options": [
+          "规则重复的乘加/滤波",
+          "卷积/矩阵乘",
+          "充满 if-else 的协议解析",
+          "状态机式错误处理"
+        ],
+        "answer": [
+          0,
+          1
+        ],
+        "explain": "数据密集、规则重复的乘加/卷积适合硬件；控制密集、分支多的留 CPU。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-030",
+        "ch": "5.3",
+        "type": "judge",
+        "pts": 5,
+        "q": "Roofline 模型认为实际性能 = min(计算峰值, 带宽峰值)。",
+        "answer": true,
+        "explain": "对。计算再快也受内存带宽限制，数据复用不够时加速器空转。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-031",
+        "ch": "5.3",
+        "type": "single",
+        "pts": 5,
+        "q": "向量 MAC 加速器里 s_keep 掩码的作用是？",
+        "options": [
+          "标记向量结束",
+          "屏蔽长度不是 P 的倍数时的无效车道",
+          "做背压",
+          "清零累加器"
+        ],
+        "answer": 1,
+        "explain": "keep 掩码在最后一拍屏蔽无效车道，支持任意向量长度；last 才标记结束。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-032",
+        "ch": "5.3",
+        "type": "fill",
+        "pts": 5,
+        "q": "下游忙时把 ready 拉低、要求上游保持数据，这种机制叫？",
+        "answer": [
+          "背压",
+          "backpressure",
+          "反压"
+        ],
+        "explain": "背压(backpressure)：ready 拉低时上游必须保持数据不变。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-033",
+        "ch": "5.3",
+        "type": "single",
+        "pts": 5,
+        "q": "转置结构 FIR 滤波器把寄存器放在哪里以缩短关键路径、易跑高频？",
+        "options": [
+          "乘法器前",
+          "加法反馈链上",
+          "最后输出级",
+          "输入端口"
+        ],
+        "answer": 1,
+        "explain": "转置 FIR 把寄存器放在加法反馈链上，关键路径短，是 DSP 经典流水形态。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-034",
+        "ch": "5.4",
+        "type": "single",
+        "pts": 5,
+        "q": "本自制 SoC 的外设（UART/GPIO/Timer）基地址从哪里开始？",
+        "options": [
+          "0x00000000",
+          "0x10000000",
+          "0x20000000",
+          "0x80000000"
+        ],
+        "answer": 2,
+        "explain": "RAM 在 0x0000_0000 起 4KB，外设从 0x2000_0000 开始。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-035",
+        "ch": "5.4",
+        "type": "single",
+        "pts": 5,
+        "q": "教学简化中断触发后，CPU 下一拍跳转到哪个地址取指？",
+        "options": [
+          "0x00000000",
+          "0x00000100",
+          "0x20000000",
+          "0x00000200"
+        ],
+        "answer": 1,
+        "explain": "TRAP_VEC=0x100，中断向量放在这里。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-036",
+        "ch": "5.4",
+        "type": "multi",
+        "pts": 5,
+        "q": "本自制 SoC 集成了下列哪些部件？（多选）",
+        "options": [
+          "RV32I CPU",
+          "UART",
+          "GPIO",
+          "定时器"
+        ],
+        "answer": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "explain": "CPU+RAM+UART+GPIO+Timer+中断控制器，构成软核 MCU。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-037",
+        "ch": "5.4",
+        "type": "judge",
+        "pts": 5,
+        "q": "本仓库 SoC 已经在真实硬件上跑通了 RT-Thread 操作系统。",
+        "answer": false,
+        "explain": "错。目前只跑裸机轮询+中断；跑 OS 是进阶方向，本仓库未实现、未声称。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-038",
+        "ch": "5.4",
+        "type": "fill",
+        "pts": 5,
+        "q": "本 SoC 片上 RAM 的起始字节地址是 0x____。",
+        "answer": [
+          "00000000",
+          "0",
+          "0x0",
+          "0x00000000"
+        ],
+        "explain": "RAM 从 0x0000_0000 起，4KB，取指与数据共用。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-039",
+        "ch": "5.4",
+        "type": "single",
+        "pts": 5,
+        "q": "教学 ISR 末尾用哪条指令返回被中断程序？",
+        "options": [
+          "ret",
+          "jalr x0, x5, 0",
+          "mret",
+          "ecall"
+        ],
+        "answer": 1,
+        "explain": "返回地址 pc+4 被存进 x5，ISR 末尾 jalr x0,x5,0 返回。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-040",
+        "ch": "5.4",
+        "type": "multi",
+        "pts": 5,
+        "q": "下列哪些寄存器地址属于本 SoC 的外设区间(0x2000_0000 起)？（多选）",
+        "options": [
+          "0x20000000 UART_DATA",
+          "0x20000010 GPIO_DIR",
+          "0x20000034 INTF",
+          "0x00000100"
+        ],
+        "answer": [
+          0,
+          1,
+          2
+        ],
+        "explain": "前三个都在外设区间；0x0000_0100 是中断向量/RAM 区，不是外设寄存器。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-041",
+        "ch": "5.4",
+        "type": "judge",
+        "pts": 5,
+        "q": "INTF 中断标志寄存器采用“写 1 清零”(W1C)的清标志方式。",
+        "answer": true,
+        "explain": "对。INTF 为 R/W1C，写 1 对应位即清零中断标志。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-042",
+        "ch": "5.4",
+        "type": "single",
+        "pts": 5,
+        "q": "UART_STATUS 寄存器的 bit0 表示什么？",
+        "options": [
+          "rx_avail",
+          "tx_ready",
+          "溢出错误",
+          "奇偶错误"
+        ],
+        "answer": 1,
+        "explain": "bit0=tx_ready，bit1=rx_avail。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-043",
+        "ch": "5.4",
+        "type": "fill",
+        "pts": 5,
+        "q": "中断响应时，CPU 把返回地址(pc+4)保存到哪个通用寄存器？",
+        "answer": [
+          "x5",
+          "5",
+          "t0"
+        ],
+        "explain": "教学简化把返回地址写入 x5，ISR 末尾用它返回。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      },
+      {
+        "id": "exam-p5-p5-044",
+        "ch": "5.4",
+        "type": "judge",
+        "pts": 5,
+        "q": "本教学中断实现了完整的 RISC-V 特权架构（Cause CSR、栈切换、特权级）。",
+        "answer": false,
+        "explain": "错。这是教学简化：无 Cause CSR、无栈切换、无特权级，只为讲清跳转-返回。",
+        "cat": "phasecourse",
+        "catName": "阶段课程",
+        "sub": "阶段5"
+      }
+    ]
   }
 }
