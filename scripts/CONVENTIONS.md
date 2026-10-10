@@ -132,3 +132,33 @@ FPGA-Knowledge-Base/
 - 通过线 `passScore`=85；阶段 N 解锁条件 = N==1 或 阶段 N-1 已通过。
 - 存档 key `fpga-exam-state`：`{unlocked:{}, passed:{}, best:{}}`，与 `fpga-learning-progress` 互不干扰；重置按钮会一并清空。
 - 题库量建议每阶段 ≥30 题（每章 ≥10），四种题型都要有，内容必须与该阶段 docs/code 严格一致，answer 必须正确。
+
+---
+
+## 7. 科目一刷题题库 schema（data/drill/<cat>.json）
+
+每个知识大类一个文件，如 `data/drill/digital.json`：
+
+```json
+{
+  "cat": "digital",
+  "catName": "数字电路与电平标准",
+  "cards": [
+    {"id":"dig-c01","sub":"数制与编码","title":"二进制与十六进制","body":"速记正文，可用\\n与·/① 分点","src":"可选：手册名/URL"}
+  ],
+  "questions": [
+    {"id":"dig-001","cat":"digital","sub":"数制与编码","type":"single","q":"…","options":["…","…","…","…"],"answer":1,"explain":"…","src":"可选"},
+    {"id":"…","type":"multi","q":"…","options":[≥4],"answer":[0,2],"explain":"…"},
+    {"id":"…","type":"judge","q":"…","answer":true,"explain":"…"},
+    {"id":"…","type":"fill","q":"…","answer":["写法1","写法2"],"explain":"…"}
+  ]
+}
+```
+
+规则：
+- id 全局唯一，大类英文前缀（dig-/sw-/hw-/sim-/tm-/proto-/adv-）；`sub` 是专项/组卷均衡的分组键。
+- 判分语义同阶段考卷：single=下标；multi=下标数组全对；judge=布尔；fill=可接受写法数组（归一化判分）。drill 题不需要 pts。
+- build.py 自动聚合：`KB.drill.categories`（卡片按大类）、`KB.drill.questions`（打平带 cat/catName/sub）、`KB.drill.allQuestions`（drill + 阶段课程 exam，exam 题 id 加前缀 `exam-p{阶段}-{原id}`、cat="phasecourse"、sub="阶段N"）。
+- localStorage：刷题记录 `fpga-drill-state`={done,lastCorrect,wrong,fav,last}；模考成绩 `fpga-mock-state`={global,globalN,specials,各专项次数}；与 fpga-learning-progress / fpga-exam-state 隔离，重置按钮一并清空。
+- 纯函数 `window.FPGADrill`：practiceSeq/practiceRandom/filterBy/composePool/isCorrect/recordAnswer/statsOf/levelGlobal。
+- 题量建议：每大类 ≥30 题（每 sub ≥5），卡片 ≥8 张，四题型齐全；单选/多选选项≥4、多选≥2 正确项；内容事实准确、题答对应。
