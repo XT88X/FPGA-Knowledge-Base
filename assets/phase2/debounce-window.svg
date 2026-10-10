@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 230" font-family="system-ui,sans-serif" font-size="12">
+  <rect x="0" y="0" width="760" height="230" fill="#0d1420"/>
+  <text x="380" y="22" fill="#7dd3fc" text-anchor="middle" font-size="15" font-weight="bold">计数消抖：输入与输出不同且连续保持 HOLD_MS 才采纳（50MHz×20ms=1,000,000 拍）</text>
+
+  <text x="30" y="70" fill="#94a3b8">key_in</text>
+  <polyline points="80,70 200,70 208,45 216,70 224,45 232,70 240,45 560,45" fill="none" stroke="#f87171" stroke-width="2"/>
+
+  <text x="30" y="120" fill="#94a3b8">cnt</text>
+  <polyline points="80,120 240,120 240,95 440,95 440,120 560,120" fill="none" stroke="#f59e0b" stroke-width="2"/>
+  <line x1="240" y1="135" x2="440" y2="135" stroke="#f59e0b" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="340" y="150" fill="#fcd34d" text-anchor="middle" font-size="11">连续保持窗口 = HOLD_CNT（计到满才更新）</text>
+
+  <text x="30" y="185" fill="#94a3b8">key_out</text>
+  <polyline points="80,185 440,185 440,160 560,160" fill="none" stroke="#34d399" stroke-width="2"/>
+  <text x="460" y="155" fill="#6ee7b7" font-size="11">窗口满后才翻转，抖动期间不动</text>
+</svg>

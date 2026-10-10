@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 240" font-family="system-ui,sans-serif" font-size="12">
+  <rect x="0" y="0" width="760" height="240" fill="#0d1420"/>
+  <text x="380" y="22" fill="#7dd3fc" text-anchor="middle" font-size="15" font-weight="bold">亚稳态与两级触发器同步</text>
+
+  <!-- async in -->
+  <text x="30" y="90" fill="#94a3b8">async_in</text>
+  <line x1="90" y1="86" x2="150" y2="86" stroke="#f87171" stroke-width="2"/>
+
+  <!-- ff1 -->
+  <rect x="160" y="60" width="110" height="60" rx="4" fill="#16233a" stroke="#f87171" stroke-width="2"/>
+  <text x="215" y="95" fill="#fca5a5" text-anchor="middle" font-size="12">FF1</text>
+  <text x="215" y="112" fill="#94a3b8" text-anchor="middle" font-size="10">可能亚稳</text>
+  <line x1="270" y1="90" x2="330" y2="90" stroke="#f87171" stroke-width="2"/>
+  <text x="300" y="80" fill="#fca5a5" font-size="10">q1(不定)</text>
+
+  <!-- ff2 -->
+  <rect x="340" y="60" width="110" height="60" rx="4" fill="#16233a" stroke="#34d399" stroke-width="2"/>
+  <text x="395" y="95" fill="#6ee7b7" text-anchor="middle" font-size="12">FF2</text>
+  <text x="395" y="112" fill="#94a3b8" text-anchor="middle" font-size="10">已稳定</text>
+  <line x1="450" y1="90" x2="520" y2="90" stroke="#34d399" stroke-width="2"/>
+  <text x="530" y="95" fill="#6ee7b7">sync_out（安全）</text>
+
+  <!-- clk -->
+  <line x1="215" y1="120" x2="215" y2="140" stroke="#f59e0b" stroke-width="1.5"/>
+  <line x1="395" y1="120" x2="395" y2="140" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="300" y="155" fill="#fcd34d" text-anchor="middle" font-size="11">同一 clk 上升沿驱动两级</text>
+
+  <g font-size="11" fill="#cbd5e1">
+    <text x="30" y="190">亚稳态：异步输入在建立/保持时间窗内变化，FF1 输出既非 0 也非 1，需时间收敛。</text>
+    <text x="30" y="212">两级同步：再打一拍，等 FF1 收敛后才被 FF2 采样，亚稳态不传播到后级逻辑。</text>
+  </g>
+</svg>

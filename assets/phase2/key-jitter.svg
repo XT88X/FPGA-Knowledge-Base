@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 220" font-family="system-ui,sans-serif" font-size="12">
+  <rect x="0" y="0" width="760" height="220" fill="#0d1420"/>
+  <text x="380" y="22" fill="#7dd3fc" text-anchor="middle" font-size="15" font-weight="bold">机械按键抖动波形：按下/松开瞬间在电平间来回弹跳（约 5~20ms）</text>
+
+  <text x="30" y="80" fill="#94a3b8">理想</text>
+  <polyline points="80,80 260,80 260,110 600,110" fill="none" stroke="#475569" stroke-width="2"/>
+
+  <text x="30" y="150" fill="#94a3b8">实际</text>
+  <polyline points="80,150 250,150 258,120 266,150 274,120 282,150 290,120 300,120 600,120"
+    fill="none" stroke="#f87171" stroke-width="2"/>
+  <text x="330" y="115" fill="#fca5a5" font-size="11">抖动区：短时间多次跳变</text>
+  <line x1="250" y1="170" x2="300" y2="170" stroke="#f59e0b" stroke-width="1"/>
+  <text x="275" y="185" fill="#fcd34d" text-anchor="middle" font-size="11">~5-20ms</text>
+  <text x="380" y="205" fill="#64748b" text-anchor="middle">若直接采样，一次按下会被误判成多次触发</text>
+</svg>

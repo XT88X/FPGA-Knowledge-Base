@@ -1,0 +1,45 @@
+{
+  "chapterId": "2.3",
+  "phase": 2,
+  "slug": "debounce-sync",
+  "title": "按键消抖与输入处理",
+  "summary": "机械按键抖动成因与时长、计数窗口消抖（50MHz×20ms=1,000,000/20bit）、亚稳态成因危害、单 bit 两级触发器同步，及按一下切换 LED。",
+  "doc": "docs/phase2/ch3-debounce.md",
+  "code": [
+    {"file": "code/phase2/debounce.v", "type": "verilog", "role": "synthesizable", "title": "debounce.v — 计数窗口消抖（参数化）"},
+    {"file": "code/phase2/tb_debounce.v", "type": "verilog", "role": "testbench", "title": "tb_debounce.v — 抖动波形+单次翻转断言"},
+    {"file": "code/phase2/sync_2ff.v", "type": "verilog", "role": "synthesizable", "title": "sync_2ff.v — 单 bit 两级同步"},
+    {"file": "code/phase2/tb_sync_2ff.v", "type": "verilog", "role": "testbench", "title": "tb_sync_2ff.v — X 注入演示亚稳态"},
+    {"file": "code/phase2/key_toggle.v", "type": "verilog", "role": "synthesizable", "title": "key_toggle.v — 按一下切换 LED（复用 debounce）"},
+    {"file": "code/phase2/tb_key_toggle.v", "type": "verilog", "role": "testbench", "title": "tb_key_toggle.v — 一次按下翻转一次"}
+  ],
+  "diagrams": [
+    {"file": "assets/phase2/key-jitter.svg", "title": "按键抖动波形", "caption": "按下/松开瞬间弹跳 5~20ms，直接采样会误判多次。"},
+    {"file": "assets/phase2/debounce-window.svg", "title": "消抖计数窗口", "caption": "连续稳定保持 HOLD_CNT 才采纳，抖动期间输出不动。"},
+    {"file": "assets/phase2/metastability-2ff.svg", "title": "亚稳态与两级同步", "caption": "FF1 可能亚稳，再打一拍由 FF2 采样，亚稳态不传播。"}
+  ],
+  "tools": [
+    {"name": "AMD Vivado ML Edition 下载", "url": "https://www.xilinx.com/support/download.html", "required": true, "note": "免费 ML Standard 版即可；访问日期 2026-10。"},
+    {"name": "通用引脚约束模板 fpga_common.xdc", "url": "../code/common/fpga_common.xdc", "required": true, "note": "相对本仓库；按开发板官方原理图替换 PACKAGE_PIN。"}
+  ],
+  "tasks": [
+    {"id": "task-2-3-1", "text": "编写按键消抖模块"},
+    {"id": "task-2-3-2", "text": "实现按键控制 LED 开关，按一下切换一次"}
+  ],
+  "cards": [
+    {"q": "机械按键抖动持续多久？", "a": "通常约 5~20ms，金属弹片在接通/断开间弹跳数次。", "tags": ["按键", "抖动"]},
+    {"q": "计数消抖的基本判据？", "a": "输入与当前输出不一致且连续稳定保持 HOLD_MS 才采纳，否则计数清零。", "tags": ["消抖", "算法"]},
+    {"q": "50MHz、20ms 消抖窗口数多少拍？", "a": "50,000,000×0.02=1,000,000 拍，需 20 bit 计数器。", "tags": ["计算", "消抖"]},
+    {"q": "什么是亚稳态？", "a": "异步输入在触发器建立/保持窗内变化，输出既非确定 0 也非 1，需时间收敛。", "tags": ["亚稳态", "跨时钟域"]},
+    {"q": "两级触发器同步怎么解决亚稳态？", "a": "第一级可能亚稳，再打一拍等其收敛，由第二级采样，把亚稳态局限在第一级。", "tags": ["同步", "两级"]},
+    {"q": "两级同步适用于多 bit 总线吗？", "a": "不适用。多 bit 跨时钟域要用握手或异步 FIFO，否则各路采样时刻不一致会采到错乱数据。", "tags": ["跨时钟域", "总线"]},
+    {"q": "下降沿检测怎么写？", "a": "把信号打一拍得到 d，wire fell = d & ~sig；消抖后下降沿代表一次有效按下。", "tags": ["边沿检测"]},
+    {"q": "按一下切换 LED 的完整链路？", "a": "原始按键→debounce 消抖→打一拍检测下降沿→led 翻转。", "tags": ["综合", "按键"]}
+  ],
+  "quiz": [
+    {"q": "机械按键抖动一般持续多久？", "options": ["纳秒级", "5~20ms", "几秒", "永远不抖"], "answer": 1, "explain": "机械弹片弹跳约 5~20ms，所以消抖窗口取 20ms 量级。"},
+    {"q": "50MHz、20ms 消抖窗口计数器位宽？", "options": ["16 位", "20 位", "24 位", "32 位"], "answer": 1, "explain": "1,000,000<2^20=1.05M，故 20 位。"},
+    {"q": "两级触发器同步主要解决什么？", "options": ["按键抖动", "单 bit 异步输入的亚稳态传播", "数码管亮度", "时钟分频"], "answer": 1, "explain": "再打一拍让第一级亚稳收敛，避免不确定值传播到后级。"},
+    {"q": "多 bit 总线跨时钟域能否直接打两拍？", "options": ["可以", "不可以，需握手/异步 FIFO", "只需一拍", "无需处理"], "answer": 1, "explain": "多 bit 各位采样时刻不一致会采到拼接错误数据，必须用握手或异步 FIFO。"}
+  ]
+}
