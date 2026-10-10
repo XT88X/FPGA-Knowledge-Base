@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360" font-family="Consolas,Menlo,monospace">
+  <rect width="900" height="360" fill="#0d1420"/>
+  <text x="20" y="30" fill="#22d3ee" font-size="18" font-weight="bold">FIFO 数据组织：环形缓冲 + 读写指针</text>
+
+  <!-- memory array cells -->
+  <g>
+    <rect x="60"  y="90" width="70" height="50" fill="#16233a" stroke="#34d399"/>
+    <rect x="140" y="90" width="70" height="50" fill="#16233a" stroke="#34d399"/>
+    <rect x="220" y="90" width="70" height="50" fill="#16233a" stroke="#34d399"/>
+    <rect x="300" y="90" width="70" height="50" fill="#16233a" stroke="#34d399"/>
+    <rect x="380" y="90" width="70" height="50" fill="#16233a" stroke="#34d399"/>
+    <rect x="460" y="90" width="70" height="50" fill="#16233a" stroke="#34d399"/>
+    <rect x="540" y="90" width="70" height="50" fill="#16233a" stroke="#34d399"/>
+    <rect x="620" y="90" width="70" height="50" fill="#16233a" stroke="#34d399"/>
+    <text x="80"  y="120" fill="#94a3b8" font-size="12">0</text>
+    <text x="160" y="120" fill="#94a3b8" font-size="12">1</text>
+    <text x="240" y="120" fill="#94a3b8" font-size="12">2</text>
+    <text x="320" y="120" fill="#e2e8f0" font-size="12">A</text>
+    <text x="400" y="120" fill="#e2e8f0" font-size="12">B</text>
+    <text x="480" y="120" fill="#e2e8f0" font-size="12">C</text>
+    <text x="560" y="120" fill="#e2e8f0" font-size="12">D</text>
+    <text x="640" y="120" fill="#94a3b8" font-size="12">7</text>
+  </g>
+
+  <!-- write pointer -->
+  <text x="290" y="180" fill="#fbbf24" font-size="13">写指针 wr_ptr（下一个写入位置）</text>
+  <line x1="335" y1="170" x2="335" y2="142" stroke="#fbbf24" stroke-width="2" marker-end="url(#e)"/>
+
+  <!-- read pointer -->
+  <text x="400" y="230" fill="#22d3ee" font-size="13">读指针 rd_ptr（下一个读出位置）</text>
+  <line x1="415" y1="218" x2="415" y2="142" stroke="#22d3ee" stroke-width="2" marker-end="url(#e)"/>
+
+  <!-- head/tail logic -->
+  <rect x="60" y="270" width="780" height="70" rx="6" fill="#16233a" stroke="#475569"/>
+  <text x="80" y="298" fill="#e2e8f0" font-size="12">写一个数据 -> 写指针 +1；读一个数据 -> 读指针 +1；到头回绕（环形）。</text>
+  <text x="80" y="322" fill="#94a3b8" font-size="12">empty = (wr_ptr==rd_ptr)；full = 两指针最高位相反且低位相同；count = wr_ptr - rd_ptr。</text>
+
+  <defs>
+    <marker id="e" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#cbd5e1"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 380" font-family="Consolas,Menlo,monospace">
+  <rect width="900" height="380" fill="#0d1420"/>
+  <text x="20" y="30" fill="#22d3ee" font-size="18" font-weight="bold">BRAM 块存储器结构 vs 分布式 RAM</text>
+
+  <!-- BRAM -->
+  <rect x="30" y="70" width="400" height="220" rx="8" fill="#10233a" stroke="#22d3ee" stroke-width="1.5"/>
+  <text x="50" y="98" fill="#22d3ee" font-size="14" font-weight="bold">Block RAM (BRAM)</text>
+  <text x="50" y="122" fill="#94a3b8" font-size="11">一块专用存储块(如 36Kb)，可配置宽度×深度</text>
+  <rect x="60" y="140" width="150" height="40" rx="4" fill="#16233a" stroke="#34d399"/>
+  <text x="75" y="165" fill="#e2e8f0" font-size="12">端口 A（写）</text>
+  <rect x="240" y="140" width="150" height="40" rx="4" fill="#16233a" stroke="#34d399"/>
+  <text x="255" y="165" fill="#e2e8f0" font-size="12">端口 B（读）</text>
+  <rect x="60" y="200" width="330" height="70" rx="4" fill="#0f1b2e" stroke="#475569"/>
+  <text x="150" y="240" fill="#e2e8f0" font-size="12">存储阵列 16Kb / 36Kb</text>
+  <text x="50" y="310" fill="#94a3b8" font-size="11">大容量、固定双口、同步读、省 LUT；适合 FIFO/帧缓冲/查表</text>
+
+  <!-- distributed -->
+  <rect x="470" y="70" width="400" height="220" rx="8" fill="#1a2310" stroke="#a3e635" stroke-width="1.5"/>
+  <text x="490" y="98" fill="#a3e635" font-size="14" font-weight="bold">Distributed RAM (LUT RAM)</text>
+  <text x="490" y="122" fill="#94a3b8" font-size="11">用 LUT 当小存储，分布在逻辑里</text>
+  <rect x="500" y="145" width="80" height="34" rx="3" fill="#16233a" stroke="#a3e635"/>
+  <text x="512" y="167" fill="#e2e8f0" font-size="11">LUT</text>
+  <rect x="590" y="145" width="80" height="34" rx="3" fill="#16233a" stroke="#a3e635"/>
+  <text x="602" y="167" fill="#e2e8f0" font-size="11">LUT</text>
+  <rect x="680" y="145" width="80" height="34" rx="3" fill="#16233a" stroke="#a3e635"/>
+  <text x="692" y="167" fill="#e2e8f0" font-size="11">LUT</text>
+  <rect x="500" y="195" width="80" height="34" rx="3" fill="#16233a" stroke="#a3e635"/>
+  <text x="512" y="217" fill="#e2e8f0" font-size="11">LUT</text>
+  <rect x="590" y="195" width="80" height="34" rx="3" fill="#16233a" stroke="#a3e635"/>
+  <text x="602" y="217" fill="#e2e8f0" font-size="11">LUT</text>
+  <text x="490" y="260" fill="#94a3b8" font-size="11">小容量（几十 bit~几 Kb）、占用 LUT、可异步读</text>
+  <text x="490" y="310" fill="#94a3b8" font-size="11">适合小 FIFO、小移位寄存器、小查表</text>
+
+  <text x="30" y="355" fill="#94a3b8" font-size="12">单口 / 简单双口(一只写一只读) / 真双口(A、B 都可读写) 三种模式，按数据流向选。</text>
+</svg>

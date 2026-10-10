@@ -1,0 +1,46 @@
+{
+  "chapterId": "4.2",
+  "phase": 4,
+  "slug": "bram-fifo",
+  "title": "BRAM 与 FIFO 缓存",
+  "summary": "BRAM vs 分布式 RAM、单口/简单双口/真双口与 BRAM 推断；同步 FIFO 与异步 FIFO；格雷码指针+两级同步解决跨时钟域数据传输；Block Memory Generator/FIFO Generator IP 调用。",
+  "doc": "docs/phase4/ch2-bram-fifo.md",
+  "code": [
+    {"file": "code/phase4/sfifo.v", "type": "verilog", "role": "synthesizable", "title": "sfifo.v — 同步 FIFO（推断双口 RAM，empty/full/almost/count）"},
+    {"file": "code/phase4/tb_sfifo.v", "type": "verilog", "role": "testbench", "title": "tb_sfifo.v — 写满/读空/回环数据自检"},
+    {"file": "code/phase4/afifo.v", "type": "verilog", "role": "synthesizable", "title": "afifo.v — 异步 FIFO（双口RAM+格雷码指针+两级同步）"},
+    {"file": "code/phase4/tb_afifo.v", "type": "verilog", "role": "testbench", "title": "tb_afifo.v — 50MHz 写/25MHz 读跨域数据自检"}
+  ],
+  "diagrams": [
+    {"file": "assets/phase4/bram_structure.svg", "title": "BRAM vs 分布式 RAM", "caption": "专用 BRAM 块与 LUT 分布式 RAM 的容量/读方式/用途对比。"},
+    {"file": "assets/phase4/fifo_organization.svg", "title": "FIFO 环形缓冲与读写指针", "caption": "wr_ptr/rd_ptr 回绕，empty/full/count 的判断规则。"},
+    {"file": "assets/phase4/afifo_gray_cdc.svg", "title": "异步 FIFO 格雷码跨时钟域", "caption": "格雷码指针经两级同步器跨域，分别算 empty/full。"}
+  ],
+  "tools": [
+    {"name": "PG058 Block Memory Generator Product Guide (v8.4)", "url": "https://docs.amd.com/v/u/en-US/pg058-blk-mem-gen", "required": true, "note": "访问日期 2026-10-10。"},
+    {"name": "PG057 FIFO Generator Product Guide (v13.2)", "url": "https://docs.amd.com/v/u/en-US/pg057-fifo-generator", "required": true, "note": "访问日期 2026-10-10。"},
+    {"name": "Block Memory Generator 产品页", "url": "https://www.amd.com/en/products/adaptive-socs-and-fpgas/intellectual-property/block_memory_generator.html", "required": false, "note": "访问日期 2026-10-10。"}
+  ],
+  "tasks": [
+    {"id": "task-4-2-1", "text": "调用 BRAM IP (Block Memory Generator) 实现读写测试"},
+    {"id": "task-4-2-2", "text": "用异步 FIFO 实现跨时钟域数据传输"}
+  ],
+  "cards": [
+    {"q": "BRAM 和分布式 RAM 有什么区别？", "a": "BRAM 是专用存储块(36Kb/块)、容量大、同步读、适合 FIFO/帧缓冲；分布式 RAM 用 LUT 当小存储、容量小、可异步读、适合小队列。", "tags": ["BRAM", "存储"]},
+    {"q": "BRAM 有哪几种端口模式？", "a": "单口(一个端口读或写)、简单双口(A写B读，最匹配FIFO)、真双口(A/B都可独立读写)。", "tags": ["BRAM", "端口"]},
+    {"q": "怎么让综合器把数组推断成 BRAM？", "a": "写 reg 数组 + 同步写 always @(posedge clk) + 同步读；别给 ram 加异步复位、别用组合读，否则会被降级成分布式 RAM/触发器。", "tags": ["BRAM", "推断"]},
+    {"q": "FIFO 的 empty/full 怎么判断？", "a": "empty = 写指针==读指针；full = 指针多存一位，最高位相反且低位相同；count = 写指针-读指针。", "tags": ["FIFO", "指针"]},
+    {"q": "同步 FIFO 和异步 FIFO 的区别？", "a": "同步 FIFO 读写共用一个时钟，逻辑简单；异步 FIFO 读写各一个时钟，用于跨时钟域传数据。", "tags": ["FIFO"]},
+    {"q": "为什么跨时钟域传指针要用格雷码？", "a": "二进制指针加1多位同时跳变，对方采样会采到中间乱值；格雷码相邻值只变1位，跨域采样最多取到旧值或新值，不会错。", "tags": ["格雷码", "CDC"]},
+    {"q": "二进制怎么转格雷码？", "a": "gray = bin ^ (bin >> 1)，即自身异或右移一位。", "tags": ["格雷码", "公式"]},
+    {"q": "跨域为什么要打两拍同步器？", "a": "第一拍可能采到亚稳态，第二拍让信号稳定；吸收亚稳态后再使用，是单bit/格雷码跨域的标准做法。", "tags": ["同步器", "亚稳态"]},
+    {"q": "什么时候该用 FIFO Generator IP 而不是手写 RTL？", "a": "大深度、需要精确 almost 阈值/FWFT/标准复位时序、或综合没推断成 BRAM 时用 IP；学习和小队列可用纯 RTL。产品级建议调 IP 并跑 report_cdc。", "tags": ["IP", "FIFO"]},
+    {"q": "异步 FIFO 的端口分哪两组？", "a": "写组 wr_clk/wr_en/din/full，读组 rd_clk/rd_en/dout/empty；两组时钟相互独立。", "tags": ["异步FIFO", "端口"]}
+  ],
+  "quiz": [
+    {"q": "FIFO 最匹配的 BRAM 端口模式是？", "options": ["单口", "简单双口(A写B读)", "真双口", "三态口"], "answer": 1, "explain": "FIFO 一只写一只读，正好对应简单双口。"},
+    {"q": "格雷码相邻两个数之间有几位不同？", "options": ["全部位", "恰好 1 位", "2 位", "随机"], "answer": 1, "explain": "格雷码相邻值只有 1 bit 变化，跨域采样不会取到跳变中间态。"},
+    {"q": "gray = bin ^ (bin>>1) 用于？", "options": ["二进制转格雷码", "格雷码转二进制", "加密", "分频"], "answer": 0, "explain": "这是二进制到格雷码的标准转换。"},
+    {"q": "异步 FIFO 判断 empty 依据？", "options": ["写时钟计数", "读格雷码与同步过来的写格雷码比较", "固定深度", "外部信号"], "answer": 1, "explain": "读域把写指针格雷码打两拍同步后，与读格雷码比较判 empty。"}
+  ]
+}
