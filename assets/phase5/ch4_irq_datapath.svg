@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 380" font-family="Consolas,monospace">
+  <rect width="900" height="380" fill="#0f1420"/>
+  <text x="450" y="26" fill="#60a5fa" font-size="16" text-anchor="middle" font-weight="bold">中断与数据通路：timer 匹配 -> INTF -> CPU irq_i -> ISR</text>
+
+  <!-- Timer -->
+  <rect x="60" y="120" width="160" height="70" rx="8" fill="#1a2e1a" stroke="#22c55e" stroke-width="2"/>
+  <text x="140" y="150" fill="#e5e7eb" font-size="13" text-anchor="middle">TIMER</text>
+  <text x="140" y="170" fill="#9ca3af" font-size="11" text-anchor="middle">cnt==cmp 置 flag</text>
+
+  <!-- INTF -->
+  <rect x="290" y="120" width="160" height="70" rx="8" fill="#1e3a5f" stroke="#22d3ee" stroke-width="2"/>
+  <text x="370" y="150" fill="#e5e7eb" font-size="13" text-anchor="middle">INTF 中断标志</text>
+  <text x="370" y="170" fill="#9ca3af" font-size="11" text-anchor="middle">W1C 写 1 清零</text>
+
+  <!-- INTE gate -->
+  <rect x="520" y="120" width="160" height="70" rx="8" fill="#3b1d4f" stroke="#a855f7" stroke-width="2"/>
+  <text x="600" y="150" fill="#e5e7eb" font-size="13" text-anchor="middle">INTE &amp; INTF</text>
+  <text x="600" y="170" fill="#9ca3af" font-size="11" text-anchor="middle">= irq_to_core</text>
+
+  <!-- CPU -->
+  <rect x="740" y="120" width="130" height="70" rx="8" fill="#1e3a5f" stroke="#60a5fa" stroke-width="2"/>
+  <text x="805" y="150" fill="#e5e7eb" font-size="13" text-anchor="middle">RV 核</text>
+  <text x="805" y="170" fill="#9ca3af" font-size="11" text-anchor="middle">跳 0x100 ISR</text>
+
+  <!-- arrows -->
+  <line x1="220" y1="155" x2="290" y2="155" stroke="#22c55e" stroke-width="2"/>
+  <line x1="450" y1="155" x2="520" y2="155" stroke="#22d3ee" stroke-width="2"/>
+  <line x1="680" y1="155" x2="740" y2="155" stroke="#a855f7" stroke-width="2"/>
+
+  <!-- ISR return -->
+  <path d="M805 190 L805 260 L370 260 L370 190" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="560" y="252" fill="#fbbf24" font-size="11">ISR 翻转 GPIO、清 INTF、jr x5 返回被打断处</text>
+
+  <text x="60" y="320" fill="#9ca3af" font-size="12">教学简化：无 Cause CSR/无栈切换；返回地址存 x5，ISR 末尾 `jalr x0,x5,0`。</text>
+  <text x="60" y="345" fill="#fbbf24" font-size="12">数据通路：CPU dmem_addr -> bus_mux 译码 -> 各外设；读数据经 m_rdata 返回 CPU。</text>
+</svg>

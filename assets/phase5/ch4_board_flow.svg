@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" font-family="Consolas,monospace">
+  <rect width="900" height="300" fill="#0f1420"/>
+  <text x="450" y="26" fill="#60a5fa" font-size="16" text-anchor="middle" font-weight="bold">Vivado 上板流程（待用户在 Vivado 完成）</text>
+
+  <g font-size="12" text-anchor="middle">
+    <rect x="40" y="120" width="130" height="50" rx="6" fill="#1e3a5f" stroke="#60a5fa"/>
+    <text x="105" y="150" fill="#e5e7eb">①建工程加源文件</text>
+
+    <rect x="200" y="120" width="130" height="50" rx="6" fill="#1a2e1a" stroke="#22c55e"/>
+    <text x="265" y="143" fill="#e5e7eb">②写约束.xdc</text>
+    <text x="265" y="160" fill="#9ca3af" font-size="10">clk/uart/gpio 引脚</text>
+
+    <rect x="360" y="120" width="130" height="50" rx="6" fill="#3b1d4f" stroke="#a855f7"/>
+    <text x="425" y="143" fill="#e5e7eb">③Synthesis</text>
+    <text x="425" y="160" fill="#9ca3af" font-size="10">看 Utilization 报告</text>
+
+    <rect x="520" y="120" width="130" height="50" rx="6" fill="#3b1d1d" stroke="#fb923c"/>
+    <text x="585" y="143" fill="#e5e7eb">④Implementation</text>
+    <text x="585" y="160" fill="#9ca3af" font-size="10">布局布线+时序</text>
+
+    <rect x="680" y="120" width="160" height="50" rx="6" fill="#1e293b" stroke="#fbbf24"/>
+    <text x="760" y="143" fill="#e5e7eb">⑤Generate Bitstream</text>
+    <text x="760" y="160" fill="#9ca3af" font-size="10">JTAG 下载上板</text>
+  </g>
+
+  <line x1="170" y1="145" x2="200" y2="145" stroke="#9ca3af" stroke-width="1.5"/>
+  <line x1="330" y1="145" x2="360" y2="145" stroke="#9ca3af" stroke-width="1.5"/>
+  <line x1="490" y1="145" x2="520" y2="145" stroke="#9ca3af" stroke-width="1.5"/>
+  <line x1="650" y1="145" x2="680" y2="145" stroke="#9ca3af" stroke-width="1.5"/>
+
+  <text x="450" y="230" fill="#fbbf24" font-size="12" text-anchor="middle">真实综合/上板/跑 C/跑 OS 均需用户在 Vivado + 交叉工具链环境完成，本仓库仅提供结构校验与仿真自检。</text>
+</svg>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" font-family="Consolas,monospace">
+  <rect width="900" height="420" fill="#0f1420"/>
+  <text x="450" y="26" fill="#60a5fa" font-size="16" text-anchor="middle" font-weight="bold">SoC 内存映射地址表（32-bit 字节地址）</text>
+
+  <g font-size="12">
+    <rect x="120" y="50" width="300" height="34" rx="4" fill="#1a2e1a" stroke="#22c55e"/>
+    <text x="270" y="72" fill="#e5e7eb" text-anchor="middle">0x0000_0000 – 0x0000_0FFF 片上 RAM 4KB</text>
+
+    <rect x="120" y="92" width="300" height="30" rx="4" fill="#3b1d4f" stroke="#a855f7"/>
+    <text x="270" y="112" fill="#e5e7eb" text-anchor="middle">0x2000_0000  UART_DATA</text>
+    <rect x="120" y="126" width="300" height="30" rx="4" fill="#3b1d4f" stroke="#a855f7"/>
+    <text x="270" y="146" fill="#e5e7eb" text-anchor="middle">0x2000_0004  UART_STATUS</text>
+
+    <rect x="120" y="160" width="300" height="30" rx="4" fill="#3b1d1d" stroke="#fb923c"/>
+    <text x="270" y="180" fill="#e5e7eb" text-anchor="middle">0x2000_0010  GPIO_DIR</text>
+    <rect x="120" y="194" width="300" height="30" rx="4" fill="#3b1d1d" stroke="#fb923c"/>
+    <text x="270" y="214" fill="#e5e7eb" text-anchor="middle">0x2000_0014  GPIO_OUT</text>
+    <rect x="120" y="228" width="300" height="30" rx="4" fill="#3b1d1d" stroke="#fb923c"/>
+    <text x="270" y="248" fill="#e5e7eb" text-anchor="middle">0x2000_0018  GPIO_IN</text>
+
+    <rect x="120" y="262" width="300" height="30" rx="4" fill="#1a2e1a" stroke="#22c55e"/>
+    <text x="270" y="282" fill="#e5e7eb" text-anchor="middle">0x2000_0020  TIMER_CTRL</text>
+    <rect x="120" y="296" width="300" height="30" rx="4" fill="#1a2e1a" stroke="#22c55e"/>
+    <text x="270" y="316" fill="#e5e7eb" text-anchor="middle">0x2000_0024  TIMER_CMP</text>
+    <rect x="120" y="330" width="300" height="30" rx="4" fill="#1a2e1a" stroke="#22c55e"/>
+    <text x="270" y="350" fill="#e5e7eb" text-anchor="middle">0x2000_0028  TIMER_CNT / 0x2C CLR</text>
+
+    <rect x="460" y="160" width="300" height="30" rx="4" fill="#1e3a5f" stroke="#22d3ee"/>
+    <text x="610" y="180" fill="#e5e7eb" text-anchor="middle">0x2000_0030  INTE（中断使能）</text>
+    <rect x="460" y="194" width="300" height="30" rx="4" fill="#1e3a5f" stroke="#22d3ee"/>
+    <text x="610" y="214" fill="#e5e7eb" text-anchor="middle">0x2000_0034  INTF（中断标志 W1C）</text>
+  </g>
+
+  <text x="120" y="395" fill="#9ca3af" font-size="12">未用地址读出为 0；外设寄存器位宽 32，只取低 8/1 bit。</text>
+</svg>

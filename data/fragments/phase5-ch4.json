@@ -1,0 +1,54 @@
+{
+  "chapterId": "5.4",
+  "phase": 5,
+  "slug": "soc-mcu",
+  "title": "终极项目：自制 SoC 单片机",
+  "summary": "整合 RV32I 核+RAM+UART+GPIO+定时器+中断的完整 SoC，地址映射、裸机软件、Vivado 上板流程；OS 作为进阶方向如实说明。",
+  "doc": "docs/phase5/ch4-soc-mcu.md",
+  "code": [
+    {"file": "code/phase5/ch4_rv_core.v", "type": "verilog", "role": "synthesizable", "title": "ch4_rv_core.v — 教学 RV32I 核（含简化 vectored 中断，可替换为 5.1 完整核）"},
+    {"file": "code/phase5/ch4_uart.v", "type": "verilog", "role": "synthesizable", "title": "ch4_uart.v — 可综合 UART tx/rx"},
+    {"file": "code/phase5/ch4_gpio.v", "type": "verilog", "role": "synthesizable", "title": "ch4_gpio.v — 方向+数据寄存器 GPIO"},
+    {"file": "code/phase5/ch4_timer.v", "type": "verilog", "role": "synthesizable", "title": "ch4_timer.v — 周期匹配定时器+中断标志"},
+    {"file": "code/phase5/ch4_bus_mux.v", "type": "verilog", "role": "synthesizable", "title": "ch4_bus_mux.v — 地址译码+读数据 mux"},
+    {"file": "code/phase5/ch4_soc_top.v", "type": "verilog", "role": "synthesizable", "title": "ch4_soc_top.v — SoC 顶层（CPU+RAM+外设+中断汇总）"},
+    {"file": "code/phase5/ch4_tb_soc.v", "type": "verilog", "role": "testbench", "title": "ch4_tb_soc.v — 自检 UART 打印/定时器中断翻转 LED/GPIO 镜像"},
+    {"file": "code/phase5/ch4_firmware.hex", "type": "verilog", "role": "synthesizable", "title": "ch4_firmware.hex — 手工汇编教学镜像（$readmemh 加载）"},
+    {"file": "code/phase5/startup_ch4.s", "type": "verilog", "role": "synthesizable", "title": "startup_ch4.s — 复位与中断向量启动文件"},
+    {"file": "code/phase5/ch4_link.ld", "type": "verilog", "role": "synthesizable", "title": "ch4_link.ld — 裸机链接脚本"},
+    {"file": "code/phase5/ch4_main.c", "type": "verilog", "role": "synthesizable", "title": "ch4_main.c — 裸机 C（定时器中断翻转 LED+串口打印+轮询按键）"}
+  ],
+  "diagrams": [
+    {"file": "assets/phase5/ch4_soc_block.svg", "title": "SoC 顶层框图", "caption": "CPU/RAM/UART/GPIO/Timer/中断汇总/地址译码。"},
+    {"file": "assets/phase5/ch4_addr_map.svg", "title": "地址映射表", "caption": "RAM 0x0 + 外设 0x2000_00xx 完整寄存器表。"},
+    {"file": "assets/phase5/ch4_irq_datapath.svg", "title": "中断与数据通路", "caption": "timer 匹配->INTF->CPU irq->ISR->jr x5 返回。"},
+    {"file": "assets/phase5/ch4_board_flow.svg", "title": "Vivado 上板流程", "caption": "建工程->约束->综合->实现->比特流下载（待用户完成）。"}
+  ],
+  "tools": [
+    {"name": "RT-Thread 官网（OS 进阶参考）", "url": "https://www.rt-thread.org/index.html", "required": false, "note": "开源 RTOS；本 SoC 当前跑裸机，OS 为进阶方向。访问于 2026-10。"},
+    {"name": "RT-Thread GitHub", "url": "https://github.com/RT-Thread/rt-thread", "required": false, "note": "RTOS 源码与移植 BSP。访问于 2026-10。"},
+    {"name": "NEORV32 开源类单片机 SoC", "url": "https://github.com/stnolting/neorv32", "required": false, "note": "自带 UART/GPIO/Timer/IRQ 的参考软核。访问于 2026-10。"}
+  ],
+  "tasks": [
+    {"id": "task-5-4-1", "text": "整合 CPU+串口+GPIO+定时器的完整 SoC（ch4_soc_top，地址映射+中断汇总）"},
+    {"id": "task-5-4-2", "text": "在自制 SoC 上运行简单裸机程序（OS 作为进阶方向，本仓库未声称已跑 OS）"}
+  ],
+  "cards": [
+    {"q": "自制 SoC 由哪些模块组成？", "a": "RV32I 核 + 片上 RAM(von Neumann) + 地址译码 + UART + GPIO + 定时器 + 中断汇总，全部内存映射。", "tags": ["SoC", "架构"]},
+    {"q": "什么是内存映射外设？", "a": "外设寄存器占据特定地址，CPU 用 LW/SW 指令读写这些地址就等于读写外设寄存器，无需专门 IO 指令。", "tags": ["内存映射", "总线"]},
+    {"q": "教学版中断是怎么工作的？", "a": "定时器 cnt==cmp 置 INTF[0]，若 INTE[0]=1 则 irq_to_core=1，CPU 跳 0x100 并把返回地址存 x5，ISR 末尾 jalr x0,x5,0 返回。", "tags": ["中断", "ISR"]},
+    {"q": "为什么说本 SoC 的中断是'教学简化'？", "a": "没有 Cause CSR、栈切换、特权级；只保存返回地址到 x5。要完整特权架构应替换为 5.1 完整核。", "tags": ["中断", "简化"]},
+    {"q": "片上 RAM 为什么用 von Neumann 结构？", "a": "取指与 LW/SW 共用同一块 RAM，简化设计；代价是指令口和数据口竞争同一存储器带宽。", "tags": ["RAM", "冯诺依曼"]},
+    {"q": "TIMER_CLR 寄存器的作用？", "a": "写任意值清除定时器中断标志 INTF[0]，避免 ISR 返回后立刻再次触发同一中断。", "tags": ["定时器", "中断"]},
+    {"q": "INTE 和 INTF 有什么区别？", "a": "INTE 是中断使能（屏蔽位），INTF 是中断标志（记录哪类中断挂起，W1C 写 1 清零）。", "tags": ["中断", "寄存器"]},
+    {"q": "本仓库是否声称已在板上跑起操作系统？", "a": "没有。当前跑的是裸机轮询+中断程序；跑 RTOS 是进阶方向，需完整特权指令与移植 BSP，本仓库如实说明未实现。", "tags": ["OS", "如实"]},
+    {"q": "ch4_firmware.hex 是怎么来的？", "a": "手工汇编 RV32I 指令生成（gen_fw.py），$readmemh 加载进 RAM；复位后打印 OK、配置 GPIO/定时器/中断。", "tags": ["固件", "机器码"]},
+    {"q": "Vivado 上板需要哪几步？", "a": "建工程加源文件->写 xdc 约束引脚->Synthesis->Implementation->Generate Bitstream->JTAG 下载。", "tags": ["Vivado", "上板"]}
+  ],
+  "quiz": [
+    {"q": "CPU 读写 UART/GPIO 寄存器靠的是？", "options": ["专门的 IN/OUT 指令", "LW/SW 读写内存映射地址", "直接拨开关", "JTAG 命令"], "answer": 1, "explain": "外设寄存器被映射到地址空间，CPU 用 load/store 指令访问即等于操作外设。"},
+    {"q": "定时器中断触发后，CPU 跳转到哪里？", "options": ["0x0000_0000", "0x0000_0100 (TRAP_VEC)", "0x2000_0000", "随机地址"], "answer": 1, "explain": "irq_to_core=1 时 CPU 下一拍取指跳到 TRAP_VEC=0x100，返回地址存 x5。"},
+    {"q": "关于本 SoC 运行 OS，正确的是？", "options": ["已经跑起 RT-Thread", "跑的是裸机轮询+中断，OS 是进阶方向", "不需要工具链就能跑 C", "OS 由硬件自动运行"], "answer": 1, "explain": "本仓库如实说明当前是裸机程序；跑 RTOS 需完整特权指令与移植 BSP，属后续工程。"},
+    {"q": "TIMER_CLR 的作用是？", "options": ["启动定时器", "清除中断标志避免重复触发", "设置周期", "读计数器"], "answer": 1, "explain": "写任意值清 INTF[0]，防止 ISR 返回后立刻再次进入同一中断。"}
+  ]
+}
