@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" font-family="system-ui,sans-serif" font-size="12">
+  <rect x="0" y="0" width="760" height="300" fill="#0d1420"/>
+  <text x="380" y="22" fill="#7dd3fc" text-anchor="middle" font-size="15" font-weight="bold">七段数码管段选定义（seg[0]=a ... seg[6]=g，外加小数点 dp）</text>
+
+  <!-- digit body -->
+  <g stroke="#334155" stroke-width="10" stroke-linecap="round">
+    <line x1="150" y1="60"  x2="270" y2="60"/>
+    <line x1="150" y1="160" x2="270" y2="160"/>
+    <line x1="150" y1="260" x2="270" y2="260"/>
+    <line x1="150" y1="70"  x2="150" y2="150"/>
+    <line x1="150" y1="170" x2="150" y2="250"/>
+    <line x1="270" y1="70"  x2="270" y2="150"/>
+    <line x1="270" y1="170" x2="270" y2="250"/>
+  </g>
+  <!-- lit segments example "5" -->
+  <g stroke="#34d399" stroke-width="8" stroke-linecap="round">
+    <line x1="150" y1="60"  x2="270" y2="60"/>
+    <line x1="150" y1="160" x2="270" y2="160"/>
+    <line x1="150" y1="260" x2="270" y2="260"/>
+    <line x1="150" y1="70"  x2="150" y2="150"/>
+    <line x1="270" y1="170" x2="270" y2="250"/>
+  </g>
+  <circle cx="295" cy="262" r="7" fill="#f59e0b"/>
+  <!-- labels -->
+  <g fill="#fcd34d" font-size="13" font-weight="bold">
+    <text x="205" y="52" text-anchor="middle">a</text>
+    <text x="205" y="152" text-anchor="middle">g</text>
+    <text x="205" y="282" text-anchor="middle">d</text>
+    <text x="135" y="115" text-anchor="end">f</text>
+    <text x="135" y="220" text-anchor="end">e</text>
+    <text x="285" y="115">b</text>
+    <text x="285" y="220">c</text>
+    <text x="310" y="285">dp</text>
+  </g>
+
+  <!-- polarity note -->
+  <text x="380" y="80" fill="#7dd3fc" font-size="13" font-weight="bold">极性（COMMON_ANODE 参数）</text>
+  <g font-size="12" fill="#cbd5e1">
+    <text x="380" y="110">共阴(0)：公共端接地，某段输出 1 → 该段点亮</text>
+    <text x="380" y="135">共阳(1)：公共端接 VCC，某段输出 0 → 该段点亮（输出整体取反）</text>
+  </g>
+  <text x="380" y="175" fill="#7dd3fc" font-size="13" font-weight="bold">共阴段码表（gfedcba，hex→seg）</text>
+  <g font-size="11" fill="#94a3b8">
+    <text x="380" y="200">0=3F 1=06 2=5B 3=4F 4=66 5=6D</text>
+    <text x="380" y="222">6=7D 7=07 8=7F 9=6F A=77 b=7C</text>
+    <text x="380" y="244">C=39 d=5E E=79 F=71</text>
+  </g>
+  <text x="380" y="280" fill="#64748b" font-size="11">上图点亮 a/f/g/c/d 段即为数字“5”，对应共阴段码 7'h6D</text>
+</svg>

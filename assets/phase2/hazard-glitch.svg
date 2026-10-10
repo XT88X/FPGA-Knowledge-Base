@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" font-family="system-ui,sans-serif" font-size="12">
+  <rect x="0" y="0" width="760" height="300" fill="#0d1420"/>
+  <text x="380" y="22" fill="#7dd3fc" text-anchor="middle" font-size="15" font-weight="bold">组合逻辑竞争与冒险：信号经不同路径延迟 → 输出毛刺(glitch)</text>
+
+  <text x="30" y="60" fill="#94a3b8">A</text>
+  <polyline points="70,60 260,60 260,45 600,45" fill="none" stroke="#22d3ee" stroke-width="2"/>
+  <text x="30" y="110" fill="#94a3b8">B</text>
+  <polyline points="70,110 180,110 180,95 600,95" fill="none" stroke="#f59e0b" stroke-width="2"/>
+  <text x="30" y="160" fill="#94a3b8">A 经反相器</text>
+  <polyline points="70,160 180,160 180,145 260,145 260,130 600,130" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4 3"/>
+
+  <!-- expected output 0, glitch -->
+  <text x="30" y="210" fill="#94a3b8">Y=A&amp;~A(理论恒0)</text>
+  <polyline points="70,210 300,210 305,195 312,210 320,195 328,210 600,210"
+    fill="none" stroke="#f87171" stroke-width="2"/>
+  <circle cx="312" cy="200" r="14" fill="none" stroke="#f87171" stroke-width="1.5"/>
+  <text x="330" y="205" fill="#fca5a5" font-size="11">窄毛刺(冒险)</text>
+
+  <text x="30" y="255" fill="#7dd3fc" font-size="12" font-weight="bold">消除思路：</text>
+  <g font-size="11" fill="#cbd5e1">
+    <text x="150" y="255">① 同步：用寄存器在时钟沿采样，毛刺不被采入</text>
+    <text x="150" y="275">② 加选通：使能/采样信号在输出稳定后才有效</text>
+    <text x="430" y="255">③ 卡诺图消险：增加冗余项，避免相邻圈相切</text>
+  </g>
+</svg>

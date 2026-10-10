@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 320" font-family="system-ui,sans-serif" font-size="12">
+  <rect x="0" y="0" width="760" height="320" fill="#0d1420"/>
+  <text x="380" y="22" fill="#7dd3fc" text-anchor="middle" font-size="15" font-weight="bold">3-8 译码器结构：3 位地址 → 8 路独热输出</text>
+
+  <!-- inputs -->
+  <text x="30" y="70" fill="#94a3b8">a[2:0]</text>
+  <line x1="70" y1="66" x2="200" y2="66" stroke="#22d3ee" stroke-width="2"/>
+  <text x="120" y="60" fill="#67e8f9" font-size="11">a2 a1 a0</text>
+  <text x="30" y="100" fill="#94a3b8">en</text>
+  <line x1="70" y1="96" x2="200" y2="96" stroke="#22d3ee" stroke-width="2"/>
+
+  <!-- decoder block -->
+  <rect x="200" y="50" width="160" height="120" rx="6" fill="#16233a" stroke="#38bdf8" stroke-width="2"/>
+  <text x="280" y="105" fill="#e2e8f0" text-anchor="middle" font-size="14" font-weight="bold">decoder38</text>
+  <text x="280" y="125" fill="#94a3b8" text-anchor="middle" font-size="11">case(a) 独热选通</text>
+
+  <!-- outputs one-hot -->
+  <g font-size="11">
+    <line x1="360" y1="60"  x2="560" y2="60"  stroke="#34d399" stroke-width="2"/><text x="570" y="64"  fill="#6ee7b7">y0 (a=000)</text>
+    <line x1="360" y1="80"  x2="560" y2="80"  stroke="#475569" stroke-width="2"/><text x="570" y="84"  fill="#94a3b8">y1</text>
+    <line x1="360" y1="100" x2="560" y2="100" stroke="#475569" stroke-width="2"/><text x="570" y="104" fill="#94a3b8">y2</text>
+    <line x1="360" y1="120" x2="560" y2="120" stroke="#475569" stroke-width="2"/><text x="570" y="124" fill="#94a3b8">y3</text>
+    <line x1="360" y1="140" x2="560" y2="140" stroke="#475569" stroke-width="2"/><text x="570" y="144" fill="#94a3b8">y4</text>
+    <line x1="360" y1="160" x2="560" y2="160" stroke="#475569" stroke-width="2"/><text x="570" y="164" fill="#94a3b8">...</text>
+  </g>
+  <text x="460" y="45" fill="#fcd34d" font-size="11">同一时刻仅一路为 1（独热 one-hot），en=0 全 0</text>
+
+  <!-- truth table -->
+  <text x="30" y="210" fill="#7dd3fc" font-size="12" font-weight="bold">真值表（en=1）</text>
+  <g font-size="11" fill="#cbd5e1">
+    <text x="30" y="232">a=000 → y=0000_0001</text>
+    <text x="230" y="232">a=001 → y=0000_0010</text>
+    <text x="430" y="232">a=010 → y=0000_0100</text>
+    <text x="30" y="252">a=011 → y=0000_1000</text>
+    <text x="230" y="252">a=100 → y=0001_0000</text>
+    <text x="430" y="252">a=101 → y=0010_0000</text>
+    <text x="30" y="272">a=110 → y=0100_0000</text>
+    <text x="230" y="272">a=111 → y=1000_0000</text>
+  </g>
+  <text x="380" y="305" fill="#64748b" text-anchor="middle" font-size="11">典型用途：片选/地址译码、数码管位选、把 n 位地址翻译成独热使能线</text>
+</svg>
