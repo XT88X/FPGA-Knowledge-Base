@@ -1,0 +1,42 @@
+{
+  "chapterId": "3.3",
+  "phase": 3,
+  "slug": "pwm-buzzer",
+  "title": "PWM 与模拟输出",
+  "summary": "PWM 占空比与平均电压、三角波呼吸灯包络、蜂鸣器音符分频，播放《小星星》。",
+  "doc": "docs/phase3/ch3-pwm-buzzer.md",
+  "code": [
+    {"file": "code/phase3/pwm.v", "type": "verilog", "role": "synthesizable", "title": "pwm.v - 参数位宽 PWM 发生器"},
+    {"file": "code/phase3/tb_pwm.v", "type": "verilog", "role": "testbench", "title": "tb_pwm.v - 测占空比/周期"},
+    {"file": "code/phase3/breathing_rgb_top.v", "type": "verilog", "role": "synthesizable", "title": "breathing_rgb_top.v - 三路 PWM 相位错开呼吸灯"},
+    {"file": "code/phase3/tb_breathing_rgb_top.v", "type": "verilog", "role": "testbench", "title": "tb_breathing_rgb_top.v - 验证三路呼吸变化"},
+    {"file": "code/phase3/buzzer_music.v", "type": "verilog", "role": "synthesizable", "title": "buzzer_music.v - 音符分频+旋律 ROM，播放小星星"},
+    {"file": "code/phase3/tb_buzzer_music.v", "type": "verilog", "role": "testbench", "title": "tb_buzzer_music.v - 测音符方波频率"}
+  ],
+  "diagrams": [
+    {"file": "assets/phase3/pwm-duty.svg", "title": "PWM 占空比与平均电压", "caption": "25%/50%/75% 占空比对应不同平均电压，周期固定。"}
+  ],
+  "tools": [
+    {"name": "通用引脚约束模板 fpga_common.xdc", "url": "../code/common/fpga_common.xdc", "required": true, "note": "RGB LED 与蜂鸣器引脚按开发板替换。"}
+  ],
+  "tasks": [
+    {"id": "task-3-3-1", "text": "实现 RGB 三色呼吸灯"},
+    {"id": "task-3-3-2", "text": "驱动蜂鸣器播放《小星星》旋律"}
+  ],
+  "cards": [
+    {"q": "PWM 占空比是什么？", "a": "高电平时间占整个周期的比例；占空比越大，平均电压越高，LED 越亮。", "tags": ["PWM", "占空比"]},
+    {"q": "8 位 PWM 的分辨率是多少？", "a": "1/256，即占空比可在 0/256 到 255/256 之间分 256 级调节。", "tags": ["PWM", "分辨率"]},
+    {"q": "呼吸灯效果怎么实现？", "a": "让 duty 在 0~255 之间缓慢三角波式升降，人眼看到亮度渐变即呼吸。", "tags": ["呼吸灯"]},
+    {"q": "PWM 周期怎么算？", "a": "cnt 从 0 加到 2^N-1 溢出，周期 = 2^N 个系统时钟。", "tags": ["PWM", "周期"]},
+    {"q": "蜂鸣器音符频率和分频系数的关系？", "a": "div = CLK/(2*f)；50MHz 下 C4=262Hz 对应 div≈95419。", "tags": ["蜂鸣器", "分频"]},
+    {"q": "为什么三路 PWM 的 duty 要错开？", "a": "错开 85/170 使 RGB 呼吸不同步，形成彩虹渐变效果。", "tags": ["RGB", "相位"]},
+    {"q": "SLOW_DIV 参数控制什么？", "a": "控制三角波变化速度；越大变化越慢，呼吸越平缓。", "tags": ["SLOW_DIV"]},
+    {"q": "PWM 输出逻辑怎么写？", "a": "pwm_out = (cnt < duty)；cnt 自由计数，duty 决定高电平区间长度。", "tags": ["PWM", "逻辑"]}
+  ],
+  "quiz": [
+    {"q": "50% 占空比下，LED 平均亮度约为？", "options": ["0%", "25%", "50%", "100%"], "answer": 2, "explain": "占空比 50% 即一半时间亮，平均亮度一半。"},
+    {"q": "8 位 PWM 的占空比分辨率是？", "options": ["1/16", "1/64", "1/256", "1/1024"], "answer": 2, "explain": "2^8=256，分辨率 1/256。"},
+    {"q": "50MHz 时钟，C4=262Hz 对应分频系数约为？", "options": ["95419", "262", "50000", "190000"], "answer": 0, "explain": "div=50M/(2*262)≈95419。"},
+    {"q": "呼吸灯效果通过什么实现？", "options": ["固定占空比", "duty 三角波缓升缓降", "提高时钟频率", "降低电压"], "answer": 1, "explain": "duty 缓慢三角波变化形成呼吸。"}
+  ]
+}

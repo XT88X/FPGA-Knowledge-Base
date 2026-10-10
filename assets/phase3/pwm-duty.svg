@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 280" font-family="system-ui,sans-serif" font-size="12">
+  <rect x="0" y="0" width="820" height="280" fill="#0d1420"/>
+  <text x="410" y="22" fill="#7dd3fc" text-anchor="middle" font-size="15" font-weight="bold">PWM 占空比与平均电压</text>
+
+  <!-- 25% duty -->
+  <text x="30" y="60" fill="#94a3b8">25%</text>
+  <polyline points="90,55 130,55 130,40 250,40 250,55 780,55" fill="none" stroke="#22d3ee" stroke-width="2"/>
+  <text x="300" y="50" fill="#fcd34d" font-size="11">平均电压 = 0.25*Vcc</text>
+
+  <!-- 50% duty -->
+  <text x="30" y="120" fill="#94a3b8">50%</text>
+  <polyline points="90,115 170,115 170,100 330,100 330,115 780,115" fill="none" stroke="#22d3ee" stroke-width="2"/>
+  <text x="380" y="110" fill="#fcd34d" font-size="11">平均电压 = 0.50*Vcc</text>
+
+  <!-- 75% duty -->
+  <text x="30" y="180" fill="#94a3b8">75%</text>
+  <polyline points="90,175 210,175 210,160 450,160 450,175 780,175" fill="none" stroke="#22d3ee" stroke-width="2"/>
+  <text x="500" y="170" fill="#fcd34d" font-size="11">平均电压 = 0.75*Vcc</text>
+
+  <!-- period bracket -->
+  <line x1="90" y1="210" x2="250" y2="210" stroke="#64748b"/>
+  <line x1="90" y1="205" x2="90" y2="215" stroke="#64748b"/>
+  <line x1="250" y1="205" x2="250" y2="215" stroke="#64748b"/>
+  <text x="170" y="228" fill="#94a3b8" text-anchor="middle">PWM 周期 = 2^PWM_BITS 个时钟</text>
+
+  <text x="410" y="258" fill="#34d399" text-anchor="middle">占空比 duty/2^N 越大，LED 平均亮度越高；三角波缓升缓降即"呼吸"</text>
+</svg>
