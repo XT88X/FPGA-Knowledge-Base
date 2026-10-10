@@ -1,0 +1,2225 @@
+{
+  "cat": "hardware",
+  "catName": "FPGA 器件结构、选型与开发板硬件",
+  "cards": [
+    {
+      "id": "hw-c001",
+      "sub": "arch",
+      "title": "LUT 的本质是小 RAM",
+      "body": "① 一个 n 输入 LUT = 2^n 深、1 位宽的小 SRAM。\n② 真值表预先写进 SRAM，输入线即地址线。\n③ 输入组合选中对应位输出，因此任意组合逻辑都能用 LUT 实现。",
+      "src": "AMD UG474"
+    },
+    {
+      "id": "hw-c002",
+      "sub": "arch",
+      "title": "6 输入 LUT（LUT6）",
+      "body": "① Artix-7 基本单元是 6 输入 LUT，深度 2^6=64 位。\n② 一个 LUT6 可拆成两个共享输入的 5 输入 LUT5。\n③ 6 输入是容量与灵活性的工程折中。",
+      "src": "AMD UG474"
+    },
+    {
+      "id": "hw-c003",
+      "sub": "arch",
+      "title": "Slice 的构成",
+      "body": "① 7 系列一个 Slice = 4 个 6 输入 LUT + 8 个触发器。\n② 分 SLICEL（普通逻辑）与 SLICEM（可做分布式 RAM/移位寄存器）。\n③ 时序逻辑 = LUT 出组合 + FF 寄存。",
+      "src": "AMD DS180"
+    },
+    {
+      "id": "hw-c004",
+      "sub": "arch",
+      "title": "CLB 与 Slice 关系",
+      "body": "① CLB（可配置逻辑块）由若干 Slice 组成。\n② 设计中的 LUT/FF 最终都映射进 Slice。\n③ 资源报告按 Slice/LUT/FF 计数。",
+      "src": "AMD UG474"
+    },
+    {
+      "id": "hw-c005",
+      "sub": "arch",
+      "title": "触发器 FF",
+      "body": "① 边沿触发，带时钟使能 CE 与同步/异步复位。\n② 用来保存状态：寄存器、计数器、状态机。\n③ 输出只在时钟沿更新，建立/保持时间需满足。",
+      "src": "AMD UG474"
+    },
+    {
+      "id": "hw-c006",
+      "sub": "arch",
+      "title": "为何 LUT 多为 6 输入",
+      "body": "① 4 输入表达能力不足，7 输入 SRAM 翻倍但收益递减。\n② 6 输入覆盖绝大多数组合函数，面积/性能最优。\n③ 更大函数靠多级 LUT + 进位/布线级联。",
+      "src": "AMD UG474"
+    },
+    {
+      "id": "hw-c007",
+      "sub": "memdsp",
+      "title": "BRAM 块存储器",
+      "body": "① 7 系列块 RAM 基本为 36 Kb。\n② 真双口，两端口可独立读写、独立时钟。\n③ 适合片上较大缓冲：FIFO、帧缓存、查找表。",
+      "src": "AMD UG473"
+    },
+    {
+      "id": "hw-c008",
+      "sub": "memdsp",
+      "title": "BRAM 拆分为 18Kb",
+      "body": "① 一个 36Kb BRAM 可当两个独立 18Kb 用。\n② 提高小容量应用的利用率。\n③ 带 ECC/校验/级联可选。",
+      "src": "AMD DS180"
+    },
+    {
+      "id": "hw-c009",
+      "sub": "memdsp",
+      "title": "分布式 RAM",
+      "body": "① 用 SLICEM 的 LUT 构成小容量 RAM。\n② 容量小、散布在逻辑里，不用占 BRAM。\n③ 适合小 FIF O/寄存器堆。",
+      "src": "AMD UG474"
+    },
+    {
+      "id": "hw-c010",
+      "sub": "memdsp",
+      "title": "DSP48E1 切片",
+      "body": "① 含预加器 + 25×18 乘法器 + 加法器/48bit 累加器。\n② 一个切片完成乘加 MAC。\n③ 做滤波、FFT、数字运算的硬单元。",
+      "src": "AMD UG479"
+    },
+    {
+      "id": "hw-c011",
+      "sub": "memdsp",
+      "title": "URAM",
+      "body": "① UltraScale+ 引入，单块 288 Kb。\n② 比 BRAM 更大，适合超深缓存。\n③ 7 系列没有 URAM。",
+      "src": "AMD UG573"
+    },
+    {
+      "id": "hw-c012",
+      "sub": "memdsp",
+      "title": "SRL 移位寄存器",
+      "body": "① 用 LUT 配置成 32 位移位寄存器。\n② 做小延时线/流水线抽头。\n③ 不占用 BRAM。",
+      "src": "AMD UG474"
+    },
+    {
+      "id": "hw-c013",
+      "sub": "clockres",
+      "title": "BUFG 全局时钟缓冲",
+      "body": "① 把时钟低偏移分发到整个芯片。\n② 7 系列约 32 个 BUFG。\n③ 主时钟/高频全局逻辑时钟应走 BUFG。",
+      "src": "AMD UG472"
+    },
+    {
+      "id": "hw-c014",
+      "sub": "clockres",
+      "title": "MMCM 混合时钟管理器",
+      "body": "① 7 系列 CMT 内为 MMCM（前代 PLL）。\n② 支持倍频、分频、相移、去偏斜。\n③ 一个晶振可出多路不同时钟。",
+      "src": "AMD UG472"
+    },
+    {
+      "id": "hw-c015",
+      "sub": "clockres",
+      "title": "BUFR 区域时钟缓冲",
+      "body": "① 区域性时钟，驱动一个时钟区域。\n② 可做分频/对齐。\n③ 介于 BUFG 与普通布线之间。",
+      "src": "AMD UG472"
+    },
+    {
+      "id": "hw-c016",
+      "sub": "clockres",
+      "title": "时钟区域",
+      "body": "① 芯片按时钟区域划分布局。\n② 同一区域内同步，降低偏斜。\n③ 多时钟域按区域规划布线。",
+      "src": "AMD UG472"
+    },
+    {
+      "id": "hw-c017",
+      "sub": "clockres",
+      "title": "IOB 输入输出块",
+      "body": "① 引脚与内部逻辑之间的接口。\n② 可把触发器放入 IOB，减小引脚到 FF 延时。\n③ 带电平匹配/上下拉。",
+      "src": "AMD UG471"
+    },
+    {
+      "id": "hw-c018",
+      "sub": "clockres",
+      "title": "布线与互连矩阵",
+      "body": "① LUT/FF 之间靠通用互连与开关矩阵连接。\n② 布局布线决定走线延迟。\n③ 关键路径资源占用影响时序收敛。",
+      "src": "AMD UG474"
+    },
+    {
+      "id": "hw-c019",
+      "sub": "families",
+      "title": "Artix-7",
+      "body": "① 定位：低成本、高逻辑/引脚比。\n② 教学与消费类常用（如 XC7A100T）。\n③ 资源适中，性价比高。",
+      "src": "AMD DS180"
+    },
+    {
+      "id": "hw-c020",
+      "sub": "families",
+      "title": "Kintex-7",
+      "body": "① 定位：性能与成本平衡。\n② 更多高速收发器/存储，适合中高端。\n③ 比 Artix 性能高、比 Virtex 便宜。",
+      "src": "AMD DS180"
+    },
+    {
+      "id": "hw-c021",
+      "sub": "families",
+      "title": "Zynq-7000",
+      "body": "① PS（ARM Cortex-A9 双核）+ PL（FPGA）。\n② 软硬件协同：处理器跑软件，PL 加速。\n③ 单芯片 SoC。",
+      "src": "AMD UG585"
+    },
+    {
+      "id": "hw-c022",
+      "sub": "families",
+      "title": "Zynq UltraScale+",
+      "body": "① PS 为 ARM 64 位多核（CA53 等）。\n② PL 为 UltraScale+ 结构，含 URAM/DSP48E2。\n③ 高端嵌入式/视觉。",
+      "src": "AMD UG1085"
+    },
+    {
+      "id": "hw-c023",
+      "sub": "families",
+      "title": "Spartan-7",
+      "body": "① 最低成本、最低功耗入门系列。\n② 资源较少，简单逻辑/粘接逻辑。\n③ 教学与量产低成本选型。",
+      "src": "AMD DS180"
+    },
+    {
+      "id": "hw-c024",
+      "sub": "families",
+      "title": "速度等级",
+      "body": "① 后缀 -1/-2/-3，-3 最快也最贵。\n② 决定器件能跑的最高频率。\n③ 工业级温度等级另标。",
+      "src": "AMD DS180"
+    },
+    {
+      "id": "hw-c025",
+      "sub": "board",
+      "title": "晶振时钟源",
+      "body": "① 开发板用外部晶振提供主时钟，常见 50MHz。\n② FPGA 本身不产生时钟，靠外部输入。\n③ 经 MMCM 倍频/分频出内部时钟。",
+      "src": "AMD UG472"
+    },
+    {
+      "id": "hw-c026",
+      "sub": "board",
+      "title": "复位电路",
+      "body": "① 常用 RC 上电复位 + 手动按键。\n② 按键外接上拉，按下为低。\n③ 复位信号需同步到时钟域。",
+      "src": ""
+    },
+    {
+      "id": "hw-c027",
+      "sub": "board",
+      "title": "按键/LED/拨码",
+      "body": "① 按键：输入，需消抖。\n② LED：输出，串限流电阻。\n③ 拨码开关：配置电平输入。",
+      "src": ""
+    },
+    {
+      "id": "hw-c028",
+      "sub": "board",
+      "title": "Bank 与 Vcco",
+      "body": "① I/O 按 Bank 分组，每个 Bank 一个 Vcco。\n② Vcco 决定该 Bank 的 I/O 电平标准。\n③ 常见 3.3V/2.5V/1.8V/1.5V/1.2V。",
+      "src": "AMD UG471"
+    },
+    {
+      "id": "hw-c029",
+      "sub": "board",
+      "title": "电源与稳压",
+      "body": "① 板上多路 DC-DC/LDO 产生各电压。\n② 核电压大电流、低纹波。\n③ I/O 电压按 Bank 供电。",
+      "src": ""
+    },
+    {
+      "id": "hw-c030",
+      "sub": "board",
+      "title": "外设接插件",
+      "body": "① 扩展口/排针把引脚引出。\n② VGA/UART/HDMI/LED 等接插件。\n③ 引脚分配见板卡原理图/XDC。",
+      "src": ""
+    },
+    {
+      "id": "hw-c031",
+      "sub": "config",
+      "title": "JTAG 配置模式",
+      "body": "① 下载电缆直连，调试最方便。\n② 信号 TCK/TMS/TDI/TDO。\n③ 掉电丢失，适合开发阶段。",
+      "src": "AMD UG470"
+    },
+    {
+      "id": "hw-c032",
+      "sub": "config",
+      "title": "Master/Slave 配置",
+      "body": "① Master 模式 FPGA 主动从配置 Flash 读比特流。\n② Slave 模式由外部主机提供时钟。\n③ 上电自动加载用 Master SPI。",
+      "src": "AMD UG470"
+    },
+    {
+      "id": "hw-c033",
+      "sub": "config",
+      "title": "配置 Flash",
+      "body": "① 外置 SPI/BPI Flash 存比特流。\n② 掉电不丢，上电自动加载。\n③ 量产产品必备。",
+      "src": "AMD UG470"
+    },
+    {
+      "id": "hw-c034",
+      "sub": "config",
+      "title": "比特流文件",
+      "body": "① .bit（含调试）/.bin（裸数据）。\n② 由 Vivado 实现后生成。\n③ 本质是配置 SRAM 的数据。",
+      "src": "AMD UG835"
+    },
+    {
+      "id": "hw-c035",
+      "sub": "config",
+      "title": "启动流程",
+      "body": "① 清空配置 -> 加载比特流 -> 启动序列 -> 释放 I/O。\n② DONE 拉高表示配置完成。\n③ INIT_B 表示初始化。",
+      "src": "AMD UG470"
+    },
+    {
+      "id": "hw-c036",
+      "sub": "config",
+      "title": "下载电缆",
+      "body": "① AMD Platform Cable USB（DLC）。\n② JTAG 链路连接 PC 与板子。\n③ 也可用兼容下载器。",
+      "src": "AMD UG470"
+    },
+    {
+      "id": "hw-c037",
+      "sub": "power",
+      "title": "核电压 Vccint",
+      "body": "① 7 系列核电压约 1.0V。\n② 为内部逻辑供电，电流大。\n③ 纹波要求低。",
+      "src": "AMD DS180"
+    },
+    {
+      "id": "hw-c038",
+      "sub": "power",
+      "title": "辅助电压 Vccaux",
+      "body": "① 7 系列典型 1.8V。\n② 辅助电路/配置等供电。\n③ 不等于核电压。",
+      "src": "AMD DS180"
+    },
+    {
+      "id": "hw-c039",
+      "sub": "power",
+      "title": "Bank 电压 Vcco",
+      "body": "① 每个 Bank 独立。\n② 决定 I/O 电平。\n③ 按外设接口选择。",
+      "src": "AMD UG471"
+    },
+    {
+      "id": "hw-c040",
+      "sub": "power",
+      "title": "去耦电容",
+      "body": "① 每个电源引脚就近放 0.1µF。\n② 抑制电源纹波/瞬态电流。\n③ 配合大容量电容。",
+      "src": ""
+    },
+    {
+      "id": "hw-c041",
+      "sub": "power",
+      "title": "上电时序",
+      "body": "① 一般核电压先稳定，再上 I/O。\n② 避免锁死/浪涌。\n③ 按数据手册顺序。",
+      "src": "AMD DS180"
+    },
+    {
+      "id": "hw-c042",
+      "sub": "power",
+      "title": "复位设计",
+      "body": "① 异步复位、同步释放。\n② 避免亚稳态。\n③ 复位信号同步到对应时钟域。",
+      "src": "AMD UG949"
+    }
+  ],
+  "questions": [
+    {
+      "id": "hw-001",
+      "cat": "hardware",
+      "sub": "arch",
+      "type": "single",
+      "q": "FPGA 中一个 LUT 本质上是？",
+      "answer": 0,
+      "explain": "LUT 是 2^n×1 的小 RAM，真值表写入其中，输入作地址。",
+      "src": "",
+      "options": [
+        "一块小容量 SRAM（查找表）",
+        "一个边沿触发器",
+        "一个硬乘法器",
+        "一个锁相环"
+      ]
+    },
+    {
+      "id": "hw-002",
+      "cat": "hardware",
+      "sub": "arch",
+      "type": "single",
+      "q": "6 输入 LUT 的存储深度是多少位？",
+      "answer": 0,
+      "explain": "2^6=64。",
+      "src": "",
+      "options": [
+        "64",
+        "32",
+        "128",
+        "16"
+      ]
+    },
+    {
+      "id": "hw-003",
+      "cat": "hardware",
+      "sub": "arch",
+      "type": "single",
+      "q": "7 系列一个 Slice 含几个 6 输入 LUT？",
+      "answer": 0,
+      "explain": "每 Slice 4 个 LUT + 8 个 FF。",
+      "src": "AMD DS180",
+      "options": [
+        "4",
+        "2",
+        "8",
+        "16"
+      ]
+    },
+    {
+      "id": "hw-004",
+      "cat": "hardware",
+      "sub": "arch",
+      "type": "single",
+      "q": "7 系列一个 Slice 含几个触发器？",
+      "answer": 1,
+      "explain": "每 Slice 8 个 FF。",
+      "src": "AMD DS180",
+      "options": [
+        "4",
+        "8",
+        "16",
+        "2"
+      ]
+    },
+    {
+      "id": "hw-005",
+      "cat": "hardware",
+      "sub": "arch",
+      "type": "single",
+      "q": "LUT 主要用来实现哪类逻辑？",
+      "answer": 0,
+      "explain": "LUT 出组合；状态由 FF 保存。",
+      "src": "",
+      "options": [
+        "组合逻辑",
+        "纯时序状态",
+        "时钟产生",
+        "高压驱动"
+      ]
+    },
+    {
+      "id": "hw-006",
+      "cat": "hardware",
+      "sub": "arch",
+      "type": "single",
+      "q": "一个 LUT6 可以拆成？",
+      "answer": 0,
+      "explain": "LUT6 可拆为两个共享输入的 LUT5。",
+      "src": "AMD UG474",
+      "options": [
+        "两个 LUT5",
+        "两个 LUT6",
+        "不能拆分",
+        "一个 LUT7"
+      ]
+    },
+    {
+      "id": "hw-007",
+      "cat": "hardware",
+      "sub": "arch",
+      "type": "single",
+      "q": "触发器输出在什么时候更新？",
+      "answer": 0,
+      "explain": "FF 边沿触发，输出只在时钟沿更新。",
+      "src": "",
+      "options": [
+        "时钟有效沿",
+        "任意时刻",
+        "复位关闭后",
+        "输入变化立即"
+      ]
+    },
+    {
+      "id": "hw-008",
+      "cat": "hardware",
+      "sub": "arch",
+      "type": "single",
+      "q": "7 系列一个 CLB 通常包含几个 Slice？",
+      "answer": 0,
+      "explain": "7 系列 CLB 含 2 个 Slice。",
+      "src": "",
+      "options": [
+        "2",
+        "4",
+        "1",
+        "8"
+      ]
+    },
+    {
+      "id": "hw-009",
+      "cat": "hardware",
+      "sub": "arch",
+      "type": "single",
+      "q": "把 LUT 看作 RAM 时，输入信号相当于 RAM 的？",
+      "answer": 0,
+      "explain": "输入组合即地址，选中真值表对应位。",
+      "src": "",
+      "options": [
+        "地址",
+        "数据输入",
+        "时钟",
+        "写使能"
+      ]
+    },
+    {
+      "id": "hw-010",
+      "cat": "hardware",
+      "sub": "arch",
+      "type": "multi",
+      "q": "下列关于 LUT 的说法正确的有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "LUT 是组合用小 RAM，不是触发器。",
+      "src": "",
+      "options": [
+        "是一种小 SRAM",
+        "把真值表预先写入",
+        "输入组合作为地址",
+        "本身是带时钟的触发器"
+      ]
+    },
+    {
+      "id": "hw-011",
+      "cat": "hardware",
+      "sub": "arch",
+      "type": "multi",
+      "q": "一个 7 系列 Slice 里通常包含？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "BRAM 是独立资源，不在 Slice 内。",
+      "src": "AMD DS180",
+      "options": [
+        "4 个 6 输入 LUT",
+        "8 个触发器",
+        "进位链资源",
+        "整块 BRAM"
+      ]
+    },
+    {
+      "id": "hw-012",
+      "cat": "hardware",
+      "sub": "arch",
+      "type": "multi",
+      "q": "关于触发器 FF 正确的有？",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explain": "均正确。",
+      "src": "",
+      "options": [
+        "边沿触发",
+        "带时钟使能 CE",
+        "带复位端",
+        "用于保存状态"
+      ]
+    },
+    {
+      "id": "hw-013",
+      "cat": "hardware",
+      "sub": "arch",
+      "type": "multi",
+      "q": "SLICEM 相比 SLICEL 额外可以用来做？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "只有 SLICEM 的 LUT 能配成分布式 RAM/SRL；乘法由 DSP 完成。",
+      "src": "AMD UG474",
+      "options": [
+        "分布式 RAM",
+        "移位寄存器 SRL",
+        "普通组合逻辑",
+        "硬件乘法"
+      ]
+    },
+    {
+      "id": "hw-014",
+      "cat": "hardware",
+      "sub": "arch",
+      "type": "judge",
+      "q": "LUT 是一种带时钟的时序存储元件。",
+      "answer": false,
+      "explain": "LUT 是组合逻辑资源（小 RAM），本身不带时钟；状态由 FF 保存。",
+      "src": ""
+    },
+    {
+      "id": "hw-015",
+      "cat": "hardware",
+      "sub": "arch",
+      "type": "judge",
+      "q": "7 系列一个 Slice 含 4 个 6 输入 LUT 和 8 个触发器。",
+      "answer": true,
+      "explain": "见 DS180：每 Slice 4 LUT + 8 FF。",
+      "src": "AMD DS180"
+    },
+    {
+      "id": "hw-016",
+      "cat": "hardware",
+      "sub": "arch",
+      "type": "judge",
+      "q": "LUT 输入每多一位，所需容量大致翻倍。",
+      "answer": true,
+      "explain": "容量 = 2^n，输入位数 n 增加一位容量翻倍。",
+      "src": ""
+    },
+    {
+      "id": "hw-017",
+      "cat": "hardware",
+      "sub": "arch",
+      "type": "fill",
+      "q": "n 输入 LUT 的深度是 2 的多少次方？",
+      "answer": [
+        "2^n",
+        "2^N",
+        "2**n"
+      ],
+      "explain": "深度=2^n。",
+      "src": ""
+    },
+    {
+      "id": "hw-018",
+      "cat": "hardware",
+      "sub": "arch",
+      "type": "fill",
+      "q": "Artix-7 中最基本的查找表是几输入的？",
+      "answer": [
+        "6",
+        "六",
+        "LUT6"
+      ],
+      "explain": "Artix-7 为 6 输入 LUT。",
+      "src": "AMD UG474"
+    },
+    {
+      "id": "hw-019",
+      "cat": "hardware",
+      "sub": "memdsp",
+      "type": "single",
+      "q": "7 系列块 BRAM 的基本容量是？",
+      "answer": 0,
+      "explain": "基本 36Kb，可拆两个 18Kb。",
+      "src": "AMD DS180",
+      "options": [
+        "36 Kb",
+        "18 Kb",
+        "288 Kb",
+        "4 Kb"
+      ]
+    },
+    {
+      "id": "hw-020",
+      "cat": "hardware",
+      "sub": "memdsp",
+      "type": "single",
+      "q": "一个 36Kb BRAM 最多可当作几个独立 18Kb RAM？",
+      "answer": 0,
+      "explain": "可拆为两个独立 18Kb。",
+      "src": "AMD DS180",
+      "options": [
+        "2",
+        "4",
+        "1",
+        "8"
+      ]
+    },
+    {
+      "id": "hw-021",
+      "cat": "hardware",
+      "sub": "memdsp",
+      "type": "single",
+      "q": "分布式 RAM 是由什么构成的？",
+      "answer": 0,
+      "explain": "分布式 RAM 用 LUT 实现。",
+      "src": "AMD UG474",
+      "options": [
+        "SLICEM 的 LUT",
+        "BRAM",
+        "DSP48",
+        "触发器"
+      ]
+    },
+    {
+      "id": "hw-022",
+      "cat": "hardware",
+      "sub": "memdsp",
+      "type": "single",
+      "q": "7 系列 DSP48E1 的乘法器位宽是？",
+      "answer": 1,
+      "explain": "DSP48E1 为 25×18 乘法器。",
+      "src": "AMD UG479",
+      "options": [
+        "18×18",
+        "25×18",
+        "36×36",
+        "8×8"
+      ]
+    },
+    {
+      "id": "hw-023",
+      "cat": "hardware",
+      "sub": "memdsp",
+      "type": "single",
+      "q": "DSP48E1 累加器（P）位宽约为？",
+      "answer": 0,
+      "explain": "带 48 位加法/累加。",
+      "src": "AMD UG479",
+      "options": [
+        "48 bit",
+        "25 bit",
+        "18 bit",
+        "36 bit"
+      ]
+    },
+    {
+      "id": "hw-024",
+      "cat": "hardware",
+      "sub": "memdsp",
+      "type": "single",
+      "q": "URAM（288Kb）属于哪一代 FPGA？",
+      "answer": 0,
+      "explain": "URAM 是 UltraScale+ 资源。",
+      "src": "AMD UG573",
+      "options": [
+        "UltraScale+",
+        "7 系列",
+        "6 系列",
+        "Spartan-3"
+      ]
+    },
+    {
+      "id": "hw-025",
+      "cat": "hardware",
+      "sub": "memdsp",
+      "type": "single",
+      "q": "7 系列 BRAM 属于哪种 RAM？",
+      "answer": 0,
+      "explain": "真双口，两端口独立。",
+      "src": "AMD UG473",
+      "options": [
+        "真双口 RAM",
+        "单口 ROM",
+        "只读存储器",
+        "CAM"
+      ]
+    },
+    {
+      "id": "hw-026",
+      "cat": "hardware",
+      "sub": "memdsp",
+      "type": "single",
+      "q": "SRL（移位寄存器 LUT）主要用来？",
+      "answer": 0,
+      "explain": "LUT 配成 32 位移位寄存器。",
+      "src": "AMD UG474",
+      "options": [
+        "做小延时/流水线抽头",
+        "做硬件乘法",
+        "产生时钟",
+        "做上电复位"
+      ]
+    },
+    {
+      "id": "hw-027",
+      "cat": "hardware",
+      "sub": "memdsp",
+      "type": "multi",
+      "q": "关于 BRAM 说法正确的有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "BRAM 是 SRAM，掉电丢失。",
+      "src": "AMD DS180",
+      "options": [
+        "基本 36Kb",
+        "真双口",
+        "可拆成两个 18Kb",
+        "掉电后内容永久保留"
+      ]
+    },
+    {
+      "id": "hw-028",
+      "cat": "hardware",
+      "sub": "memdsp",
+      "type": "multi",
+      "q": "一个 DSP48E1 切片包含？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "BRAM 不在 DSP 切片内。",
+      "src": "AMD UG479",
+      "options": [
+        "预加器",
+        "25×18 乘法器",
+        "加法/累加器",
+        "独立 BRAM"
+      ]
+    },
+    {
+      "id": "hw-029",
+      "cat": "hardware",
+      "sub": "memdsp",
+      "type": "multi",
+      "q": "下列适合优先用 BRAM 实现的有？",
+      "answer": [
+        0,
+        1
+      ],
+      "explain": "小寄存器堆用分布式 RAM/FF 即可。",
+      "src": "AMD UG473",
+      "options": [
+        "较大的数据缓冲/FIFO",
+        "视频帧缓存",
+        "几个触发器宽度的寄存器堆",
+        "单 bit 状态"
+      ]
+    },
+    {
+      "id": "hw-030",
+      "cat": "hardware",
+      "sub": "memdsp",
+      "type": "judge",
+      "q": "BRAM 掉电后内容仍然保留。",
+      "answer": false,
+      "explain": "BRAM 基于 SRAM，掉电丢失；持久化需外部 Flash。",
+      "src": ""
+    },
+    {
+      "id": "hw-031",
+      "cat": "hardware",
+      "sub": "memdsp",
+      "type": "judge",
+      "q": "DSP48E1 一个切片即可完成一次乘加（MAC）运算。",
+      "answer": true,
+      "explain": "预加+25×18乘+累加=MAC。",
+      "src": "AMD UG479"
+    },
+    {
+      "id": "hw-032",
+      "cat": "hardware",
+      "sub": "memdsp",
+      "type": "judge",
+      "q": "分布式 RAM 容量很大，适合做整屏视频帧缓存。",
+      "answer": false,
+      "explain": "分布式 RAM 容量小且占 LUT，大缓冲用 BRAM/URAM。",
+      "src": ""
+    },
+    {
+      "id": "hw-033",
+      "cat": "hardware",
+      "sub": "memdsp",
+      "type": "judge",
+      "q": "BRAM 是真双口 RAM，两个端口可同时独立读写。",
+      "answer": true,
+      "explain": "真双口，端口独立时钟与使能。",
+      "src": "AMD UG473"
+    },
+    {
+      "id": "hw-034",
+      "cat": "hardware",
+      "sub": "memdsp",
+      "type": "fill",
+      "q": "7 系列一个块 BRAM 的基本大小是多少 Kb？",
+      "answer": [
+        "36",
+        "36Kb",
+        "36 Kb"
+      ],
+      "explain": "基本 36Kb。",
+      "src": "AMD DS180"
+    },
+    {
+      "id": "hw-035",
+      "cat": "hardware",
+      "sub": "memdsp",
+      "type": "fill",
+      "q": "DSP48E1 乘法器是多少位乘 18 位？",
+      "answer": [
+        "25"
+      ],
+      "explain": "25×18。",
+      "src": "AMD UG479"
+    },
+    {
+      "id": "hw-036",
+      "cat": "hardware",
+      "sub": "memdsp",
+      "type": "fill",
+      "q": "用 LUT 实现的小容量 RAM 叫什么 RAM？",
+      "answer": [
+        "分布式",
+        "distributed",
+        "分布式RAM"
+      ],
+      "explain": "distributed RAM。",
+      "src": "AMD UG474"
+    },
+    {
+      "id": "hw-037",
+      "cat": "hardware",
+      "sub": "clockres",
+      "type": "single",
+      "q": "把时钟低偏移分发到全芯片的缓冲叫？",
+      "answer": 0,
+      "explain": "全局时钟缓冲 BUFG。",
+      "src": "AMD UG472",
+      "options": [
+        "BUFG",
+        "BUFR",
+        "BRAM",
+        "LUT"
+      ]
+    },
+    {
+      "id": "hw-038",
+      "cat": "hardware",
+      "sub": "clockres",
+      "type": "single",
+      "q": "7 系列的时钟管理单元（CMT）里集成的是？",
+      "answer": 0,
+      "explain": "7 系列 CMT = MMCM。",
+      "src": "AMD UG472",
+      "options": [
+        "MMCM",
+        "DSP48E1",
+        "URAM",
+        "IDELAY"
+      ]
+    },
+    {
+      "id": "hw-039",
+      "cat": "hardware",
+      "sub": "clockres",
+      "type": "single",
+      "q": "区域性时钟缓冲（驱动一个时钟区域）叫？",
+      "answer": 0,
+      "explain": "BUFR 区域缓冲。",
+      "src": "AMD UG472",
+      "options": [
+        "BUFR",
+        "BUFG",
+        "BUFO",
+        "LUT"
+      ]
+    },
+    {
+      "id": "hw-040",
+      "cat": "hardware",
+      "sub": "clockres",
+      "type": "single",
+      "q": "MMCM 不能直接实现下列哪种功能？",
+      "answer": 3,
+      "explain": "MMCM 是时钟电路，不做电源。",
+      "src": "AMD UG472",
+      "options": [
+        "倍频",
+        "分频",
+        "相位调整",
+        "把电压升压"
+      ]
+    },
+    {
+      "id": "hw-041",
+      "cat": "hardware",
+      "sub": "clockres",
+      "type": "single",
+      "q": "7 系列可用的 BUFG 数量大约为？",
+      "answer": 1,
+      "explain": "约 32 个全局时钟缓冲。",
+      "src": "AMD UG472",
+      "options": [
+        "8",
+        "32",
+        "64",
+        "4"
+      ]
+    },
+    {
+      "id": "hw-042",
+      "cat": "hardware",
+      "sub": "clockres",
+      "type": "single",
+      "q": "外部进入 FPGA 的信号首先到达？",
+      "answer": 0,
+      "explain": "引脚先经过 IOB。",
+      "src": "AMD UG471",
+      "options": [
+        "IOB",
+        "LUT",
+        "BRAM",
+        "DSP"
+      ]
+    },
+    {
+      "id": "hw-043",
+      "cat": "hardware",
+      "sub": "clockres",
+      "type": "single",
+      "q": "为减小时钟偏斜，主时钟应走？",
+      "answer": 0,
+      "explain": "全局时钟树低偏斜。",
+      "src": "AMD UG472",
+      "options": [
+        "全局时钟树（BUFG）",
+        "普通走线",
+        "BRAM内部",
+        "任意布线"
+      ]
+    },
+    {
+      "id": "hw-044",
+      "cat": "hardware",
+      "sub": "clockres",
+      "type": "single",
+      "q": "在 XDC 里约束主时钟频率用哪条命令？",
+      "answer": 0,
+      "explain": "create_clock 定义主时钟。",
+      "src": "AMD UG903",
+      "options": [
+        "create_clock",
+        "set_property BIT",
+        "create_generated_clock",
+        "set_input_delay"
+      ]
+    },
+    {
+      "id": "hw-045",
+      "cat": "hardware",
+      "sub": "clockres",
+      "type": "single",
+      "q": "CMT 内部除 MMCM 外通常还包含一个？",
+      "answer": 0,
+      "explain": "CMT 含 MMCM（及配套 PLL 资源）。",
+      "src": "AMD UG472",
+      "options": [
+        "PLL",
+        "BRAM",
+        "FF",
+        "差分接收"
+      ]
+    },
+    {
+      "id": "hw-046",
+      "cat": "hardware",
+      "sub": "clockres",
+      "type": "multi",
+      "q": "关于 MMCM 正确的有？",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explain": "均为 MMCM 功能。",
+      "src": "AMD UG472",
+      "options": [
+        "可以倍频",
+        "可以分频",
+        "可以相位调整",
+        "可以去时钟偏斜"
+      ]
+    },
+    {
+      "id": "hw-047",
+      "cat": "hardware",
+      "sub": "clockres",
+      "type": "multi",
+      "q": "下列属于 FPGA 时钟缓冲的有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "LUT 不是时钟缓冲。",
+      "src": "AMD UG472",
+      "options": [
+        "BUFG",
+        "BUFR",
+        "BUFO",
+        "LUT"
+      ]
+    },
+    {
+      "id": "hw-048",
+      "cat": "hardware",
+      "sub": "clockres",
+      "type": "multi",
+      "q": "关于时钟区域说法正确的有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "区域是布局概念，不强制不同时钟。",
+      "src": "AMD UG472",
+      "options": [
+        "芯片按区域划分",
+        "同一区域内更易同步",
+        "合理规划可降偏斜",
+        "每个区域必须用不同时钟"
+      ]
+    },
+    {
+      "id": "hw-049",
+      "cat": "hardware",
+      "sub": "clockres",
+      "type": "judge",
+      "q": "BUFG 的作用是把时钟分发到整个芯片全局网络。",
+      "answer": true,
+      "explain": "全局缓冲树。",
+      "src": "AMD UG472"
+    },
+    {
+      "id": "hw-050",
+      "cat": "hardware",
+      "sub": "clockres",
+      "type": "judge",
+      "q": "MMCM 只能倍频，不能对输入时钟分频。",
+      "answer": false,
+      "explain": "MMCM 可倍频也可分频/调相。",
+      "src": "AMD UG472"
+    },
+    {
+      "id": "hw-051",
+      "cat": "hardware",
+      "sub": "clockres",
+      "type": "judge",
+      "q": "可以把输入触发器放进 IOB 以减小引脚到触发器的延迟。",
+      "answer": true,
+      "explain": "IOB 寄存器选项。",
+      "src": "AMD UG471"
+    },
+    {
+      "id": "hw-052",
+      "cat": "hardware",
+      "sub": "clockres",
+      "type": "fill",
+      "q": "全局时钟缓冲的英文缩写是？",
+      "answer": [
+        "BUFG"
+      ],
+      "explain": "BUFG。",
+      "src": "AMD UG472"
+    },
+    {
+      "id": "hw-053",
+      "cat": "hardware",
+      "sub": "clockres",
+      "type": "fill",
+      "q": "7 系列混合时钟管理器的缩写是？",
+      "answer": [
+        "MMCM"
+      ],
+      "explain": "MMCM。",
+      "src": "AMD UG472"
+    },
+    {
+      "id": "hw-054",
+      "cat": "hardware",
+      "sub": "clockres",
+      "type": "fill",
+      "q": "锁相环的英文缩写是？",
+      "answer": [
+        "PLL"
+      ],
+      "explain": "PLL。",
+      "src": ""
+    },
+    {
+      "id": "hw-055",
+      "cat": "hardware",
+      "sub": "families",
+      "type": "single",
+      "q": "Artix-7 在 7 系列中的定位是？",
+      "answer": 0,
+      "explain": "Artix-7 低成本平衡。",
+      "src": "AMD DS180",
+      "options": [
+        "低成本、高逻辑密度",
+        "最高端旗舰",
+        "纯 ARM SoC",
+        "最低端入门"
+      ]
+    },
+    {
+      "id": "hw-056",
+      "cat": "hardware",
+      "sub": "families",
+      "type": "single",
+      "q": "Zynq-7000 处理器系统（PS）采用的 CPU 是？",
+      "answer": 0,
+      "explain": "Zynq-7000 PS 为双核 A9。",
+      "src": "AMD UG585",
+      "options": [
+        "ARM Cortex-A9",
+        "RISC-V",
+        "8051",
+        "无 CPU"
+      ]
+    },
+    {
+      "id": "hw-057",
+      "cat": "hardware",
+      "sub": "families",
+      "type": "single",
+      "q": "同一型号里速度等级最快的是？",
+      "answer": 0,
+      "explain": "-3 最快。",
+      "src": "AMD DS180",
+      "options": [
+        "-3",
+        "-1",
+        "-2",
+        "-1L"
+      ]
+    },
+    {
+      "id": "hw-058",
+      "cat": "hardware",
+      "sub": "families",
+      "type": "single",
+      "q": "Zynq UltraScale+ 的 PS 处理器位宽是？",
+      "answer": 0,
+      "explain": "ZU+ PS 为 ARM64 多核。",
+      "src": "AMD UG1085",
+      "options": [
+        "ARM 64 位",
+        "ARM 32 位 A9",
+        "8 位 MCU",
+        "无处理器"
+      ]
+    },
+    {
+      "id": "hw-059",
+      "cat": "hardware",
+      "sub": "families",
+      "type": "single",
+      "q": "追求最低成本、最简单逻辑应选？",
+      "answer": 0,
+      "explain": "Spartan-7 最低成本。",
+      "src": "AMD DS180",
+      "options": [
+        "Spartan-7",
+        "Artix-7",
+        "Kintex-7",
+        "Virtex-7"
+      ]
+    },
+    {
+      "id": "hw-060",
+      "cat": "hardware",
+      "sub": "families",
+      "type": "single",
+      "q": "Kintex-7 的定位是？",
+      "answer": 0,
+      "explain": "Kintex 平衡型。",
+      "src": "AMD DS180",
+      "options": [
+        "性能与成本平衡",
+        "最低成本",
+        "最高端",
+        "纯处理器"
+      ]
+    },
+    {
+      "id": "hw-061",
+      "cat": "hardware",
+      "sub": "families",
+      "type": "single",
+      "q": "7 系列中最高端、容量最大的是？",
+      "answer": 0,
+      "explain": "Virtex-7 旗舰。",
+      "src": "AMD DS180",
+      "options": [
+        "Virtex-7",
+        "Artix-7",
+        "Spartan-7",
+        "Zynq-7000"
+      ]
+    },
+    {
+      "id": "hw-062",
+      "cat": "hardware",
+      "sub": "families",
+      "type": "single",
+      "q": "Zynq 中 PL 指的是？",
+      "answer": 0,
+      "explain": "PL=Programmable Logic。",
+      "src": "AMD UG585",
+      "options": [
+        "可编程逻辑（FPGA 部分）",
+        "处理器",
+        "内存",
+        "外设"
+      ]
+    },
+    {
+      "id": "hw-063",
+      "cat": "hardware",
+      "sub": "families",
+      "type": "single",
+      "q": "描述 FPGA 规模时常用的“逻辑单元”英文是？",
+      "answer": 0,
+      "explain": "Logic Cell（LC）。",
+      "src": "AMD DS180",
+      "options": [
+        "Logic Cell",
+        "Block RAM",
+        "DSP Slice",
+        "I/O Bank"
+      ]
+    },
+    {
+      "id": "hw-064",
+      "cat": "hardware",
+      "sub": "families",
+      "type": "multi",
+      "q": "下列属于 7 系列 FPGA 的有？",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explain": "均为 7 系列成员。",
+      "src": "AMD DS180",
+      "options": [
+        "Artix-7",
+        "Kintex-7",
+        "Virtex-7",
+        "Spartan-7"
+      ]
+    },
+    {
+      "id": "hw-065",
+      "cat": "hardware",
+      "sub": "families",
+      "type": "multi",
+      "q": "做器件选型时通常要权衡？",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explain": "均需权衡。",
+      "src": "",
+      "options": [
+        "逻辑容量（LUT/FF）",
+        "BRAM/DSP 资源",
+        "封装与引脚",
+        "成本与速度等级"
+      ]
+    },
+    {
+      "id": "hw-066",
+      "cat": "hardware",
+      "sub": "families",
+      "type": "multi",
+      "q": "关于 Zynq-7000 正确的有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "Zynq 含 ARM，不是纯 FPGA。",
+      "src": "AMD UG585",
+      "options": [
+        "含 PS 和 PL",
+        "ARM+FPGA 单芯片",
+        "可软硬件协同",
+        "是纯 FPGA 无处理器"
+      ]
+    },
+    {
+      "id": "hw-067",
+      "cat": "hardware",
+      "sub": "families",
+      "type": "multi",
+      "q": "关于速度等级说法正确的有？",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explain": "均正确。",
+      "src": "AMD DS180",
+      "options": [
+        "-3 最快",
+        "-1 最慢",
+        "影响最高运行频率",
+        "通常越贵越快"
+      ]
+    },
+    {
+      "id": "hw-068",
+      "cat": "hardware",
+      "sub": "families",
+      "type": "judge",
+      "q": "Zynq-7000 同时包含 ARM 处理器和可编程 FPGA 逻辑。",
+      "answer": true,
+      "explain": "PS+PL。",
+      "src": "AMD UG585"
+    },
+    {
+      "id": "hw-069",
+      "cat": "hardware",
+      "sub": "families",
+      "type": "judge",
+      "q": "速度等级 -3 的器件比 -1 的更慢。",
+      "answer": false,
+      "explain": "-3 最快。",
+      "src": "AMD DS180"
+    },
+    {
+      "id": "hw-070",
+      "cat": "hardware",
+      "sub": "families",
+      "type": "judge",
+      "q": "Artix-7 的整体性能一般高于 Kintex-7。",
+      "answer": false,
+      "explain": "Kintex-7 定位更高。",
+      "src": "AMD DS180"
+    },
+    {
+      "id": "hw-071",
+      "cat": "hardware",
+      "sub": "families",
+      "type": "fill",
+      "q": "Zynq 中 ARM 处理器部分的缩写是？",
+      "answer": [
+        "PS"
+      ],
+      "explain": "PS=Processing System。",
+      "src": "AMD UG585"
+    },
+    {
+      "id": "hw-072",
+      "cat": "hardware",
+      "sub": "families",
+      "type": "fill",
+      "q": "Zynq 中可编程 FPGA 逻辑部分的缩写是？",
+      "answer": [
+        "PL"
+      ],
+      "explain": "PL=Programmable Logic。",
+      "src": "AMD UG585"
+    },
+    {
+      "id": "hw-073",
+      "cat": "hardware",
+      "sub": "board",
+      "type": "single",
+      "q": "教学开发板最常见的系统晶振频率是？",
+      "answer": 0,
+      "explain": "常见 50MHz。",
+      "src": "",
+      "options": [
+        "50 MHz",
+        "1 Hz",
+        "32.768 kHz",
+        "1 GHz"
+      ]
+    },
+    {
+      "id": "hw-074",
+      "cat": "hardware",
+      "sub": "board",
+      "type": "single",
+      "q": "开发板按键通常外接上拉电阻，按下时引脚为？",
+      "answer": 0,
+      "explain": "按下接地为低。",
+      "src": "",
+      "options": [
+        "低电平",
+        "高电平",
+        "高阻",
+        "不定"
+      ]
+    },
+    {
+      "id": "hw-075",
+      "cat": "hardware",
+      "sub": "board",
+      "type": "single",
+      "q": "FPGA 每个 I/O Bank 的电压由什么决定？",
+      "answer": 0,
+      "explain": "Vcco 决定 Bank I/O 电平。",
+      "src": "AMD UG471",
+      "options": [
+        "该 Bank 的 Vcco",
+        "核电压 Vccint",
+        "MMCM",
+        "温度"
+      ]
+    },
+    {
+      "id": "hw-076",
+      "cat": "hardware",
+      "sub": "board",
+      "type": "single",
+      "q": "3.3V Bank 通常支持哪种标准？",
+      "answer": 0,
+      "explain": "3.3V Bank 用 LVCMOS33。",
+      "src": "AMD UG471",
+      "options": [
+        "LVCMOS33",
+        "LVTTL 也可/1.8V-only",
+        "1.2V-only",
+        "差分 CML"
+      ]
+    },
+    {
+      "id": "hw-077",
+      "cat": "hardware",
+      "sub": "board",
+      "type": "single",
+      "q": "上电复位电路常用？",
+      "answer": 0,
+      "explain": "RC+按键上电复位。",
+      "src": "",
+      "options": [
+        "RC 网络 + 按键",
+        "PLL",
+        "BRAM",
+        "DSP"
+      ]
+    },
+    {
+      "id": "hw-078",
+      "cat": "hardware",
+      "sub": "board",
+      "type": "single",
+      "q": "LED 与 FPGA 引脚之间一般串接？",
+      "answer": 0,
+      "explain": "串限流电阻。",
+      "src": "",
+      "options": [
+        "限流电阻",
+        "电容",
+        "电感",
+        "保险丝"
+      ]
+    },
+    {
+      "id": "hw-079",
+      "cat": "hardware",
+      "sub": "board",
+      "type": "single",
+      "q": "拨码开关在设计中通常用作？",
+      "answer": 0,
+      "explain": "拨码做配置电平。",
+      "src": "",
+      "options": [
+        "配置/模式输入",
+        "电源输入",
+        "时钟源",
+        "高速收发"
+      ]
+    },
+    {
+      "id": "hw-080",
+      "cat": "hardware",
+      "sub": "board",
+      "type": "single",
+      "q": "关于 Bank 电压，下列正确的是？",
+      "answer": 0,
+      "explain": "Bank 独立供电。",
+      "src": "AMD UG471",
+      "options": [
+        "不同 Bank 可设不同 Vcco",
+        "所有 Bank 必须同压",
+        "Vcco 等于核电压",
+        "Bank 不需要供电"
+      ]
+    },
+    {
+      "id": "hw-081",
+      "cat": "hardware",
+      "sub": "board",
+      "type": "multi",
+      "q": "开发板上常见的输入输出器件有？",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explain": "均常见。",
+      "src": "",
+      "options": [
+        "按键",
+        "LED",
+        "晶振",
+        "电源/稳压电路"
+      ]
+    },
+    {
+      "id": "hw-082",
+      "cat": "hardware",
+      "sub": "board",
+      "type": "multi",
+      "q": "关于 I/O Bank 电压说法正确的有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "Vcco 是 I/O 电压，核电压是 Vccint。",
+      "src": "AMD UG471",
+      "options": [
+        "每个 Bank 有独立 Vcco",
+        "Vcco 决定 I/O 标准",
+        "3.3V 最常见",
+        "核电压也叫 Vcco"
+      ]
+    },
+    {
+      "id": "hw-083",
+      "cat": "hardware",
+      "sub": "board",
+      "type": "multi",
+      "q": "典型复位电路会用到？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "复位电路用 RC+按键，不靠晶振。",
+      "src": "",
+      "options": [
+        "电阻",
+        "电容",
+        "复位按键",
+        "高频晶振"
+      ]
+    },
+    {
+      "id": "hw-084",
+      "cat": "hardware",
+      "sub": "board",
+      "type": "judge",
+      "q": "FPGA 的不同 I/O Bank 可以采用不同的供电电压。",
+      "answer": true,
+      "explain": "Bank 独立 Vcco。",
+      "src": "AMD UG471"
+    },
+    {
+      "id": "hw-085",
+      "cat": "hardware",
+      "sub": "board",
+      "type": "judge",
+      "q": "机械按键产生的抖动可以在软件/逻辑中消抖。",
+      "answer": true,
+      "explain": "采样延时消抖。",
+      "src": ""
+    },
+    {
+      "id": "hw-086",
+      "cat": "hardware",
+      "sub": "board",
+      "type": "judge",
+      "q": "FPGA 内部晶振自己产生系统主时钟。",
+      "answer": false,
+      "explain": "主时钟来自外部晶振，FPGA 只倍频/分频。",
+      "src": ""
+    },
+    {
+      "id": "hw-087",
+      "cat": "hardware",
+      "sub": "board",
+      "type": "judge",
+      "q": "同一个 Bank 内的引脚可以使用两种不同的 I/O 电压。",
+      "answer": false,
+      "explain": "同一 Bank 共用一个 Vcco。",
+      "src": "AMD UG471"
+    },
+    {
+      "id": "hw-088",
+      "cat": "hardware",
+      "sub": "board",
+      "type": "fill",
+      "q": "教学开发板最常见的系统时钟是多少 MHz？",
+      "answer": [
+        "50",
+        "50MHz",
+        "50 MHz"
+      ],
+      "explain": "常见 50MHz。",
+      "src": ""
+    },
+    {
+      "id": "hw-089",
+      "cat": "hardware",
+      "sub": "board",
+      "type": "fill",
+      "q": "I/O Bank 供电电压的英文缩写是？",
+      "answer": [
+        "Vcco",
+        "VCCO",
+        "vcco"
+      ],
+      "explain": "Vcco。",
+      "src": "AMD UG471"
+    },
+    {
+      "id": "hw-090",
+      "cat": "hardware",
+      "sub": "board",
+      "type": "fill",
+      "q": "板子上为 FPGA 提供主时钟的器件叫？",
+      "answer": [
+        "晶振",
+        "crystal",
+        "无源晶振",
+        "晶体振荡器"
+      ],
+      "explain": "晶振。",
+      "src": ""
+    },
+    {
+      "id": "hw-091",
+      "cat": "hardware",
+      "sub": "config",
+      "type": "single",
+      "q": "开发调试阶段最常用的下载方式是？",
+      "answer": 0,
+      "explain": "JTAG 最方便调试。",
+      "src": "AMD UG470",
+      "options": [
+        "JTAG",
+        "Master SPI",
+        "从串",
+        "BPI"
+      ]
+    },
+    {
+      "id": "hw-092",
+      "cat": "hardware",
+      "sub": "config",
+      "type": "single",
+      "q": "产品上电后自动加载程序，需把比特流存到？",
+      "answer": 0,
+      "explain": "存配置 Flash。",
+      "src": "AMD UG470",
+      "options": [
+        "外置配置 Flash",
+        "BRAM",
+        "LUT",
+        "寄存器"
+      ]
+    },
+    {
+      "id": "hw-093",
+      "cat": "hardware",
+      "sub": "config",
+      "type": "single",
+      "q": "Vivado 生成的比特流文件后缀通常是？",
+      "answer": 0,
+      "explain": ".bit。",
+      "src": "AMD UG835",
+      "options": [
+        ".bit",
+        ".v",
+        ".xdc",
+        ".sv"
+      ]
+    },
+    {
+      "id": "hw-094",
+      "cat": "hardware",
+      "sub": "config",
+      "type": "single",
+      "q": "JTAG 链路的时钟信号是？",
+      "answer": 0,
+      "explain": "TCK 是 JTAG 时钟。",
+      "src": "",
+      "options": [
+        "TCK",
+        "TMS",
+        "TDI",
+        "TDO"
+      ]
+    },
+    {
+      "id": "hw-095",
+      "cat": "hardware",
+      "sub": "config",
+      "type": "single",
+      "q": "表示 FPGA 配置完成的引脚是？",
+      "answer": 0,
+      "explain": "DONE 拉高表示完成。",
+      "src": "AMD UG470",
+      "options": [
+        "DONE",
+        "INIT_B",
+        "VCCAUX",
+        "MRCC"
+      ]
+    },
+    {
+      "id": "hw-096",
+      "cat": "hardware",
+      "sub": "config",
+      "type": "single",
+      "q": "Master 配置模式下，时钟由谁产生？",
+      "answer": 0,
+      "explain": "Master 模式 FPGA 主动输出时钟读 Flash。",
+      "src": "AMD UG470",
+      "options": [
+        "FPGA 自己",
+        "PC",
+        "下载电缆",
+        "外部主机"
+      ]
+    },
+    {
+      "id": "hw-097",
+      "cat": "hardware",
+      "sub": "config",
+      "type": "single",
+      "q": "FPGA 配置数据掉电即丢失，因为其配置存储是？",
+      "answer": 0,
+      "explain": "7 系列配置 SRAM，易失。",
+      "src": "AMD DS180",
+      "options": [
+        "SRAM 工艺",
+        "Flash",
+        "OTP",
+        "EEPROM"
+      ]
+    },
+    {
+      "id": "hw-098",
+      "cat": "hardware",
+      "sub": "config",
+      "type": "single",
+      "q": "决定 FPGA 进入哪种配置模式的引脚是？",
+      "answer": 0,
+      "explain": "M[2:0] 选择配置模式。",
+      "src": "AMD UG470",
+      "options": [
+        "模式选择引脚（M[2:0]）",
+        "DONE",
+        "LED",
+        "Vcco"
+      ]
+    },
+    {
+      "id": "hw-099",
+      "cat": "hardware",
+      "sub": "config",
+      "type": "single",
+      "q": "AMD 官方 JTAG 下载电缆俗称？",
+      "answer": 0,
+      "explain": "Platform Cable USB。",
+      "src": "AMD UG470",
+      "options": [
+        "Platform Cable USB（DLC）",
+        "USB-TTL",
+        "J-Link only",
+        "LVDS"
+      ]
+    },
+    {
+      "id": "hw-100",
+      "cat": "hardware",
+      "sub": "config",
+      "type": "multi",
+      "q": "下列属于 FPGA 配置模式的有？",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explain": "均为配置模式。",
+      "src": "AMD UG470",
+      "options": [
+        "JTAG",
+        "Master SPI",
+        "Slave Serial",
+        "BPI"
+      ]
+    },
+    {
+      "id": "hw-101",
+      "cat": "hardware",
+      "sub": "config",
+      "type": "multi",
+      "q": "关于比特流说法正确的有？",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explain": "均正确。",
+      "src": "AMD UG835",
+      "options": [
+        "后缀 .bit/.bin",
+        "上电时加载到 FPGA",
+        "基于 SRAM 掉电丢失",
+        "由 Vivado 实现后生成"
+      ]
+    },
+    {
+      "id": "hw-102",
+      "cat": "hardware",
+      "sub": "config",
+      "type": "multi",
+      "q": "JTAG 接口包含哪些信号？",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explain": "JTAG 四线。",
+      "src": "",
+      "options": [
+        "TCK",
+        "TMS",
+        "TDI",
+        "TDO"
+      ]
+    },
+    {
+      "id": "hw-103",
+      "cat": "hardware",
+      "sub": "config",
+      "type": "judge",
+      "q": "FPGA 内部配置数据掉电后仍然保留。",
+      "answer": false,
+      "explain": "配置 SRAM 易失，需外部 Flash。",
+      "src": "AMD DS180"
+    },
+    {
+      "id": "hw-104",
+      "cat": "hardware",
+      "sub": "config",
+      "type": "judge",
+      "q": "通过 JTAG 下载的程序在掉电后会丢失。",
+      "answer": true,
+      "explain": "JTAG 配置易失。",
+      "src": "AMD UG470"
+    },
+    {
+      "id": "hw-105",
+      "cat": "hardware",
+      "sub": "config",
+      "type": "judge",
+      "q": "Master 配置模式下 FPGA 主动控制读取配置 Flash 的时序。",
+      "answer": true,
+      "explain": "Master 主动。",
+      "src": "AMD UG470"
+    },
+    {
+      "id": "hw-106",
+      "cat": "hardware",
+      "sub": "config",
+      "type": "fill",
+      "q": "比特流文件常用的后缀是？",
+      "answer": [
+        ".bit",
+        "bit"
+      ],
+      "explain": ".bit。",
+      "src": "AMD UG835"
+    },
+    {
+      "id": "hw-107",
+      "cat": "hardware",
+      "sub": "config",
+      "type": "fill",
+      "q": "JTAG 的时钟输入信号缩写是？",
+      "answer": [
+        "TCK"
+      ],
+      "explain": "TCK。",
+      "src": ""
+    },
+    {
+      "id": "hw-108",
+      "cat": "hardware",
+      "sub": "config",
+      "type": "fill",
+      "q": "表示 FPGA 配置完成的指示引脚名是？",
+      "answer": [
+        "DONE",
+        "DONE引脚"
+      ],
+      "explain": "DONE。",
+      "src": "AMD UG470"
+    },
+    {
+      "id": "hw-109",
+      "cat": "hardware",
+      "sub": "power",
+      "type": "single",
+      "q": "7 系列 FPGA 核电压 Vccint 的典型值是？",
+      "answer": 0,
+      "explain": "核电压约 1.0V。",
+      "src": "AMD DS180",
+      "options": [
+        "1.0 V",
+        "3.3 V",
+        "1.8 V",
+        "5 V"
+      ]
+    },
+    {
+      "id": "hw-110",
+      "cat": "hardware",
+      "sub": "power",
+      "type": "single",
+      "q": "7 系列辅助电压 Vccaux 典型值是？",
+      "answer": 0,
+      "explain": "Vccaux 约 1.8V。",
+      "src": "AMD DS180",
+      "options": [
+        "1.8 V",
+        "1.0 V",
+        "3.3 V",
+        "1.2 V"
+      ]
+    },
+    {
+      "id": "hw-111",
+      "cat": "hardware",
+      "sub": "power",
+      "type": "single",
+      "q": "每个 I/O Bank 的供电电压称为？",
+      "answer": 0,
+      "explain": "Vcco。",
+      "src": "AMD UG471",
+      "options": [
+        "Vcco",
+        "Vccint",
+        "Vccaux",
+        "VTT"
+      ]
+    },
+    {
+      "id": "hw-112",
+      "cat": "hardware",
+      "sub": "power",
+      "type": "single",
+      "q": "电源去耦常用的小电容容值是？",
+      "answer": 0,
+      "explain": "就近 0.1µF。",
+      "src": "",
+      "options": [
+        "0.1 µF",
+        "100 µF",
+        "1 pF",
+        "10 mF"
+      ]
+    },
+    {
+      "id": "hw-113",
+      "cat": "hardware",
+      "sub": "power",
+      "type": "single",
+      "q": "为减少亚稳态，复位推荐做法是？",
+      "answer": 0,
+      "explain": "异步复位同步释放。",
+      "src": "AMD UG949",
+      "options": [
+        "异步复位、同步释放",
+        "纯异步释放",
+        "纯同步复位",
+        "不做同步"
+      ]
+    },
+    {
+      "id": "hw-114",
+      "cat": "hardware",
+      "sub": "power",
+      "type": "single",
+      "q": "核电压供电相比 I/O 电压通常要求？",
+      "answer": 0,
+      "explain": "核电压大电流低纹波。",
+      "src": "AMD DS180",
+      "options": [
+        "大电流、低纹波",
+        "高电压",
+        "小电流",
+        "不需要稳压"
+      ]
+    },
+    {
+      "id": "hw-115",
+      "cat": "hardware",
+      "sub": "power",
+      "type": "single",
+      "q": "去耦电容应尽量放在？",
+      "answer": 0,
+      "explain": "就近放置效果好。",
+      "src": "",
+      "options": [
+        "靠近芯片电源引脚",
+        "放在电源入口即可",
+        "放在板子最远端",
+        "不需要"
+      ]
+    },
+    {
+      "id": "hw-116",
+      "cat": "hardware",
+      "sub": "power",
+      "type": "single",
+      "q": "Vccint 过低可能导致？",
+      "answer": 0,
+      "explain": "电压不足无法正常工作。",
+      "src": "AMD DS180",
+      "options": [
+        "电路不工作/时序失败",
+        "频率更快",
+        "功耗上升",
+        "无影响"
+      ]
+    },
+    {
+      "id": "hw-117",
+      "cat": "hardware",
+      "sub": "power",
+      "type": "single",
+      "q": "下列哪个是内部逻辑核心供电？",
+      "answer": 0,
+      "explain": "Vccint 核电压。",
+      "src": "AMD DS180",
+      "options": [
+        "Vccint",
+        "Vcco",
+        "Vccaux",
+        "VTT"
+      ]
+    },
+    {
+      "id": "hw-118",
+      "cat": "hardware",
+      "sub": "power",
+      "type": "multi",
+      "q": "7 系列 FPGA 常见的电源域有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "VccUSB 不是 FPGA 电源域。",
+      "src": "AMD DS180",
+      "options": [
+        "Vccint（核）",
+        "Vccaux（辅助）",
+        "Vcco（Bank I/O）",
+        "VccUSB"
+      ]
+    },
+    {
+      "id": "hw-119",
+      "cat": "hardware",
+      "sub": "power",
+      "type": "multi",
+      "q": "关于去耦电容说法正确的有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "应就近。",
+      "src": "",
+      "options": [
+        "靠近电源引脚",
+        "常用 0.1µF",
+        "抑制纹波与瞬态",
+        "离芯片越远越好"
+      ]
+    },
+    {
+      "id": "hw-120",
+      "cat": "hardware",
+      "sub": "power",
+      "type": "multi",
+      "q": "关于复位设计说法正确的有？",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explain": "复位不能跨域直接用。",
+      "src": "AMD UG949",
+      "options": [
+        "异步复位同步释放更稳",
+        "复位需同步到时钟域",
+        "板上常用 RC+按键",
+        "复位可随意跨域直接用"
+      ]
+    },
+    {
+      "id": "hw-121",
+      "cat": "hardware",
+      "sub": "power",
+      "type": "judge",
+      "q": "7 系列 FPGA 的核电压大约为 1.0V。",
+      "answer": true,
+      "explain": "约 1.0V。",
+      "src": "AMD DS180"
+    },
+    {
+      "id": "hw-122",
+      "cat": "hardware",
+      "sub": "power",
+      "type": "judge",
+      "q": "核电压 Vccint 与 I/O 电压 Vcco 是同一个电压。",
+      "answer": false,
+      "explain": "Vccint≈1.0V，Vcco 按 Bank 可选。",
+      "src": "AMD DS180"
+    },
+    {
+      "id": "hw-123",
+      "cat": "hardware",
+      "sub": "power",
+      "type": "judge",
+      "q": "采用“异步复位、同步释放”有助于避免复位释放时的亚稳态。",
+      "answer": true,
+      "explain": "推荐做法。",
+      "src": "AMD UG949"
+    },
+    {
+      "id": "hw-124",
+      "cat": "hardware",
+      "sub": "power",
+      "type": "fill",
+      "q": "FPGA 核心逻辑供电电压的英文缩写是？",
+      "answer": [
+        "Vccint",
+        "VCCINT"
+      ],
+      "explain": "Vccint。",
+      "src": "AMD DS180"
+    },
+    {
+      "id": "hw-125",
+      "cat": "hardware",
+      "sub": "power",
+      "type": "fill",
+      "q": "7 系列 FPGA 核电压大约是多少伏？",
+      "answer": [
+        "1.0V",
+        "1.0",
+        "1V"
+      ],
+      "explain": "约 1.0V。",
+      "src": "AMD DS180"
+    },
+    {
+      "id": "hw-126",
+      "cat": "hardware",
+      "sub": "power",
+      "type": "fill",
+      "q": "I/O Bank 供电电压的英文缩写是？",
+      "answer": [
+        "Vcco",
+        "VCCO"
+      ],
+      "explain": "Vcco。",
+      "src": "AMD UG471"
+    }
+  ]
+}
