@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 380" font-family="Consolas,monospace">
+  <rect width="900" height="380" fill="#0f1420"/>
+  <text x="450" y="26" fill="#60a5fa" font-size="16" text-anchor="middle" font-weight="bold">内存映射与外设挂载（地址空间分配）</text>
+
+  <!-- CPU master -->
+  <rect x="40" y="150" width="150" height="80" rx="8" fill="#1e3a5f" stroke="#60a5fa" stroke-width="2"/>
+  <text x="115" y="185" fill="#e5e7eb" font-size="13" text-anchor="middle">CPU 主机</text>
+  <text x="115" y="205" fill="#9ca3af" font-size="11" text-anchor="middle">AXI4-Lite Master</text>
+
+  <!-- Interconnect -->
+  <rect x="250" y="150" width="160" height="80" rx="8" fill="#1e293b" stroke="#fbbf24" stroke-width="2"/>
+  <text x="330" y="185" fill="#e5e7eb" font-size="13" text-anchor="middle">AXI Interconnect</text>
+  <text x="330" y="205" fill="#9ca3af" font-size="11" text-anchor="middle">地址译码/路由</text>
+
+  <line x1="190" y1="190" x2="250" y2="190" stroke="#60a5fa" stroke-width="2" marker-end="url(#ab4)"/>
+
+  <!-- slaves -->
+  <g font-size="12" text-anchor="middle">
+    <rect x="480" y="60" width="200" height="50" rx="6" fill="#1a2e1a" stroke="#22c55e"/>
+    <text x="580" y="82" fill="#e5e7eb">RAM</text>
+    <text x="580" y="100" fill="#9ca3af" font-size="10">0x0000_0000 (64KB)</text>
+
+    <rect x="480" y="130" width="200" height="50" rx="6" fill="#3b1d4f" stroke="#a855f7"/>
+    <text x="580" y="152" fill="#e5e7eb">AXI GPIO (LED/按键)</text>
+    <text x="580" y="170" fill="#9ca3af" font-size="10">0x4000_0000 (64KB)</text>
+
+    <rect x="480" y="200" width="200" height="50" rx="6" fill="#1e3a5f" stroke="#22d3ee"/>
+    <text x="580" y="222" fill="#e5e7eb">UART</text>
+    <text x="580" y="240" fill="#9ca3af" font-size="10">0x8000_0000 (64KB)</text>
+  </g>
+
+  <line x1="410" y1="175" x2="480" y2="85" stroke="#22c55e" stroke-width="1.5" marker-end="url(#ab4)"/>
+  <line x1="410" y1="190" x2="480" y2="155" stroke="#a855f7" stroke-width="1.5" marker-end="url(#ab4)"/>
+  <line x1="410" y1="205" x2="480" y2="225" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#ab4)"/>
+
+  <!-- GPIO reg table -->
+  <rect x="720" y="120" width="160" height="90" rx="6" fill="#0f1420" stroke="#a855f7"/>
+  <text x="800" y="140" fill="#a855f7" font-size="11" text-anchor="middle" font-weight="bold">GPIO 寄存器</text>
+  <text x="730" y="160" fill="#9ca3af" font-size="10">0x00 DATA (R/W)</text>
+  <text x="730" y="178" fill="#9ca3af" font-size="10">0x04 INPUT (R)</text>
+  <text x="730" y="196" fill="#9ca3af" font-size="10">0x08 VERSION (R)</text>
+  <line x1="680" y1="155" x2="720" y2="155" stroke="#a855f7" stroke-width="1.5" marker-end="url(#ab4)"/>
+
+  <text x="40" y="300" fill="#9ca3af" font-size="12">真实工程：基地址在 Vivado Address Editor 分配；本图对应 ch2_addr_decode.v 粗译码示例。</text>
+  <text x="40" y="322" fill="#9ca3af" font-size="12">非法地址由 cs_error 标记，从机返回 DECERR/SLVERR。</text>
+
+  <defs>
+    <marker id="ab4" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#60a5fa"/>
+    </marker>
+  </defs>
+</svg>

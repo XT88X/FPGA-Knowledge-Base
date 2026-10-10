@@ -1,0 +1,46 @@
+{
+  "chapterId": "5.2",
+  "phase": 5,
+  "slug": "axi-bus",
+  "title": "AXI 总线与外设挂载",
+  "summary": "AXI4/AXI4-Lite/AXI4-Stream 区别、五个独立通道与 VALID/READY 握手、内存映射地址译码、自定义 AXI4-Lite GPIO 从机与 Vivado IPI 挂载。",
+  "doc": "docs/phase5/ch2-axi-bus.md",
+  "code": [
+    {"file": "code/phase5/ch2_axi_lite_gpio.v", "type": "verilog", "role": "synthesizable", "title": "ch2_axi_lite_gpio.v — AXI4-Lite GPIO 从机"},
+    {"file": "code/phase5/ch2_addr_decode.v", "type": "verilog", "role": "synthesizable", "title": "ch2_addr_decode.v — 地址译码示例"},
+    {"file": "code/phase5/ch2_tb_axi_gpio.v", "type": "verilog", "role": "testbench", "title": "ch2_tb_axi_gpio.v — AXI 读写与握手断言"}
+  ],
+  "diagrams": [
+    {"file": "assets/phase5/ch2_axi_channels.svg", "title": "AXI 五通道结构", "caption": "AW/W/B/AR/R 五独立通道，VALID/READY 握手。"},
+    {"file": "assets/phase5/ch2_axi_handshake.svg", "title": "AXI4-Lite 握手时序", "caption": "写 AW/W/B、读 AR/R 的 VALID-READY 时序。"},
+    {"file": "assets/phase5/ch2_addr_map.svg", "title": "地址映射与外设挂载", "caption": "RAM/GPIO/UART 地址区间与片选译码。"}
+  ],
+  "tools": [
+    {"name": "AXI Reference Guide (UG1037)", "url": "https://docs.amd.com/r/en-US/ug1037-vivado-axi-reference-guide", "required": true, "note": "AMD 官方 AXI 协议参考；访问于 2026-10。"},
+    {"name": "Creating and Packaging Custom IP (UG1118)", "url": "https://docs.amd.com/r/en-US/ug1118-vivado-creating-packaging-custom-ip", "required": true, "note": "自定义 IP 打包流程；访问于 2026-10。"},
+    {"name": "Designing IP Subsystems Using IPI (UG994)", "url": "https://docs.amd.com/r/en-US/ug994-vivado-ip-subsystems", "required": false, "note": "IP Integrator 子系统设计；访问于 2026-10。"},
+    {"name": "AXI Interconnect Product Guide (PG059)", "url": "https://www.xilinx.com/support/documents/ip_documentation/axi_interconnect/v2_1/pg059-axi-interconnect.pdf", "required": false, "note": "AXI 互连 IP 手册；访问于 2026-10。"}
+  ],
+  "tasks": [
+    {"id": "task-5-2-1", "text": "设计自定义 LED 控制外设，挂载到 AXI 总线"},
+    {"id": "task-5-2-2", "text": "用 C 语言通过寄存器控制 LED"}
+  ],
+  "cards": [
+    {"q": "AXI 协议族有哪三个变体？", "a": "AXI4（高性能突发）、AXI4-Lite（单次寄存器级访问）、AXI4-Stream（无地址数据流，如视频/DMA）。", "tags": ["AXI", "协议"]},
+    {"q": "AXI4-Lite 有哪五个独立通道？", "a": "AW（写地址）、W（写数据）、B（写响应）、AR（读地址）、R（读数据）。", "tags": ["AXI", "通道"]},
+    {"q": "AXI 握手的核心规则是什么？", "a": "VALID 由驱动方拉高并保持，直到 READY 同时为高；两信号同时为高的那一拍完成一次采样传输。", "tags": ["AXI", "握手"]},
+    {"q": "VALID 可以在 READY 未就绪时提前撤销吗？", "a": "不可以。VALID 一旦由驱动方拉高必须保持到握手完成，否则违反 AXI 规范。", "tags": ["AXI", "VALID"]},
+    {"q": "写传输需要哪几个通道配合？", "a": "主机发 AW（地址）和 W（数据），从机回 B（写响应 OKAY/SLVERR）。", "tags": ["AXI", "写"]},
+    {"q": "读传输需要哪几个通道配合？", "a": "主机发 AR（读地址），从机回 R（读数据 + 响应）。", "tags": ["AXI", "读"]},
+    {"q": "本 AXI GPIO 从机的寄存器映射是怎样的？", "a": "0x00 GPIO_DATA(R/W) 驱动 LED；0x04 GPIO_INPUT(R) 读开关；0x08 VERSION(R)=0x20261010。", "tags": ["AXI", "寄存器"]},
+    {"q": "AW 和 W 通道先后到达怎么办？", "a": "从机 FSM 分别锁存：先到 AW 就锁地址等 W，先到 W 就锁数据等 AW，最后统一进 B 通道回 OKAY。", "tags": ["AXI", "FSM"]},
+    {"q": "Vivado 里怎么给自定义 AXI 外设分配地址？", "a": "在 Block Design 的 Address Editor 里给从机分配基地址与地址范围；互连自动做地址译码。", "tags": ["Vivado", "地址"]},
+    {"q": "裸机 C 怎么控制 AXI GPIO 的 LED？", "a": "把寄存器当 volatile 指针写，或用 Xil_Out32(基地址+偏移, 值)；读开关用 Xil_In32。", "tags": ["C", "AXI"]}
+  ],
+  "quiz": [
+    {"q": "AXI4-Lite 一次写传输用到哪些通道？", "options": ["仅 W", "AW+W+B", "AR+R", "仅 B"], "answer": 1, "explain": "写需要 AW（地址）、W（数据）由主机发，B（响应）由从机回。"},
+    {"q": "AXI 握手完成的那一拍是？", "options": ["VALID 拉高即可", "READY 拉高即可", "VALID 与 READY 同时为高", "时钟下降沿"], "answer": 2, "explain": "VALID/READY 同时为高的那拍被采样，传输完成。"},
+    {"q": "AXI4-Stream 适合做什么？", "options": ["寄存器读写", "视频流/DMA 数据流", "GPIO 控制", "DDR 突发"], "answer": 1, "explain": "AXI4-Stream 无地址、单向数据流，用于视频/DMA 等流式数据。"},
+    {"q": "本外设 0x04 偏移的寄存器是什么？", "options": ["GPIO_DATA 可写", "GPIO_INPUT 只读", "VERSION 只读", "控制寄存器"], "answer": 1, "explain": "0x04 是 GPIO_INPUT，只读，返回拨码/按键状态。"}
+  ]
+}
