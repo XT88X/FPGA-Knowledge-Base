@@ -1,0 +1,47 @@
+{
+  "chapterId": "5.3",
+  "phase": 5,
+  "slug": "hardware-acceleration",
+  "title": "硬件加速设计",
+  "summary": "软硬件协同划分、并行/流水线/数据复用加速原理、valid-ready 流式接口、向量 MAC 与 FIR 加速器、周期数估算模型。",
+  "doc": "docs/phase5/ch3-hardware-accel.md",
+  "code": [
+    {"file": "code/phase5/ch3_vec_mac_accel.v", "type": "verilog", "role": "synthesizable", "title": "ch3_vec_mac_accel.v — 向量点积(乘加)加速器，valid/ready 流式、P=4 并行、可配置流水"},
+    {"file": "code/phase5/ch3_tb_vec_mac.v", "type": "verilog", "role": "testbench", "title": "ch3_tb_vec_mac.v — golden 比对，覆盖非整除长度/背压/流水线排空"},
+    {"file": "code/phase5/ch3_fir_accel.v", "type": "verilog", "role": "synthesizable", "title": "ch3_fir_accel.v — 转置结构 FIR 滤波器"},
+    {"file": "code/phase5/ch3_tb_fir_accel.v", "type": "verilog", "role": "testbench", "title": "ch3_tb_fir_accel.v — FIR 输出与软件卷积 golden 比对"},
+    {"file": "code/phase5/ch3_sw_ref.c", "type": "verilog", "role": "synthesizable", "title": "ch3_sw_ref.c — 软件 golden + 吞吐/加速比周期数估算模型(分析估算,非实测)"}
+  ],
+  "diagrams": [
+    {"file": "assets/phase5/ch3_serial_vs_parallel.svg", "title": "串行 vs 并行数据通路", "caption": "1 个乘法器复用 4 次 vs 4 个乘法器一拍并行，用面积换时间。"},
+    {"file": "assets/phase5/ch3_pipeline_space_time.svg", "title": "流水线时空图", "caption": "乘法级->累加级，延迟=2 拍，填满后每拍出结果。"},
+    {"file": "assets/phase5/ch3_valid_ready.svg", "title": "valid/ready 流式握手", "caption": "两信号同时为高才算成交；ready 拉低即背压。"},
+    {"file": "assets/phase5/ch3_roofline.svg", "title": "Roofline 带宽/计算屋顶", "caption": "实际性能=min(计算峰值,带宽峰值)，数据复用不足时空转。"}
+  ],
+  "tools": [
+    {"name": "AMD Vitis HLS 产品页(可选进阶)", "url": "https://www.amd.com/en/products/software/adaptive-socs-and-fpgas/vitis/vitis-hls.html", "required": false, "note": "用 C/C++ 综合成硬件；可选，本仓库手写 Verilog 为主。访问于 2026-10。"},
+    {"name": "Vitis HLS 用户指南 UG1399 (PDF)", "url": "https://www.xilinx.com/support/documents/sw_manuals/xilinx2022_2/ug1399-vitis-hls.pdf", "required": false, "note": "HLS pipeline/unroll/dataflow pragma 参考。访问于 2026-10。"}
+  ],
+  "tasks": [
+    {"id": "task-5-3-1", "text": "设计硬件乘法/乘加加速模块（ch3_vec_mac_accel：valid/ready 流式输入、并行度 P 与流水线级数可配、累加输出）"},
+    {"id": "task-5-3-2", "text": "对比纯软件与硬件加速性能差异（用周期数估算模型理解加速比上界，真实测速待 Vivado 上板）"}
+  ],
+  "cards": [
+    {"q": "软硬件协同设计里，怎么决定一段逻辑放 CPU 还是放硬件？", "a": "先在 CPU 上跑通整个算法并 profile 找热点；控制密集/分支不规则的留给 CPU，数据密集/规则/可并行的循环做成硬件加速器，两者用内存映射寄存器或 AXI-Stream 交换数据。", "tags": ["协同设计", "profile"]},
+    {"q": "FPGA 加速靠的是比 CPU 更高的主频吗？", "a": "不是。FPGA 主频通常更低，但同一拍里几十个乘法器并行工作；加速来自'每拍做得更多'（空间并行），而不是'跑得更快'。", "tags": ["并行", "频率"]},
+    {"q": "流水线分级为什么能提高性能？代价是什么？", "a": "把长组合路径切成几级并插寄存器，每级路径变短、fmax 拉高，填满后每拍出一个结果；代价是 latency(延迟) 变大、多用寄存器面积。", "tags": ["流水线", "时序"]},
+    {"q": "valid/ready 握手里，什么时候才算成功传了一个数据？", "a": "valid 与 ready 在同一拍同时为高才算成交；下游拉低 ready 表示背压，上游必须保持数据稳定不得换拍。", "tags": ["AXI-Stream", "握手"]},
+    {"q": "什么是背压(backpressure)？硬件上怎么实现？", "a": "下游来不及处理时把 ready 拉低，上游据此停止发新数据；它解耦了上下游速率差异，避免数据丢失。", "tags": ["背压", "AXI-Stream"]},
+    {"q": "向量长度不能被并行度 P 整除时怎么办？", "a": "用 keep 掩码标记最后一拍里哪些车道有效，无效车道乘积置 0 不参与累加；ch3_vec_mac_accel 用 s_keep[3:0] 实现。", "tags": ["并行度", "掩码"]},
+    {"q": "Roofline 模型想说明什么？", "a": "实际可达性能 = min(计算峰值, 带宽峰值)。数据复用不足、喂数不及时，再强的乘法器也空转；所以要做数据复用/双缓冲/分块。", "tags": ["Roofline", "带宽"]},
+    {"q": "为什么说周期数估算只是'上界'而非实测加速比？", "a": "真实加速比会被 DMA/内存带宽、起止开销、FPGA 实际 fmax、小 N 时排空占比拉低；必须上板用计数器/profiling 实测。", "tags": ["性能估算", "实测"]},
+    {"q": "转置结构 FIR 为什么关键路径短？", "a": "它把寄存器放在加法反馈链上而非输入延迟链上，每个加法器输出都贴着寄存器，容易跑高频。", "tags": ["FIR", "DSP"]},
+    {"q": "Vitis HLS 是必需的吗？", "a": "不是。它是可选进阶工具，能把 C/C++ 综合成硬件；建议先手写 Verilog 加速器理解原理，再用 HLS 时才看得懂 pragma 的作用。", "tags": ["HLS", "工具"]}
+  ],
+  "quiz": [
+    {"q": "下面哪种循环最适合做成硬件加速器？", "options": ["for 循环体很小、次数极多、每次做相同乘加", "充满随机 if-else 的协议解析", "只执行一次的初始化代码", "递归深度不确定的算法"], "answer": 0, "explain": "数据密集、规则、可并行的重复循环是硬件加速的理想候选；分支不规则的逻辑留给 CPU。"},
+    {"q": "valid/ready 流式传输成功的条件是？", "options": ["valid 单独为高", "ready 单独为高", "同一拍 valid 与 ready 都为高", "时钟上升沿即可"], "answer": 2, "explain": "握手要求两信号同拍同时为高；ready 拉低即背压，上游须保持数据。"},
+    {"q": "关于流水线，正确的是？", "options": ["缩短延迟但降低吞吐", "提高 fmax 与吞吐，但增加延迟", "完全不消耗额外资源", "只对串行 CPU 有意义"], "answer": 1, "explain": "分级插寄存器缩短关键路径、拉高频率、填满后每拍出结果；代价是延迟与寄存器面积。"},
+    {"q": "Roofline 模型中，数据复用不足时性能受限于？", "options": ["计算峰值", "带宽峰值", "寄存器数量", "时钟复位"], "answer": 1, "explain": "喂数不及时时乘法器空转，实际性能被内存带宽(带宽屋顶)卡住。"}
+  ]
+}

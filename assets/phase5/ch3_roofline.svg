@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 380" font-family="Consolas,monospace">
+  <rect width="900" height="380" fill="#0f1420"/>
+  <text x="450" y="26" fill="#60a5fa" font-size="16" text-anchor="middle" font-weight="bold">Roofline：实际性能 = min(计算峰值, 带宽峰值)</text>
+
+  <!-- axes -->
+  <line x1="90" y1="300" x2="820" y2="300" stroke="#9ca3af" stroke-width="1.5"/>
+  <line x1="90" y1="300" x2="90" y2="60" stroke="#9ca3af" stroke-width="1.5"/>
+  <text x="455" y="335" fill="#9ca3af" font-size="12" text-anchor="middle">运算强度（字节搬运做多少次 MAC）→</text>
+  <text x="40" y="180" fill="#9ca3af" font-size="12" transform="rotate(-90 40 180)" text-anchor="middle">性能(MAC/s)→</text>
+
+  <!-- bandwidth roof (sloped) -->
+  <path d="M120 280 L360 120" stroke="#fbbf24" stroke-width="2.5" fill="none"/>
+  <text x="200" y="200" fill="#fbbf24" font-size="12">带宽屋顶(喂不饱)</text>
+
+  <!-- compute roof (flat) -->
+  <path d="M360 120 L800 120" stroke="#22c55e" stroke-width="2.5" fill="none"/>
+  <text x="600" y="108" fill="#22c55e" font-size="12">计算屋顶(P×f, 乘法器总量)</text>
+
+  <!-- ridge point -->
+  <circle cx="360" cy="120" r="4" fill="#a855f7"/>
+  <text x="370" y="140" fill="#a855f7" font-size="11">拐点：够用的复用度</text>
+
+  <!-- regions -->
+  <text x="180" y="255" fill="#fb923c" font-size="12">带宽受限区(数据复用低)</text>
+  <text x="560" y="150" fill="#22c55e" font-size="12">计算受限区(复用足够)</text>
+
+  <text x="90" y="360" fill="#9ca3af" font-size="12">优化目标：把算法推到拐点右侧——数据级复用 / 双缓冲 / 分块，减少 DRAM 往返。</text>
+</svg>

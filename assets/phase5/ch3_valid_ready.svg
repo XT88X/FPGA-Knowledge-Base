@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360" font-family="Consolas,monospace">
+  <rect width="900" height="360" fill="#0f1420"/>
+  <text x="450" y="26" fill="#60a5fa" font-size="16" text-anchor="middle" font-weight="bold">valid/ready 流式握手（AXI-Stream 概念）</text>
+
+  <!-- waveform -->
+  <g font-size="12">
+    <!-- upstream -->
+    <text x="60" y="80" fill="#9ca3af">上游 valid</text>
+    <line x1="180" y1="76" x2="780" y2="76" stroke="#475569" stroke-width="1"/>
+    <path d="M180 76 L260 76 L260 56 L420 56 L420 76 L780 76" fill="none" stroke="#22d3ee" stroke-width="2"/>
+    <text x="340" y="50" fill="#22d3ee" font-size="11" text-anchor="middle">数据 D1 保持稳定</text>
+
+    <text x="60" y="130" fill="#9ca3af">下游 ready</text>
+    <line x1="180" y1="126" x2="780" y2="126" stroke="#475569" stroke-width="1"/>
+    <path d="M180 126 L340 126 L340 106 L500 106 L500 126 L780 126" fill="none" stroke="#fbbf24" stroke-width="2"/>
+    <text x="420" y="100" fill="#fbbf24" font-size="11" text-anchor="middle">下游忙，ready 拉低（背压）</text>
+
+    <text x="60" y="180" fill="#9ca3af">握手发生</text>
+    <line x1="180" y1="176" x2="780" y2="176" stroke="#475569" stroke-width="1"/>
+    <path d="M180 176 L340 176" stroke="#475569" stroke-width="1"/>
+    <circle cx="340" cy="176" r="5" fill="#22c55e"/>
+    <text x="360" y="180" fill="#22c55e" font-size="11">valid &amp; ready 同时为高 = 本拍数据被接收</text>
+  </g>
+
+  <text x="60" y="240" fill="#e5e7eb" font-size="13" font-weight="bold">要点：</text>
+  <text x="60" y="265" fill="#9ca3af" font-size="12">• 谁都不能单方面决定传输：上游抬 valid，下游抬 ready，两高相遇才算成交。</text>
+  <text x="60" y="288" fill="#9ca3af" font-size="12">• ready 拉低 = 背压(backpressure)，上游必须保持数据不变、不得换拍。</text>
+  <text x="60" y="311" fill="#9ca3af" font-size="12">• 这是 FPGA 内部数据流与 AXI4-Stream 的基础，解耦了上下游速率差异。</text>
+  <text x="60" y="338" fill="#fbbf24" font-size="12">本仓库 ch3_vec_mac_accel：m_valid/m_ready 做主通道，s_ready 反压上游。</text>
+</svg>

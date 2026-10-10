@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 380" font-family="Consolas,monospace">
+  <rect width="900" height="380" fill="#0f1420"/>
+  <text x="450" y="26" fill="#60a5fa" font-size="16" text-anchor="middle" font-weight="bold">流水线时空图：乘法级 -> 累加级（填满后每拍出结果）</text>
+
+  <!-- grid header: cycles -->
+  <g font-size="11" fill="#9ca3af" text-anchor="middle">
+    <text x="230" y="60">c1</text><text x="290" y="60">c2</text><text x="350" y="60">c3</text>
+    <text x="410" y="60">c4</text><text x="470" y="60">c5</text><text x="530" y="60">c6</text>
+    <text x="590" y="60">c7</text><text x="650" y="60">c8</text>
+  </g>
+
+  <!-- stage 1: multiply -->
+  <text x="120" y="95" fill="#fb923c" font-size="12">乘法级(寄存器)</text>
+  <g font-size="10" text-anchor="middle">
+    <rect x="205" y="80" width="50" height="30" rx="4" fill="#3b1d1d" stroke="#fb923c"/><text x="230" y="99" fill="#e5e7eb">A</text>
+    <rect x="265" y="80" width="50" height="30" rx="4" fill="#3b1d1d" stroke="#fb923c"/><text x="290" y="99" fill="#e5e7eb">B</text>
+    <rect x="325" y="80" width="50" height="30" rx="4" fill="#3b1d1d" stroke="#fb923c"/><text x="350" y="99" fill="#e5e7eb">C</text>
+    <rect x="385" y="80" width="50" height="30" rx="4" fill="#3b1d1d" stroke="#fb923c"/><text x="410" y="99" fill="#e5e7eb">D</text>
+  </g>
+
+  <!-- stage 2: accumulate -->
+  <text x="120" y="160" fill="#22c55e" font-size="12">累加级(寄存器)</text>
+  <g font-size="10" text-anchor="middle">
+    <rect x="265" y="145" width="50" height="30" rx="4" fill="#1a2e1a" stroke="#22c55e"/><text x="290" y="164" fill="#e5e7eb">A</text>
+    <rect x="325" y="145" width="50" height="30" rx="4" fill="#1a2e1a" stroke="#22c55e"/><text x="350" y="164" fill="#e5e7eb">B</text>
+    <rect x="385" y="145" width="50" height="30" rx="4" fill="#1a2e1a" stroke="#22c55e"/><text x="410" y="164" fill="#e5e7eb">C</text>
+    <rect x="445" y="145" width="50" height="30" rx="4" fill="#1a2e1a" stroke="#22c55e"/><text x="470" y="164" fill="#e5e7eb">D</text>
+  </g>
+
+  <!-- result out -->
+  <text x="120" y="225" fill="#a855f7" font-size="12">结果输出</text>
+  <g font-size="10" text-anchor="middle">
+    <rect x="325" y="210" width="50" height="30" rx="4" fill="#3b1d4f" stroke="#a855f7"/><text x="350" y="229" fill="#e5e7eb">A</text>
+    <rect x="385" y="210" width="50" height="30" rx="4" fill="#3b1d4f" stroke="#a855f7"/><text x="410" y="229" fill="#e5e7eb">B</text>
+    <rect x="445" y="210" width="50" height="30" rx="4" fill="#3b1d4f" stroke="#a855f7"/><text x="470" y="229" fill="#e5e7eb">C</text>
+    <rect x="505" y="210" width="50" height="30" rx="4" fill="#3b1d4f" stroke="#a855f7"/><text x="530" y="229" fill="#e5e7eb">D</text>
+  </g>
+
+  <text x="60" y="290" fill="#fbbf24" font-size="12"> latency(延迟)：一条数据从进来到出去 = 2 拍（流水线深度）。</text>
+  <text x="60" y="315" fill="#22c55e" font-size="12"> throughput(吞吐)：填满后每拍都有新数据流出 = 1 向量/2 拍排空。</text>
+  <text x="60" y="345" fill="#9ca3af" font-size="12">分级越多 fmax 越高，但延迟越大；用面积(寄存器)换频率与吞吐。</text>
+</svg>

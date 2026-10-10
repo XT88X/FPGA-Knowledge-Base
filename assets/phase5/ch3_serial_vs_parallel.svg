@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" font-family="Consolas,monospace">
+  <rect width="900" height="400" fill="#0f1420"/>
+  <text x="450" y="26" fill="#60a5fa" font-size="16" text-anchor="middle" font-weight="bold">串行(CPU) vs 并行(FPGA 数据通路)：算 4 对乘加</text>
+
+  <!-- Serial -->
+  <text x="60" y="70" fill="#fb923c" font-size="14" font-weight="bold">串行：1 个乘法器，依次算 4 次</text>
+  <rect x="60" y="85" width="90" height="40" rx="6" fill="#3b1d1d" stroke="#fb923c" stroke-width="1.5"/>
+  <text x="105" y="110" fill="#e5e7eb" font-size="12" text-anchor="middle">mul #1</text>
+  <rect x="170" y="85" width="90" height="40" rx="6" fill="#3b1d1d" stroke="#fb923c" stroke-width="1.5"/>
+  <text x="215" y="110" fill="#e5e7eb" font-size="12" text-anchor="middle">mul #2</text>
+  <rect x="280" y="85" width="90" height="40" rx="6" fill="#3b1d1d" stroke="#fb923c" stroke-width="1.5"/>
+  <text x="325" y="110" fill="#e5e7eb" font-size="12" text-anchor="middle">mul #3</text>
+  <rect x="390" y="85" width="90" height="40" rx="6" fill="#3b1d1d" stroke="#fb923c" stroke-width="1.5"/>
+  <text x="435" y="110" fill="#e5e7eb" font-size="12" text-anchor="middle">mul #4</text>
+  <text x="60" y="150" fill="#9ca3af" font-size="12">耗时 ≈ 4 × T_mul（同一块硬件复用 4 次）</text>
+
+  <!-- Parallel -->
+  <text x="60" y="200" fill="#22c55e" font-size="14" font-weight="bold">并行(展开)：4 个乘法器同时算，一拍出 4 个乘积</text>
+  <rect x="60" y="215" width="90" height="40" rx="6" fill="#1a2e1a" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="105" y="240" fill="#e5e7eb" font-size="12" text-anchor="middle">mul#1∥</text>
+  <rect x="170" y="215" width="90" height="40" rx="6" fill="#1a2e1a" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="215" y="240" fill="#e5e7eb" font-size="12" text-anchor="middle">mul#2∥</text>
+  <rect x="280" y="215" width="90" height="40" rx="6" fill="#1a2e1a" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="325" y="240" fill="#e5e7eb" font-size="12" text-anchor="middle">mul#3∥</text>
+  <rect x="390" y="215" width="90" height="40" rx="6" fill="#1a2e1a" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="435" y="240" fill="#e5e7eb" font-size="12" text-anchor="middle">mul#4∥</text>
+  <rect x="520" y="215" width="120" height="40" rx="6" fill="#1e3a5f" stroke="#60a5fa" stroke-width="1.5"/>
+  <text x="580" y="240" fill="#e5e7eb" font-size="12" text-anchor="middle">加法树求和</text>
+  <text x="60" y="280" fill="#9ca3af" font-size="12">耗时 ≈ 1 × T_mul + 加法树延迟（用面积换时间）</text>
+
+  <text x="60" y="330" fill="#fbbf24" font-size="12">取舍：并行度 P 越高越快，但消耗 P 份乘法器资源；受 FPGA DSP slice 数量与内存带宽上限约束。</text>
+  <text x="60" y="355" fill="#9ca3af" font-size="12">本仓库 ch3_vec_mac_accel.v：P=4，每拍输入 4 对 (a,b)，keep 掩码支持非整除长度。</text>
+</svg>
