@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 380" font-family="Consolas,monospace">
+  <rect width="900" height="380" fill="#0f1420"/>
+  <text x="450" y="26" fill="#60a5fa" font-size="16" text-anchor="middle" font-weight="bold">RV32I 最小 SoC 结构</text>
+
+  <!-- CPU core -->
+  <rect x="330" y="120" width="240" height="90" rx="8" fill="#1e3a5f" stroke="#60a5fa" stroke-width="2"/>
+  <text x="450" y="150" fill="#e5e7eb" font-size="14" text-anchor="middle">RV32I 核心</text>
+  <text x="450" y="170" fill="#9ca3af" font-size="11" text-anchor="middle">PC / Regfile / ALU / 控制器</text>
+  <text x="450" y="188" fill="#9ca3af" font-size="11" text-anchor="middle">ch1_riscv_core.v</text>
+
+  <!-- RAM -->
+  <rect x="80" y="120" width="180" height="90" rx="8" fill="#1a2e1a" stroke="#22c55e" stroke-width="2"/>
+  <text x="170" y="150" fill="#e5e7eb" font-size="13" text-anchor="middle">统一 RAM 4KB</text>
+  <text x="170" y="170" fill="#9ca3af" font-size="11" text-anchor="middle">0x0000_0000</text>
+  <text x="170" y="188" fill="#9ca3af" font-size="11" text-anchor="middle">$readmemh 加载固件</text>
+
+  <!-- UART reg -->
+  <rect x="640" y="120" width="180" height="90" rx="8" fill="#3b1d4f" stroke="#a855f7" stroke-width="2"/>
+  <text x="730" y="150" fill="#e5e7eb" font-size="13" text-anchor="middle">UART 数据寄存器</text>
+  <text x="730" y="170" fill="#9ca3af" font-size="11" text-anchor="middle">0x1000_0000</text>
+  <text x="730" y="188" fill="#9ca3af" font-size="11" text-anchor="middle">写字节=打印字符</text>
+
+  <!-- arrows CPU<->RAM -->
+  <line x1="260" y1="165" x2="330" y2="165" stroke="#22c55e" stroke-width="2" marker-end="url(#ab2)"/>
+  <line x1="330" y1="185" x2="260" y2="185" stroke="#22c55e" stroke-width="2" marker-end="url(#ab2)"/>
+  <!-- arrows CPU<->UART -->
+  <line x1="570" y1="165" x2="640" y2="165" stroke="#a855f7" stroke-width="2" marker-end="url(#ab2)"/>
+  <line x1="640" y1="185" x2="570" y2="185" stroke="#a855f7" stroke-width="2" marker-end="url(#ab2)"/>
+
+  <!-- clk/rst -->
+  <rect x="330" y="40" width="240" height="40" rx="6" fill="#1e293b" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="450" y="65" fill="#e5e7eb" font-size="12" text-anchor="middle">clk (50MHz) / rst_n</text>
+  <line x1="450" y1="80" x2="450" y2="120" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#ab2)"/>
+
+  <!-- UART output -->
+  <rect x="640" y="250" width="180" height="40" rx="6" fill="#1e293b" stroke="#fb923c" stroke-width="1.5"/>
+  <text x="730" y="275" fill="#e5e7eb" font-size="12" text-anchor="middle">uart_tx_data/valid → 串口</text>
+  <line x1="730" y1="210" x2="730" y2="250" stroke="#fb923c" stroke-width="1.5" marker-end="url(#ab2)"/>
+
+  <text x="20" y="340" fill="#9ca3af" font-size="12">von Neumann：取指与 LW/SW 共用同一块 RAM；UART 为内存映射外设。</text>
+
+  <defs>
+    <marker id="ab2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#60a5fa"/>
+    </marker>
+  </defs>
+</svg>

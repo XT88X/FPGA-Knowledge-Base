@@ -1,0 +1,53 @@
+{
+  "chapterId": "5.1",
+  "phase": 5,
+  "slug": "riscv-softcore",
+  "title": "RISC-V 软核入门",
+  "summary": "CPU 五级流水线与单周期数据通路、RV32I 六种指令格式与常用指令、最小 SoC（核+RAM+UART）结构与 C Hello World 工具链。",
+  "doc": "docs/phase5/ch1-riscv-softcore.md",
+  "code": [
+    {"file": "code/phase5/ch1_riscv_regfile.v", "type": "verilog", "role": "synthesizable", "title": "ch1_riscv_regfile.v — 32×32 寄存器堆（x0 恒零）"},
+    {"file": "code/phase5/ch1_riscv_alu.v", "type": "verilog", "role": "synthesizable", "title": "ch1_riscv_alu.v — 教学 ALU（ADD/SUB/AND/OR/XOR/SLT/SLTU）"},
+    {"file": "code/phase5/ch1_riscv_core.v", "type": "verilog", "role": "synthesizable", "title": "ch1_riscv_core.v — 单周期 RV32I 核心"},
+    {"file": "code/phase5/ch1_riscv_soc.v", "type": "verilog", "role": "synthesizable", "title": "ch1_riscv_soc.v — 最小 SoC（RAM+UART 寄存器）"},
+    {"file": "code/phase5/ch1_tb_riscv_soc.v", "type": "verilog", "role": "testbench", "title": "ch1_tb_riscv_soc.v — 求和+串口打印断言"},
+    {"file": "code/phase5/ch1_firmware.hex", "type": "verilog", "role": "synthesizable", "title": "ch1_firmware.hex — 手工机器码（求 1..10 和）"},
+    {"file": "code/phase5/ch1_hello.c", "type": "verilog", "role": "synthesizable", "title": "ch1_hello.c — 裸机 Hello World"},
+    {"file": "code/phase5/ch1_startup.S", "type": "verilog", "role": "synthesizable", "title": "ch1_startup.S — 最小启动汇编"},
+    {"file": "code/phase5/ch1_link.ld", "type": "verilog", "role": "synthesizable", "title": "ch1_link.ld — 链接脚本"}
+  ],
+  "diagrams": [
+    {"file": "assets/phase5/ch1_cpu_datapath.svg", "title": "单周期 RV32I 数据通路", "caption": "PC→取指→译码→ALU→访存→写回，含 PC+4/分支改写。"},
+    {"file": "assets/phase5/ch1_rv32i_formats.svg", "title": "RV32I 六种指令格式", "caption": "R/I/S/B/U/J 位段排布，opcode 恒在 bit[6:0]。"},
+    {"file": "assets/phase5/ch1_soc_block.svg", "title": "最小 SoC 结构", "caption": "CPU+统一 RAM+内存映射 UART 寄存器。"}
+  ],
+  "tools": [
+    {"name": "RISC-V 非特权指令集规范", "url": "https://docs.riscv.org/reference/isa/unpriv/unpriv-index.html", "required": true, "note": "访问于 2026-10；RV32I 官方定义。"},
+    {"name": "xPack RISC-V 嵌入式 GCC（安装文档）", "url": "https://xpack-dev-tools.github.io/riscv-none-elf-gcc-xpack/docs/install/", "required": true, "note": "交叉工具链预编译二进制；访问于 2026-10。"},
+    {"name": "xPack RISC-V GCC GitHub 发布页", "url": "https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack", "required": false, "note": "访问于 2026-10。"},
+    {"name": "PicoRV32 开源软核", "url": "https://github.com/YosysHQ/picorv32", "required": false, "note": "极小 RV32I/E/M/C 核；访问于 2026-10。"},
+    {"name": "NEORV32 开源 SoC", "url": "https://github.com/stnolting/neorv32", "required": false, "note": "类单片机 RISC-V SoC；访问于 2026-10。"}
+  ],
+  "tasks": [
+    {"id": "task-5-1-1", "text": "搭建 RISC-V 软核最小系统"},
+    {"id": "task-5-1-2", "text": "编写 C 语言程序，通过串口打印 Hello World"}
+  ],
+  "cards": [
+    {"q": "CPU 五级流水线是哪五级？", "a": "取指 IF、译码 ID、执行 EX、访存 MEM、写回 WB。本教学核压平成单周期，一拍完成全部动作。", "tags": ["CPU", "流水线"]},
+    {"q": "RISC-V RV32I 有哪六种指令格式？", "a": "R（寄存器运算）、I（立即数/加载/JALR）、S（存储）、B（分支）、U（高位立即数 LUI/AUIPC）、J（JAL）。", "tags": ["RISC-V", "指令格式"]},
+    {"q": "RISC-V 的 x0 寄存器有什么特殊？", "a": "硬连线恒为 0：写它无效，读它恒返回 0。常用于生成零值和作为无关寄存器。", "tags": ["RISC-V", "寄存器"]},
+    {"q": "opcode 在指令的哪几位？", "a": "恒在 bit[6:0]，最低 7 位；硬件先看它决定指令大类。", "tags": ["RISC-V", "编码"]},
+    {"q": "LUI 和 AUIPC 分别做什么？", "a": "LUI 把 20-bit 立即数加载到 rd 的高 20 位；AUIPC 把该立即数加到 PC 上再写回 rd，用于 PC 相对寻址。", "tags": ["RISC-V", "U 型"]},
+    {"q": "单周期 CPU 写回数据来自哪里？", "a": "LW 取存储器读出值；LUI 取高位立即数；JAL/JALR 取 PC+4；其余取 ALU 结果。", "tags": ["CPU", "数据通路"]},
+    {"q": "本教学核最小 SoC 的内存映射是怎样的？", "a": "0x0000_0000 起 4KB 统一 RAM（取指与 LW/SW 共用）；0x1000_0000 是 UART 数据寄存器，写字节即打印。", "tags": ["SoC", "内存映射"]},
+    {"q": "没有工具链时怎么验证 CPU？", "a": "手工汇编机器码写成 .hex，用 $readmemh 加载，在 testbench 里跑并断言寄存器/内存结果与串口输出。", "tags": ["验证", "仿真"]},
+    {"q": "裸机 C 怎么打印字符？", "a": "把 UART 数据寄存器当 volatile 指针直接写：*(volatile uint32_t*)0x10000000 = c；再由底层 putchar 封装。", "tags": ["C", "UART"]},
+    {"q": "PicoRV32 与 NEORV32 是什么？", "a": "两个开源 RISC-V 软核：PicoRV32 极小（~千 LUT），NEORV32 是自带 UART/GPIO/定时器的类单片机 SoC。", "tags": ["开源核", "RISC-V"]}
+  ],
+  "quiz": [
+    {"q": "RISC-V RV32I 指令定长多少位？", "options": ["16 位", "32 位", "64 位", "可变长"], "answer": 1, "explain": "RV32I 基础整数指令集定长 32 位（C 扩展才压缩到 16 位）。"},
+    {"q": "x0 寄存器读出来恒等于？", "options": ["随机值", "0", "PC", "栈顶"], "answer": 1, "explain": "x0 硬连线恒零，写无效、读恒 0。"},
+    {"q": "下面哪个不是 RV32I 的六种指令格式之一？", "options": ["R", "I", "S", "X"], "answer": 3, "explain": "六种是 R/I/S/B/U/J，没有 X 型。"},
+    {"q": "LUI 指令把立即数写到 rd 的哪部分？", "options": ["低 12 位", "高 20 位", "整个 32 位", "符号扩展"], "answer": 1, "explain": "LUI 把 20-bit 立即数放到 rd[31:12]，低 12 位补 0。"}
+  ]
+}

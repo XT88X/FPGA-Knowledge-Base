@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" font-family="Consolas,monospace">
+  <rect width="900" height="460" fill="#0f1420"/>
+  <text x="450" y="26" fill="#60a5fa" font-size="16" text-anchor="middle" font-weight="bold">RV32I 六种指令格式（bit 31 → bit 0）</text>
+
+  <!-- R -->
+  <text x="20" y="60" fill="#fbbf24" font-size="13" font-weight="bold">R</text>
+  <g font-size="11" text-anchor="middle">
+    <rect x="70" y="46" width="140" height="26" fill="#1e3a5f" stroke="#60a5fa"/><text x="140" y="63" fill="#e5e7eb">funct7</text>
+    <rect x="210" y="46" width="90" height="26" fill="#1e3a5f" stroke="#60a5fa"/><text x="255" y="63" fill="#e5e7eb">rs2</text>
+    <rect x="300" y="46" width="90" height="26" fill="#1e3a5f" stroke="#60a5fa"/><text x="345" y="63" fill="#e5e7eb">rs1</text>
+    <rect x="390" y="46" width="90" height="26" fill="#3b1d4f" stroke="#a855f7"/><text x="435" y="63" fill="#e5e7eb">funct3</text>
+    <rect x="480" y="46" width="90" height="26" fill="#1e3a5f" stroke="#60a5fa"/><text x="525" y="63" fill="#e5e7eb">rd</text>
+    <rect x="570" y="46" width="110" height="26" fill="#1a2e1a" stroke="#22c55e"/><text x="625" y="63" fill="#e5e7eb">opcode</text>
+  </g>
+
+  <!-- I -->
+  <text x="20" y="110" fill="#fbbf24" font-size="13" font-weight="bold">I</text>
+  <g font-size="11" text-anchor="middle">
+    <rect x="70" y="96" width="230" height="26" fill="#1e3a5f" stroke="#22d3ee"/><text x="185" y="113" fill="#e5e7eb">imm[11:0]</text>
+    <rect x="300" y="96" width="90" height="26" fill="#1e3a5f" stroke="#60a5fa"/><text x="345" y="113" fill="#e5e7eb">rs1</text>
+    <rect x="390" y="96" width="90" height="26" fill="#3b1d4f" stroke="#a855f7"/><text x="435" y="113" fill="#e5e7eb">funct3</text>
+    <rect x="480" y="96" width="90" height="26" fill="#1e3a5f" stroke="#60a5fa"/><text x="525" y="113" fill="#e5e7eb">rd</text>
+    <rect x="570" y="96" width="110" height="26" fill="#1a2e1a" stroke="#22c55e"/><text x="625" y="113" fill="#e5e7eb">opcode</text>
+  </g>
+
+  <!-- S -->
+  <text x="20" y="160" fill="#fbbf24" font-size="13" font-weight="bold">S</text>
+  <g font-size="11" text-anchor="middle">
+    <rect x="70" y="146" width="140" height="26" fill="#1e3a5f" stroke="#22d3ee"/><text x="140" y="163" fill="#e5e7eb">imm[11:5]</text>
+    <rect x="210" y="146" width="90" height="26" fill="#1e3a5f" stroke="#60a5fa"/><text x="255" y="163" fill="#e5e7eb">rs2</text>
+    <rect x="300" y="146" width="90" height="26" fill="#1e3a5f" stroke="#60a5fa"/><text x="345" y="163" fill="#e5e7eb">rs1</text>
+    <rect x="390" y="146" width="90" height="26" fill="#3b1d4f" stroke="#a855f7"/><text x="435" y="163" fill="#e5e7eb">funct3</text>
+    <rect x="480" y="146" width="110" height="26" fill="#1e3a5f" stroke="#22d3ee"/><text x="535" y="163" fill="#e5e7eb">imm[4:0]</text>
+    <rect x="590" y="146" width="90" height="26" fill="#1a2e1a" stroke="#22c55e"/><text x="635" y="163" fill="#e5e7eb">opcode</text>
+  </g>
+
+  <!-- B -->
+  <text x="20" y="210" fill="#fbbf24" font-size="13" font-weight="bold">B</text>
+  <g font-size="11" text-anchor="middle">
+    <rect x="70" y="196" width="60" height="26" fill="#1e3a5f" stroke="#22d3ee"/><text x="100" y="213" fill="#e5e7eb">imm[12]</text>
+    <rect x="130" y="196" width="120" height="26" fill="#1e3a5f" stroke="#22d3ee"/><text x="190" y="213" fill="#e5e7eb">imm[10:5]</text>
+    <rect x="250" y="196" width="90" height="26" fill="#1e3a5f" stroke="#60a5fa"/><text x="295" y="213" fill="#e5e7eb">rs2</text>
+    <rect x="340" y="196" width="90" height="26" fill="#1e3a5f" stroke="#60a5fa"/><text x="385" y="213" fill="#e5e7eb">rs1</text>
+    <rect x="430" y="196" width="90" height="26" fill="#3b1d4f" stroke="#a855f7"/><text x="475" y="213" fill="#e5e7eb">funct3</text>
+    <rect x="520" y="196" width="90" height="26" fill="#1e3a5f" stroke="#22d3ee"/><text x="565" y="213" fill="#e5e7eb">imm[4:1]</text>
+    <rect x="610" y="196" width="60" height="26" fill="#1e3a5f" stroke="#22d3ee"/><text x="640" y="213" fill="#e5e7eb">imm[11]</text>
+    <rect x="670" y="196" width="90" height="26" fill="#1a2e1a" stroke="#22c55e"/><text x="715" y="213" fill="#e5e7eb">opcode</text>
+  </g>
+
+  <!-- U -->
+  <text x="20" y="260" fill="#fbbf24" font-size="13" font-weight="bold">U</text>
+  <g font-size="11" text-anchor="middle">
+    <rect x="70" y="246" width="420" height="26" fill="#1e3a5f" stroke="#22d3ee"/><text x="280" y="263" fill="#e5e7eb">imm[31:12]</text>
+    <rect x="490" y="246" width="90" height="26" fill="#1e3a5f" stroke="#60a5fa"/><text x="535" y="263" fill="#e5e7eb">rd</text>
+    <rect x="580" y="246" width="100" height="26" fill="#1a2e1a" stroke="#22c55e"/><text x="630" y="263" fill="#e5e7eb">opcode</text>
+  </g>
+
+  <!-- J -->
+  <text x="20" y="310" fill="#fbbf24" font-size="13" font-weight="bold">J</text>
+  <g font-size="11" text-anchor="middle">
+    <rect x="70" y="296" width="60" height="26" fill="#1e3a5f" stroke="#22d3ee"/><text x="100" y="313" fill="#e5e7eb">imm[20]</text>
+    <rect x="130" y="296" width="120" height="26" fill="#1e3a5f" stroke="#22d3ee"/><text x="190" y="313" fill="#e5e7eb">imm[10:1]</text>
+    <rect x="250" y="296" width="60" height="26" fill="#1e3a5f" stroke="#22d3ee"/><text x="280" y="313" fill="#e5e7eb">imm[11]</text>
+    <rect x="310" y="296" width="120" height="26" fill="#1e3a5f" stroke="#22d3ee"/><text x="370" y="313" fill="#e5e7eb">imm[19:12]</text>
+    <rect x="430" y="296" width="90" height="26" fill="#1e3a5f" stroke="#60a5fa"/><text x="475" y="313" fill="#e5e7eb">rd</text>
+    <rect x="520" y="296" width="100" height="26" fill="#1a2e1a" stroke="#22c55e"/><text x="570" y="313" fill="#e5e7eb">opcode</text>
+  </g>
+
+  <text x="20" y="360" fill="#9ca3af" font-size="12">图例：蓝=地址/寄存器号，紫=funct3，青=立即数，绿=opcode</text>
+  <text x="20" y="382" fill="#9ca3af" font-size="12">B/J 类立即数按位散布，便于硬件拼接；opcode 恒在 bit[6:0]。</text>
+</svg>
