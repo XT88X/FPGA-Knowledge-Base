@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 320" font-family="Consolas,Menlo,monospace">
+  <rect width="900" height="320" fill="#0d1420"/>
+  <text x="20" y="30" fill="#22d3ee" font-size="18" font-weight="bold">流水线如何改善时序</text>
+
+  <!-- unpipe -->
+  <text x="30" y="70" fill="#f87171" font-size="13" font-weight="bold">无流水线：长组合路径在一个周期内走完</text>
+  <rect x="40" y="90" width="60" height="40" rx="4" fill="#10233a" stroke="#22d3ee"/>
+  <text x="55" y="115" fill="#e2e8f0" font-size="11">reg</text>
+  <rect x="120" y="90" width="320" height="40" rx="4" fill="#2a1010" stroke="#f87171"/>
+  <text x="180" y="115" fill="#e2e8f0" font-size="12">加→乘→加 整条链（太长，T 内走不完）</text>
+  <rect x="460" y="90" width="60" height="40" rx="4" fill="#102a1a" stroke="#34d399"/>
+  <text x="475" y="115" fill="#e2e8f0" font-size="11">reg</text>
+
+  <!-- pipe -->
+  <text x="30" y="180" fill="#34d399" font-size="13" font-weight="bold">三级流水线：插入寄存器把长路径切成三段</text>
+  <rect x="40"  y="200" width="60" height="40" rx="4" fill="#10233a" stroke="#22d3ee"/>
+  <text x="55" y="225" fill="#e2e8f0" font-size="11">reg</text>
+  <rect x="120" y="200" width="90" height="40" rx="4" fill="#10233a" stroke="#fbbf24"/>
+  <text x="135" y="225" fill="#e2e8f0" font-size="11">加</text>
+  <rect x="220" y="200" width="40" height="40" rx="4" fill="#102a1a" stroke="#34d399"/>
+  <text x="228" y="225" fill="#e2e8f0" font-size="11">r</text>
+  <rect x="270" y="200" width="90" height="40" rx="4" fill="#10233a" stroke="#fbbf24"/>
+  <text x="285" y="225" fill="#e2e8f0" font-size="11">乘</text>
+  <rect x="370" y="200" width="40" height="40" rx="4" fill="#102a1a" stroke="#34d399"/>
+  <text x="378" y="225" fill="#e2e8f0" font-size="11">r</text>
+  <rect x="420" y="200" width="90" height="40" rx="4" fill="#10233a" stroke="#fbbf24"/>
+  <text x="435" y="225" fill="#e2e8f0" font-size="11">加</text>
+  <rect x="520" y="200" width="60" height="40" rx="4" fill="#102a1a" stroke="#34d399"/>
+  <text x="535" y="225" fill="#e2e8f0" font-size="11">reg</text>
+
+  <text x="30" y="285" fill="#94a3b8" font-size="12">每级组合延迟变短，更容易满足建立时间；代价是 latency（延迟）增加一拍，吞吐率不变。</text>
+  <text x="30" y="305" fill="#94a3b8" font-size="12">其它手段：降低逻辑层级、retiming、复制高扇出寄存器、约束 IO 延迟。</text>
+</svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 320" font-family="Consolas,Menlo,monospace">
+  <rect width="900" height="320" fill="#0d1420"/>
+  <text x="20" y="30" fill="#22d3ee" font-size="18" font-weight="bold">建立时间 setup / 保持时间 hold 时间窗</text>
+
+  <!-- clock edge -->
+  <line x1="200" y1="60" x2="200" y2="260" stroke="#fbbf24" stroke-width="2"/>
+  <text x="185" y="55" fill="#fbbf24" font-size="13">采样沿</text>
+
+  <!-- data line -->
+  <line x1="60" y1="180" x2="840" y2="180" stroke="#34d399" stroke-width="2"/>
+  <text x="700" y="172" fill="#34d399" font-size="13">数据 D</text>
+
+  <!-- setup window: before edge -->
+  <rect x="110" y="150" width="90" height="60" fill="#3b2a10" stroke="#fbbf24"/>
+  <text x="112" y="140" fill="#fbbf24" font-size="12">建立时间 setup（沿前必须稳定）</text>
+  <line x1="110" y1="120" x2="200" y2="120" stroke="#fbbf24" stroke-width="1" marker-start="url(#s)" marker-end="url(#s)"/>
+
+  <!-- hold window: after edge -->
+  <rect x="200" y="150" width="80" height="60" fill="#2a1030" stroke="#a78bfa"/>
+  <text x="205" y="235" fill="#a78bfa" font-size="12">保持时间 hold（沿后必须继续稳定）</text>
+  <line x1="200" y1="120" x2="280" y2="120" stroke="#a78bfa" stroke-width="1" marker-start="url(#s)" marker-end="url(#s)"/>
+
+  <text x="60" y="285" fill="#94a3b8" font-size="12">数据必须在采样沿前 setup 时间就稳定、沿后再保持 hold 时间不变，触发器才能正确采样。</text>
+  <text x="60" y="305" fill="#94a3b8" font-size="12">违反 setup：数据到太晚；违反 hold：数据变太早——两者都导致采样错误。</text>
+
+  <defs>
+    <marker id="s" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M8,0 L0,4 L8,8" fill="none" stroke="#cbd5e1"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,45 @@
+{
+  "chapterId": "4.3",
+  "phase": 4,
+  "slug": "timing-constraints",
+  "title": "时序约束与分析",
+  "summary": "建立/保持时间、时钟抖动、reg-to-reg 路径与 slack 公式；XDC 约束(create_clock/generated_clock/input_output_delay/false_path/multicycle/clock_groups)；Timing Summary(WNS/TNS/WHS/THS)与流水线等优化手段。",
+  "doc": "docs/phase4/ch3-timing-constraints.md",
+  "code": [
+    {"file": "code/phase4/pipeline_demo.v", "type": "verilog", "role": "synthesizable", "title": "pipeline_demo.v — 无流水线 vs 三级流水线路径对比（参数化位宽）"},
+    {"file": "code/phase4/tb_pipeline_demo.v", "type": "verilog", "role": "testbench", "title": "tb_pipeline_demo.v — 校验两路径功能等价"},
+    {"file": "code/phase4/ch3_timing_example.xdc", "type": "verilog", "role": "synthesizable", "title": "ch3_timing_example.xdc — 注释示例约束（50MHz/20ns，IO 占位）"}
+  ],
+  "diagrams": [
+    {"file": "assets/phase4/setup_hold_window.svg", "title": "建立/保持时间窗", "caption": "数据须在采样沿前 setup、沿后 hold 保持稳定。"},
+    {"file": "assets/phase4/reg_to_reg_slack.svg", "title": "reg-to-reg 路径与 slack", "caption": "launch/capture 沿间隔一个周期，slack = T - 逻辑-走线-setup-抖动。"},
+    {"file": "assets/phase4/pipeline_timing.svg", "title": "流水线改善时序", "caption": "插寄存器把长组合链切成短段，每段更易满足建立时间。"}
+  ],
+  "tools": [
+    {"name": "UG903 Vivado Using Constraints (v2022.2)", "url": "https://docs.amd.com/v/u/en-US/ug903-vivado-using-constraints", "required": true, "note": "访问日期 2026-10-10；XDC 约束权威手册。"},
+    {"name": "UG938 Design Analysis and Closure Techniques (v2020.2)", "url": "https://www.xilinx.com/support/documents/sw_manuals/xilinx2020_2/ug938-vivado-design-analysis-closure-tutorial.pdf", "required": false, "note": "访问日期 2026-10-10。"},
+    {"name": "时序收敛专题导航 dh0006", "url": "https://www.xilinx.com/content/xilinx/en/support/documentation-navigation/design-hubs/dh0006-vivado-design-analysis-and-timing-closure-hub.html", "required": false, "note": "访问日期 2026-10-10。"}
+  ],
+  "tasks": [
+    {"id": "task-4-3-1", "text": "为已有设计添加主时钟约束（create_clock）"},
+    {"id": "task-4-3-2", "text": "查看时序报告，分析建立时间裕量 WNS"}
+  ],
+  "cards": [
+    {"q": "建立时间 setup 是什么？", "a": "采样时钟沿之前，数据必须提前稳定的最短时间；数据到太晚就违反建立时间。", "tags": ["时序", "setup"]},
+    {"q": "保持时间 hold 是什么？", "a": "采样时钟沿之后，数据必须继续保持稳定的最短时间；数据变太早就违反保持时间。", "tags": ["时序", "hold"]},
+    {"q": "reg-to-reg 路径的 launch 沿和 capture 沿指什么？", "a": "launch 沿是发送触发器发出数据的时钟沿，capture 沿是下一个采样沿；两者间隔一个时钟周期 T。", "tags": ["reg2reg"]},
+    {"q": "建立时间 slack 公式？", "a": "slack = T周期 - (t逻辑 + t走线 + t_setup + 时钟抖动)；≥0 收敛，<0 违规。", "tags": ["slack", "公式"]},
+    {"q": "50MHz 的 create_clock 怎么写？", "a": "create_clock -period 20.000 -name clk_in1 [get_ports clk_in1]；50MHz 周期=20ns。", "tags": ["XDC", "create_clock"]},
+    {"q": "没有主时钟约束会怎样？", "a": "Vivado 不做 reg-to-reg 时序分析，等于没有时序目标，结果不可信。create_clock 是最基本必写约束。", "tags": ["XDC", "基础"]},
+    {"q": "WNS/TNS/WHS/THS 分别是什么？", "a": "WNS 最坏建立裕量、TNS 全部建立违规之和、WHS 最坏保持裕量、THS 全部保持违规之和；四项都 ≥0 即时序收敛。", "tags": ["时序报告"]},
+    {"q": "set_false_path 用于什么？", "a": "声明不需要做时序检查的路径，如异步复位引脚；避免工具对本就异步的路径误报。", "tags": ["XDC", "例外"]},
+    {"q": "set_clock_groups 什么时候用？", "a": "两个完全异步、互不交互的时钟组，告诉工具不分析它们之间的路径（异步 FIFO 两边常用）。", "tags": ["XDC", "跨时钟域"]},
+    {"q": "流水线为什么能改善时序？", "a": "在长组合链中插寄存器，把一条长路径切成多段短路径，每段延迟变短、更易满足建立时间；代价是延迟增加一拍，吞吐率不变。", "tags": ["流水线", "优化"]}
+  ],
+  "quiz": [
+    {"q": "数据必须在时钟沿前稳定的时间叫？", "options": ["保持时间", "建立时间", "延迟", "偏斜"], "answer": 1, "explain": "沿前提前稳定是 setup 建立时间。"},
+    {"q": "建立时间 slack < 0 表示？", "options": ["时序收敛", "该路径周期内走不完，需优化", "保持时间违规", "无影响"], "answer": 1, "explain": "slack 为负即 WNS 负，时序未收敛。"},
+    {"q": "50MHz 时钟的 create_clock 周期是？", "options": ["5ns", "10ns", "20ns", "50ns"], "answer": 2, "explain": "1/50MHz=20ns。"},
+    {"q": "时序收敛时 WNS 应？", "options": ["<0", "≥0", "等于 1", "任意值"], "answer": 1, "explain": "WNS/TNS/WHS/THS 全部 ≥0 才收敛。"}
+  ]
+}
