@@ -1,0 +1,39 @@
+{
+  "chapterId": "1.1",
+  "phase": 1,
+  "slug": "fpga-basics",
+  "title": "FPGA 基础与环境搭建",
+  "summary": "FPGA 本质（LUT/FF/BRAM/布线）、并行与串行的区别、开发 7 步流程、Vivado 安装与空工程、通用板卡介绍。",
+  "doc": "docs/phase1/ch1-fpga-basics.md",
+  "code": [],
+  "diagrams": [
+    {"file": "assets/phase1/fpga-vs-cpu.svg", "title": "CPU 串行 vs FPGA 并行", "caption": "同一时刻 CPU 只执行一条指令，FPGA 内部多块电路同时工作。"},
+    {"file": "assets/phase1/dev-flow.svg", "title": "FPGA 开发全流程 7 步", "caption": "从写 Verilog 到 JTAG 下载调试的完整链路。"}
+  ],
+  "tools": [
+    {"name": "AMD Vivado ML Edition 下载（2025.2）", "url": "https://www.xilinx.com/support/download.html", "required": true, "note": "免费 ML Standard 版即可，支持 Artix-7/Zynq。"},
+    {"name": "Vivado 授权说明（ML Standard 免 License）", "url": "https://www.amd.com/en/products/software/adaptive-socs-and-fpgas/licensing-faq.html", "required": true, "note": "2025.2 及更早 Standard 版无需 License。"},
+    {"name": "电缆/JTAG 驱动安装指南", "url": "https://digilent.com/reference/programmable-logic/guides/installing-vivado-and-vitis", "required": false, "note": "有开发板再装；纯仿真可略过。"}
+  ],
+  "tasks": [
+    {"id": "task-1-1-1", "text": "安装 Vivado（免费 ML Standard / WebPACK）"},
+    {"id": "task-1-1-2", "text": "创建第一个空工程，熟悉 Vivado 界面"},
+    {"id": "task-1-1-3", "text": "连接开发板并在 Hardware Manager 识别硬件"}
+  ],
+  "cards": [
+    {"q": "FPGA 内部主要由哪几类可编程资源构成？", "a": "LUT（查找表，实现组合逻辑）、FF（触发器，实现时序/记忆）、BRAM（块存储器）、可编程布线资源（开关矩阵互连）。", "tags": ["结构", "LUT", "FF"]},
+    {"q": "FPGA 与 CPU 执行方式的本质区别是什么？", "a": "CPU 串行执行指令，同一时刻只做一件事；FPGA 是硬件并行，例化的多个模块在硅片上同时独立运行，没有指令取指和串行流水线。", "tags": ["并行", "CPU"]},
+    {"q": "写 Verilog 为什么不是写顺序执行的程序？", "a": "Verilog 描述的是同时通电的电路，每个 always 块都是一块永远在工作的硬件；它描述结构与行为，不是按调用顺序运行的函数。", "tags": ["概念"]},
+    {"q": "FPGA 开发的 7 个步骤是什么？", "a": "设计输入→功能仿真→综合→实现(布局布线)→时序约束分析→生成比特流→JTAG 下载与调试。", "tags": ["流程"]},
+    {"q": "综合(Synthesis)和实现(Implementation)分别做什么？", "a": "综合把 Verilog 翻译成门级网表(LUT/FF)；实现再把网表映射到具体资源并做布局布线，决定每个逻辑放哪、用哪根线连。", "tags": ["综合", "实现"]},
+    {"q": "比特流(.bit)文件描述的是什么？", "a": "描述芯片内哪些可编程开关接通、每个 LUT 存什么真值表、触发器初值等；下载它等于把配置写进 FPGA。", "tags": ["比特流"]},
+    {"q": "Vivado 免费版叫什么？需要 License 吗？", "a": "Vivado ML Standard（原 WebPACK），对 Artix-7/Zynq 常用型号免费；2025.2 及更早版本无需 License。", "tags": ["Vivado", "License"]},
+    {"q": "没有开发板能不能学 FPGA？", "a": "可以。用 Vivado 内置 Simulator 跑 testbench 看波形即可完成前几阶段；引脚分配与下载等有硬件再做。", "tags": ["仿真", "入门"]}
+  ],
+  "quiz": [
+    {"q": "下面哪项最准确地描述了 FPGA 的并行特性？", "options": ["同一时钟下多个模块同时独立工作", "靠提高主频让指令跑更快", "只能串行处理一路数据", "必须装操作系统才能运行"], "answer": 0, "explain": "FPGA 例化的模块是真实并行电路，与 CPU 靠频率串行执行有本质区别。"},
+    {"q": "把 Verilog 变成门级网表的步骤叫？", "options": ["布局布线", "综合", "下载", "仿真"], "answer": 1, "explain": "综合(Synthesis)生成 LUT/FF 网表；布局布线属于后续的实现阶段。"},
+    {"q": "关于 Vivado 免费版，正确的是？", "options": ["必须购买 License 才能用", "ML Standard 对 Artix-7/Zynq 常用型号免费", "只能仿真不能下载", "只支持 Intel 器件"], "answer": 1, "explain": "ML Standard(原 WebPACK)免费，2025.2 及更早版本无需 License。"},
+    {"q": "LUT 在 FPGA 里主要用来？", "options": ["存储大量文件", "实现任意组合逻辑函数", "产生时钟", "驱动显示器"], "answer": 1, "explain": "LUT 本质是小 RAM，存真值表，输入一来直接查表得到组合逻辑输出。"}
+  ]
+}

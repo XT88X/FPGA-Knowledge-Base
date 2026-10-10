@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" font-family="system-ui,sans-serif" font-size="13">
+  <rect x="0" y="0" width="760" height="300" fill="#0d1420"/>
+  <text x="190" y="26" fill="#7dd3fc" text-anchor="middle" font-size="15" font-weight="bold">CPU：串行（一个大厨一口锅）</text>
+  <text x="570" y="26" fill="#7dd3fc" text-anchor="middle" font-size="15" font-weight="bold">FPGA：并行（多块电路同时通电）</text>
+  <!-- CPU side -->
+  <rect x="120" y="50" width="140" height="40" rx="6" fill="#1e293b" stroke="#475569"/>
+  <text x="190" y="75" fill="#e2e8f0" text-anchor="middle">指令1</text>
+  <rect x="120" y="100" width="140" height="40" rx="6" fill="#1e293b" stroke="#334155"/>
+  <text x="190" y="125" fill="#64748b" text-anchor="middle">指令2</text>
+  <rect x="120" y="150" width="140" height="40" rx="6" fill="#1e293b" stroke="#334155"/>
+  <text x="190" y="175" fill="#64748b" text-anchor="middle">指令3</text>
+  <rect x="120" y="200" width="140" height="40" rx="6" fill="#1e293b" stroke="#334155"/>
+  <text x="190" y="225" fill="#64748b" text-anchor="middle">指令4</text>
+  <line x1="190" y1="90" x2="190" y2="100" stroke="#f59e0b" stroke-width="2" marker-end="url(#ar)"/>
+  <line x1="190" y1="140" x2="190" y2="150" stroke="#475569" stroke-width="2"/>
+  <line x1="190" y1="190" x2="190" y2="200" stroke="#475569" stroke-width="2"/>
+  <text x="190" y="268" fill="#94a3b8" text-anchor="middle">同一时刻只执行一条，靠频率堆吞吐</text>
+  <!-- FPGA side -->
+  <g>
+    <rect x="470" y="55" width="90" height="55" rx="6" fill="#083344" stroke="#22d3ee"/>
+    <text x="515" y="80" fill="#a5f3fc" text-anchor="middle">LUT/FF</text>
+    <text x="515" y="98" fill="#67e8f9" text-anchor="middle" font-size="11">模块A</text>
+    <rect x="590" y="55" width="90" height="55" rx="6" fill="#083344" stroke="#22d3ee"/>
+    <text x="635" y="80" fill="#a5f3fc" text-anchor="middle">LUT/FF</text>
+    <text x="635" y="98" fill="#67e8f9" text-anchor="middle" font-size="11">模块B</text>
+    <rect x="470" y="150" width="90" height="55" rx="6" fill="#083344" stroke="#22d3ee"/>
+    <text x="515" y="175" fill="#a5f3fc" text-anchor="middle">LUT/FF</text>
+    <text x="515" y="193" fill="#67e8f9" text-anchor="middle" font-size="11">模块C</text>
+    <rect x="590" y="150" width="90" height="55" rx="6" fill="#083344" stroke="#22d3ee"/>
+    <text x="635" y="175" fill="#a5f3fc" text-anchor="middle">BRAM</text>
+    <text x="635" y="193" fill="#67e8f9" text-anchor="middle" font-size="11">模块D</text>
+  </g>
+  <text x="570" y="240" fill="#94a3b8" text-anchor="middle">四块电路同时运行，互不等待</text>
+  <defs>
+    <marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#f59e0b"/>
+    </marker>
+  </defs>
+</svg>

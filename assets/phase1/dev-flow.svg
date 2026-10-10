@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 150" font-family="system-ui,sans-serif" font-size="12">
+  <rect x="0" y="0" width="760" height="150" fill="#0d1420"/>
+  <text x="380" y="22" fill="#7dd3fc" text-anchor="middle" font-size="14" font-weight="bold">FPGA 开发全流程（7 步）</text>
+  <g>
+    <rect x="15" y="50" width="90" height="50" rx="6" fill="#083344" stroke="#22d3ee"/><text x="60" y="72" fill="#e0f2fe" text-anchor="middle">1 设计输入</text><text x="60" y="90" fill="#67e8f9" text-anchor="middle" font-size="10">写Verilog</text>
+    <rect x="120" y="50" width="90" height="50" rx="6" fill="#083344" stroke="#22d3ee"/><text x="165" y="72" fill="#e0f2fe" text-anchor="middle">2 功能仿真</text><text x="165" y="90" fill="#67e8f9" text-anchor="middle" font-size="10">testbench</text>
+    <rect x="225" y="50" width="90" height="50" rx="6" fill="#083344" stroke="#22d3ee"/><text x="270" y="72" fill="#e0f2fe" text-anchor="middle">3 综合</text><text x="270" y="90" fill="#67e8f9" text-anchor="middle" font-size="10">门级网表</text>
+    <rect x="330" y="50" width="90" height="50" rx="6" fill="#083344" stroke="#22d3ee"/><text x="375" y="72" fill="#e0f2fe" text-anchor="middle">4 实现</text><text x="375" y="90" fill="#67e8f9" text-anchor="middle" font-size="10">布局布线</text>
+    <rect x="435" y="50" width="90" height="50" rx="6" fill="#083344" stroke="#22d3ee"/><text x="480" y="72" fill="#e0f2fe" text-anchor="middle">5 时序约束</text><text x="480" y="90" fill="#67e8f9" text-anchor="middle" font-size="10">建/保持裕量</text>
+    <rect x="540" y="50" width="90" height="50" rx="6" fill="#083344" stroke="#22d3ee"/><text x="585" y="72" fill="#e0f2fe" text-anchor="middle">6 比特流</text><text x="585" y="90" fill="#67e8f9" text-anchor="middle" font-size="10">.bit 文件</text>
+    <rect x="645" y="50" width="90" height="50" rx="6" fill="#083344" stroke="#f59e0b"/><text x="690" y="72" fill="#fef3c7" text-anchor="middle">7 下载调试</text><text x="690" y="90" fill="#fcd34d" text-anchor="middle" font-size="10">JTAG/ILA</text>
+  </g>
+  <g stroke="#475569" stroke-width="2">
+    <line x1="105" y1="75" x2="120" y2="75"/><line x1="210" y1="75" x2="225" y2="75"/>
+    <line x1="315" y1="75" x2="330" y2="75"/><line x1="420" y1="75" x2="435" y2="75"/>
+    <line x1="525" y1="75" x2="540" y2="75"/><line x1="630" y1="75" x2="645" y2="75"/>
+  </g>
+</svg>
