@@ -1,0 +1,49 @@
+{
+  "chapterId": "3.1",
+  "phase": 3,
+  "slug": "uart",
+  "title": "UART 串口通信",
+  "summary": "8N1 帧格式、115200 波特率分频（50M 下 BIT_DIV=434、16 倍过采样 OV_DIV=27）、移位发送 FSM 与中点采样多数表决接收，实现串口回显。",
+  "doc": "docs/phase3/ch1-uart.md",
+  "code": [
+    {"file": "code/phase3/uart_tx.v", "type": "verilog", "role": "synthesizable", "title": "uart_tx.v — 移位发送 FSM（8N1）"},
+    {"file": "code/phase3/tb_uart_tx.v", "type": "verilog", "role": "testbench", "title": "tb_uart_tx.v — 自检比特序列与波特率"},
+    {"file": "code/phase3/uart_rx.v", "type": "verilog", "role": "synthesizable", "title": "uart_rx.v — 16 倍过采样+中点采样+多数表决"},
+    {"file": "code/phase3/tb_uart_rx.v", "type": "verilog", "role": "testbench", "title": "tb_uart_rx.v — 喂标准帧验证并行数据与帧错误"},
+    {"file": "code/phase3/uart_echo_top.v", "type": "verilog", "role": "synthesizable", "title": "uart_echo_top.v — 收到即回显顶层"},
+    {"file": "code/phase3/tb_uart_echo_top.v", "type": "verilog", "role": "testbench", "title": "tb_uart_echo_top.v — 回显环回自检"}
+  ],
+  "diagrams": [
+    {"file": "assets/phase3/uart-frame-timing.svg", "title": "UART 8N1 帧时序", "caption": "起始位0 + 8数据位(LSB先出) + 停止位1，空闲为高。"},
+    {"file": "assets/phase3/uart-oversample.svg", "title": "16 倍过采样", "caption": "每位 16 个采样点，在中点采样并做 3 点多数表决。"},
+    {"file": "assets/phase3/uart-fsm.svg", "title": "发送状态机", "caption": "IDLE→START→DATA→STOP，由波特率 tick 驱动。"}
+  ],
+  "tools": [
+    {"name": "通用引脚约束模板 fpga_common.xdc", "url": "../code/common/fpga_common.xdc", "required": true, "note": "相对本仓库；USB-UART 的 TX/RX 与 FPGA 交叉连接。"},
+    {"name": "板级适配方法 board-adaptation.md", "url": "../docs/board-adaptation.md", "required": true, "note": "按开发板替换 UART 引脚号。"}
+  ],
+  "tasks": [
+    {"id": "task-3-1-1", "text": "实现 UART 发送模块，每秒发送一个字符"},
+    {"id": "task-3-1-2", "text": "实现 UART 接收模块"},
+    {"id": "task-3-1-3", "text": "实现串口回显：电脑发什么，FPGA 返回什么"}
+  ],
+  "cards": [
+    {"q": "UART 一帧 8N1 的结构是？", "a": "1 位起始位(低) + 8 数据位(LSB先出) + 1 停止位(高)，共 10 位；空闲电平为高。", "tags": ["UART", "帧格式"]},
+    {"q": "50MHz 系统时钟、波特率 115200，每位占多少个时钟？", "a": "BIT_DIV = 50,000,000/115,200 ≈ 434；即每位约 434 个系统时钟。", "tags": ["波特率", "分频"]},
+    {"q": "16 倍过采样的分频系数怎么算？", "a": "OV_DIV = 50,000,000/(115,200×16) ≈ 27；每 27 个时钟采一个样本点，16 个点覆盖一位。", "tags": ["过采样"]},
+    {"q": "为什么接收端要在每位中间采样而不是沿边？", "a": "跳变沿处电平不稳定、易受毛刺影响；在位中央采样距离两端跳变都最远，最可靠。", "tags": ["接收", "采样"]},
+    {"q": "为什么对 rx_in 要做两级寄存器同步？", "a": "外部异步信号可能违反触发器建立/保持时间，导致亚稳态；两级同步器把亚稳态风险降到可忽略。", "tags": ["亚稳态", "同步"]},
+    {"q": "多数表决（3 取 2）解决什么问题？", "a": "在采样点附近连续采 3 个样本取多数，能滤掉个别毛刺导致的误采样，提高抗干扰能力。", "tags": ["多数表决"]},
+    {"q": "UART 数据位是高位先出还是低位先出？", "a": "LSB 最低位先出。", "tags": ["UART", "位序"]},
+    {"q": "发送字节 0xA5，线上前几位电平顺序是？", "a": "0xA5=1010_0101，LSB 先出：1,0,1,0,0,1,0,1。", "tags": ["UART", "位序"]},
+    {"q": "frame_err 什么时候置位？", "a": "在停止位中点采样到低电平（应为高）时置位，表示帧格式错误。", "tags": ["帧错误"]},
+    {"q": "USB-UART 和 FPGA 的 TX/RX 怎么接？", "a": "交叉连接：FPGA_TX 接 USB-UART_RX，FPGA_RX 接 USB-UART_TX，共地。", "tags": ["接线"]}
+  ],
+  "quiz": [
+    {"q": "50MHz、波特率 115200，每位大约占多少个系统时钟？", "options": ["434", "27", "1152", "50000"], "answer": 0, "explain": "BIT_DIV=50,000,000/115,200≈434。"},
+    {"q": "UART 8N1 一帧共有多少位？", "options": ["8", "9", "10", "11"], "answer": 2, "explain": "1起始+8数据+1停止=10位。"},
+    {"q": "接收端 16 倍过采样 OV_DIV 约为？", "options": ["434", "27", "16", "270"], "answer": 1, "explain": "OV_DIV=50M/(115200×16)≈27。"},
+    {"q": "UART 数据位的发送顺序是？", "options": ["MSB 先出", "LSB 先出", "同时出", "随机"], "answer": 1, "explain": "UART 约定最低位 D0 最先发出。"},
+    {"q": "停止位中点采到低电平会导致？", "options": ["正常接收", "frame_err 帧错误", "自动重发", "波特率加倍"], "answer": 1, "explain": "停止位应为高，采到低说明帧错误。"}
+  ]
+}

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 300" font-family="system-ui,sans-serif" font-size="12">
+  <rect x="0" y="0" width="820" height="300" fill="#0d1420"/>
+  <text x="410" y="24" fill="#7dd3fc" text-anchor="middle" font-size="15" font-weight="bold">UART 发送状态机（uart_tx FSM）</text>
+
+  <!-- states as rounded boxes -->
+  <g fill="#1e293b" stroke="#22d3ee" stroke-width="2">
+    <rect x="60"  y="120" width="130" height="60" rx="10"/>
+    <rect x="260" y="120" width="130" height="60" rx="10"/>
+    <rect x="460" y="120" width="130" height="60" rx="10"/>
+    <rect x="660" y="120" width="130" height="60" rx="10"/>
+  </g>
+  <text x="125" y="148" fill="#e2e8f0" text-anchor="middle" font-weight="bold">IDLE</text>
+  <text x="125" y="166" fill="#94a3b8" text-anchor="middle">tx_out=1, ready</text>
+  <text x="325" y="148" fill="#e2e8f0" text-anchor="middle" font-weight="bold">START</text>
+  <text x="325" y="166" fill="#94a3b8" text-anchor="middle">拉低起始位</text>
+  <text x="525" y="148" fill="#e2e8f0" text-anchor="middle" font-weight="bold">DATA</text>
+  <text x="525" y="166" fill="#94a3b8" text-anchor="middle">LSB 移出 8 位</text>
+  <text x="725" y="148" fill="#e2e8f0" text-anchor="middle" font-weight="bold">STOP</text>
+  <text x="725" y="166" fill="#94a3b8" text-anchor="middle">拉高停止位</text>
+
+  <!-- arrows -->
+  <g stroke="#34d399" stroke-width="2" fill="none" marker-end="url(#arr)">
+    <line x1="190" y1="150" x2="258" y2="150"/>
+    <line x1="390" y1="150" x2="458" y2="150"/>
+    <line x1="590" y1="150" x2="658" y2="150"/>
+  </g>
+  <!-- return arrow STOP -> IDLE -->
+  <path d="M 725 180 C 725 250, 125 250, 125 182" stroke="#34d399" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#34d399"/>
+    </marker>
+  </defs>
+
+  <!-- transition labels -->
+  <text x="224" y="138" fill="#fcd34d" text-anchor="middle" font-size="11">tx_valid=1</text>
+  <text x="424" y="138" fill="#fcd34d" text-anchor="middle" font-size="11">baud_tick</text>
+  <text x="624" y="138" fill="#fcd34d" text-anchor="middle" font-size="11">bit_cnt=7</text>
+  <text x="410" y="268" fill="#fcd34d" text-anchor="middle" font-size="11">baud_tick 后置 ready=1，回到空闲</text>
+
+  <text x="410" y="290" fill="#94a3b8" text-anchor="middle">接收端 uart_rx 为对称结构：检测下降沿 → 中点采样 8 位 → 校验停止位 → rx_valid 脉冲</text>
+</svg>
