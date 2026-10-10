@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 280" font-family="system-ui,sans-serif" font-size="12">
+  <rect x="0" y="0" width="820" height="280" fill="#0d1420"/>
+  <text x="410" y="22" fill="#7dd3fc" text-anchor="middle" font-size="15" font-weight="bold">SSD1306 上电初始化流程（dc=0 发命令）</text>
+
+  <g fill="#1e293b" stroke="#34d399" stroke-width="1.5">
+    <rect x="40"  y="60" width="150" height="50" rx="8"/>
+    <rect x="230" y="60" width="150" height="50" rx="8"/>
+    <rect x="420" y="60" width="150" height="50" rx="8"/>
+    <rect x="610" y="60" width="160" height="50" rx="8"/>
+    <rect x="230" y="160" width="150" height="50" rx="8"/>
+    <rect x="420" y="160" width="150" height="50" rx="8"/>
+  </g>
+  <g fill="#e2e8f0" text-anchor="middle">
+    <text x="115" y="82">0xAE</text>
+    <text x="115" y="99" fill="#94a3b8">显示关</text>
+    <text x="305" y="82">0x8D,0x14</text>
+    <text x="305" y="99" fill="#94a3b8">开充电泵</text>
+    <text x="495" y="82">0xA1 / 0xC8</text>
+    <text x="495" y="99" fill="#94a3b8">扫描方向重映射</text>
+    <text x="690" y="82">0x81,0xCF</text>
+    <text x="690" y="99" fill="#94a3b8">设对比度</text>
+    <text x="305" y="182">0xA4 / 0xA6</text>
+    <text x="305" y="199" fill="#94a3b8">恢复显存/正常显示</text>
+    <text x="495" y="182">0xAF</text>
+    <text x="495" y="199" fill="#94a3b8">显示开</text>
+  </g>
+
+  <g stroke="#34d399" stroke-width="1.5" fill="none" marker-end="url(#a2)">
+    <line x1="190" y1="85" x2="228" y2="85"/>
+    <line x1="380" y1="85" x2="418" y2="85"/>
+    <line x1="570" y1="85" x2="608" y2="85"/>
+    <path d="M 690 110 L 690 140 L 305 140 L 305 158"/>
+    <line x1="380" y1="185" x2="418" y2="185"/>
+  </g>
+  <defs>
+    <marker id="a2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#34d399"/>
+    </marker>
+  </defs>
+  <text x="410" y="250" fill="#fcd34d" text-anchor="middle">初始化完成后进入空闲；写字符 = 定位命令 + 8x16 字模数据(dc=1)</text>
+</svg>

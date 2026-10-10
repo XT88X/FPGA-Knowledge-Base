@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 300" font-family="system-ui,sans-serif" font-size="12">
+  <rect x="0" y="0" width="820" height="300" fill="#0d1420"/>
+  <text x="410" y="22" fill="#7dd3fc" text-anchor="middle" font-size="15" font-weight="bold">SSD1306 显存映射：8 个页(Page) × 128 列，每页 8 行像素</text>
+
+  <!-- 8 pages -->
+  <g stroke="#22d3ee" stroke-width="1.5" fill="#1e293b">
+    <rect x="60"  y="50" width="640" height="22"/>
+    <rect x="60"  y="76" width="640" height="22"/>
+    <rect x="60"  y="102" width="640" height="22"/>
+    <rect x="60"  y="128" width="640" height="22"/>
+    <rect x="60"  y="154" width="640" height="22"/>
+    <rect x="60"  y="180" width="640" height="22"/>
+    <rect x="60"  y="206" width="640" height="22"/>
+    <rect x="60"  y="232" width="640" height="22"/>
+  </g>
+  <g fill="#a5f3fc">
+    <text x="30" y="65">Page0</text>
+    <text x="30" y="91">Page1</text>
+    <text x="30" y="117">Page2</text>
+    <text x="30" y="143">Page3</text>
+    <text x="30" y="169">Page4</text>
+    <text x="30" y="195">Page5</text>
+    <text x="30" y="221">Page6</text>
+    <text x="30" y="247">Page7</text>
+  </g>
+  <text x="380" y="45" fill="#94a3b8" text-anchor="middle">列地址 0 → 127（每写一字节，列自动 +1）</text>
+
+  <!-- char box example: Page0, col0..7, and Page1 for 8x16 -->
+  <rect x="60" y="50" width="50" height="22" fill="#f59e0b" opacity="0.7"/>
+  <rect x="60" y="76" width="50" height="22" fill="#f59e0b" opacity="0.7"/>
+  <text x="150" y="65" fill="#fcd34d">一个 8x16 字符跨 Page0/Page1，列 0..7</text>
+
+  <text x="410" y="280" fill="#94a3b8" text-anchor="middle">定位命令：0x00|列低4位、0x10|列高4位、0xB0|页号；随后写 8 字节列数据</text>
+</svg>

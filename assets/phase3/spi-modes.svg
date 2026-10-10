@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 320" font-family="system-ui,sans-serif" font-size="12">
+  <rect x="0" y="0" width="820" height="320" fill="#0d1420"/>
+  <text x="410" y="22" fill="#7dd3fc" text-anchor="middle" font-size="15" font-weight="bold">SPI 四种时序模式（CPOL/CPHA）与数据采样边沿</text>
+
+  <!-- Mode 0 -->
+  <text x="30" y="60" fill="#a5f3fc">Mode0 CPOL=0 CPHA=0</text>
+  <polyline points="230,55 260,55 260,45 300,45 300,55 340,55 340,45 380,45 380,55 420,55 420,45 460,45 460,55 500,55" fill="none" stroke="#22d3ee" stroke-width="2"/>
+  <text x="510" y="50" fill="#94a3b8">SCLK 空闲低，上升沿采样</text>
+
+  <!-- Mode 1 -->
+  <text x="30" y="120" fill="#a5f3fc">Mode1 CPOL=0 CPHA=1</text>
+  <polyline points="230,115 260,115 260,105 300,105 300,115 340,115 340,105 380,105 380,115 420,115 420,105 460,105 460,115 500,115" fill="none" stroke="#22d3ee" stroke-width="2"/>
+  <text x="510" y="110" fill="#94a3b8">SCLK 空闲低，下降沿采样</text>
+
+  <!-- Mode 2 -->
+  <text x="30" y="180" fill="#a5f3fc">Mode2 CPOL=1 CPHA=0</text>
+  <polyline points="230,165 260,165 260,175 300,175 300,165 340,165 340,175 380,175 380,165 420,165 420,175 460,175 460,165 500,165" fill="none" stroke="#22d3ee" stroke-width="2"/>
+  <text x="510" y="170" fill="#94a3b8">SCLK 空闲高，下降沿采样</text>
+
+  <!-- Mode 3 -->
+  <text x="30" y="240" fill="#a5f3fc">Mode3 CPOL=1 CPHA=1</text>
+  <polyline points="230,225 260,225 260,235 300,235 300,225 340,225 340,235 380,235 380,225 420,225 420,235 460,235 460,225 500,225" fill="none" stroke="#22d3ee" stroke-width="2"/>
+  <text x="510" y="230" fill="#94a3b8">SCLK 空闲高，上升沿采样</text>
+
+  <text x="410" y="290" fill="#fcd34d" text-anchor="middle">SSD1306 OLED 使用 Mode0/3：dc=0 发命令，dc=1 发显示数据；MSB 先出</text>
+</svg>

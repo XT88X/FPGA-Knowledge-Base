@@ -1,0 +1,49 @@
+{
+  "chapterId": "3.2",
+  "phase": 3,
+  "slug": "spi-oled",
+  "title": "SPI 协议与 OLED 驱动",
+  "summary": "CPOL/CPHA 四种时序、SCLK 分频（50M/1M 时 HALF=25）、SSD1306 128x64 的命令/数据、初始化序列、显存页列映射与 8x16 字模显示。",
+  "doc": "docs/phase3/ch2-spi-oled.md",
+  "code": [
+    {"file": "code/phase3/spi_master.v", "type": "verilog", "role": "synthesizable", "title": "spi_master.v — CPOL/CPHA 可配、SCLK 分频、片选"},
+    {"file": "code/phase3/tb_spi_master.v", "type": "verilog", "role": "testbench", "title": "tb_spi_master.v — 校验 CPOL0/CPHA0 下 MOSI 与 SCLK 沿关系"},
+    {"file": "code/phase3/oled_ssd1306.v", "type": "verilog", "role": "synthesizable", "title": "oled_ssd1306.v — 初始化序列+定位+写字符+字模 ROM"},
+    {"file": "code/phase3/tb_oled_ssd1306.v", "type": "verilog", "role": "testbench", "title": "tb_oled_ssd1306.v — 校验首条初始化命令与写数据时序"},
+    {"file": "code/phase3/oled_top.v", "type": "verilog", "role": "synthesizable", "title": "oled_top.v — 自动写字符顶层"}
+  ],
+  "diagrams": [
+    {"file": "assets/phase3/spi-modes.svg", "title": "SPI 四种 CPOL/CPHA 时序", "caption": "CPOL 定空闲电平，CPHA 定采样沿；SSD1306 用 Mode0/3。"},
+    {"file": "assets/phase3/oled-init-flow.svg", "title": "SSD1306 初始化流程", "caption": "充电泵、重映射、对比度、开显示等关键命令顺序。"},
+    {"file": "assets/phase3/oled-mapping.svg", "title": "显存页/列映射", "caption": "8 页 × 128 列；8x16 字符跨两页 8 列。"}
+  ],
+  "tools": [
+    {"name": "SSD1306 产品页（Solomon Systech 官方）", "url": "https://www.solomon-systech.com/product/ssd1306/", "required": true, "note": "访问日期 2026-10-10；官方 datasheet 需向厂方索取。"},
+    {"name": "SSD1306 datasheet PDF（Mouser 托管）", "url": "https://www.mouser.com/datasheet/2/813/SSD1306-2490209.pdf", "required": false, "note": "访问日期 2026-10-10；命令集与显存定义以此为准。"},
+    {"name": "通用引脚约束模板 fpga_common.xdc", "url": "../code/common/fpga_common.xdc", "required": true, "note": "SCK/MOSI/DC/CS 引脚按开发板替换。"}
+  ],
+  "tasks": [
+    {"id": "task-3-2-1", "text": "实现 SPI 主机控制器"},
+    {"id": "task-3-2-2", "text": "驱动 0.96 寸 OLED 屏幕点亮"},
+    {"id": "task-3-2-3", "text": "在 OLED 上显示英文字符和数字"}
+  ],
+  "cards": [
+    {"q": "SPI 的四根线是？", "a": "SCLK(时钟)、MOSI(主出从入)、MISO(主入从出)、CS_n(片选，低有效)。", "tags": ["SPI"]},
+    {"q": "CPOL 和 CPHA 各决定什么？", "a": "CPOL 决定 SCLK 空闲电平(0低/1高)；CPHA 决定在第几个时钟沿采样数据。", "tags": ["SPI", "CPOL", "CPHA"]},
+    {"q": "Mode0（CPOL=0,CPHA=0）在哪个沿采样？", "a": "SCLK 空闲为低，数据在上升沿被采样；MOSI 在空闲相位就放好。", "tags": ["SPI", "Mode0"]},
+    {"q": "50MHz、SCLK=1MHz，HALF 分频系数是多少？", "a": "HALF=50,000,000/(2×1,000,000)=25，SCLK 每 25 个时钟翻转一次。", "tags": ["SPI", "分频"]},
+    {"q": "SPI 数据位序是 MSB 还是 LSB 先出？", "a": "SPI 默认 MSB（最高位）先出。", "tags": ["SPI", "位序"]},
+    {"q": "SSD1306 的 D/C 线有什么用？", "a": "D/C=0 表示后面字节是命令，D/C=1 表示是显示数据(写显存)。", "tags": ["SSD1306"]},
+    {"q": "SSD1306 显存是怎么组织的？", "a": "8 个页(Page0~7)，每页 128 列；每页一字节对应 8 行像素。", "tags": ["SSD1306", "显存"]},
+    {"q": "写一个 8x16 字符要占几个页？", "a": "跨 2 个页（上 8 行、下 8 行）× 8 列。", "tags": ["SSD1306", "字模"]},
+    {"q": "定位显存位置要发哪三条命令？", "a": "0x00|列低4位、0x10|列高4位、0xB0|页号。", "tags": ["SSD1306", "命令"]},
+    {"q": "SSD1306 为什么要开充电泵(0x8D,0x14)？", "a": "OLED 需要较高驱动电压，内部充电泵升压才能点亮像素。", "tags": ["SSD1306", "充电泵"]}
+  ],
+  "quiz": [
+    {"q": "SPI 的 CS_n 片选电平是？", "options": ["高有效", "低有效", "任意", "不需要"], "answer": 1, "explain": "CS_n 带下划线表示低电平有效，选中从机。"},
+    {"q": "CPOL=0 时 SCLK 空闲电平是？", "options": ["高", "低", "三态", "随机"], "answer": 1, "explain": "CPOL=0 空闲为低。"},
+    {"q": "SSD1306 的 D/C=1 表示当前字节是？", "options": ["命令", "显示数据", "地址", "空字节"], "answer": 1, "explain": "D/C=1 表示写入显存的显示数据。"},
+    {"q": "写一个 8x16 字符跨几个显存页？", "options": ["1", "2", "8", "16"], "answer": 1, "explain": "上 8 行一页、下 8 行一页，共两页。"},
+    {"q": "50MHz、目标 SCLK=1MHz，HALF=？", "options": ["50", "25", "100", "12"], "answer": 1, "explain": "HALF=50M/(2×1M)=25。"}
+  ]
+}
