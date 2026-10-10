@@ -31,6 +31,7 @@ except Exception:
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FRAG_DIR = os.path.join(ROOT, "data", "fragments")
+EXAM_DIR = os.path.join(ROOT, "data", "exam")
 TEMPLATE = os.path.join(ROOT, "templates", "index.template.html")
 OUT_INDEX = os.path.join(ROOT, "index.html")
 OUT_KBJSON = os.path.join(ROOT, "data", "knowledge-base.json")
@@ -105,11 +106,25 @@ def main():
         },
         "chapters": chapters,
         "tools": list(tools_seen.values()),
+        "exams": {},
     }
 
-    # 1) 独立聚合 JSON（原始 fragment，供仓库阅读/检索）
+    # 聚合通关考卷题库 data/exam/phaseN.json -> KB.exams[phase]
+    raw_exams = {}
+    if os.path.isdir(EXAM_DIR):
+        for fn in sorted(os.listdir(EXAM_DIR)):
+            m = re.match(r"phase(\d+)\.json$", fn)
+            if not m:
+                continue
+            with open(os.path.join(EXAM_DIR, fn), encoding="utf-8") as f:
+                exam = json.load(f)
+            kb["exams"][int(m.group(1))] = exam
+            raw_exams[int(m.group(1))] = exam
+
+    # 1) 独立聚合 JSON（原始 fragment + 题库，供仓库阅读/检索）
     with open(OUT_KBJSON, "w", encoding="utf-8") as f:
-        json.dump({"chapters": raw_fragments, "tools": list(tools_seen.values())},
+        json.dump({"chapters": raw_fragments, "tools": list(tools_seen.values()),
+                   "exams": raw_exams},
                   f, ensure_ascii=False, indent=2)
 
     # 2) 模板注入
