@@ -1,0 +1,39 @@
+{
+  "chapterId": "1.2",
+  "phase": 1,
+  "slug": "hdl-blink",
+  "title": "HDL 基础与第一个电路",
+  "summary": "Verilog 模块结构、always 时钟触发、计数器与时钟分频计算（50MHz→1Hz 数到 25,000,000-1，25bit）、顶层与引脚分配。",
+  "doc": "docs/phase1/ch2-hdl-blink.md",
+  "code": [
+    {"file": "code/phase1/led_blink.v", "type": "verilog", "role": "synthesizable", "title": "led_blink.v — 参数化 LED 闪烁（可综合）"}
+  ],
+  "diagrams": [
+    {"file": "assets/phase1/divider-timing.svg", "title": "计数器分频时序", "caption": "clk 上升沿 cnt 自增，计满 HALF_COUNT-1 翻转 led 并清零。"}
+  ],
+  "tools": [
+    {"name": "通用引脚约束模板 fpga_common.xdc", "url": "../code/common/fpga_common.xdc", "required": true, "note": "相对本仓库；按开发板替换 PACKAGE_PIN。"},
+    {"name": "板级适配方法（board-adaptation.md）", "url": "../docs/board-adaptation.md", "required": true, "note": "如何找正点原子/野火板的参考引脚。"}
+  ],
+  "tasks": [
+    {"id": "task-1-2-1", "text": "编写 1 秒间隔的 LED 闪烁代码"},
+    {"id": "task-1-2-2", "text": "完成引脚分配并全编译工程"},
+    {"id": "task-1-2-3", "text": "下载到开发板，亲眼看到 LED 闪烁"}
+  ],
+  "cards": [
+    {"q": "Verilog 可综合模块的基本结构是？", "a": "module 名 + 端口列表(input/output) + 内部信号与 always/assign 描述，最后 endmodule。", "tags": ["语法", "模块"]},
+    {"q": "时序逻辑 always 块的标准敏感表怎么写？", "a": "always @(posedge clk or negedge rst_n)：时钟上升沿更新状态，异步低电平复位；这会被综合成触发器。", "tags": ["always", "时序"]},
+    {"q": "50MHz 时钟想让 LED 每秒翻转一次，计数器要数多少个时钟？", "a": "半周期计数 = 50,000,000 / (2*1) = 25,000,000；即数到 25,000,000-1 翻转一次。", "tags": ["分频", "计算"]},
+    {"q": "数到 25,000,000 需要多少位计数器？", "a": "2^24=16.7M 不够，2^25=33.5M 够，所以 25 位，即 reg [24:0]。", "tags": ["位宽", "计算"]},
+    {"q": "分频计数通用公式是什么？", "a": "半周期计数 = CLK_FREQ_HZ/(2*BLINK_HZ)；位宽 = ceil(log2(半周期计数))。", "tags": ["公式"]},
+    {"q": "output reg 里的 reg 一定是触发器吗？", "a": "不一定。reg 只是表示“在过程块(always)里被赋值”的变量；组合逻辑里的 reg 综合后是连线，时序逻辑里的才是触发器。", "tags": ["语法", "reg"]},
+    {"q": "引脚分配写在 Verilog 里吗？", "a": "不写在 Verilog 里，而写在 XDC 约束文件：create_clock 定时钟周期，PACKAGE_PIN 定引脚，IOSTANDARD 定电平。", "tags": ["XDC", "约束"]},
+    {"q": "异步复位在 always 块里怎么表达？", "a": "敏感表加 or negedge rst_n，块内先 if(!rst_n) 给寄存器赋初值，再写正常逻辑。", "tags": ["复位", "时序"]}
+  ],
+  "quiz": [
+    {"q": "50MHz 时钟、希望 LED 每 1 秒翻转一次，计数器满分值是？", "options": ["50,000,000", "25,000,000", "1,000,000", "50,000"], "answer": 1, "explain": "半周期 = 50MHz/(2*1Hz)=25,000,000 个时钟。"},
+    {"q": "为数到 25,000,000，计数器位宽至少是？", "options": ["24 位", "25 位", "26 位", "32 位"], "answer": 1, "explain": "2^24=16.7M<25M，2^25=33.5M>25M，故 25 位。"},
+    {"q": "下面哪个是正确的同步时序 always 块？", "options": ["always @(*) cnt=cnt+1", "always @(posedge clk or negedge rst_n)", "always cnt=cnt+1", "assign cnt=cnt+1"], "answer": 1, "explain": "时序逻辑要用时钟沿触发并带异步复位敏感表。"},
+    {"q": "引脚 PACKAGE_PIN 应写在？", "options": ["Verilog module 里", "XDC 约束文件", "C 代码里", "无需指定"], "answer": 1, "explain": "物理引脚与电平通过 XDC 约束指定，不写进 RTL。"}
+  ]
+}
