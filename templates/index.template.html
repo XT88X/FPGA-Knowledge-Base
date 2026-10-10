@@ -55,15 +55,19 @@ button.btn.primary{background:linear-gradient(90deg,var(--blue),var(--cyan)); bo
 .phase-head .d{font-size:12px; color:var(--muted);}
 .phase-head .arrow{color:var(--muted); transition:transform .3s;}
 .phase.open .phase-head .arrow{transform:rotate(180deg);}
-.phase-body{max-height:0; overflow:hidden; transition:max-height .45s ease;}
-.phase.open .phase-body{max-height:20000px;}
+.phase-body{display:none;}
+.phase.open .phase-body{display:block;}
+.phase.locked .phase-head{cursor:not-allowed; opacity:.75;}
+.phase.locked .arrow{color:var(--red);}
+.lockic{width:14px;height:14px;vertical-align:-2px;margin-right:4px;fill:var(--amber);}
 .chapter{background:var(--card2); border:1px solid var(--line); border-radius:12px; margin:12px 14px; padding:16px;}
 .chapter h4{margin:0 0 4px; font-size:17px; color:#7dd3fc;}
 .chapter .sum{color:var(--muted); font-size:13px; margin:0 0 10px;}
 .doc p{margin:8px 0;} .doc pre{background:#081020; border:1px solid var(--line); border-radius:8px; padding:10px; overflow:auto;}
 .doc code{font-family:ui-monospace,"Cascadia Code",Consolas,monospace; font-size:13px;}
-.doc table{border-collapse:collapse; width:100%; font-size:13px; margin:8px 0;}
-.doc th,.doc td{border:1px solid var(--line); padding:6px 8px; text-align:left;}
+.table-wrap{overflow-x:auto; -webkit-overflow-scrolling:touch; margin:8px 0;}
+.doc table{border-collapse:collapse; width:100%; font-size:13px; margin:0; min-width:480px;}
+.doc th,.doc td{border:1px solid var(--line); padding:6px 8px; text-align:left; white-space:nowrap;}
 .doc a{color:#7dd3fc;}
 /* code tabs */
 .codeblock{margin:10px 0;}
@@ -71,13 +75,38 @@ button.btn.primary{background:linear-gradient(90deg,var(--blue),var(--cyan)); bo
 .tab{font-size:12px; padding:5px 10px; border:1px solid var(--line); border-bottom:none; border-radius:8px 8px 0 0;
   background:#0c1630; color:var(--muted); cursor:pointer;}
 .tab.active{background:#081020; color:var(--cyan); border-color:var(--cyan);}
-pre.code{background:#081020; border:1px solid var(--cyan); border-radius:0 8px 8px 8px; padding:12px; overflow:auto;
-  font-family:ui-monospace,"Cascadia Code",Consolas,monospace; font-size:13px; line-height:1.5; margin:0;}
+pre.code{background:#081020; border:1px solid var(--cyan); border-radius:0 8px 8px 8px; padding:12px;
+  font-family:ui-monospace,"Cascadia Code",Consolas,monospace; font-size:13px; line-height:1.5; margin:0;
+  max-height:70vh; overflow:auto; white-space:pre; -webkit-overflow-scrolling:touch;}
 .tok-k{color:#7dd3fc;} .tok-s{color:#fbbf24;} .tok-c{color:#5b6b8c; font-style:italic;} .tok-n{color:#f0abfc;}
 /* diagrams */
-.diagram{margin:10px 0; text-align:center;}
-.diagram svg{max-width:100%; height:auto; border:1px solid var(--line); border-radius:10px; background:#0d1420;}
+.diagram{margin:10px 0; text-align:center; overflow-x:auto; padding-bottom:4px;}
+.diagram svg{max-width:100%; height:auto; border:1px solid var(--line); border-radius:10px; background:#0d1420; margin:0 auto;}
 .diagram .cap{font-size:12px; color:var(--muted); margin-top:4px;}
+/* phase nav */
+.phase-nav{display:flex; gap:8px; overflow-x:auto; padding-bottom:6px; -webkit-overflow-scrolling:touch;}
+.pn-item{flex:1; min-width:128px; border:1px solid var(--line); border-radius:10px; padding:10px; background:var(--card2); cursor:pointer; text-align:center;}
+.pn-item:hover{border-color:var(--blue);}
+.pn-item .pn-n{font-size:15px; font-weight:700; color:#7dd3fc;}
+.pn-item .pn-s{font-size:11px; color:var(--muted); margin-top:2px;}
+.pn-item.locked{opacity:.55; cursor:not-allowed;}
+.pn-item.passed{border-color:var(--green);}
+.pn-item .pn-best{font-size:11px; color:var(--green); margin-top:2px;}
+/* exam */
+.exam-card{border:1px solid var(--amber); border-radius:12px; padding:14px; margin:14px; background:#151a30;}
+.exam-card h5{margin:0 0 6px; color:var(--amber); font-size:15px;}
+.exam-q{border:1px solid var(--line); border-radius:10px; padding:10px; margin:10px 0; background:#0b1530;}
+.exam-q .eq-type{font-size:10px; padding:2px 6px; border-radius:6px; background:#1e2c4a; color:#9fd8ff; margin-right:6px;}
+.exam-q .opt{display:flex; gap:8px; align-items:center; padding:6px 8px; border:1px solid var(--line); border-radius:8px; margin:5px 0; cursor:pointer;}
+.exam-q .opt.right{background:rgba(52,211,153,.15); border-color:var(--green);}
+.exam-q .opt.wrong{background:rgba(248,113,113,.15); border-color:var(--red);}
+.exam-q .your{font-size:12px; color:var(--amber); margin-top:4px;}
+.exam-fill{width:100%; background:#0a1226; border:1px solid var(--line); color:var(--txt); border-radius:8px; padding:8px; margin-top:6px;}
+.exam-progress{font-size:13px; color:var(--muted); margin:6px 0;}
+.score-big{font-size:30px; font-weight:800;}
+.toast{position:fixed; left:50%; bottom:30px; transform:translateX(-50%); background:#1d2c4d; border:1px solid var(--cyan);
+  color:var(--txt); padding:10px 18px; border-radius:10px; z-index:99; font-size:14px; display:none;}
+.toast.show{display:block;}
 .tools{display:flex; flex-wrap:wrap; gap:8px; margin:10px 0;}
 .tools a{font-size:12px; background:#10203f; border:1px solid var(--line); color:#9fd8ff; text-decoration:none;
   padding:5px 10px; border-radius:8px;}
@@ -122,6 +151,9 @@ footer{text-align:center; color:var(--muted); font-size:12px; margin-top:30px;}
   .badges{grid-template-columns:repeat(2,1fr);}
   header.hero h1{font-size:23px;}
   .wrap{padding:14px 10px 90px;}
+  .chapter{margin:10px 6px; padding:12px;}
+  .pn-item{min-width:112px;}
+  .tools a{font-size:11px;}
 }
 </style>
 </head>
@@ -145,6 +177,11 @@ footer{text-align:center; color:var(--muted); font-size:12px; margin-top:30px;}
     <div class="badges" id="badges"></div>
   </div>
 
+  <div class="card">
+    <div style="font-weight:700; margin-bottom:10px;">阶段导航</div>
+    <div class="phase-nav" id="phaseNav"></div>
+  </div>
+
   <div class="controls">
     <button class="btn primary" id="btnExpandAll">展开全部</button>
     <button class="btn" id="btnCollapseAll">折叠全部</button>
@@ -160,6 +197,7 @@ footer{text-align:center; color:var(--muted); font-size:12px; margin-top:30px;}
 </div>
 
 <button id="aiFab" title="AI 助教">🤖</button>
+<div class="toast" id="toast"></div>
 <div id="aiPanel">
   <div class="ph">
     <strong>AI 助教</strong>
@@ -210,10 +248,105 @@ var BADGES = [
 ];
 var PROGRESS_KEY = "fpga-learning-progress";
 var CFG_KEY = "fpga-ai-config";
+var EXAM_KEY = "fpga-exam-state";
+var LOCK_SVG = '<svg class="lockic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 1 1 6 0v3H9z"/></svg>';
+var UNLOCK_SVG = '<svg class="lockic" style="fill:var(--green)" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-9.9-1H8.1A3 3 0 0 1 12 5zm-3 8V7a3 3 0 1 1 6 0v3H9z"/></svg>';
 
 /* ================= 工具 ================= */
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 function uniq(a){return Array.prototype.filter.call(a,function(v,i){return a.indexOf(v)===i;});}
+function toast(msg){var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(toast._t); toast._t=setTimeout(function(){t.classList.remove('show');},2200);}
+function shuffled(arr){var a=arr.slice(); for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)); var t=a[i];a[i]=a[j];a[j]=t;} return a;}
+
+/* ================= 考试引擎（纯函数，挂 window 便于确定性自测） ================= */
+var FPGAExam = {
+  PASS_RATE: 85,
+  PER_Q: 5,
+  PAPER_SIZE: 20,
+  // 归一化填空答案：去空白/标点/大小写
+  _normFill: function(s){return String(s).toLowerCase().replace(/[\s,，.。_\-]/g,'');},
+  // 组卷：按章节 round-robin 均衡 + 章内随机
+  compose: function(pool, count){
+    count = count || FPGAExam.PAPER_SIZE;
+    var byCh = {};
+    pool.forEach(function(q){ (byCh[q.ch]=byCh[q.ch]||[]).push(q); });
+    Object.keys(byCh).forEach(function(k){ byCh[k]=shuffled(byCh[k]); });
+    var chs = Object.keys(byCh);
+    var paper = [], idx = {};
+    chs.forEach(function(c){ idx[c]=0; });
+    var guard = 0;
+    while(paper.length < count && guard < count*chs.length+10){
+      var progressed = false;
+      for(var i=0;i<chs.length;i++){
+        var c=chs[i];
+        if(idx[c] < byCh[c].length){ paper.push(byCh[c][idx[c]]); idx[c]++; progressed=true; if(paper.length>=count) break; }
+      }
+      if(!progressed) break;
+      guard++;
+    }
+    return shuffled(paper).slice(0,count);
+  },
+  // 乱序选项并按原正确项重映射 answer；返回新题目数组
+  shufflePaper: function(questions){
+    return questions.map(function(q){
+      var n = {id:q.id, ch:q.ch, type:q.type, pts:q.pts||FPGAExam.PER_Q, q:q.q, explain:q.explain};
+      if(q.type==='single' || q.type==='multi'){
+        var order = shuffled(q.options.map(function(_,i){return i;}));
+        n.options = order.map(function(oi){ return q.options[oi]; });
+        if(q.type==='single'){ n.answer = order.indexOf(q.answer); }
+        else { n.answer = q.answer.slice().sort().map(function(a){return order.indexOf(a);}).sort(function(a,b){return a-b;}); }
+      } else if(q.type==='judge'){
+        // 固定 正确/错误 两项，answer 为下标
+        n.options = ['正确','错误'];
+        n.answer = q.answer===true ? 0 : 1;
+      } else if(q.type==='fill'){
+        n.options = null;
+        n.answer = q.answer.slice(); // 可接受写法数组
+      }
+      return n;
+    });
+  },
+  // 判分：answers 为数组，下标对应 paper 顺序；single=下标, multi=下标数组, judge=bool下标, fill=字符串
+  gradePaper: function(paper, answers){
+    var self=this, score=0, detail=[];
+    paper.forEach(function(q,i){
+      var ua = answers[i], ok=false, got='';
+      if(q.type==='single'){ ok = (ua===q.answer); got = (ua==null||ua==='')?'(未答)':q.options[ua]; }
+      else if(q.type==='multi'){
+        ua = Array.isArray(ua)?ua:[];
+        ok = ua.length===q.answer.length && ua.slice().sort().join()===q.answer.slice().sort().join();
+        got = ua.length? ua.map(function(x){return q.options[x];}).join(', ') : '(未答)';
+      }
+      else if(q.type==='judge'){ ok = (ua===q.answer); got = (ua==null||ua==='')?'(未答)':q.options[ua]; }
+      else if(q.type==='fill'){
+        if(typeof ua==='string' && ua.trim()){
+          ok = q.answer.some(function(acc){ return self._normFill(acc)===self._normFill(ua); });
+        }
+        got = (typeof ua==='string'&&ua.trim())?ua : '(未答)';
+      }
+      if(ok) score += (q.pts||self.PER_Q);
+      detail.push({id:q.id, ch:q.ch, type:q.type, q:q.q, your:got,
+                   correct: q.type==='fill'? q.answer.join(' / ') : (q.type==='judge'? q.options[q.answer] : q.options[q.answer]),
+                   ok:ok, explain:q.explain, options:q.options});
+    });
+    return {score:score, passed: score>=self.PASS_RATE, detail:detail};
+  },
+  // 由存档推导解锁/通过状态
+  unlockState: function(state){
+    state = state || {};
+    var passed = state.passed || {};
+    var unlocked = {1:true};
+    [2,3,4,5].forEach(function(n){ unlocked[n] = !!passed[n-1]; });
+    return {unlocked:unlocked, passed:passed, best:state.best||{}};
+  }
+};
+window.FPGAExam = FPGAExam;
+
+/* ================= 考试存档 ================= */
+function loadExamState(){ try{return JSON.parse(localStorage.getItem(EXAM_KEY)||'{}');}catch(e){return{};} }
+function saveExamState(s){ try{localStorage.setItem(EXAM_KEY,JSON.stringify(s));}catch(e){} }
+function examDerive(){ return FPGAExam.unlockState(loadExamState()); }
 
 /* 轻量 Verilog 高亮：codeHtml 已由 build.py 做过 HTML 转义，这里直接包注释/关键字/数字，不再 esc */
 function hlVerilog(code){
@@ -238,7 +371,10 @@ function chapterHtml(f){
   h += '<div class="chapter" id="ch-'+esc(f.chapterId)+'">';
   h += '<h4>'+esc(f.chapterId)+' '+esc(f.title)+'</h4>';
   h += '<p class="sum">'+esc(f.summary)+'</p>';
-  if(f.docHtml){ h += '<div class="doc">'+f.docHtml+'</div>'; }
+  if(f.docHtml){
+    var dh = f.docHtml.replace(/<table>/g,'<div class="table-wrap"><table>').replace(/<\/table>/g,'</table></div>');
+    h += '<div class="doc">'+dh+'</div>';
+  }
 
   // code tabs
   if(f.code && f.code.length){
@@ -297,26 +433,54 @@ function chapterHtml(f){
   return h;
 }
 
+function examCardHtml(pid, derive){
+  var exam = (KB.exams||{})[pid];
+  var best = derive.best[pid];
+  var passed = !!derive.passed[pid];
+  var h = '<div class="exam-card" id="exam-'+pid+'">';
+  h += '<h5>阶段'+pid+' 通关考卷（20 题 × 5 分 = 100，≥85 通过）</h5>';
+  h += '<div style="font-size:13px;color:var(--muted);">按本阶段章节均衡抽题，通过后解锁阶段'+(+pid+1)+(+pid===5?'（已最高阶段）':'')+'。</div>';
+  h += '<div style="margin-top:8px;font-size:13px;">';
+  h += passed ? '<span style="color:var(--green);">已通过</span>' : '<span style="color:var(--amber);">未通过</span>';
+  h += '　历史最高分：<b>'+(best!=null?best+' 分':'暂无')+'</b>';
+  h += '</div>';
+  if(!exam || !exam.questions || !exam.questions.length){
+    h += '<div style="margin-top:8px;font-size:13px;color:var(--muted);">题库准备中…（data/exam/phase'+pid+'.json）</div>';
+  } else {
+    h += '<div class="controls" style="justify-content:flex-start;margin:10px 0 0;">';
+    h += '<button class="btn primary" data-exam-start="'+pid+'">'+(passed?'重新考试刷高分':'开始考试')+'</button>';
+    h += '</div>';
+  }
+  h += '<div class="exam-run" id="exam-run-'+pid+'" style="display:none;"></div>';
+  h += '</div>';
+  return h;
+}
+
 function renderApp(){
   var app = document.getElementById('app');
+  var derive = examDerive();
   var byPhase = {};
   (KB.chapters||[]).forEach(function(c){ (byPhase[c.phase]=byPhase[c.phase]||[]).push(c); });
   var html = '';
   PHASES.forEach(function(p){
     var chs = byPhase[p.id]||[];
-    html += '<div class="phase" id="phase-'+p.id+'">';
-    html += '<div class="phase-head" data-phase="'+p.id+'"><div><div class="t">'+p.emo+' 阶段'+p.id+'：'+p.name+'</div><div class="d">'+p.d+'</div></div><div class="arrow">▼</div></div>';
+    var locked = !derive.unlocked[p.id];
+    html += '<div class="phase'+(locked?' locked':'')+'" id="phase-'+p.id+'">';
+    html += '<div class="phase-head" data-phase="'+p.id+'"><div><div class="t">'+(locked?LOCK_SVG:'')+p.emo+' 阶段'+p.id+'：'+p.name+(derive.passed[p.id]?' <span style="color:var(--green);font-size:13px;">✓已通过</span>':'')+'</div><div class="d">'+p.d+(locked?' · 锁定：通过上一阶段考卷(≥85)解锁':'')+'</div></div><div class="arrow">▼</div></div>';
     html += '<div class="phase-body">';
     if(chs.length){ chs.forEach(function(c){ html += chapterHtml(c); }); }
     else { html += '<div class="chapter"><p class="sum">本阶段内容撰写中…</p></div>'; }
+    html += examCardHtml(p.id, derive);
     html += '</div></div>';
   });
   app.innerHTML = html;
 
-  // bind phase toggle
+  // bind phase toggle（锁定阶段不给展开）
   document.querySelectorAll('.phase-head').forEach(function(h){
     h.addEventListener('click',function(){
-      document.getElementById('phase-'+h.dataset.phase).classList.toggle('open');
+      var ph=document.getElementById('phase-'+h.dataset.phase);
+      if(ph.classList.contains('locked')){ toast('此阶段未解锁：先通过上一阶段的通关考卷（≥85 分）'); return; }
+      ph.classList.toggle('open');
     });
   });
   // code tabs
@@ -334,10 +498,8 @@ function renderApp(){
   document.querySelectorAll('.quiz .opt').forEach(function(o){
     o.addEventListener('click',function(){
       var q=o.closest('.quiz'); if(q.dataset.done) return; q.dataset.done=1;
-      var qi=q.dataset.qi; var real=KB.chapters.find(function(c){return 'ch-'+c.chapterId===q.id||c.chapterId===q.dataset.ch;});
-      // find quiz object
       var chap = KB.chapters.filter(function(c){return c.chapterId===q.dataset.ch;})[0];
-      var ans = chap.quiz[qi].answer;
+      var ans = chap.quiz[q.dataset.qi].answer;
       var oi=+o.dataset.oi;
       q.querySelectorAll('.opt').forEach(function(x,i){
         if(i===ans) x.classList.add('right');
@@ -346,6 +508,140 @@ function renderApp(){
       q.querySelector('.exp').style.display='block';
     });
   });
+  // exam start buttons
+  document.querySelectorAll('[data-exam-start]').forEach(function(b){
+    b.addEventListener('click',function(){ startExam(+b.dataset.examStart); });
+  });
+}
+
+/* ================= 阶段导航 ================= */
+function renderPhaseNav(){
+  var box=document.getElementById('phaseNav');
+  var derive=examDerive();
+  box.innerHTML=PHASES.map(function(p){
+    var locked=!derive.unlocked[p.id];
+    var passed=!!derive.passed[p.id];
+    var best=derive.best[p.id];
+    var s = locked?('锁定 · 需通过阶段'+(p.id-1)) : (passed?('已通过 · 最高分'+(best!=null?best:'')+''):'可学习');
+    return '<div class="pn-item'+(locked?' locked':'')+(passed?' passed':'')+'" data-nav="'+p.id+'">'+
+      '<div class="pn-n">'+(locked?LOCK_SVG:'')+'阶段'+p.id+'</div>'+
+      '<div class="pn-s">'+esc(p.name)+'</div>'+
+      '<div class="pn-best">'+esc(s)+'</div></div>';
+  }).join('');
+  box.querySelectorAll('.pn-item').forEach(function(el){
+    el.addEventListener('click',function(){
+      var pid=+el.dataset.nav; var d=examDerive();
+      if(!d.unlocked[pid]){ toast('此阶段未解锁：先通过阶段'+(pid-1)+'的通关考卷（≥85 分）'); return; }
+      var ph=document.getElementById('phase-'+pid);
+      PHASES.forEach(function(x){document.getElementById('phase-'+x.id).classList.remove('open');});
+      ph.classList.add('open');
+      ph.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+}
+
+/* ================= 考试 UI ================= */
+var EXAM_RUN = {}; // pid -> {paper:[...], answers:{}}
+function startExam(pid){
+  var exam=(KB.exams||{})[pid];
+  if(!exam || !exam.questions || !exam.questions.length){ toast('该阶段题库准备中'); return; }
+  var paper=FPGAExam.shufflePaper(FPGAExam.compose(exam.questions));
+  EXAM_RUN[pid]={paper:paper, answers:{}, submitted:false};
+  renderExamRun(pid);
+  document.getElementById('exam-run-'+pid).scrollIntoView({behavior:'smooth',block:'center'});
+}
+function renderExamRun(pid){
+  var run=EXAM_RUN[pid]; var box=document.getElementById('exam-run-'+pid);
+  box.style.display='block';
+  if(run.submitted){ renderExamResult(pid); return; }
+  var h='<div class="exam-progress">作答进度：<span id="exprog-'+pid+'">0</span>/'+run.paper.length+'</div>';
+  run.paper.forEach(function(q,i){
+    h+='<div class="exam-q"><span class="eq-type">'+({single:'单选',multi:'多选',judge:'判断',fill:'填空'})[q.type]+'</span><b>'+(i+1)+'. '+esc(q.q)+'</b>';
+    if(q.type==='single' || q.type==='judge'){
+      q.options.forEach(function(op,oi){
+        var checked=(run.answers[i]===oi)?'checked':'';
+        h+='<label class="opt"><input type="radio" name="ex'+pid+'-'+i+'" data-q="'+i+'" data-oi="'+oi+'" '+checked+'> '+esc(op)+'</label>';
+      });
+    } else if(q.type==='multi'){
+      q.options.forEach(function(op,oi){
+        var checked=(run.answers[i]&&run.answers[i].indexOf(oi)>=0)?'checked':'';
+        h+='<label class="opt"><input type="checkbox" data-q="'+i+'" data-oi="'+oi+'" '+checked+'> '+esc(op)+'</label>';
+      });
+    } else if(q.type==='fill'){
+      h+='<input class="exam-fill" data-q="'+i+'" placeholder="输入答案" value="'+esc(run.answers[i]||'')+'">';
+    }
+    h+='</div>';
+  });
+  h+='<div class="controls" style="justify-content:flex-start;"><button class="btn primary" data-exam-submit="'+pid+'">交卷</button>'+
+     '<button class="btn" data-exam-redo="'+pid+'">换一批重抽</button></div>';
+  box.innerHTML=h;
+  // bind
+  box.querySelectorAll('input[type=radio]').forEach(function(r){ r.addEventListener('change',function(){
+    run.answers[+r.dataset.q]=+r.dataset.oi; updProg(pid); });});
+  box.querySelectorAll('input[type=checkbox]').forEach(function(c){ c.addEventListener('change',function(){
+    var i=+c.dataset.q; run.answers[i]=run.answers[i]||[];
+    var oi=+c.dataset.oi, k=run.answers[i].indexOf(oi);
+    if(c.checked && k<0) run.answers[i].push(oi);
+    if(!c.checked && k>=0) run.answers[i].splice(k,1);
+    updProg(pid); });});
+  box.querySelectorAll('input.exam-fill').forEach(function(f){ f.addEventListener('input',function(){
+    run.answers[+f.dataset.q]=f.value; updProg(pid); });});
+  box.querySelector('[data-exam-submit]').addEventListener('click',function(){
+    var ansCount=run.paper.filter(function(_,i){
+      var a=run.answers[i];
+      if(Array.isArray(a)) return a.length>0;
+      return a!==undefined && a!=='';
+    }).length;
+    if(ansCount<run.paper.length && !confirm('还有 '+(run.paper.length-ansCount)+' 题未答，确定交卷？')) return;
+    submitExam(pid);
+  });
+  box.querySelector('[data-exam-redo]').addEventListener('click',function(){ startExam(pid); });
+  updProg(pid);
+}
+function updProg(pid){
+  var run=EXAM_RUN[pid]; var n=0;
+  run.paper.forEach(function(_,i){ var a=run.answers[i];
+    if(Array.isArray(a)){ if(a.length) n++; } else if(a!==undefined&&a!=='') n++; });
+  var el=document.getElementById('exprog-'+pid); if(el) el.textContent=n;
+}
+function submitExam(pid){
+  var run=EXAM_RUN[pid];
+  var res=FPGAExam.gradePaper(run.paper, run.paper.map(function(_,i){return run.answers[i];}));
+  run.submitted=true; run.result=res;
+  // 更新存档
+  var st=loadExamState(); st.best=st.best||{}; st.passed=st.passed||{};
+  if(res.score > (st.best[pid]||0)) st.best[pid]=res.score;
+  var newlyPassed=false;
+  if(res.passed && !st.passed[pid]){ st.passed[pid]=true; newlyPassed=true; }
+  else if(res.passed){ st.passed[pid]=true; }
+  saveExamState(st);
+  renderExamResult(pid);
+  renderPhaseNav(); renderAppLockState();
+  if(newlyPassed){ toast('恭喜通过阶段'+pid+'考卷！已解锁阶段'+(+pid+1)); }
+}
+function renderExamResult(pid){
+  var run=EXAM_RUN[pid]; var res=run.result; var box=document.getElementById('exam-run-'+pid);
+  var h='<div style="margin:8px 0;">总分 <span class="score-big" style="color:'+(res.passed?'var(--green)':'var(--red)')+'">'+res.score+'</span> 分 — '+
+    (res.passed?'<span style="color:var(--green);">及格通过</span>':'<span style="color:var(--red);">未达 85，可重新抽题再考</span>')+'</div>';
+  res.detail.forEach(function(d,i){
+    h+='<div class="exam-q" style="border-color:'+(d.ok?'var(--green)':'var(--red)')+'">'+
+      '<b>'+(i+1)+'. '+esc(d.q)+'</b> '+
+      '<span style="color:'+(d.ok?'var(--green)':'var(--red)')+'">['+(d.ok?'✓':'✗')+']</span>'+
+      '<div class="your">你的作答：'+esc(d.your)+'</div>'+
+      '<div class="your" style="color:var(--green);">正确答案：'+esc(d.correct)+'</div>'+
+      '<div style="font-size:12px;color:var(--amber);margin-top:4px;">解析：'+esc(d.explain)+'</div></div>';
+  });
+  h+='<div class="controls" style="justify-content:flex-start;"><button class="btn primary" data-exam-redo="'+pid+'">重新抽题再考</button></div>';
+  box.innerHTML=h;
+  box.querySelector('[data-exam-redo]').addEventListener('click',function(){ startExam(pid); });
+}
+function renderAppLockState(){
+  var d=examDerive();
+  PHASES.forEach(function(p){
+    var el=document.getElementById('phase-'+p.id); if(!el) return;
+    el.classList.toggle('locked', !d.unlocked[p.id]);
+  });
+  renderPhaseNav();
 }
 
 /* ================= 进度 / 徽章 ================= */
@@ -455,17 +751,23 @@ async function onlineAnswer(q){
 document.addEventListener('DOMContentLoaded',function(){
   renderBadges();
   renderApp();
+  renderPhaseNav();
   CORPUS=buildCorpus();
   loadProgress();
   updateProgress();
   document.getElementById('phase-1').classList.add('open');
 
-  document.getElementById('btnExpandAll').onclick=function(){document.querySelectorAll('.phase').forEach(function(p){p.classList.add('open');});};
+  document.getElementById('btnExpandAll').onclick=function(){
+    var d=examDerive();
+    PHASES.forEach(function(p){ if(d.unlocked[p.id]) document.getElementById('phase-'+p.id).classList.add('open'); });
+  };
   document.getElementById('btnCollapseAll').onclick=function(){document.querySelectorAll('.phase').forEach(function(p){p.classList.remove('open');});};
   document.getElementById('btnReset').onclick=function(){
-    if(confirm('确定要重置所有学习进度吗？此操作不可撤销！')){
+    if(confirm('确定要重置所有学习进度与考试存档吗（含勾选/通关最高分/解锁状态）？此操作不可撤销！')){
       localStorage.removeItem(PROGRESS_KEY);
+      localStorage.removeItem(EXAM_KEY);
       allCheckboxes().forEach(function(cb){cb.checked=false;});
+      renderApp(); renderPhaseNav();
       updateProgress();
     }
   };
